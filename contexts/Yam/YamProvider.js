@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
-import constants from '../../constants';
 import { Yam } from '../../yam';
 
 export const Context = createContext({
@@ -13,7 +12,7 @@ const YamProvider = ({ children }) => {
 
   useEffect(() => {
     if (ethereum) {
-      const yam = new Yam(ethereum, constants.CHAIN_ID, false, {
+      const yam = new Yam(ethereum, {
         defaultAccount: '',
         defaultConfirmations: 1,
         autoGasMultiplier: 1.5,
