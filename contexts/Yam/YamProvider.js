@@ -1,10 +1,7 @@
-import React, { createContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import { Yam } from '../../yam';
-
-export const Context = createContext({
-  yam: undefined
-});
+import YamContext from './YamContext';
 
 const YamProvider = ({ children }) => {
   const { ethereum } = useWallet();
@@ -29,7 +26,7 @@ const YamProvider = ({ children }) => {
     }
   }, [ethereum]);
 
-  return <Context.Provider value={{ yam }}>{children}</Context.Provider>;
+  return <YamContext.Provider value={{ yam }}>{children}</YamContext.Provider>;
 };
 
 export default YamProvider;

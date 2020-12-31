@@ -1,6 +1,6 @@
-import React from 'react';
+import { createContext } from 'react';
 
-const Web3Context = React.createContext({
+const Web3Context = createContext({
   web3: undefined
 });
 

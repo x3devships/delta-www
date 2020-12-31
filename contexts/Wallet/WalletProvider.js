@@ -67,7 +67,7 @@ const WalletProvider = ({ children }) => {
     }
   }, []);
 
-  return <WalletContext.Provider>{children}</WalletContext.Provider>;
+  return <WalletContext.Provider value={{}}>{children}</WalletContext.Provider>;
 };
 
 export default WalletProvider;

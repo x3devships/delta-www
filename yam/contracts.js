@@ -15,23 +15,23 @@ export class Contracts {
     this.web3 = web3;
 
     // Uniswap
-    this.uniswapRouter = new this.web3.eth.Contract(UNIRouterJson);
-    this.uniswapFactory = new this.web3.eth.Contract(UNIFactJson);
+    this.uniswapRouter = new web3.eth.Contract(UNIRouterJson);
+    this.uniswapFactory = new web3.eth.Contract(UNIFactJson);
 
     // Tokens
-    this.core = new this.web3.eth.Contract(CORE.abi);
-    this.wCORE = new this.web3.eth.Contract(wCORE.abi);
-    this.cDAI = new this.web3.eth.Contract(cDAI.abi);
-    this.wBTC = new this.web3.eth.Contract(WBTC.abi);
-    this.wETH = new this.web3.eth.Contract(WETHJson);
-    this.cBTC = new this.web3.eth.Contract(CBTC.abi);
-    this.erc20 = new this.web3.eth.Contract(ERC20Json.abi);
-    this.genericErc20 = new this.web3.eth.Contract(CORE.abi); // CORE ABI has decimals ERC20 doesn't...
+    this.core = new web3.eth.Contract(CORE.abi);
+    this.wCORE = new web3.eth.Contract(wCORE.abi);
+    this.cDAI = new web3.eth.Contract(cDAI.abi);
+    this.wBTC = new web3.eth.Contract(WBTC.abi);
+    this.wETH = new web3.eth.Contract(WETHJson);
+    this.cBTC = new web3.eth.Contract(CBTC.abi);
+    this.erc20 = new web3.eth.Contract(ERC20Json.abi);
+    this.genericErc20 = new web3.eth.Contract(CORE.abi); // CORE ABI has decimals ERC20 doesn't...
 
     // Pairs
-    this.genericUniswapPair = new this.web3.eth.Contract(UNIPairJson);
-    this.wBtcWethPair = new this.web3.eth.Contract(UNIPairJson);
-    this.ethUsdtPair = new this.web3.eth.Contract(UNIPairJson);
+    this.genericUniswapPair = new web3.eth.Contract(UNIPairJson);
+    this.wBtcWethPair = new web3.eth.Contract(UNIPairJson);
+    this.ethUsdtPair = new web3.eth.Contract(UNIPairJson);
 
     this._updateContractAddresses();
   }

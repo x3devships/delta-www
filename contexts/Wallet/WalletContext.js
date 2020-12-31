@@ -1,5 +1,5 @@
-import React from 'react';
+import { createContext } from 'react';
 
-const WalletContext = React.createContext();
+const WalletContext = createContext();
 
 export default WalletContext;
