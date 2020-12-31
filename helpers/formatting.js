@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { DATA_UNAVAILABLE } from "../yam/lib/constants";
+import { DATA_UNAVAILABLE } from '../config';
 
 const getTokenAmount = (amount, decimals = 18, precision = 4) => {
   if (amount === DATA_UNAVAILABLE) {
@@ -7,11 +7,11 @@ const getTokenAmount = (amount, decimals = 18, precision = 4) => {
   }
 
   if (BigNumber.isBigNumber(amount)) {
-    amount = (decimals ? amount.div(new BigNumber(10).pow(decimals)) : amount);
+    amount = decimals ? amount.div(new BigNumber(10).pow(decimals)) : amount;
   }
 
   if (typeof amount === 'string') {
-    amount = amount / 10 ** decimals;
+    amount /= 10 ** decimals;
   }
 
   if (precision) {

@@ -1,9 +1,9 @@
-import { Contracts } from "../yam/contracts";
-import Web3 from "web3";
+import Web3 from 'web3';
+import { Contracts } from '../yam/contracts';
 
 export default class Web3Client {
   constructor(apiUrl, options) {
     this.web3 = new Web3(apiUrl);
-    this.contracts = new Contracts(this.web3, options);
+    this.contracts = new Contracts(this.wb3, options);
   }
 }

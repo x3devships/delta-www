@@ -1,9 +1,9 @@
 import Web3 from 'web3';
-import { Contracts } from './contracts.js';
+import { Contracts } from './contracts';
 
 export class Yam {
   constructor(provider, options) {
-    var realProvider;
+    let realProvider;
 
     if (typeof provider === 'string') {
       if (provider.includes('wss')) {
@@ -21,7 +21,7 @@ export class Yam {
       realProvider = provider;
     }
 
-    this.web3 = new Web3(realProvider,);
+    this.web3 = new Web3(realProvider);
     this.contracts = new Contracts(this.web3, options);
   }
 }

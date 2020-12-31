@@ -6,5 +6,8 @@
   "git.ignoreLimitWarning": true,
   "css.customData": [
     ".vscode/css_custom_data.json"
-  ]
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }

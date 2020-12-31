@@ -3,7 +3,7 @@ import { useWallet } from 'use-wallet';
 import { Yam } from '../../yam';
 
 export const Context = createContext({
-  yam: undefined,
+  yam: undefined
 });
 
 const YamProvider = ({ children }) => {
@@ -20,7 +20,7 @@ const YamProvider = ({ children }) => {
         defaultGas: '6000000',
         defaultGasPrice: '1000000000000',
         accounts: [],
-        ethereumNodeTimeout: 10000,
+        ethereumNodeTimeout: 10000
       });
       setYam(yam);
 

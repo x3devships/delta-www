@@ -11,9 +11,7 @@ import cDAI from '../contracts/cDAI.json';
 import wCORE from '../contracts/wCORE.json';
 
 export class Contracts {
-  constructor(web3, options) {
-    options = options || {};
-
+  constructor(web3) {
     this.web3 = web3;
 
     // Uniswap
@@ -40,16 +38,16 @@ export class Contracts {
 
   _updateContractAddresses() {
     // Tokens
-    this.wBTC.options.address = addressMap['wBTC'];
-    this.wETH.options.address = addressMap['wETH'];
-    this.core.options.address = addressMap['core'];
-    this.cBTC.options.address = addressMap['cBTC'];
-    this.cDAI.options.address = addressMap['cDAI'];
+    this.wBTC.options.address = addressMap.wBTC;
+    this.wETH.options.address = addressMap.wETH;
+    this.core.options.address = addressMap.core;
+    this.cBTC.options.address = addressMap.cBTC;
+    this.cDAI.options.address = addressMap.cDAI;
 
     // Pairs
-    this.uniswapFactory.options.address = addressMap['uniswapFactoryV2'];
-    this.uniswapRouter.options.address = addressMap['uniswapRouter'];
-    this.wBtcWethPair.options.address = addressMap['wbtcWeth'];
-    this.ethUsdtPair.options.address = addressMap['ethUsdt'];
+    this.uniswapFactory.options.address = addressMap.uniswapFactoryV2;
+    this.uniswapRouter.options.address = addressMap.uniswapRouter;
+    this.wBtcWethPair.options.address = addressMap.wbtcWeth;
+    this.ethUsdtPair.options.address = addressMap.ethUsdt;
   }
 }
