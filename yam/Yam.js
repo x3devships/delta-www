@@ -7,15 +7,9 @@ export class Yam {
 
     if (typeof provider === 'string') {
       if (provider.includes('wss')) {
-        realProvider = new Web3.providers.WebsocketProvider(
-          provider,
-          options.ethereumNodeTimeout || 10000
-        );
+        realProvider = new Web3.providers.WebsocketProvider(provider, options.ethereumNodeTimeout || 10000);
       } else {
-        realProvider = new Web3.providers.HttpProvider(
-          provider,
-          options.ethereumNodeTimeout || 10000
-        );
+        realProvider = new Web3.providers.HttpProvider(provider, options.ethereumNodeTimeout || 10000);
       }
     } else {
       realProvider = provider;

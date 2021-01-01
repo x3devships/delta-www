@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { Context } from '../contexts/Yam/YamProvider';
+import YamContext from '../contexts/Yam/YamContext';
 
 const useYam = () => {
-  const { yam } = useContext(Context);
+  const { yam } = useContext(YamContext);
   return yam;
 };
 

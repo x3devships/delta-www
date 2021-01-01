@@ -16,9 +16,7 @@ const useUserApprovalOfContract = (contract, token) => {
     if (!contract || !token) return;
 
     const amount = new BigNumber(
-      await yam.contracts[token].methods
-        .allowance(wallet.account, yam.contracts[contract]._address)
-        .call()
+      await yam.contracts[token].methods.allowance(wallet.account, yam.contracts[contract]._address).call()
     );
     setAmount(amount);
   }

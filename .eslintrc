@@ -7,6 +7,12 @@
     "radix": "off",
     "no-param-reassign": "off",
     "no-shadow": "off",
-    "no-debugger": "off"
+    "no-debugger": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 120
+      }
+    ]
   }
 }

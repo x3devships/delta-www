@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { singletonHook } from 'react-singleton-hook';
-import { DATA_UNAVAILABLE } from '../config';
+import { DATA_UNAVAILABLE, pairNames } from '../config';
+import useCorePairBalances from './useCorePairBalances';
 import useETHPrice from './useETHPrice';
-import useUniswapPairBalances from './useUniswapPairBalances';
 
 const initialState = {
   inUSD: DATA_UNAVAILABLE,
@@ -10,16 +10,12 @@ const initialState = {
 };
 
 const useCorePrice = () => {
-  const { balanceCore, balanceToken } = useUniswapPairBalances('CORExWETH');
+  const { balanceCore, balanceToken } = useCorePairBalances(pairNames.coreWeth);
   const ethPrice = useETHPrice();
   const [prices, setPrices] = useState(initialState);
 
   useEffect(() => {
-    if (
-      balanceCore !== DATA_UNAVAILABLE &&
-      balanceToken !== DATA_UNAVAILABLE &&
-      ethPrice !== DATA_UNAVAILABLE
-    ) {
+    if (balanceCore !== DATA_UNAVAILABLE && balanceToken !== DATA_UNAVAILABLE && ethPrice !== DATA_UNAVAILABLE) {
       const coreValueInToken = balanceToken / balanceCore;
       setPrices({
         inUSD: coreValueInToken * ethPrice,

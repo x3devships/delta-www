@@ -23,11 +23,7 @@ const useWethBalance = () => {
     let interval;
 
     if (yam) {
-      interval = hooks.setWalletAwareInterval(
-        wallet,
-        getTokenBalance,
-        REFRESH_RATE
-      );
+      interval = hooks.setWalletAwareInterval(wallet, getTokenBalance, REFRESH_RATE);
     }
 
     return () => clearInterval(interval);

@@ -15,12 +15,8 @@ const useWBTCPrice = () => {
   useEffect(() => {
     const updateWBTCPrice = async () => {
       if (ethPrice !== DATA_UNAVAILABLE) {
-        const pairReserves = await web3.contracts.WBTCxWETH.methods
-          .getReserves()
-          .call();
-        const priceOfWBTCinWETH = parseFloat(
-          pairReserves.reserve1 / 1e18 / (pairReserves.reserve0 / 1e8)
-        );
+        const pairReserves = await web3.contracts.WBTCxWETH.methods.getReserves().call();
+        const priceOfWBTCinWETH = parseFloat(pairReserves.reserve1 / 1e18 / (pairReserves.reserve0 / 1e8));
         const priceOfWBTCinUSDT = priceOfWBTCinWETH * ethPrice;
         setWBTCPrice(priceOfWBTCinUSDT);
       }

@@ -1,3 +1,4 @@
+import { Button } from '@windmill/react-ui';
 import { useI18n } from 'next-rosetta';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -26,6 +27,7 @@ export default function Home() {
             </li>
           ))}
         </ul>
+        <Button>Regular</Button>
       </main>
     </div>
   );

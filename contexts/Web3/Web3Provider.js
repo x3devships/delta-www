@@ -11,9 +11,7 @@ const Web3Provider = ({ children }) => {
     setWeb3(web3);
   }, []);
 
-  return (
-    <Web3Context.Provider value={{ web3 }}>{children}</Web3Context.Provider>
-  );
+  return <Web3Context.Provider value={{ web3 }}>{children}</Web3Context.Provider>;
 };
 
 export default Web3Provider;

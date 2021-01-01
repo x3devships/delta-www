@@ -31,8 +31,7 @@ const WalletProvider = ({ children }) => {
 
   useEffect(() => {
     checkLocalUserAccount();
-    const localAccount =
-      (account ? account.toString() : false) || localStorage.getItem('account');
+    const localAccount = (account ? account.toString() : false) || localStorage.getItem('account');
     if (account) {
       localStorage.setItem('account', localAccount);
       setUserAccount(localAccount);
@@ -55,10 +54,7 @@ const WalletProvider = ({ children }) => {
     const walletProvider = localStorage.getItem('walletProvider');
     if (!account && localAccount) {
       setUserAccount(localAccount);
-      if (
-        localAccount &&
-        (walletProvider === 'metamask' || walletProvider === 'injected')
-      ) {
+      if (localAccount && (walletProvider === 'metamask' || walletProvider === 'injected')) {
         handleConnectMetamask();
       }
       if (localAccount && walletProvider === 'walletconnect') {

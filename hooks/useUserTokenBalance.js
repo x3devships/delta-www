@@ -24,9 +24,7 @@ const useUserTokenBalance = tokenName => {
       return;
     }
 
-    const balance = new BigNumber(
-      await yam.contracts[tokenName].methods.balanceOf(wallet.account).call()
-    );
+    const balance = new BigNumber(await yam.contracts[tokenName].methods.balanceOf(wallet.account).call());
     setData(data => ({
       ...data,
       balance

@@ -16,8 +16,10 @@
     }
   },
   "dependencies": {
+    "@windmill/react-ui": "^0.5.0",
     "autoprefixer": "^10.1.0",
     "bignumber.js": "^9.0.0",
+    "ethers": "^5.0.24",
     "moment": "^2.29.1",
     "next": "10.0.4",
     "next-rosetta": "^1.1.3",

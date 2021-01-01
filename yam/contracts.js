@@ -30,6 +30,9 @@ export class Contracts {
 
     // Pairs
     this.genericUniswapPair = new web3.eth.Contract(UNIPairJson);
+    this.coreCbtcPair = new web3.eth.Contract(UNIPairJson);
+    this.coreWethPair = new web3.eth.Contract(UNIPairJson);
+    this.cDaiWcorePair = new web3.eth.Contract(UNIPairJson);
     this.wBtcWethPair = new web3.eth.Contract(UNIPairJson);
     this.ethUsdtPair = new web3.eth.Contract(UNIPairJson);
 
@@ -47,6 +50,9 @@ export class Contracts {
     // Pairs
     this.uniswapFactory.options.address = addressMap.uniswapFactoryV2;
     this.uniswapRouter.options.address = addressMap.uniswapRouter;
+    this.coreCbtcPair.options.address = addressMap.coreCbtc;
+    this.coreWethPair.options.address = addressMap.coreWeth;
+    this.cDaiWcorePair.options.address = addressMap.cDaiWcore;
     this.wBtcWethPair.options.address = addressMap.wbtcWeth;
     this.ethUsdtPair.options.address = addressMap.ethUsdt;
   }
