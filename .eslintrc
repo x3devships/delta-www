@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "nextjs"
+  ],
+  "rules": {
+    "no-console": "off",
+    "radix": "off",
+    "no-param-reassign": "off",
+    "no-shadow": "off",
+    "no-debugger": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 120
+      }
+    ]
+  }
+}
