@@ -1,13 +1,22 @@
-import { Button } from '@windmill/react-ui';
 import { useI18n } from 'next-rosetta';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useContext } from 'react';
+import TransactionButton from '../components/Button/TransactionButton';
+import { ModalContext } from '../contexts';
 
 export default function Home() {
+  const modalContext = useContext(ModalContext);
   const { locale, locales, route } = useRouter();
   const i18n = useI18n();
   const { t } = i18n;
+
+  const onTransaction = async () => {
+    if (await modalContext.showConfirm('Confirmation', 'Please confirm you are there')) {
+      await modalContext.showError('Error', 'Example error message');
+    }
+  };
 
   return (
     <div>
@@ -27,7 +36,7 @@ export default function Home() {
             </li>
           ))}
         </ul>
-        <Button>Regular</Button>
+        <TransactionButton text="Button" onClick={onTransaction} />
       </main>
     </div>
   );

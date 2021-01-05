@@ -1,15 +1,11 @@
-import React from 'react';
 import { ethers } from 'ethers';
 import { useWallet } from 'use-wallet';
-import { WindowsContext } from '../../contexts/Windows';
+import { useContext, useEffect, useState } from 'react';
+import { Button } from '@windmill/react-ui';
 import { errors } from '../../helpers';
-import {
-  useUserApprovalOfContract,
-  useUserTokenBalance,
-  useYam
-} from '../../hooks';
-import { ErrorType } from '../../contexts/Windows/WindowsProvider';
+import { useUserApprovalOfContract, useUserTokenBalance, useYam } from '../../hooks';
 import { DATA_UNAVAILABLE } from '../../config';
+import { ModalContext } from '../../contexts';
 
 /**
  * A button that supports sending a transaction and keeping track of allowance/approval
@@ -35,39 +31,30 @@ const TransactionButton = ({
 
   const yam = useYam();
   const wallet = useWallet();
-  const windowsContext = React.useContext(WindowsContext);
-  const [loading, setLoading] = React.useState(false);
+  const modalContext = useContext(ModalContext);
+  const [loading, setLoading] = useState(false);
   const tokenBalance = useUserTokenBalance(allowanceRequiredFor.token);
-  const approval = useUserApprovalOfContract(
-    allowanceRequiredFor.contract,
-    allowanceRequiredFor.token
-  );
-  const [allowanceSatisfied, setAlowanceSatisfied] = React.useState(
-    allowanceRequiredFor.contract === undefined
-  );
-  const [initialized, setInitialized] = React.useState(
-    allowanceRequiredFor.contract === undefined
-  );
+  const approval = useUserApprovalOfContract(allowanceRequiredFor.contract, allowanceRequiredFor.token);
+  const [allowanceSatisfied, setAlowanceSatisfied] = useState(allowanceRequiredFor.contract === undefined);
+  const [initialized, setInitialized] = useState(allowanceRequiredFor.contract === undefined);
 
   /*
    * TODO: This is not bullet proof has the approval balance can be evaluated
    * before or after the token balancer is updated.
    */
-  React.useEffect(() => {
+  useEffect(() => {
     setAlowanceSatisfied(
       !allowanceRequiredFor.contract ||
-      (approval.amount !== DATA_UNAVAILABLE &&
-        tokenBalance.balance !== DATA_UNAVAILABLE &&
-        approval.amount.gte(tokenBalance.balance))
+        (approval.amount !== DATA_UNAVAILABLE &&
+          tokenBalance.balance !== DATA_UNAVAILABLE &&
+          approval.amount.gte(tokenBalance.balance))
     );
 
     setInitialized(true);
   }, [approval.amount, tokenBalance.balance]);
 
   const isDisabled = () => {
-    return !yam || !initialized || loading || !!props.disabled
-      ? 'disabled'
-      : '';
+    return !yam || !initialized || loading || !!props.disabled ? 'disabled' : '';
   };
 
   const handleApproval = async () => {
@@ -75,9 +62,10 @@ const TransactionButton = ({
 
     try {
       const contract = yam.contracts[allowanceRequiredFor.contract]._address;
-      const transaction = yam.contracts[
-        allowanceRequiredFor.token
-      ].methods.approve(contract, ethers.constants.MaxUint256);
+      const transaction = yam.contracts[allowanceRequiredFor.token].methods.approve(
+        contract,
+        ethers.constants.MaxUint256
+      );
       const gasEstimation = await transaction.estimateGas({
         from: wallet.account
       });
@@ -88,12 +76,7 @@ const TransactionButton = ({
       });
     } catch (error) {
       const transactionError = errors.getTransactionError(error);
-      windowsContext.showError(
-        'Error while approving',
-        '',
-        ErrorType.Fatal,
-        transactionError.message
-      );
+      modalContext.showError('Error while approving', transactionError.message);
     } finally {
       setLoading(false);
       tokenBalance.refresh();
@@ -117,12 +100,7 @@ const TransactionButton = ({
 
   const renderButtonText = () => {
     if (loading) {
-      return (
-        <span>
-          {allowanceSatisfied ? textLoading : textApproving}{' '}
-          <Hourglass size={20} />
-        </span>
-      );
+      return <span>{allowanceSatisfied ? textLoading : textApproving}</span>;
     }
 
     if (icon) {

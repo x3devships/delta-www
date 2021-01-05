@@ -1,6 +1,6 @@
 {
-  "editor.formatOnSave": true,
-  "editor.formatOnType": true,
+  "editor.formatOnSave": false,
+  "editor.formatOnType": false,
   "editor.detectIndentation": false,
   "editor.tabSize": 2,
   "git.ignoreLimitWarning": true,
@@ -9,5 +9,6 @@
   ],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+  "javascript.preferences.quoteStyle": "single"
 }

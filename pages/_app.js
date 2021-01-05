@@ -2,14 +2,18 @@ import { Windmill } from '@windmill/react-ui';
 import { I18nProvider } from 'next-rosetta';
 import { UseWalletProvider } from 'use-wallet';
 import { WEB3_PROVIDER_URL } from '../config';
-import { WalletProvider, YamProvider, Web3Provider, SettingsProvider } from '../contexts';
+import { WalletProvider, YamProvider, Web3Provider, SettingsProvider, ModalProvider } from '../contexts';
+import theme from '../config/default.theme';
+
 import '../styles/globals.css';
+import { ModalContainer } from '../components/Modal';
 
 function App({ Component, pageProps }) {
   return (
-    <Windmill>
+    <Windmill theme={theme}>
       <Providers {...pageProps}>
         <Component {...pageProps} />
+        <ModalContainer />
       </Providers>
     </Windmill>
   );
@@ -23,7 +27,9 @@ const Providers = props => {
           <UseWalletProvider chainId={1} connectors={{ walletconnect: { rpcUrl: WEB3_PROVIDER_URL } }}>
             <WalletProvider>
               <YamProvider>
-                <Web3Provider>{props.children}</Web3Provider>
+                <Web3Provider>
+                  <ModalProvider>{props.children}</ModalProvider>
+                </Web3Provider>
               </YamProvider>
             </WalletProvider>
           </UseWalletProvider>

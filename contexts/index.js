@@ -5,3 +5,5 @@ export { default as SettingsProvider } from './Settings/SettingsProvider';
 export { default as WalletContext } from './Wallet/WalletContext';
 export { default as WalletProvider } from './Wallet/WalletProvider';
 export { default as YamProvider } from './Yam/YamProvider';
+export { default as ModalContext } from './Modal/ModalContext';
+export { default as ModalProvider } from './Modal/ModalProvider';
