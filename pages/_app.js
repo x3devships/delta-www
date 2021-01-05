@@ -7,12 +7,19 @@ import theme from '../config/default.theme';
 
 import '../styles/globals.css';
 import { ModalContainer } from '../components/Modal';
+import { AuthenticationLayer } from '../components/Authentication';
 
 function App({ Component, pageProps }) {
   return (
     <Windmill theme={theme}>
       <Providers {...pageProps}>
-        <Component {...pageProps} />
+        {process.env.NODE_ENV === 'production' ? (
+          <AuthenticationLayer>
+            <Component {...pageProps} />
+          </AuthenticationLayer>
+        ) : (
+          <Component {...pageProps} />
+        )}
         <ModalContainer />
       </Providers>
     </Windmill>
