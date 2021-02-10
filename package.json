@@ -29,6 +29,7 @@
     "next-absolute-url": "^1.2.2",
     "next-images": "^1.7.0",
     "next-rosetta": "^1.1.3",
+    "next-seo": "^4.19.0",
     "postcss": "^8.2.2",
     "react": "17.0.1",
     "react-countdown": "^2.3.1",
