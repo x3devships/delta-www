@@ -68,7 +68,7 @@ export default function Home() {
 
              <Countdown date={1612920799000 + (8*day) + (4 * hour)} />
 
-             <a href="https://medium.com/@0xdec4f/introducing-delta-financial-b23952e9127c" target="_blank" className="text-sm pt-10">more</a>
+             <a href="https://delta-token.medium.com/introducing-delta-financial-769d387e9430" target="_blank" className="text-sm pt-10">more</a>
       </div>
       </main>
     </div>
