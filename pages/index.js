@@ -7,7 +7,7 @@ import TransactionButton from '../components/Button/TransactionButton';
 import { ModalContext } from '../contexts';
 import Countdown from 'react-countdown';
 import logo from "../public/Delta_Logo_Black.svg"
-
+import {NextSeo} from "next-seo"
 export default function Home() {
   const modalContext = useContext(ModalContext);
   const { locale, locales, route } = useRouter();
