@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { useContext } from 'react';
 import TransactionButton from '../components/Button/TransactionButton';
 import { ModalContext } from '../contexts';
-
+import Countdown from 'react-countdown';
+import logo from "../public/Delta_Logo_Black.svg"
 export default function Home() {
   const modalContext = useContext(ModalContext);
   const { locale, locales, route } = useRouter();
@@ -18,25 +19,27 @@ export default function Home() {
     }
   };
 
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+
   return (
     <div>
       <Head>
-        <title>{t('locale')}</title>
+        DELTA
       </Head>
       <main>
-        <h1>{t('title')}</h1>
-        <p>{t('subtitle')}</p>
-        <p>{t('welcome', { name: 'John' })}</p>
-        <ul>
-          {locales?.map(loc => (
-            <li key={loc}>
-              <Link href={route} locale={loc}>
-                <a className={loc === locale ? 'is-active' : ''}>{loc}</a>
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <TransactionButton text="Button" onClick={onTransaction} />
+
+ 
+      <div className="flex justify-center flex-col items-center h-screen">
+                <img src={logo} height="300" width="300" />
+
+             <Countdown date={1612920799000 + (7*day) + (4 * hour)} />
+
+             <a href="https://medium.com/@0xdec4f/introducing-delta-financial-b23952e9127c" target="_blank" className="text-sm pt-10">more</a>
+      </div>
       </main>
     </div>
   );
