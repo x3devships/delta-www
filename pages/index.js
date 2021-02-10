@@ -1,4 +1,4 @@
-import { useI18n } from 'next-rosetta';
+// import { useI18n } from 'next-rosetta';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -11,8 +11,8 @@ import {NextSeo} from "next-seo"
 export default function Home() {
   const modalContext = useContext(ModalContext);
   const { locale, locales, route } = useRouter();
-  const i18n = useI18n();
-  const { t } = i18n;
+  // const i18n = useI18n();
+  // const { t } = i18n;
 
   const onTransaction = async () => {
     if (await modalContext.showConfirm('Confirmation', 'Please confirm you are there')) {
@@ -55,8 +55,8 @@ export default function Home() {
         site_name: 'DELTA',
       }}
       twitter={{
-        handle: '@DELTAFinancial',
-        site: '@DELTAFinancial',
+        handle: '@Delta_Token',
+        site: '@Delta_Token',
         cardType: 'summary_large_image',
       }}
     />
@@ -76,7 +76,6 @@ export default function Home() {
 }
 
 export const getStaticProps = async context => {
-  const locale = context.locale || context.defaultLocale;
-  const { table = {} } = await import(`../i18n/${locale}`); // Import locale
+  const table = {}
   return { props: { table } }; // Passed to `/pages/_app.tsx`
 };

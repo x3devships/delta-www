@@ -6,8 +6,13 @@ module.exports = withImages({
     // https://nextjs.org/docs/basic-features/image-optimization
     domains: []
   },
-  i18n: {
-    locales: ['en', 'es'],
-    defaultLocale: 'en'
-  }
+
+   exportPathMap: async function(
+        defaultPathMap,
+        { dev, dir, outDir, distDir, buildId }
+      ) {
+        return {
+          "/": { page: "/" },
+        };
+      }
 });

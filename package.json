@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start && next export",
+    "export": "next export",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "postinstall": "husky install"
@@ -29,7 +30,6 @@
     "next": "10.0.4",
     "next-absolute-url": "^1.2.2",
     "next-images": "^1.7.0",
-    "next-rosetta": "^1.1.3",
     "next-seo": "^4.19.0",
     "postcss": "^8.2.2",
     "react": "17.0.1",
@@ -39,7 +39,6 @@
     "react-moment": "^1.0.0",
     "react-singleton-hook": "^3.0.142",
     "react-use-localstorage": "^3.5.3",
-    "rosetta": "^1.1.0",
     "styled-components": "^5.2.0",
     "tailwindcss": "^2.0.2",
     "use-wallet": "^0.8.0",
