@@ -65,8 +65,13 @@ export default function Home() {
  
       <div className="flex justify-center flex-col items-center h-screen">
                 <img src={logo} height="300" width="300" />
+            
+            <div className="flex flex-col leading-none pt-5 pb-10">
 
              <Countdown date={1612920799000 + (8*day) + (4 * hour)} />
+                            <div className="text-sm  self-end">until 48h code review period begins</div>
+
+             </div>
 
              <a href="https://medium.com/delta-financial/introducing-delta-financial-769d387e9430" target="_blank" className="text-sm pt-10">more</a>
       </div>
