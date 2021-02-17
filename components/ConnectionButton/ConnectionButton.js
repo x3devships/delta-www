@@ -10,9 +10,14 @@ const LimitedWindow = ({ text, image }) => {
       >
         <img src={image} className="m-auto" />
       </button>
-      <button className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex ">
-        <span>{text}</span>
-        <img src={plus} className="m-auto pl-8" />
+      <button
+        className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex"
+        style={{ minWidth: '14.1%', justifyContent: 'space-between' }}
+      >
+        <div>{text}</div>
+        <div>
+          <img src={plus} className="m-auto pr-2 pt-2" />
+        </div>
       </button>
       <button
         className="border-black border bg-transparent p-4 mt-4 inline-block text-white flex ml-2"

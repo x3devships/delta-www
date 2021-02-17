@@ -3,8 +3,8 @@
 @tailwind utilities;
 @font-face {
   font-family:"Wulkan Display" !important;
-  src: 
-  url("../public/WulkanDisplay-Medium.otf") format("opentype");
+  font-display: swap;
+  src: local('Wulkan Display'), url("/fonts/WulkanDisplay-Medium.otf") format("opentype");
 }
 html * 
 {
@@ -12,7 +12,10 @@ html *
   color: #333333 !important;
   background-color: #F4F4F4 !important;
   font-family:"Wulkan Display" !important;
-text-rendering: geometricPrecision;
--webkit-font-smoothing: subpixel-antialiased;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: subpixel-antialiased;
 
+}
+body{
+  font-family: 'Wulkan Display' !important;
 }

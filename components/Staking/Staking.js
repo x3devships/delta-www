@@ -13,7 +13,7 @@ const Staking = () => {
               <div className="w-full min-h-0 min-w-0">
                 <div className="m-auto h-80 border-black border-2 border-b">
                   <div className="flex">
-                    <div className="m-auto w-10/12 text-4xl py-9">Limited Staking Window</div>
+                    <div className="m-auto w-10/12 text-4xl py-9 font-display">Limited Staking Window</div>
                     <img src={chevron} alt="chevron" className="m-auto" />
                   </div>
                   <ProgressBarCountDown />

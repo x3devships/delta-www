@@ -1,9 +1,18 @@
 const windmill = require('@windmill/react-ui/config');
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = windmill({
   purge: ['./pages/**/*.{js,jsx}', './components/**/*.{js,jsx}'],
   darkMode: true,
   theme: {
+    minWidth: {
+      '0': '0',
+      '1/5': '14.1%',
+      '1/4': '25%',
+      '1/2': '50%',
+      '3/4': '75%',
+      full: '100%'
+    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
@@ -15,6 +24,10 @@ module.exports = windmill({
       backgroundPage: '#E5E5E5',
       backgroundButton: '#C7C7C7',
       greenText: '#4DA560'
+    },
+    fontFamily: {
+      sans: ['Wulkan Display', ...defaultTheme.fontFamily.sans],
+      mono: ['gt_americaregular', ...defaultTheme.fontFamily.mono]
     }
   },
   variants: {

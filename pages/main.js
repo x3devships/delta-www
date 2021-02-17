@@ -3,6 +3,7 @@ import { Hero } from '../components/Hero';
 import { Staking } from '../components/Staking';
 import { LimitedWindow } from '../components/LimitedWindow';
 import { Community } from '../components/Community';
+import { ReferralProgram } from '../components/ReferralProgram';
 
 export default function Main() {
   return (
@@ -12,6 +13,7 @@ export default function Main() {
       <Staking />
       <LimitedWindow />
       <Community />
+      <ReferralProgram />
     </div>
   );
 }
