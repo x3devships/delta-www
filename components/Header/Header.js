@@ -18,12 +18,12 @@ const header = ({ onWalletConnect }) => {
         <img src={logo} height="150" width="150" />
       </div>
       <div>
-        <button
+        {/* <button
           onClick={() => onWalletConnect()}
           className="inline-block text-sm px-4 py-2 leading-none text-white hover:border-transparent mt-4 lg:mt-0 uppercase"
         >
           {connectWalletVisible ? <>Connect Wallet</> : <></>}
-        </button>
+        </button> */}
       </div>
     </nav>
   );
