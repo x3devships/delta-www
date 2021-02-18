@@ -1,11 +1,26 @@
+import { useEffect, useState } from 'react';
+import { Button, Input } from '@windmill/react-ui';
 import useTranslation from 'next-translate/useTranslation';
+import { useWallet } from 'use-wallet';
+import { useYam } from '../../hooks';
 import { ProgressBarCountDown } from '../ProgressBarCountDown';
 import { ProgressBar } from '../ProgressBar';
+import { TransactionButton } from '../Button';
 import plus from '../../public/plus.svg';
 import chevron from '../../public/chevron.svg';
 
-const Staking = () => {
+const Staking = ({ onWalletConnect }) => {
   const { t } = useTranslation('home');
+  const yam = useYam();
+  const wallet = useWallet();
+  const [connectWalletVisible, setConnectWalletVisible] = useState(true);
+  useEffect(() => {
+    if (!wallet.account) {
+      setConnectWalletVisible(true);
+    } else {
+      setConnectWalletVisible(false);
+    }
+  }, [wallet]);
   return (
     <section className="w-12/12 flex flex-col-reverse sm:flex-row min-h-0 min-w-0 overflow-hidden">
       <main className="sm:h-full flex-1 flex flex-col min-h-0 min-w-0">
@@ -24,13 +39,13 @@ const Staking = () => {
                   <div className="m-auto w-11/12 text-4xl py-9 font-wulkan">{t('limitedStaking')}</div>
                   <div className="flex space-x-80 sm:flex-wrap sm:space-x-0">
                     <iframe
-                      className="mb-9 pl-9 sm:pl-2"
+                      className="mb-9 pl-9 sm:pl-0"
                       src="https://duneanalytics.com/embeds/20141/41387/X2NcJgZdr4I0XfujHlfTkrPjgR7tFBA9ql0XyWSe"
                       width="720"
                       height="391"
                     />
                     <iframe
-                      className="mb-9 pl-9 sm:pl-2"
+                      className="mb-9 pl-9 sm:pl-0"
                       src="https://duneanalytics.com/embeds/20141/41387/X2NcJgZdr4I0XfujHlfTkrPjgR7tFBA9ql0XyWSe"
                       width="720"
                       height="391"
@@ -42,10 +57,27 @@ const Staking = () => {
                     <div className="text-4xl pb-4 font-wulkan">{t('bonus')}</div>
                     <div className="pb-2 font-gt_americare" dangerouslySetInnerHTML={{ __html: t('earnWithDelta') }} />
                     <div>
-                      <button className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex font-gt_americare">
-                        <span>Connect Wallet To Participate</span>
-                        <img src={plus} className="m-auto pl-8" />
-                      </button>
+                      {connectWalletVisible ? (
+                        <Button
+                          onClick={() => onWalletConnect()}
+                          className="p-4 mt-4 inline-block text-white uppercase flex ml-2"
+                          style={{
+                            marginRight: '1px',
+                            borderRadius: '0px',
+                            backgroundColor: 'black',
+                            padding: '1rem',
+                            marginTop: '1rem'
+                          }}
+                        >
+                          <span>{t('connectWallet')}</span>
+                          <img src={plus} className="m-auto pl-8" />
+                        </Button>
+                      ) : (
+                        <div className="flex w-6/12">
+                          <Input style={{ border: '1px solid black', marginRight: '5px', marginTop: '15px' }} />
+                          <TransactionButton text="Approve" secondaryLooks />
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="flex-1 pr-9 pt-9">

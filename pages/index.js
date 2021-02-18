@@ -63,7 +63,7 @@ export default function Main() {
         <div className="w-full flex flex-col max-w-6xl self-center">
           {' '}
           <Hero onWalletConnect={onWalletConnect} />
-          {/* <Staking /> */}
+          <Staking onWalletConnect={onWalletConnect} />
           <ReferralProgram onWalletConnect={onWalletConnect} />
           <LimitedWindow />
           <Community />
