@@ -23,7 +23,7 @@ const LimitedWindow = () => {
                   <div className="w-11/12 pl-12 pb-12">
                     <ConnectionButton url="https://medium.com/delta-financial/introducing-delta-financial-769d387e9430" text="ANNOUNCING DELTA" image={medium} />
                     <ConnectionButton url="https://medium.com/delta-financial/delta-tokenizing-open-vested-liquidity-7b115d03fb5" text="DELTA BASICS" image={medium} />
-                    <ConnectionButton url="https://medium.com/delta-financial/deep-farming-vault-yield-maximizing-strategy-a453a24a68d4" text="HOW TO PARTICIPATE" image={youtube} />
+                    <ConnectionButton url="https://medium.com/delta-financial/deep-farming-vault-yield-maximizing-strategy-a453a24a68d4" text="HOW TO PARTICIPATE" image={medium} />
                   </div>
                 </div>
               </div>
