@@ -1,9 +1,10 @@
 import useTranslation from 'next-translate/useTranslation';
+import { Button } from '@windmill/react-ui';
 import { useWallet } from 'use-wallet';
 import { useEffect, useState } from 'react';
 import plus from '../../public/plus.svg';
 
-const hero = () => {
+const hero = ({ onWalletConnect }) => {
   const { t } = useTranslation('home');
   const wallet = useWallet();
   const [connectWalletVisible, setConnectWalletVisible] = useState(true);
@@ -28,13 +29,20 @@ const hero = () => {
           dangerouslySetInnerHTML={{ __html: t('deltaLSW') }}
         />
         {connectWalletVisible && (
-          <button
-            onClick={() => wallet.connect()}
-            className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex font-gt_americare"
+          <Button
+            onClick={() => onWalletConnect()}
+            className="p-4 mt-4 inline-block text-white uppercase flex ml-2"
+            style={{
+              marginRight: '1px',
+              borderRadius: '0px',
+              backgroundColor: 'black',
+              padding: '1rem',
+              marginTop: '1rem'
+            }}
           >
-            <span>{t('connectWallet')}</span>
+            <span>{connectWalletVisible ? <>{t('connectWallet')}</> : <></>}</span>
             <img src={plus} className="m-auto pl-8" />
-          </button>
+          </Button>
         )}
       </div>
     </div>

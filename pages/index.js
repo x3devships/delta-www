@@ -28,7 +28,7 @@ export default function Main() {
 
       <div className="w-full flex flex-col max-w-6xl self-center">
         {' '}
-        <Hero />
+        <Hero onWalletConnect={onWalletConnect} />
         {/* <Staking /> */}
         <ReferralProgram onWalletConnect={onWalletConnect} />
         <LimitedWindow />

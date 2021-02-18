@@ -11,5 +11,7 @@
   "connectToDelta" : "Connect To Delta",
   "limitedStaking" : "Limited Staking Window",
   "bonus" : "LWS Bonus",
-  "earnWithDelta" : "  Delta's Limited staking Window allows you to earn <br /> bonus rewards by being an early participant."
+  "earnWithDelta" : "  Delta's Limited staking Window allows you to earn <br /> bonus rewards by being an early participant.",
+  "eligibility": "You are eligible for a",
+  "contributionBonus" : "XX% Bonus if you contribute now!"
 }
