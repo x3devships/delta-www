@@ -71,7 +71,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
         <div className="bg-black shadow-xl p-4 mt-4 inline-block text-white font-mono">
           <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
           <div onClick={copy} className="bg-backgroundPage shadow-xl p-4 mt-4 inline-block text-black flex font-mono">
-            <span>{copied ? `Copied !` : `delta.financial/${lswRefCode.referralId}`}</span>
+            <span>{copied ? `Copied !` : `delta.financial/r=${lswRefCode.referralId}`}</span>
           </div>
         </div>
       );
