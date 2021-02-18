@@ -1,4 +1,5 @@
 import Countdown from 'react-countdown';
+import { useLSWStats } from '../../hooks';
 
 const ProgressBarCountDown = () => {
   const second = 1000;
@@ -14,6 +15,7 @@ const ProgressBarCountDown = () => {
       </span>
     );
   };
+  const stats = useLSWStats();
   return (
     <div className="m-auto w-11/12 text-center">
       <div className="border-black border p-2">

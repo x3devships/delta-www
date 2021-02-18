@@ -74,7 +74,9 @@ const Staking = ({ onWalletConnect }) => {
                         </Button>
                       ) : (
                         <div className="flex w-6/12">
-                          <Input style={{ border: '1px solid black', marginRight: '5px', marginTop: '15px' }} />
+                          <Input
+                            style={{ border: '0.063rem solid black', marginRight: '0.313rem', marginTop: '0.938rem' }}
+                          />
                           <TransactionButton text="Approve" secondaryLooks />
                         </div>
                       )}

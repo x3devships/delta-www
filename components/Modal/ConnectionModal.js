@@ -11,6 +11,7 @@ const ConnectionModal = ({ closeModal, isModalOpen }) => {
   const wallet = useWallet();
   const { t } = useTranslation('home');
   const [showInstructions, setShowInstructions] = useState(false);
+  const [selectMetaMask, setMetaMask] = useState(false);
   useEffect(() => {
     if (wallet.account) {
       if (closeModal) {
@@ -21,18 +22,33 @@ const ConnectionModal = ({ closeModal, isModalOpen }) => {
       setShowInstructions(true);
     }
   }, [closeModal, wallet]);
-
+  const shutModal = () => {
+    closeModal();
+    setMetaMask(false);
+  };
   return (
-    <Modal isOpen={isModalOpen} onClose={closeModal} style={{ borderRadius: '0px', minHeight: '300px' }}>
+    <Modal
+      isOpen={isModalOpen}
+      onClose={() => {
+        shutModal();
+      }}
+      style={{ borderRadius: '0px', minHeight: '300px' }}
+    >
       <ModalHeader className="font-wulkan">{t('connectToDelta')}</ModalHeader>
       <ModalBody>
         <div className="pt-8 m-auto">
           <div className="flex justify-center">
-            <Button onClick={() => wallet.connect()} style={{ backgroundColor: 'transparent' }}>
+            <Button
+              onClick={() => {
+                setMetaMask(true);
+                wallet.connect();
+              }}
+              style={{ backgroundColor: 'transparent' }}
+            >
               <img src={metaMask} alt="metamask" className="m-auto border-t border-b pt-2 pb-2" />
             </Button>
           </div>
-          {showInstructions && (
+          {showInstructions && selectMetaMask && (
             <div className="m-auto text-center justify-center">
               <div dangerouslySetInnerHTML={{ __html: t('installMetaMaskInstructions') }} />
               <div>
@@ -67,7 +83,7 @@ const ConnectionModal = ({ closeModal, isModalOpen }) => {
               </div>
             </div>
           )}
-          {!showInstructions && (
+          {!selectMetaMask && (
             <div className="flex justify-center">
               <Button onClick={() => wallet.connect('walletconnect')} style={{ backgroundColor: 'transparent' }}>
                 <img src={walletConnect} alt="walletConnect" className="m-auto border-b pb-2 pt-2" />
