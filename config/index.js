@@ -40,7 +40,9 @@ export const addressMap = {
   wETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
   wBTC: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
   cBTC: '0x7b5982dcAB054C377517759d0D2a3a5D02615AB8',
-  cDAI: '0x00a66189143279b6db9b77294688f47959f37642'
+  cDAI: '0x00a66189143279b6db9b77294688f47959f37642',
+
+  LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB'
 };
 
 export const addressDecimalsMap = {};
