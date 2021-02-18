@@ -12,11 +12,11 @@ const Community = () => {
         <div className=" p-5 md:p-20 mx-2">
           <div className="text-center text-6xl">Join The Community</div>
           <div className="flex flex-wrap mt-10 justify-center">
-            <JoinButton logo={discord} width="60px" />
-            <JoinButton logo={twitter} width="60px" />
-            <JoinButton logo={telegram} width="60px" />
-            <JoinButton logo={medium} width="60px" />
-            <JoinButton logo={github} width="46px" />
+            {/* <JoinButton url="" title="" logo={discord} width="60px" /> */}
+            <JoinButton url="https://twitter.com/Delta_Token" title="Twitter" logo={twitter} width="60px" />
+            <JoinButton url="https://t.me/Delta_Financial" title="Telegram" logo={telegram} width="60px" />
+            <JoinButton url="https://medium.com/delta-financial" title="Medium" logo={medium} width="60px" />
+            <JoinButton url="https://github.com/Delta-Financial" title="Github" logo={github} width="46px" />
           </div>
         </div>
       </div>

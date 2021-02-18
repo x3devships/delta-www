@@ -1,16 +1,21 @@
 import plus from '../../public/plus.svg';
 import upload from '../../public/Upload.svg';
 
-const LimitedWindow = ({ text, image }) => {
+const LimitedWindow = ({ text, image, url }) => {
+  function gourl() {
+    window.open(url);
+  }
   return (
     <div className="flex">
       <button
+        onClick={gourl}
         className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex ml-2"
         style={{ marginRight: '1px' }}
       >
         <img src={image} className="m-auto" />
       </button>
       <button
+        onClick={gourl}
         className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex"
         style={{ minWidth: '14.1%', justifyContent: 'space-between' }}
       >
@@ -20,6 +25,7 @@ const LimitedWindow = ({ text, image }) => {
         </div>
       </button>
       <button
+        onClick={gourl}
         className="border-black border bg-transparent p-4 mt-4 inline-block text-white flex ml-2"
         style={{ marginRight: '1px' }}
       >
