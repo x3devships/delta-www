@@ -724,6 +724,16 @@
     penpal "3.0.7"
     pocket-js-core "0.0.3"
 
+"@react-hook/copy@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@react-hook/copy/-/copy-2.0.1.tgz#4f6eb2e0b0e84fe01ccdc0f3d37675a7f59a03c1"
+  integrity sha512-GokUQqGRgc9u5wmPPsMumUOHpdh5cqhWZR9ZdVAzsIvb3f4of7g70ggncZSsaSTNhn0oVO7YXFvdySwycJx+ow==
+
+"@rehooks/local-storage@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@rehooks/local-storage/-/local-storage-2.4.0.tgz#fb884b2b657cad5f77aa6ab60bb3532f0e0725d2"
+  integrity sha512-LoXDbEHsuIckVgBsFAv8SuU/M7memjyfWut9Zf36TQXqqCHBRFv8bweg9PymQCa1aWIMjNrZQflFdo55FDlXYg==
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"

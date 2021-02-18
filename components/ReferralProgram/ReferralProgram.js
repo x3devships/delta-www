@@ -7,6 +7,7 @@ import useLSWReferralCode from '../../hooks/useLSWReferralCode';
 import { DATA_UNAVAILABLE } from '../../config';
 import github from '../../public/Github.svg';
 import { ConnectionButton } from '../ConnectionButton';
+import useCopy from '@react-hook/copy'
 
 const ReferralProgram = () => {
   const yam = useYam();
@@ -35,11 +36,22 @@ const ReferralProgram = () => {
     }
   };
 
+  const {copied, copy, reset} = useCopy(
+      `https://delta.financial/join/${lswRefCode.referralId}`
+  )
+
+  useEffect(() => {
+    console.log("timeout")
+    setTimeout( reset,1500)
+   },[copied])
+
+
+  
   const renderGenerateLinkButton = () => {
     if (lswRefCode.referralId !== DATA_UNAVAILABLE && lswRefCode.referralId != 0) {
       return (
-        <div className="bg-white shadow-xl p-4 mt-4 inline-block text-black flex font-mono">
-          <span>https://delta.financial/r={lswRefCode.referralId}</span>
+        <div onClick={copy} className="bg-white shadow-xl p-4 mt-4 inline-block text-black flex font-mono">
+          <span>{copied ? `Copied !` : `delta.financial/join/${lswRefCode.referralId}`}</span>
         </div>
       );
     }

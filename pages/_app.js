@@ -4,6 +4,7 @@ import { UseWalletProvider } from 'use-wallet';
 import { WEB3_PROVIDER_URL } from '../config';
 import { WalletProvider, YamProvider, Web3Provider, SettingsProvider, ModalProvider } from '../contexts';
 import theme from '../config/default.theme';
+import { useRouter, withRouter } from "next/router";
 
 import 'tailwindcss/tailwind.css';
 import { ModalContainer } from '../components/Modal';
@@ -18,6 +19,7 @@ function App({ Component, pageProps }) {
     </Windmill>
   );
 }
+
 
 const Providers = props => {
   return (
