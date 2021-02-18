@@ -20,12 +20,12 @@ const ReferralProgram = () => {
         setGenerating(true);
         const transactionGasEstimate = await transaction.estimateGas({ from: wallet.account });
 
-        /* await transaction.send({
+        await transaction.send({
           from: wallet.account,
           gas: transactionGasEstimate
-        }); */
+        });
 
-        await new Promise(r => setTimeout(r, 4000));
+        // await new Promise(r => setTimeout(r, 4000));
         setGenerating(false);
       } catch (error) {
         alert(error);
