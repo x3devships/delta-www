@@ -5,6 +5,8 @@ import chevron from '../../public/chevron.svg';
 import { useYam } from '../../hooks';
 import useLSWReferralCode from '../../hooks/useLSWReferralCode';
 import { DATA_UNAVAILABLE } from '../../config';
+import github from '../../public/Github.svg';
+import { ConnectionButton } from '../ConnectionButton';
 
 const ReferralProgram = () => {
   const yam = useYam();
@@ -60,6 +62,16 @@ const ReferralProgram = () => {
                   <div className="flex-1 m-auto w-11/12 py-9 pl-9 mb-9">
                     <div className="grid grid-cols-2 gap-x-96" style={{ justifyContent: 'space-between' }}>
                       <div>
+                        <div className="text-4xl pb-4">48 Hour Code Review Period</div>
+                        <div className="pb-2">
+                          Read the DELTA smart contracts, made available 48 hours before the beginning<br />
+                          of the Limited Staking Window for your benefit.
+                        </div>
+                        <ConnectionButton url="https://medium.com/delta-financial/introducing-delta-financial-769d387e9430" text="ANNOUNCING DELTA" image={github} />
+                        <ConnectionButton url="https://medium.com/delta-financial/delta-tokenizing-open-vested-liquidity-7b115d03fb5" text="DELTA BASICS" image={github} />
+                        <br />
+                        <hr />
+                        <br />
                         <div className="text-4xl pb-4">Delta Referral Program</div>
                         <div className="pb-2">
                           Refer your friend and receive 5% bonus in credit and 5% in ETH. <br /> Your referral will get
