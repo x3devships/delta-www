@@ -23,7 +23,7 @@ const hero = () => {
         </div>
         <div className="mt-6 text-xl text-true-gray-500 antialiased font-medium">
           Delta's LSW is starting in the next 48 hours. Early participants can earn up to 30% Bonus rewards. <br />
-          Create your Referral Program code to maximize your rewards, and earn ETH for your referrals.
+          You'll be able to create your Referral Program code to maximize your rewards shortly. This will enable you to earn ETH for your referrals.
         </div>
        {connectWalletVisible && 
         <button
