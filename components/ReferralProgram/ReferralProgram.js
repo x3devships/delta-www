@@ -39,7 +39,6 @@ const ReferralProgram = ({ onWalletConnect }) => {
           gas: transactionGasEstimate
         });
 
-        // await new Promise(r => setTimeout(r, 4000));
         setGenerating(false);
       } catch (error) {
         alert(error.message);

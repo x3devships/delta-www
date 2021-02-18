@@ -1,15 +1,16 @@
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const RefHandler = () => {
-  const router = useRouter()
-  const { refid } = router.query
+  const router = useRouter();
+  const { refid } = router.query;
+  console.log('refid', refid);
   useEffect(() => {
-    window.localStorage.setItem('lastRef', refid)
-  }, [refid])
+    window.localStorage.setItem('lastRef', refid);
+  }, [refid]);
   useEffect(() => {
-     router.push("/")
-  }, [])
-  return "Enumerating..."
-}
-export default RefHandler
+    router.push('/');
+  }, []);
+  return 'Enumerating...';
+};
+export default RefHandler;
