@@ -67,8 +67,9 @@ const ReferralProgram = () => {
                           Read the DELTA smart contracts, made available 48 hours before the beginning<br />
                           of the Limited Staking Window for your benefit.
                         </div>
-                        <ConnectionButton url="https://medium.com/delta-financial/introducing-delta-financial-769d387e9430" text="ANNOUNCING DELTA" image={github} />
-                        <ConnectionButton url="https://medium.com/delta-financial/delta-tokenizing-open-vested-liquidity-7b115d03fb5" text="DELTA BASICS" image={github} />
+                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/LSW.sol" text="Limited Staking Window" image={github} />
+                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/DELTA/Governance" text="Governance" image={github} />
+                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/DELTA/Periphery" text="Periphery" image={github} />
                         <br />
                         <hr />
                         <br />
