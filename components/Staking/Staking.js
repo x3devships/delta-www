@@ -13,13 +13,13 @@ const Staking = () => {
               <div className="w-full min-h-0 min-w-0">
                 <div className="m-auto h-80 border-black border-2 border-b">
                   <div className="flex">
-                    <div className="m-auto w-10/12 text-4xl py-9 font-display">Limited Staking Window</div>
+                    <div className="m-auto w-10/12 text-4xl py-9 font-wulkan">Limited Staking Window</div>
                     <img src={chevron} alt="chevron" className="m-auto" />
                   </div>
                   <ProgressBarCountDown />
                 </div>
                 <div className="h-4/6 border-2 pt-2 border-black border-t-0">
-                  <div className="m-auto w-11/12 text-4xl py-9">Limited Staking Window</div>
+                  <div className="m-auto w-11/12 text-4xl py-9 font-wulkan">Limited Staking Window</div>
                   <div className="flex space-x-80">
                     <iframe
                       className="mb-9 pl-9"
@@ -37,13 +37,13 @@ const Staking = () => {
                 </div>
                 <div className="flex h-128 border-2 pt-2 border-black border-t-0 pl-9">
                   <div className="flex-1 m-auto w-11/12 py-9 pl-9 mb-9">
-                    <div className="text-4xl pb-4">LSW Bonus</div>
-                    <div className="pb-2">
+                    <div className="text-4xl pb-4 font-wulkan">LSW Bonus</div>
+                    <div className="pb-2 font-gt_americare">
                       Delta's Limited staking Window allows you to earn <br /> bonus rewards by being an early
                       participant.
                     </div>
                     <div>
-                      <button className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex ">
+                      <button className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex font-gt_americare">
                         <span>Connect Wallet To Participate</span>
                         <img src={plus} className="m-auto pl-8" />
                       </button>

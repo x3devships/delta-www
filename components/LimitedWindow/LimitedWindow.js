@@ -13,17 +13,29 @@ const LimitedWindow = () => {
               <div className="w-full h-full min-h-0 min-w-0">
                 <div className="border-2 border-black">
                   <div className="flex">
-                    <div className="m-auto w-10/12 text-4xl py-9">
+                    <div className="m-auto w-10/12 text-4xl py-9 font-wulkan">
                       Prepare for Delta’s Limited <br /> Staking Window
                     </div>
                     <img src={chevron} alt="chevron" className="m-auto" />
                   </div>
 
-                  <div className="m-auto w-11/12">Delta Academy</div>
+                  <div className="m-auto w-11/12 font-wulkan">Delta Academy</div>
                   <div className="w-11/12 pl-12 pb-12">
-                    <ConnectionButton url="https://medium.com/delta-financial/introducing-delta-financial-769d387e9430" text="ANNOUNCING DELTA" image={medium} />
-                    <ConnectionButton url="https://medium.com/delta-financial/delta-tokenizing-open-vested-liquidity-7b115d03fb5" text="DELTA BASICS" image={medium} />
-                    <ConnectionButton url="https://medium.com/delta-financial/deep-farming-vault-yield-maximizing-strategy-a453a24a68d4" text="HOW TO PARTICIPATE" image={medium} />
+                    <ConnectionButton
+                      url="https://medium.com/delta-financial/introducing-delta-financial-769d387e9430"
+                      text="ANNOUNCING DELTA"
+                      image={medium}
+                    />
+                    <ConnectionButton
+                      url="https://medium.com/delta-financial/delta-tokenizing-open-vested-liquidity-7b115d03fb5"
+                      text="DELTA BASICS"
+                      image={medium}
+                    />
+                    <ConnectionButton
+                      url="https://medium.com/delta-financial/deep-farming-vault-yield-maximizing-strategy-a453a24a68d4"
+                      text="HOW TO PARTICIPATE"
+                      image={medium}
+                    />
                   </div>
                 </div>
               </div>

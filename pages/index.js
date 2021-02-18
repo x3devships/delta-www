@@ -25,11 +25,12 @@ export default function Main() {
   return (
     <div className="w-full flex justify-center flex-col">
       <Header onWalletConnect={onWalletConnect} />
-      
-      <div className="w-full flex flex-col max-w-6xl self-center"> <Hero />
-        {/* <Staking /> */}
 
-        <ReferralProgram onWalletConnect={onWalletConnect}/>
+      <div className="w-full flex flex-col max-w-6xl self-center">
+        {' '}
+        <Hero />
+        {/* <Staking /> */}
+        <ReferralProgram onWalletConnect={onWalletConnect} />
         <LimitedWindow />
         <Community />
         <ConnectionModal isModalOpen={isWalletConnectModalOpen} closeModal={closeWalletConnectModal} />

@@ -17,7 +17,7 @@ const ConnectionModal = ({ closeModal, isModalOpen }) => {
 
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal} style={{ borderRadius: '0px', minHeight: '300px' }}>
-      <ModalHeader>Connect To Delta</ModalHeader>
+      <ModalHeader className="font-wulkan">Connect To Delta</ModalHeader>
       <ModalBody>
         <div className="pt-8">
           <div onClick={() => wallet.connect()}>

@@ -16,10 +16,10 @@ const LimitedWindow = ({ text, image, url }) => {
       </button>
       <button
         onClick={gourl}
-        className="bg-black shadow-xl flex-grow hover:bg-gray-800 p-4 mt-4 inline-block text-white uppercase flex"
+        className="bg-black shadow-xl flex-grow hover:bg-gray-800 p-4 mt-4 inline-block text-white text-center uppercase flex font-gt_americare"
         style={{ minWidth: '14.1%', justifyContent: 'space-between' }}
       >
-        <div>{text}</div>
+        <div className="text-center">{text}</div>
         <div>
           <img src={plus} className="m-auto pr-2 pt-2" />
         </div>

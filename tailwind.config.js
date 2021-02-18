@@ -25,9 +25,11 @@ module.exports = windmill({
       backgroundButton: '#C7C7C7',
       greenText: '#4DA560'
     },
-    fontFamily: {
-      sans: ['Wulkan Display', ...defaultTheme.fontFamily.sans],
-      mono: ['gt_americaregular', ...defaultTheme.fontFamily.mono]
+    extend: {
+      fontFamily: {
+        wulkan: ['WulkanDisplay, sans-serif'],
+        gt_americare: ['gt_americaregular']
+      }
     }
   },
   variants: {
