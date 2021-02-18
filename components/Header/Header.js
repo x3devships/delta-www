@@ -9,6 +9,8 @@ const header = ({ onWalletConnect }) => {
   useEffect(() => {
     if (!wallet.account) {
       setConnectWalletVisible(true);
+    } else {
+      setConnectWalletVisible(false);
     }
   }, [wallet]);
 

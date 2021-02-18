@@ -36,7 +36,7 @@ const ReferralProgram = () => {
   };
 
   const renderGenerateLinkButton = () => {
-    if (lswRefCode.referralId !== DATA_UNAVAILABLE) {
+    if (lswRefCode.referralId !== DATA_UNAVAILABLE && lswRefCode.referralId != 0) {
       return (
         <div className="bg-white shadow-xl p-4 mt-4 inline-block text-black flex font-mono">
           <span>https://delta.financial/r={lswRefCode.referralId}</span>
