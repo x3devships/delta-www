@@ -66,10 +66,13 @@ const ReferralProgram = ({ onWalletConnect }) => {
   }
 
   const renderGenerateLinkButton = () => {
-    if (lswRefCode.referralId !== DATA_UNAVAILABLE && lswRefCode.referralId != 0) {
+    if (lswRefCode.referralId !== DATA_UNAVAILABLE) {
       return (
-        <div onClick={copy} className="bg-white shadow-xl p-4 mt-4 inline-block text-black flex font-mono">
-          <span>{copied ? `Copied !` : `delta.financial/join/${lswRefCode.referralId}`}</span>
+        <div className="bg-black shadow-xl p-4 mt-4 inline-block text-white font-mono">
+          <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
+          <div onClick={copy} className="bg-backgroundPage shadow-xl p-4 mt-4 inline-block text-black flex font-mono">
+            <span>{copied ? `Copied !` : `delta.financial/join/${lswRefCode.referralId}`}</span>
+          </div>
         </div>
       );
     }
@@ -113,10 +116,9 @@ const ReferralProgram = ({ onWalletConnect }) => {
                         <br />
                         <hr />
                         <br />
-                        <div className="text-4xl pb-4">Delta Referral Program</div>
+                        <div className="text-4xl pb-4">{t('deltaReferral')} </div>
                         <div className="pb-2">
-                          Refer your friend and receive 5% bonus in credit and 5% in ETH. <br /> Your referral will get
-                          a 10% bonus to their initial contribution.
+                          <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
                         </div>
                         <div>{renderGenerateLinkButton()}</div>
                       </div>
