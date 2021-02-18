@@ -66,9 +66,9 @@ const ReferralProgram = () => {
                         <div className="pb-2">
                           Read the DELTA smart contracts, made available 48 hours before the beginning of the Limited Staking Window for the purposes of your due diligence.
                         </div>
-                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/DELTA/Periphery/DELTA_Limited_Staking_Window.sol" text="LSW" image={github} />
-                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/DELTA/Governance" text="Governance" image={github} />
-                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/DELTA/Periphery" text="Periphery" image={github} />
+                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/Periphery/DELTA_Limited_Staking_Window.sol" text="LSW" image={github} />
+                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Governance" text="Governance" image={github} />
+                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery" text="Periphery" image={github} />
                         {/* <br />
                         <hr />
                         <br />
