@@ -23,7 +23,7 @@ const LimitedWindow = () => {
                   </div>
 
                   <div className="m-auto w-11/12 font-wulkan">{t('deltaAcademy')}</div>
-                  <div className="w-11/12 pl-12 pb-12">
+                  <div className="w-11/12 pl-12 pb-12 sm:pl-1">
                     <ConnectionButton
                       url="https://medium.com/delta-financial/introducing-delta-financial-769d387e9430"
                       text="ANNOUNCING DELTA"

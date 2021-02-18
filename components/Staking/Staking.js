@@ -22,23 +22,23 @@ const Staking = () => {
                 </div>
                 <div className="h-4/6 border-2 pt-2 border-black border-t-0">
                   <div className="m-auto w-11/12 text-4xl py-9 font-wulkan">{t('limitedStaking')}</div>
-                  <div className="flex space-x-80">
+                  <div className="flex space-x-80 sm:flex-wrap sm:space-x-0">
                     <iframe
-                      className="mb-9 pl-9"
+                      className="mb-9 pl-9 sm:pl-2"
                       src="https://duneanalytics.com/embeds/20141/41387/X2NcJgZdr4I0XfujHlfTkrPjgR7tFBA9ql0XyWSe"
                       width="720"
                       height="391"
                     />
                     <iframe
-                      className="mb-9 pl-9"
+                      className="mb-9 pl-9 sm:pl-2"
                       src="https://duneanalytics.com/embeds/20141/41387/X2NcJgZdr4I0XfujHlfTkrPjgR7tFBA9ql0XyWSe"
                       width="720"
                       height="391"
                     />
                   </div>
                 </div>
-                <div className="flex h-128 border-2 pt-2 border-black border-t-0 pl-9">
-                  <div className="flex-1 m-auto w-11/12 py-9 pl-9 mb-9">
+                <div className="flex h-128 border-2 pt-2 border-black border-t-0 pl-9 sm:block sm:pb-5 sm:pl-2">
+                  <div className="flex-1 m-auto w-11/12 py-9 pl-9 mb-9 sm:pl-0">
                     <div className="text-4xl pb-4 font-wulkan">{t('bonus')}</div>
                     <div className="pb-2 font-gt_americare" dangerouslySetInnerHTML={{ __html: t('earnWithDelta') }} />
                     <div>

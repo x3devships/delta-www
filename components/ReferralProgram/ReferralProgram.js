@@ -68,7 +68,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
   const renderGenerateLinkButton = () => {
     if (lswRefCode.referralId !== DATA_UNAVAILABLE) {
       return (
-        <div className="bg-black shadow-xl p-4 mt-4 inline-block text-white font-mono">
+        <div className="bg-black shadow-xl p-4 mt-4 inline-block text-white font-mono sm:mr-2.5">
           <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
           <div onClick={copy} className="bg-backgroundPage shadow-xl p-4 mt-4 inline-block text-black flex font-mono">
             <span>{copied ? `Copied !` : `delta.financial/join/${lswRefCode.referralId}`}</span>
@@ -92,9 +92,9 @@ const ReferralProgram = ({ onWalletConnect }) => {
           <div className="flex flex-col lg:flex-row w-full">
             <div className="w-full lg:flex-1 px-3 min-h-0 min-w-0">
               <div className="w-full min-h-0 min-w-0">
-                <div className="flex h-128 border-2 pt-2 border-black pl-9">
-                  <div className="flex-1 m-auto w-11/12 py-9 pl-9 mb-9">
-                    <div className="grid grid-cols-2 gap-x-96" style={{ justifyContent: 'space-between' }}>
+                <div className="flex h-128 border-2 pt-2 border-black pl-9 sm:pl-0">
+                  <div className="flex-1 m-auto w-11/12 py-9 pl-9 mb-9 sm:pl-2">
+                    <div className="grid grid-cols-2 gap-x-96 sm:block" style={{ justifyContent: 'space-between' }}>
                       <div>
                         <div className="text-4xl pb-4 font-wulkan">{t('48Hours')}</div>
                         <div className="pb-2 font-gt_americare">{t('contracts')}</div>
@@ -117,7 +117,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
                         <hr />
                         <br />
                         <div className="text-4xl pb-4">{t('deltaReferral')} </div>
-                        <div className="pb-2">
+                        <div className="pb-2 sm:mr-2.5">
                           <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
                         </div>
                         <div>{renderGenerateLinkButton()}</div>

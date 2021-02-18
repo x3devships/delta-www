@@ -11,7 +11,7 @@ const Community = () => {
   return (
     <div className="flex items-center justify-center">
       <div className="container">
-        <div className=" p-5 md:p-20 mx-2">
+        <div className=" p-5 md:p-20 mx-2 sm:p-5">
           <div className="text-center text-6xl font-wulkan">{t('joinTheCommunity')}</div>
           <div className="flex flex-wrap mt-10 justify-center">
             {/* <JoinButton url="" title="" logo={discord} width="60px" /> */}
