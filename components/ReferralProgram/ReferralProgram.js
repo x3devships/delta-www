@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
 import useCopy from '@react-hook/copy';
-import plus from '../../public/plus.svg';
 import chevron from '../../public/chevron.svg';
 import { useYam } from '../../hooks';
 import useLSWReferralCode from '../../hooks/useLSWReferralCode';
 import { DATA_UNAVAILABLE } from '../../config';
 import github from '../../public/Github.svg';
 import { ConnectionButton } from '../ConnectionButton';
+import { TransactionButton } from '../Button';
 
 const ReferralProgram = ({ onWalletConnect }) => {
   const yam = useYam();
@@ -74,13 +74,11 @@ const ReferralProgram = ({ onWalletConnect }) => {
       );
     }
     return (
-      <button
+      <TransactionButton
+        text={getCopyForButton()}
+        secondaryLooks
         onClick={() => (wallet.account ? onGenerateCode() : onWalletConnect())}
-        className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex font-mono"
-      >
-        <span>{getCopyForButton()}</span>
-        <img src={plus} className="m-auto pl-8" />
-      </button>
+      />
     );
   };
 

@@ -6,7 +6,7 @@ import { errors } from '../../helpers';
 import { useUserApprovalOfContract, useUserTokenBalance, useYam } from '../../hooks';
 import { DATA_UNAVAILABLE } from '../../config';
 import { ModalContext } from '../../contexts';
-
+import plus from '../../public/plus.svg';
 /**
  * A button that supports sending a transaction and keeping track of allowance/approval
  * if allowanceRequiredFor is specified with the contract and token name.
@@ -19,6 +19,7 @@ const TransactionButton = ({
   textLoading,
   textApprove,
   textApproving,
+  secondaryLooks,
   ...props
 }) => {
   textApprove = textApprove || 'Approve';
@@ -99,7 +100,10 @@ const TransactionButton = ({
   };
 
   const renderButtonText = () => {
-    if (loading) {
+    if (secondaryLooks) {
+      return <>{text}</>;
+    }
+    if (loading && !secondaryLooks) {
       return <span>{allowanceSatisfied ? textLoading : textApproving}</span>;
     }
 
@@ -126,8 +130,14 @@ const TransactionButton = ({
           handleApproval();
         }
       }}
+      style={
+        secondaryLooks
+          ? { backgroundColor: 'black', color: 'white', padding: '1rem', marginTop: '1rem', borderRadius: '0px' }
+          : {}
+      }
     >
       {renderButtonText()}
+      {secondaryLooks && <img src={plus} className="m-auto pl-8" />}
     </Button>
   );
 };
