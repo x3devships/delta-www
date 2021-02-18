@@ -5,7 +5,7 @@ const hero = () => {
   const wallet = useWallet();
   return (
     <div>
-      <div className="md:pl-2 sm:pl-2 lg:2/6 xl:w-2/4 mt-20 lg:mt-40 lg:ml-16 text-left">
+      <div className="px-3 md:pl-2 sm:pl-2 lg:2/6 xl:w-2/4 mt-20 lg:mt-40 lg:ml-16 text-left">
         <div className="text-6xl font-semibold text-gray-900 leading-none">
           The Limited Staking <br /> Window is opening soon!
         </div>

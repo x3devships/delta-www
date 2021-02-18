@@ -6,17 +6,17 @@ const LimitedWindow = ({ text, image, url }) => {
     window.open(url);
   }
   return (
-    <div className="flex">
+    <div className="flex w-80">
       <button
         onClick={gourl}
-        className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex ml-2"
+        className="bg-black shadow-xl hover:bg-gray-800 p-4 mt-4 inline-block text-white uppercase flex ml-2"
         style={{ marginRight: '1px' }}
       >
         <img src={image} className="m-auto" />
       </button>
       <button
         onClick={gourl}
-        className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex"
+        className="bg-black shadow-xl flex-grow hover:bg-gray-800 p-4 mt-4 inline-block text-white uppercase flex"
         style={{ minWidth: '14.1%', justifyContent: 'space-between' }}
       >
         <div>{text}</div>
@@ -26,7 +26,7 @@ const LimitedWindow = ({ text, image, url }) => {
       </button>
       <button
         onClick={gourl}
-        className="border-black border bg-transparent p-4 mt-4 inline-block text-white flex ml-2"
+        className="border-black hover:bg-gray-100 border bg-transparent p-4 mt-4 inline-block text-white flex ml-2"
         style={{ marginRight: '1px' }}
       >
         <img src={upload} className="m-auto" />

@@ -23,15 +23,17 @@ export default function Main() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full flex justify-center flex-col">
       <Header onWalletConnect={onWalletConnect} />
-      <Hero />
-      {/* <Staking /> */}
+      
+      <div className="w-full flex flex-col max-w-6xl self-center"> <Hero />
+        {/* <Staking /> */}
 
-      <ReferralProgram />
-      <LimitedWindow />
-      <Community />
-      <ConnectionModal isModalOpen={isWalletConnectModalOpen} closeModal={closeWalletConnectModal} />
+        <ReferralProgram />
+        <LimitedWindow />
+        <Community />
+        <ConnectionModal isModalOpen={isWalletConnectModalOpen} closeModal={closeWalletConnectModal} />
+      </div>
     </div>
   );
 }
