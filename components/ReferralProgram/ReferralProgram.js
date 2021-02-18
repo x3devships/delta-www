@@ -4,6 +4,7 @@ import plus from '../../public/plus.svg';
 import chevron from '../../public/chevron.svg';
 import { useYam } from '../../hooks';
 import useLSWReferralCode from '../../hooks/useLSWReferralCode';
+import { DATA_UNAVAILABLE } from '../../config';
 
 const ReferralProgram = () => {
   const yam = useYam();
@@ -33,7 +34,13 @@ const ReferralProgram = () => {
   };
 
   const renderGenerateLinkButton = () => {
-    console.log(lswRefCode);
+    if (lswRefCode.referralId !== DATA_UNAVAILABLE) {
+      return (
+        <div className="bg-white shadow-xl p-4 mt-4 inline-block text-black flex font-mono">
+          <span>https://delta.financial/r={lswRefCode.referralId}</span>
+        </div>
+      );
+    }
     return (
       <button className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex font-mono">
         <span>{generating ? 'GENERATING LINK...' : 'GENERATE REFERRAL LINK'}</span>
