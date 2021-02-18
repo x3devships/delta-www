@@ -10,21 +10,28 @@ import { ConnectionModal } from '../components/Modal';
 
 export default function Main() {
   const wallet = useWallet();
-  const [isModalOpen, setIsModalOpen] = useState(wallet.status !== 'connected');
+  const [isWalletConnectModalOpen, setIsModalOpen] = useState(false);
 
-  const closeModal = () => {
+  const closeWalletConnectModal = () => {
     setIsModalOpen(false);
+  };
+
+  const onWalletConnect = async () => {
+    if (!wallet.account) {
+      setIsModalOpen(true);
+    }
   };
 
   return (
     <div className="w-full">
-      <Header />
+      <Header onWalletConnect={onWalletConnect} />
       <Hero />
-      <Staking />
+      {/* <Staking /> */}
+
+      <ReferralProgram />
       <LimitedWindow />
       <Community />
-      <ReferralProgram />
-      <ConnectionModal isModalOpen={isModalOpen} closeModal={closeModal} />
+      <ConnectionModal isModalOpen={isWalletConnectModalOpen} closeModal={closeWalletConnectModal} />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import WBTC from '../contracts/WBTC.json';
 import CBTC from '../contracts/cBTC.json';
 import cDAI from '../contracts/cDAI.json';
 import wCORE from '../contracts/wCORE.json';
+import LSW from '../contracts/LSW.json';
 
 export class Contracts {
   constructor(web3) {
@@ -36,6 +37,8 @@ export class Contracts {
     this.wBtcWethPair = new web3.eth.Contract(UNIPairJson);
     this.ethUsdtPair = new web3.eth.Contract(UNIPairJson);
 
+    this.LSW = new web3.eth.Contract(LSW.abi);
+
     this._updateContractAddresses();
   }
 
@@ -55,5 +58,7 @@ export class Contracts {
     this.cDaiWcorePair.options.address = addressMap.cDaiWcore;
     this.wBtcWethPair.options.address = addressMap.wbtcWeth;
     this.ethUsdtPair.options.address = addressMap.ethUsdt;
+
+    this.LSW.options.address = addressMap.LSW;
   }
 }

@@ -1,7 +1,47 @@
+import { useEffect, useState } from 'react';
+import { useWallet } from 'use-wallet';
 import plus from '../../public/plus.svg';
 import chevron from '../../public/chevron.svg';
+import { useYam } from '../../hooks';
+import useLSWReferralCode from '../../hooks/useLSWReferralCode';
 
 const ReferralProgram = () => {
+  const yam = useYam();
+  const wallet = useWallet();
+  const lswRefCode = useLSWReferralCode();
+  const [generating, setGenerating] = useState(false);
+
+  const onGenerateCode = async () => {
+    if (yam && wallet.account) {
+      const transaction = yam.contracts.LSW.methods.makeRefCode();
+
+      try {
+        setGenerating(true);
+        const transactionGasEstimate = await transaction.estimateGas({ from: wallet.account });
+
+        /* await transaction.send({
+          from: wallet.account,
+          gas: transactionGasEstimate
+        }); */
+
+        await new Promise(r => setTimeout(r, 4000));
+        setGenerating(false);
+      } catch (error) {
+        alert(error);
+      }
+    }
+  };
+
+  const renderGenerateLinkButton = () => {
+    console.log(lswRefCode);
+    return (
+      <button className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex font-mono">
+        <span>{generating ? 'GENERATING LINK...' : 'GENERATE REFERRAL LINK'}</span>
+        <img onClick={() => onGenerateCode()} src={plus} className="m-auto pl-8" />
+      </button>
+    );
+  };
+
   return (
     <section className="w-12/12 flex flex-col-reverse sm:flex-row min-h-0 min-w-0 overflow-hidden">
       <main className="sm:h-full flex-1 flex flex-col min-h-0 min-w-0">
@@ -18,13 +58,9 @@ const ReferralProgram = () => {
                           Refer your friend and receive 5% bonus in credit and 5% in ETH. <br /> Your referral will get
                           a 10% bonus to their initial contribution.
                         </div>
-                        <div>
-                          <button className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex font-mono">
-                            <span>GENERATE REFERRAL LINK</span>
-                            <img src={plus} className="m-auto pl-8" />
-                          </button>
-                        </div>
+                        <div>{renderGenerateLinkButton()}</div>
                       </div>
+                      {/* 
                       <div className="m-auto w-12/12 text-4xl py-9 pt-0">
                         <div className="grid grid-cols-2">
                           <div>Your Referral Rewards</div>
@@ -49,6 +85,7 @@ const ReferralProgram = () => {
                           </ul>
                         </div>
                       </div>
+                      */}
                     </div>
                   </div>
                 </div>

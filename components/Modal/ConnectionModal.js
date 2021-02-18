@@ -1,10 +1,20 @@
 import { useWallet } from 'use-wallet';
 import { Modal, ModalHeader, ModalBody } from '@windmill/react-ui';
+import { useEffect } from 'react';
 import metaMask from '../../public/metaMask.svg';
 import walletConnect from '../../public/walletConnect.svg';
 
 const ConnectionModal = ({ closeModal, isModalOpen }) => {
   const wallet = useWallet();
+
+  useEffect(() => {
+    if (wallet.account) {
+      if (closeModal) {
+        closeModal();
+      }
+    }
+  }, [closeModal, wallet]);
+
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal} style={{ borderRadius: '0px', minHeight: '300px' }}>
       <ModalHeader>Connect To Delta</ModalHeader>
