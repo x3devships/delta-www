@@ -10,7 +10,7 @@ const hero = ({ onWalletConnect }) => {
   const [connectWalletVisible, setConnectWalletVisible] = useState(true);
 
   useEffect(() => {
-    console.log(wallet.account);
+    console.log(wallet.error);
     if (!wallet.account) {
       setConnectWalletVisible(true);
     } else {
