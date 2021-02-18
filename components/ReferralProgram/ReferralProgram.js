@@ -100,7 +100,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
                         <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/Periphery/DELTA_Limited_Staking_Window.sol" text="LSW" image={github} />
                         <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Governance" text="Governance" image={github} />
                         <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery" text="Periphery" image={github} />
-                        <br />
+                        {/* <br />
                         <hr />
                         <br />
                         <div className="text-4xl pb-4">Delta Referral Program</div>
@@ -108,7 +108,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
                           Refer your friend and receive 5% bonus in credit and 5% in ETH. <br /> Your referral will get
                           a 10% bonus to their initial contribution.
                         </div>
-                        <div>{renderGenerateLinkButton()}</div>
+                        <div>{renderGenerateLinkButton()}</div> */}
                       </div>
                       {/* 
                       <div className="m-auto w-12/12 text-4xl py-9 pt-0">
