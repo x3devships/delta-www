@@ -69,7 +69,7 @@ const ConnectionModal = ({ closeModal, isModalOpen }) => {
           )}
           {!showInstructions && (
             <div className="flex justify-center">
-              <Button onClick={() => wallet.connect('walletConnect')} style={{ backgroundColor: 'transparent' }}>
+              <Button onClick={() => wallet.connect('walletconnect')} style={{ backgroundColor: 'transparent' }}>
                 <img src={walletConnect} alt="walletConnect" className="m-auto border-b pb-2 pt-2" />
               </Button>
             </div>
