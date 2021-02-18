@@ -34,7 +34,6 @@
     "next-compose-plugins": "^2.2.1",
     "next-fonts": "^1.5.1",
     "next-images": "^1.7.0",
-    "next-rosetta": "^1.2.2",
     "next-seo": "^4.19.0",
     "next-translate": "^1.0.2",
     "postcss": "^8.2.2",

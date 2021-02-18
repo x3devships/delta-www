@@ -1,5 +1,4 @@
 import { Windmill } from '@windmill/react-ui';
-// import { I18nProvider } from 'next-rosetta';
 import { UseWalletProvider } from 'use-wallet';
 import { useRouter, withRouter } from 'next/router';
 import { WEB3_PROVIDER_URL } from '../config';
