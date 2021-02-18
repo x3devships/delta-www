@@ -9,11 +9,21 @@ import github from '../../public/Github.svg';
 import { ConnectionButton } from '../ConnectionButton';
 import useCopy from '@react-hook/copy'
 
-const ReferralProgram = () => {
+const ReferralProgram = ({ onWalletConnect }) => {
   const yam = useYam();
   const wallet = useWallet();
   const lswRefCode = useLSWReferralCode();
   const [generating, setGenerating] = useState(false);
+
+  const [connectWalletVisible, setConnectWalletVisible] = useState(true);
+
+  useEffect(() => {
+    if (!wallet.account) {
+      setConnectWalletVisible(true);
+    } else {
+      setConnectWalletVisible(false);
+    }
+  }, [wallet]);
 
   const onGenerateCode = async () => {
     if (yam && wallet.account) {
@@ -31,7 +41,9 @@ const ReferralProgram = () => {
         // await new Promise(r => setTimeout(r, 4000));
         setGenerating(false);
       } catch (error) {
-        alert(error);
+        alert(error.message);
+        console.log(error)
+        setGenerating(false);
       }
     }
   };
@@ -41,11 +53,18 @@ const ReferralProgram = () => {
   )
 
   useEffect(() => {
-    console.log("timeout")
     setTimeout( reset,1500)
    },[copied])
 
-
+  function getCopyForButton() {
+    if (generating) {
+      return 'GENERATING LINK...';
+    }
+    if (!wallet.account) {
+      return 'CONNECT WALLET TO GENERATE REFERRAL LINK'
+    }
+    return 'GENERATE REFERRAL LINK'
+  }
   
   const renderGenerateLinkButton = () => {
     if (lswRefCode.referralId !== DATA_UNAVAILABLE && lswRefCode.referralId != 0) {
@@ -56,9 +75,9 @@ const ReferralProgram = () => {
       );
     }
     return (
-      <button className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex font-mono">
-        <span>{generating ? 'GENERATING LINK...' : 'GENERATE REFERRAL LINK'}</span>
-        <img onClick={() => onGenerateCode()} src={plus} className="m-auto pl-8" />
+      <button onClick={() => wallet.account ? onGenerateCode() : onWalletConnect()} className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex font-mono">
+        <span>{getCopyForButton()}</span>
+        <img  src={plus} className="m-auto pl-8" />
       </button>
     );
   };
@@ -81,7 +100,7 @@ const ReferralProgram = () => {
                         <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/Periphery/DELTA_Limited_Staking_Window.sol" text="LSW" image={github} />
                         <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Governance" text="Governance" image={github} />
                         <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery" text="Periphery" image={github} />
-                        {/* <br />
+                        <br />
                         <hr />
                         <br />
                         <div className="text-4xl pb-4">Delta Referral Program</div>
@@ -89,7 +108,7 @@ const ReferralProgram = () => {
                           Refer your friend and receive 5% bonus in credit and 5% in ETH. <br /> Your referral will get
                           a 10% bonus to their initial contribution.
                         </div>
-                        <div>{renderGenerateLinkButton()}</div> */}
+                        <div>{renderGenerateLinkButton()}</div>
                       </div>
                       {/* 
                       <div className="m-auto w-12/12 text-4xl py-9 pt-0">
