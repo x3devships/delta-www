@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
 import useCopy from '@react-hook/copy';
 import plus from '../../public/plus.svg';
@@ -14,7 +15,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
   const wallet = useWallet();
   const lswRefCode = useLSWReferralCode();
   const [generating, setGenerating] = useState(false);
-
+  const { t } = useTranslation('home');
   const [connectWalletVisible, setConnectWalletVisible] = useState(true);
 
   useEffect(() => {
@@ -94,11 +95,8 @@ const ReferralProgram = ({ onWalletConnect }) => {
                   <div className="flex-1 m-auto w-11/12 py-9 pl-9 mb-9">
                     <div className="grid grid-cols-2 gap-x-96" style={{ justifyContent: 'space-between' }}>
                       <div>
-                        <div className="text-4xl pb-4 font-wulkan">48 Hour Code Review Period</div>
-                        <div className="pb-2 font-gt_americare">
-                          Read the DELTA smart contracts, made available 48 hours before the beginning of the Limited
-                          Staking Window for the purposes of your due diligence.
-                        </div>
+                        <div className="text-4xl pb-4 font-wulkan">{t('48Hours')}</div>
+                        <div className="pb-2 font-gt_americare">{t('contracts')}</div>
                         <ConnectionButton
                           url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/Periphery/DELTA_Limited_Staking_Window.sol"
                           text="LSW"

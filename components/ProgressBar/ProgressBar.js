@@ -1,4 +1,7 @@
+import useTranslation from 'next-translate/useTranslation';
+
 const ProgressBarCountDown = () => {
+  const { t } = useTranslation('home');
   return (
     <div className="m-auto w-11/12 text-center">
       <div>
@@ -10,8 +13,8 @@ const ProgressBarCountDown = () => {
         </div>
       </div>
       <div className="mt-8">
-        <div className="text-xs font-thin text-greenText">You are eligible for a </div>
-        <div className="text-xs font-thin text-greenText">XX% Bonus if you contribute now!</div>
+        <div className="text-xs font-thin text-greenText">{t('eligibility')}</div>
+        <div className="text-xs font-thin text-greenText">{t('contributionBonus')}</div>
       </div>
     </div>
   );

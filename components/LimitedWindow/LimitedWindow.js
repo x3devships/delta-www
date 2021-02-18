@@ -1,9 +1,11 @@
+import useTranslation from 'next-translate/useTranslation';
 import medium from '../../public/Medium.svg';
 import youtube from '../../public/Youtube.svg';
 import chevron from '../../public/chevron.svg';
 import { ConnectionButton } from '../ConnectionButton';
 
 const LimitedWindow = () => {
+  const { t } = useTranslation('home');
   return (
     <section className="w-12/12 flex flex-col-reverse sm:flex-row min-h-0 min-w-0 overflow-hidden">
       <main className="sm:h-full flex-1 flex flex-col min-h-0 min-w-0">
@@ -13,13 +15,14 @@ const LimitedWindow = () => {
               <div className="w-full h-full min-h-0 min-w-0">
                 <div className="border-2 border-black">
                   <div className="flex">
-                    <div className="m-auto w-10/12 text-4xl py-9 font-wulkan">
-                      Prepare for Delta’s Limited <br /> Staking Window
-                    </div>
+                    <div
+                      className="m-auto w-10/12 text-4xl py-9 font-wulkan"
+                      dangerouslySetInnerHTML={{ __html: t('limitedWindow') }}
+                    />
                     <img src={chevron} alt="chevron" className="m-auto" />
                   </div>
 
-                  <div className="m-auto w-11/12 font-wulkan">Delta Academy</div>
+                  <div className="m-auto w-11/12 font-wulkan">{t('limitedWindow')}</div>
                   <div className="w-11/12 pl-12 pb-12">
                     <ConnectionButton
                       url="https://medium.com/delta-financial/introducing-delta-financial-769d387e9430"
