@@ -13,16 +13,16 @@ const useEthBalance = () => {
 
   const [ethBalance, setEthBalance] = useState(initialState);
 
-  async function getTokenBalance() {
-    const tokenBalance = await yam.web3.eth.getBalance(wallet.account);
-    setEthBalance(tokenBalance);
+  async function update() {
+    const balance = (await yam.web3.eth.getBalance(wallet.account)) / 1e18;
+    setEthBalance(balance);
   }
 
   useEffect(() => {
     let interval;
 
     if (yam) {
-      interval = hooks.setWalletAwareInterval(wallet, getTokenBalance, REFRESH_RATE);
+      interval = hooks.setWalletAwareInterval(wallet, update, REFRESH_RATE);
     }
 
     return () => clearInterval(interval);

@@ -1,9 +1,9 @@
+/* eslint-disable react/no-danger */
 import { useEffect, useState } from 'react';
 import { Button, Input, HelperText } from '@windmill/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
 import { ethers } from 'ethers';
-import BigNumber from 'bignumber.js';
 import { useEthBalance, useLSWStats, useYam } from '../../hooks';
 import { ProgressBarCountDown } from '../ProgressBarCountDown';
 import { TransactionButton } from '../Button';
@@ -22,7 +22,7 @@ const Staking = ({ onWalletConnect }) => {
   const [connectWalletVisible, setConnectWalletVisible] = useState(true);
   const [ethAmountText, setEthAmountText] = useState('');
   const [ethAmount, setEthAmount] = useState(false);
-  const [notValidNumber, setNotValidNumber] = useState(false);
+  const [validEthAmount, setValidEthAmount] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [openModalError, setOpenModalError] = useState(false);
   const [openReceiptModal, setOpenReceiptModal] = useState(false);
@@ -33,7 +33,7 @@ const Staking = ({ onWalletConnect }) => {
   }, [lswStats]);
 
   useEffect(() => {
-    console.log('eth balance', ethBalance / 1e18);
+    console.log('eth balance', ethBalance);
   }, [ethBalance]);
 
   useEffect(() => {
@@ -47,36 +47,45 @@ const Staking = ({ onWalletConnect }) => {
       setConnectWalletVisible(false);
     }
   }, [wallet]);
-  const regexp = /^\d+(\.\d{0,2})?$/;
 
   const onEthAmountChanged = e => {
-    setEthAmountText(e.target.value);
-    if (regexp.test(setEthAmountText)) {
-      setNotValidNumber(false);
-      const potentialAmount = parseFloat(e.target.value);
-      if (potentialAmount > ethBalance || potentialAmount <= 0 || Number.isNaN(potentialAmount)) {
-        setEthAmount(false);
-      } else {
-        setEthAmount(potentialAmount);
-      }
-    } else {
-      setNotValidNumber(true);
+    const text = e.target.value.trim();
+    setEthAmountText(text);
+    setValidEthAmount(true);
+
+    if (text === '') {
+      setEthAmount(false);
+      return;
+    }
+
+    const potentialAmount = parseFloat(e.target.value);
+    if (potentialAmount > ethBalance || potentialAmount < 0 || Number.isNaN(potentialAmount) || potentialAmount == 0) {
+      setValidEthAmount(false);
+    } else if (potentialAmount > 0) {
+      setEthAmount(potentialAmount);
     }
   };
 
   const onMaxEthAmount = () => {
-    const maxAmount = ethBalance / 1e18;
-    setEthAmountText(maxAmount);
-    setEthAmount(maxAmount);
+    setEthAmountText(ethBalance);
+    setEthAmount(ethBalance);
   };
-  const agreementText = async () => {
+
+  const fetchAgreementText = async () => {
     const agreement = await yam.contracts.LSW.methods.liquidityGenerationParticipationAgreement().call();
     setAgreementMessage(agreement);
   };
-  const onStake = async () => {
-    if (yam && wallet.account) {
+
+  const isContributionValid = () => {
+    return lswStats.data.timeStart !== DATA_UNAVAILABLE &&
+      ethBalance !== DATA_UNAVAILABLE ||
+      validEthAmount &&
+      ethAmountText.toString().trim() !== '';
+  };
+
+  const onContribute = async () => {
+    if (yam && wallet.account && isContributionValid()) {
       const value = ethers.utils.parseEther(ethAmount.toString());
-      console.log('amountE18', value.toString());
 
       const transaction = await yam.contracts.LSW.methods.contributeLiquidity(
         true,
@@ -84,8 +93,12 @@ const Staking = ({ onWalletConnect }) => {
         lswStats.data.refCode // will be 0 if not defined
       );
 
+      console.log('value', value / 1e18);
       try {
-        const transactionGasEstimate = await transaction.estimateGas({ from: wallet.account, value: value.toString() });
+        const transactionGasEstimate = await transaction.estimateGas({
+          from: wallet.account,
+          value: value.toString()
+        });
 
         await transaction.send({
           from: wallet.account,
@@ -118,7 +131,7 @@ const Staking = ({ onWalletConnect }) => {
                     {t('yourContribution')} {lswStats.data.totalEthContributed}
                   </div>
                   <div className="flex space-x-160 sm:flex-wrap sm:space-x-0">
-                    <iframe src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="100%" height="391" />
+                    <iframe title="contribution" src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="100%" height="391" />
                   </div>
                 </div>
                 <div className="flex h-128 border-2 pt-2 border-black border-t-0 pl-9 sm:block sm:pb-5 sm:pl-2">
@@ -139,50 +152,49 @@ const Staking = ({ onWalletConnect }) => {
                           }}
                         >
                           <span>{t('connectWallet')}</span>
-                          <img src={plus} className="m-auto pl-8" />
+                          <img alt="+" src={plus} className="m-auto pl-8" />
                         </Button>
                       ) : (
-                        <div className="flex w-6/12">
-                          <Input
-                            value={ethAmountText}
-                            style={{
-                              border: '0.063rem solid black',
-                              marginRight: '0.313rem',
-                              marginTop: '0.938rem',
-                              minWidth: '45%',
-                              backgroundColor: 'transparent'
-                            }}
-                            onChange={onEthAmountChanged}
-                            valid={notValidNumber}
-                          />
-                          <Button
-                            onClick={() => onMaxEthAmount()}
-                            style={{
-                              marginRight: '1px',
-                              borderRadius: '0px',
-                              backgroundColor: 'gray',
-                              padding: '1rem',
-                              marginTop: '1rem'
-                            }}
-                            type="number"
-                            className="p-4 mt-4 inline-block text-white uppercase flex ml-2"
-                          >
-                            <span>MAX</span>
-                          </Button>
-                          <TransactionButton
-                            disabled={lswStats.data.timeStart === DATA_UNAVAILABLE && ethBalance !== DATA_UNAVAILABLE}
-                            text="Stake"
-                            textLoading="Staking..."
-                            secondaryLooks
-                            onClick={() => {
-                              agreementText();
-                              setOpenModal(true);
-                            }}
-                          />
-                        </div>
-                      )}
+                          <div className="flex w-6/12">
+                            <Input
+                              value={ethAmountText}
+                              style={{
+                                border: '0.063rem solid black',
+                                marginRight: '0.313rem',
+                                marginTop: '0.938rem',
+                                minWidth: '45%',
+                                backgroundColor: 'transparent'
+                              }}
+                              onChange={onEthAmountChanged}
+                              valid={validEthAmount}
+                            />
+                            <Button
+                              onClick={() => onMaxEthAmount()}
+                              style={{
+                                marginRight: '1px',
+                                borderRadius: '0px',
+                                backgroundColor: 'gray',
+                                padding: '1rem',
+                                marginTop: '1rem'
+                              }}
+                              type="number"
+                              className="p-4 mt-4 inline-block text-white uppercase flex ml-2"
+                            >
+                              <span className="uppercase">{t('max')}</span>
+                            </Button>
+                            <TransactionButton
+                              text="Contribute"
+                              textLoading="Contributing..."
+                              secondaryLooks
+                              onClick={async () => {
+                                await fetchAgreementText();
+                                setOpenModal(true);
+                              }}
+                            />
+                          </div>
+                        )}
                     </div>
-                    {notValidNumber && <HelperText valid={notValidNumber}>{t('validContribution')}</HelperText>}
+                    {!validEthAmount && <HelperText valid={false}>{t('validContribution')}</HelperText>}
                   </div>
                   <div className="flex-1 pr-9 pt-9">
                     <BonusProgressBar />
@@ -197,10 +209,10 @@ const Staking = ({ onWalletConnect }) => {
           content={agreementMessage}
           onOpen={openModal}
           onClose={() => setOpenModal(false)}
-          onOk={() => {
-            onStake();
+          onOk={async () => {
             setOpenModal(false);
-            setOpenReceiptModal(true);
+            await onContribute();
+            // setOpenReceiptModal(true);
           }}
           cancelContent="Cancel"
           okContent="Confirm"
