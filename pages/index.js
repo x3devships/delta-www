@@ -59,6 +59,7 @@ export default function Main() {
         }}
       />
       <Head>
+        <link rel="preload" href="/fonts/Wulkan/WulkanDisplay-Medium.otf" as="font" crossOrigin="" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />

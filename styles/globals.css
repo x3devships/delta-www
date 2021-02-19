@@ -5,7 +5,13 @@
   font-family:"WulkanDisplay" !important;
   font-display: swap;
   font-weight: 400;
-  src: local('WulkanDisplay'), url(/fonts/WulkanDisplay-Medium.otf) format("opentype");
+  src: url(/public/fonts/Wulkan/WulkanDisplay-Medium.otf) format("otf");
+}
+@font-face {
+  font-family:"robotoRegular" !important;
+  font-display: swap;
+  font-weight: 400;
+  src: url(/public/fonts/Roboto-Regular.woff) format("woff");
 }
 html * 
 {
@@ -16,7 +22,4 @@ html *
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: subpixel-antialiased;
 
-}
-body{
-  font-family: 'WulkanDisplay' !important;
 }

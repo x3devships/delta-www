@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { Windmill } from '@windmill/react-ui';
 import { UseWalletProvider } from 'use-wallet';
 import { WEB3_PROVIDER_URL } from '../config';
@@ -19,8 +20,11 @@ function App({ Component, pageProps }) {
 
 const Providers = props => {
   return (
-    <>
-      {' '}
+    <div>
+      <Head>
+        <link rel="preload" href="/fonts/Wulkan/WulkanDisplay-Medium.woff" as="font" crossOrigin="" />
+        <link rel="preload" href="/fonts/Roboto-Regular.woff" as="font" crossOrigin="" />
+      </Head>{' '}
       <SettingsProvider>
         <UseWalletProvider
           chainId={1}
@@ -39,7 +43,7 @@ const Providers = props => {
           </WalletProvider>{' '}
         </UseWalletProvider>{' '}
       </SettingsProvider>{' '}
-    </>
+    </div>
   );
 };
 

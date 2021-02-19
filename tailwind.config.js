@@ -43,7 +43,8 @@ module.exports = windmill({
     },
     extend: {
       fontFamily: {
-        wulkan: ['WulkanDisplay, sans-serif'],
+        r: ['robotoRegular'],
+        Wulkan: ['wulkan'],
         gt_americare: ['gt_americaregular']
       }
     }
