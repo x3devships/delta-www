@@ -113,6 +113,9 @@ const Staking = ({ onWalletConnect }) => {
                 </div>
                 <div className="h-4/6 border-2 pt-2 border-black border-t-0">
                   <div className="m-auto w-11/12 text-4xl py-9 font-wulkan">{t('limitedStaking')}</div>
+                  <div className="m-auto w-11/12 text-xl py-2 font-wulkan">
+                    {t('yourContribution')} {lswStats.data.totalEthContributed}
+                  </div>
                   <div className="flex space-x-160 sm:flex-wrap sm:space-x-0">
                     <iframe src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="100%" height="391" />
                   </div>
