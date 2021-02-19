@@ -1,22 +1,8 @@
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from '@windmill/react-ui';
-import { useContext } from 'react';
-import { ModalContext } from '../../contexts';
-import { ModalType } from '../../contexts/Modal/ModalProvider';
 
-const ConfirmModal = () => {
-  const modalContext = useContext(ModalContext);
-
-  const { type, title, content, okContent, cancelContent, onOk, onClose } = modalContext;
-
+const ConfirmModal = ({ type, title, content, okContent, cancelContent, onOk, onClose, onOpen }) => {
   return (
-    <Modal
-      type={type}
-      isOpen={type === ModalType.Confirm}
-      onClose={onClose}
-      style={{
-        visibility: type === ModalType.Confirm ? 'inherit' : 'hidden'
-      }}
-    >
+    <Modal type={type} isOpen={onOpen} onClose={onClose}>
       <ModalHeader>{title}</ModalHeader>
       <ModalBody>{content}</ModalBody>
       <ModalFooter>

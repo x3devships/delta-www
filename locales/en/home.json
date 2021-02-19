@@ -18,5 +18,7 @@
   "installMetaMask": "INSTALL METAMASK",
   "howToInstall": "HOW TO INSTALL METAMASK",
   "referral": "Refer your friend and receive 5% bonus in credit and 5% in ETH. <br /> Your referral will get a 10% bonus to their initial contribution.",
-  "deltaReferral": "Delta Referral Program"
+  "deltaReferral": "Delta Referral Program",
+  "disconnect" : "Disconnect Wallet",
+  "validContribution" : "Provide a valid Contribution"
 }
