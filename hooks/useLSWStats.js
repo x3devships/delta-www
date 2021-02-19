@@ -1,9 +1,13 @@
+import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import { DATA_UNAVAILABLE } from '../config';
 import useYam from './useYam';
 
-const MAX_BONUS = 0.3;
+const MAX_TIME_BONUS = 0.3;
+const MAX_BONUS = 0.4;
+const REFERRAL_BONUS = 0.1;
+
 const initialState = {
   percentCompletion: DATA_UNAVAILABLE,
   percentLeft: DATA_UNAVAILABLE,
@@ -27,6 +31,20 @@ const useLSWStats = () => {
     const timeEnd = parseInt(await yam.contracts.LSW.methods.liquidityGenerationEndTimestamp().call());
     const totalSeconds = parseInt(await yam.contracts.LSW.methods.LSW_RUN_TIME().call());
     const currentTimestamp = Date.now() / 1000;
+    let currentReferralBonus = 0;
+
+    const refId = parseInt(localStorage.getItem('lastRef'));
+
+    /**
+     * Verify if the referral id is good.
+     */
+    if (!Number.isNaN(refId)) {
+      const address = await yam.contracts.LSW.methods.referralCodeMappingIndexedByID(refId).call();
+      console.log(address);
+      if (address !== ethers.constants.AddressZero) {
+        currentReferralBonus = REFERRAL_BONUS;
+      }
+    }
 
     let percentCompletion = 0;
     let currentTimeBonus = DATA_UNAVAILABLE;
@@ -38,13 +56,15 @@ const useLSWStats = () => {
       percentCompletion = (currentTimestamp - timeStart) / totalSeconds;
       secondsLeft = timeEnd - currentTimestamp;
       percentLeft = secondsLeft / totalSeconds;
-      currentTimeBonus = MAX_BONUS * percentLeft;
+      currentTimeBonus = MAX_TIME_BONUS * percentLeft;
     }
 
     setData({
       timeStart,
       timeEnd,
       currentTimeBonus,
+      maxBonus: MAX_BONUS,
+      currentReferralBonus,
       secondsLeft,
       totalSeconds,
       percentCompletion,

@@ -11,6 +11,7 @@ const RefHandler = () => {
   useEffect(() => {
     router.push('/');
   }, []);
-  return 'Enumerating...';
+
+  return true;
 };
 export default RefHandler;

@@ -4,10 +4,10 @@ import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
 import { useYam } from '../../hooks';
 import { ProgressBarCountDown } from '../ProgressBarCountDown';
-import { ProgressBar } from '../ProgressBar';
 import { TransactionButton } from '../Button';
 import plus from '../../public/plus.svg';
 import chevron from '../../public/chevron.svg';
+import { BonusProgressBar } from '../BonusProgressBar';
 
 const Staking = ({ onWalletConnect }) => {
   const { t } = useTranslation('home');
@@ -37,17 +37,10 @@ const Staking = ({ onWalletConnect }) => {
                 </div>
                 <div className="h-4/6 border-2 pt-2 border-black border-t-0">
                   <div className="m-auto w-11/12 text-4xl py-9 font-wulkan">{t('limitedStaking')}</div>
-                  <div className="flex space-x-80 sm:flex-wrap sm:space-x-0">
+                  <div className="flex space-x-160 sm:flex-wrap sm:space-x-0">
                     <iframe
-                      className="mb-9 pl-9 sm:pl-0"
-                      src="https://duneanalytics.com/embeds/20141/41387/X2NcJgZdr4I0XfujHlfTkrPjgR7tFBA9ql0XyWSe"
-                      width="720"
-                      height="391"
-                    />
-                    <iframe
-                      className="mb-9 pl-9 sm:pl-0"
-                      src="https://duneanalytics.com/embeds/20141/41387/X2NcJgZdr4I0XfujHlfTkrPjgR7tFBA9ql0XyWSe"
-                      width="720"
+                      src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9"
+                      width="100%"
                       height="391"
                     />
                   </div>
@@ -73,17 +66,17 @@ const Staking = ({ onWalletConnect }) => {
                           <img src={plus} className="m-auto pl-8" />
                         </Button>
                       ) : (
-                        <div className="flex w-6/12">
-                          <Input
-                            style={{ border: '0.063rem solid black', marginRight: '0.313rem', marginTop: '0.938rem' }}
-                          />
-                          <TransactionButton text="Approve" secondaryLooks />
-                        </div>
-                      )}
+                          <div className="flex w-6/12">
+                            <Input
+                              style={{ border: '0.063rem solid black', marginRight: '0.313rem', marginTop: '0.938rem' }}
+                            />
+                            <TransactionButton text="Approve" secondaryLooks />
+                          </div>
+                        )}
                     </div>
                   </div>
                   <div className="flex-1 pr-9 pt-9">
-                    <ProgressBar />
+                    <BonusProgressBar />
                   </div>
                 </div>
               </div>

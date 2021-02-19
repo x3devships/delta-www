@@ -13,7 +13,7 @@
   "bonus": "LWS Bonus",
   "earnWithDelta": "  Delta's Limited staking Window allows you to earn <br /> bonus rewards by being an early participant.",
   "eligibility": "You are eligible for a",
-  "contributionBonus": "XX% Bonus if you contribute now!",
+  "contributionBonus": "{{bonus}}% Bonus if you contribute now!",
   "installMetaMaskInstructions": " You'll need to install Metamask to continue. <br /> Once you have it installed, go ahead and refresh the page.",
   "installMetaMask": "INSTALL METAMASK",
   "howToInstall": "HOW TO INSTALL METAMASK",
