@@ -1,11 +1,19 @@
 import { useWallet } from 'use-wallet';
 import plus from '../../public/plus.svg';
 import { useEffect, useState } from 'react';
+import Countdown from 'react-countdown';
 
 const hero = () => {
   const wallet = useWallet();
   const [connectWalletVisible, setConnectWalletVisible] = useState(true);
-
+  const renderer = ({ days, hours, minutes, seconds }) => {
+    // Render a countdown
+    return (
+      <span>
+        {days} : {hours} : {minutes} : {seconds}
+      </span>
+    );
+  };
   useEffect(() => {
     console.log(wallet.account)
     if (!wallet.account) {
@@ -17,22 +25,25 @@ const hero = () => {
 
   return (
     <div>
-      <div className="px-3 md:pl-2 sm:pl-2 lg:2/6 xl:w-2/4 mt-20 lg:mt-40 lg:ml-16 text-left">
+      <div style={{fontFamily:'Wulkan Display'}} className=" flex flex-col justify-cetner text-center px-3 md:pl-2 sm:pl-2 lg:2/6 max-w-6xl mt-20 lg:mt-40 lg:ml-16 text-left">
+           Limited Staking Window contributions open <br />
         <div className="text-6xl font-semibold text-gray-900 leading-none">
-          The Limited Staking <br /> Window is opening soon!
+       
+          <Countdown date={1614011400000}  />
+
         </div>
-        <div className="mt-6 text-xl text-true-gray-500 antialiased font-medium">
-          Delta's LSW is starting in the next 48 hours. Early participants can earn up to 30% Bonus rewards. <br />
-          You'll be able to create your Referral Program code to maximize your rewards shortly. This will enable you to earn ETH for your referrals.
+        <div style={{fontFamily:'Wulkan Display'}} className="mt-6 text-center max-w-xl text-true-gray-500 antialiased self-center pb-10">
+          Early participants can earn up to 30% Bonus rewards. <br />
+          You can <a className="underline" href="#ref">create</a> your Referral code now to earn ETH for your referrals.
         </div>
-       {connectWalletVisible && 
+       {/* {connectWalletVisible && 
         <button
           onClick={() => wallet.connect()}
           className="bg-black shadow-xl p-4 mt-4 inline-block text-white uppercase flex "
         >
           <span>Connect Wallet</span>
           <img src={plus} className="m-auto pl-8" />
-        </button>}
+        </button>} */}
       </div>
     </div>
   );

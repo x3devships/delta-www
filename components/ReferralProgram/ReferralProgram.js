@@ -83,7 +83,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
   };
 
   return (
-    <section className="w-12/12 flex flex-col-reverse sm:flex-row min-h-0 min-w-0 overflow-hidden">
+    <section className="w-12/12 flex flex-col-reverse sm:flex-row min-h-0 min-w-0 overflow-hidden" id="ref">
       <main className="sm:h-full flex-1 flex flex-col min-h-0 min-w-0">
         <section className="flex-1 pt-3 md:p-6 lg:mb-0 lg:min-h-0 lg:min-w-0">
           <div className="flex flex-col lg:flex-row w-full">
@@ -93,7 +93,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
                   <div className="flex-1 m-auto w-11/12 py-9 pl-9 mb-9">
                     <div className="grid grid-cols-2 gap-x-96" style={{ justifyContent: 'space-between' }}>
                       <div>
-                        <div className="text-4xl pb-4">48 Hour Code Review Period</div>
+                        <div className="text-4xl pb-4">Code Review Period</div>
                         <div className="pb-2">
                           Read the DELTA smart contracts, made available 48 hours before the beginning of the Limited Staking Window for the purposes of your due diligence.
                         </div>

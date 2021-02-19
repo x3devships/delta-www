@@ -26,7 +26,8 @@ export default function Main() {
     <div className="w-full flex justify-center flex-col">
       <Header onWalletConnect={onWalletConnect} />
       
-      <div className="w-full flex flex-col max-w-6xl self-center"> <Hero />
+      <div className="w-full flex flex-col max-w-6xl self-center"> 
+      <Hero />
         {/* <Staking /> */}
 
         <ReferralProgram onWalletConnect={onWalletConnect}/>

@@ -26,7 +26,7 @@ const ProgressBarCountDown = () => {
       </div>
       <div className="mt-8">
         <div className="text-2xl">
-          <Countdown date={Date.now() + 2 * day} renderer={renderer} />
+          <Countdown date={1614011400} renderer={renderer} />
         </div>
         <div className="text-xs font-thin">Until Limited Staking Window Is Open</div>
       </div>
