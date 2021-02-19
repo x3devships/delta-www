@@ -3,7 +3,8 @@ import { Button, Modal, ModalHeader, ModalBody } from '@windmill/react-ui';
 import { useWallet } from 'use-wallet';
 import { useEffect, useState } from 'react';
 import plus from '../../public/plus.svg';
-
+import metaMaskLogo from '../../public/metamask-fox.svg';
+import walletConnectLogo from '../../public/wallet-connect.svg';
 import metaMask from '../../public/metaMask.png';
 import walletConnect from '../../public/walletConnect.png';
 
@@ -43,9 +44,12 @@ const ConnectionModal = ({ closeModal, isModalOpen }) => {
                 setMetaMask(true);
                 wallet.connect();
               }}
-              style={{ backgroundColor: 'transparent' }}
+              style={{ backgroundColor: 'transparent', color: 'black', fontSize: '16px' }}
             >
-              <img src={metaMask} alt="metamask" className="m-auto border-t border-b pt-2 pb-2" />
+              <div className="border-t border-b flex">
+                <img src={metaMaskLogo} alt="metamask" className="m-auto pt-2 pb-2 pr-2" />
+                <div className="m-auto">{t('metaMask')}</div>
+              </div>
             </Button>
           </div>
           {showInstructions && selectMetaMask && (
@@ -84,9 +88,12 @@ const ConnectionModal = ({ closeModal, isModalOpen }) => {
             </div>
           )}
           {!selectMetaMask && (
-            <div className="flex justify-center">
-              <Button onClick={() => wallet.connect('walletconnect')} style={{ backgroundColor: 'transparent' }}>
-                <img src={walletConnect} alt="walletConnect" className="m-auto border-b pb-2 pt-2" />
+            <div className="flex justify-center text-black">
+              <Button onClick={() => wallet.connect('walletconnect')} style={{ backgroundColor: 'transparent', color: 'black', fontSize: '16px' }}>
+                <div className="border-t border-b flex">
+                  <img src={walletConnectLogo} alt="walletConnect" className="m-auto border-b pb-2 pt-2 pr-2" style={{ width: '35px', height: '51px' }} />
+                  <div className="m-auto">{t('walletConnect')}</div>
+                </div>
               </Button>
             </div>
           )}

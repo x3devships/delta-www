@@ -21,5 +21,7 @@
   "deltaReferral": "Delta Referral Program",
   "disconnect" : "Disconnect Wallet",
   "validContribution" : "Provide a valid Contribution",
-  "yourContribution": "Your total Contribution :"
+  "yourContribution": "Your total Contribution :",
+  "walletConnect": "WalletConnect",
+  "metaMask": "METAMASK"
 }
