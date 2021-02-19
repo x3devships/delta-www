@@ -3,6 +3,9 @@
     "nextjs"
   ],
   "rules": {
+    "prettier/prettier": [
+      "none"
+    ],
     "indent": "off",
     "no-console": "off",
     "radix": "off",
