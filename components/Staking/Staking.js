@@ -71,12 +71,19 @@ const Staking = ({ onWalletConnect }) => {
     setEthAmount(ethBalance);
   };
 
-  const agreementText = async () => {
+  const fetchAgreementText = async () => {
     const agreement = await yam.contracts.LSW.methods.liquidityGenerationParticipationAgreement().call();
     setAgreementMessage(agreement);
   };
 
-  const onStake = async () => {
+  const isContributionValid = () => {
+    return lswStats.data.timeStart !== DATA_UNAVAILABLE &&
+      ethBalance !== DATA_UNAVAILABLE ||
+      validEthAmount &&
+      ethAmountText.toString().trim() !== '';
+  };
+
+  const onContribute = async () => {
     if (yam && wallet.account && isContributionValid()) {
       const value = ethers.utils.parseEther(ethAmount.toString());
 
@@ -86,6 +93,7 @@ const Staking = ({ onWalletConnect }) => {
         lswStats.data.refCode // will be 0 if not defined
       );
 
+      console.log('value', value / 1e18);
       try {
         const transactionGasEstimate = await transaction.estimateGas({
           from: wallet.account,
@@ -101,13 +109,6 @@ const Staking = ({ onWalletConnect }) => {
         setOpenModalError(true);
       }
     }
-  };
-
-  const isContributionValid = () => {
-    return lswStats.data.timeStart !== DATA_UNAVAILABLE &&
-      ethBalance !== DATA_UNAVAILABLE ||
-      validEthAmount &&
-      ethAmountText.toString().trim() !== '';
   };
 
   return (
@@ -185,8 +186,8 @@ const Staking = ({ onWalletConnect }) => {
                               text="Contribute"
                               textLoading="Contributing..."
                               secondaryLooks
-                              onClick={() => {
-                                agreementText();
+                              onClick={async () => {
+                                await fetchAgreementText();
                                 setOpenModal(true);
                               }}
                             />
@@ -208,10 +209,10 @@ const Staking = ({ onWalletConnect }) => {
           content={agreementMessage}
           onOpen={openModal}
           onClose={() => setOpenModal(false)}
-          onOk={() => {
-            onStake();
+          onOk={async () => {
             setOpenModal(false);
-            setOpenReceiptModal(true);
+            await onContribute();
+            // setOpenReceiptModal(true);
           }}
           cancelContent="Cancel"
           okContent="Confirm"
