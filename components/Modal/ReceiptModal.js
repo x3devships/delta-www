@@ -6,13 +6,13 @@ const ReceiptModal = ({ title, content, okContent, cancelContent, onOk, onClose,
       <ModalHeader>{title}</ModalHeader>
       <ModalBody>
         <div>
-          <div>
+          <div className="text-2xl">
             Contribution Amount: <span className="text-green-500">{parseFloat(contribution)}</span>
           </div>
-          <div>
+          <div className="text-2xl">
             Bonus: <span className="text-green-500">{content.currentTimeBonus || 0}</span>
           </div>
-          <div>
+          <div className="text-2xl">
             Total:<span className="text-green-500">{content.currentTimeBonus || 0 + parseFloat(contribution)}</span>
           </div>
         </div>
