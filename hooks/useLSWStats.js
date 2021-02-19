@@ -23,19 +23,19 @@ const useLSWStats = () => {
   const update = async () => {
     if (!yam || !wallet?.account) return;
 
-    const currentTimestamp = Date.now() / 1000;
     const timeStart = parseInt(await yam.contracts.LSW.methods.liquidityGenerationStartTimestamp().call());
     const timeEnd = parseInt(await yam.contracts.LSW.methods.liquidityGenerationEndTimestamp().call());
     const totalSeconds = parseInt(await yam.contracts.LSW.methods.LSW_RUN_TIME().call());
+    const currentTimestamp = Date.now() / 1000;
 
-    let percentCompletion = DATA_UNAVAILABLE;
+    let percentCompletion = 0;
     let currentTimeBonus = DATA_UNAVAILABLE;
     let secondsLeft = DATA_UNAVAILABLE;
     let percentLeft = DATA_UNAVAILABLE;
 
     // is the LSW started?
     if (timeStart > 0) {
-      percentCompletion = (timeEnd - timeStart) / timeEnd;
+      percentCompletion = (currentTimestamp - timeStart) / totalSeconds;
       secondsLeft = timeEnd - currentTimestamp;
       percentLeft = secondsLeft / totalSeconds;
       currentTimeBonus = MAX_BONUS * percentLeft;

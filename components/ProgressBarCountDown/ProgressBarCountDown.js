@@ -38,7 +38,7 @@ const ProgressBarCountDown = () => {
         <div className="w-full bg-backgroundLightPurple h-16 w-32">
           <div
             className="bg-backgroundLightPurple bg-gradient-to-r from-gradiantBlue to-gradiantPurple leading-none py-1 h-16 w-32"
-            style={{ width: (2 * day * 100) / (Date.now() + 2 * day) }}
+            style={{ width: `${lswStats.data.percentCompletion * 100}%` }}
           />
         </div>
       </div>
