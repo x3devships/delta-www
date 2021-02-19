@@ -5,8 +5,6 @@ import { useEffect, useState } from 'react';
 import plus from '../../public/plus.svg';
 import metaMaskLogo from '../../public/metamask-fox.svg';
 import walletConnectLogo from '../../public/wallet-connect.svg';
-import metaMask from '../../public/metaMask.png';
-import walletConnect from '../../public/walletConnect.png';
 
 const ConnectionModal = ({ closeModal, isModalOpen }) => {
   const wallet = useWallet();
