@@ -3,10 +3,7 @@
     "nextjs"
   ],
   "rules": {
-    "prettier/prettier": [
-      "none"
-    ],
-    "indent": "off",
+    "prettier/prettier": "off",
     "no-console": "off",
     "radix": "off",
     "no-param-reassign": "off",
