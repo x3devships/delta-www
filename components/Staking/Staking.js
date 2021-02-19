@@ -147,10 +147,11 @@ const Staking = ({ onWalletConnect }) => {
                             style={{
                               border: '0.063rem solid black',
                               marginRight: '0.313rem',
-                              marginTop: '0.938rem'
+                              marginTop: '0.938rem',
+                              minWidth: '45%'
                             }}
                             onChange={onEthAmountChanged}
-                            valid={!notValidNumber}
+                            valid={notValidNumber}
                           />
                           <Button
                             onClick={() => onMaxEthAmount()}
