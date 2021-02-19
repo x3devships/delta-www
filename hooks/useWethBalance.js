@@ -1,4 +1,3 @@
-import { singletonHook } from 'react-singleton-hook';
 import { useWallet } from 'use-wallet';
 import { useEffect, useState } from 'react';
 import useYam from './useYam';
@@ -32,4 +31,4 @@ const useWethBalance = () => {
   return wethBalance;
 };
 
-export default singletonHook(initialState, useWethBalance);
+export default useWethBalance;

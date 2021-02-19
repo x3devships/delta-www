@@ -5,6 +5,5 @@ export { default as useWBTCPrice } from './useWBTCPrice';
 export { default as useUserTokenBalance } from './useUserTokenBalance';
 export { default as useWethBalance } from './useWethBalance';
 export { default as useUserApprovalOfContract } from './useUserApprovalOfContract';
-export { default as useCorePrice } from './useCorePrice';
 export { default as useCorePairBalances } from './useCorePairBalances';
 export { default as useLSWStats } from './useLSWStats';

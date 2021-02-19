@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { singletonHook } from 'react-singleton-hook';
 import { DATA_UNAVAILABLE } from '../config';
 import useWeb3 from './useWeb3';
 
@@ -30,4 +29,4 @@ const useETHPrice = () => {
   return ETHprice;
 };
 
-export default singletonHook(initialState, useETHPrice);
+export default useETHPrice;

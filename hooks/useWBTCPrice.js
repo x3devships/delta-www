@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { singletonHook } from 'react-singleton-hook';
 import { DATA_UNAVAILABLE } from '../config';
 import useETHPrice from './useETHPrice';
 import useWeb3 from './useWeb3';
@@ -28,4 +27,4 @@ const useWBTCPrice = () => {
   return WBTCPrice;
 };
 
-export default singletonHook(initialState, useWBTCPrice);
+export default useWBTCPrice;

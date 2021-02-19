@@ -8510,11 +8510,6 @@ react-resize-detector@^5.2.0:
     raf-schd "^4.0.2"
     resize-observer-polyfill "^1.5.1"
 
-react-singleton-hook@^3.0.142:
-  version "3.0.142"
-  resolved "https://registry.yarnpkg.com/react-singleton-hook/-/react-singleton-hook-3.0.142.tgz#7212d0441748a67e97edeb41f1d425ff433c192c"
-  integrity sha512-ONYk/LftfsF7j8dCP7AE3Pz5gwJdj2eVM8wnvyEq2ypAG7zVKtwSvAqu7xmrg65qrCLfef9+b8DMThEU0GJJVw==
-
 react-smooth@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/react-smooth/-/react-smooth-1.0.6.tgz#18b964f123f7bca099e078324338cd8739346d0a"

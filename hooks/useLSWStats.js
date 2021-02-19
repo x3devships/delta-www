@@ -4,29 +4,29 @@ import { DATA_UNAVAILABLE } from '../config';
 import useYam from './useYam';
 
 const MAX_BONUS = 0.3;
+const initialState = {
+  percentCompletion: DATA_UNAVAILABLE,
+  percentLeft: DATA_UNAVAILABLE,
+  timeStart: DATA_UNAVAILABLE,
+  timeEnd: DATA_UNAVAILABLE,
+  secondsLeft: DATA_UNAVAILABLE,
+  totalSeconds: DATA_UNAVAILABLE,
+  currentTimeBonus: DATA_UNAVAILABLE
+};
 
 const useLSWStats = () => {
   const yam = useYam();
   const wallet = useWallet();
 
-  const [data, setData] = useState({
-    percentCompletion: DATA_UNAVAILABLE,
-    percentLeft: DATA_UNAVAILABLE,
-    timeStart: DATA_UNAVAILABLE,
-    timeEnd: DATA_UNAVAILABLE,
-    secondsLeft: DATA_UNAVAILABLE,
-    totalSeconds: DATA_UNAVAILABLE,
-    personnalContributionAmount: DATA_UNAVAILABLE,
-    currentTimeBonus: DATA_UNAVAILABLE
-  });
+  const [data, setData] = useState(initialState);
 
   const update = async () => {
     if (!yam || !wallet?.account) return;
 
-    const currentTime = new Date().valueOf();
-    const timeStart = parseInt((await yam.contracts.LSW.methods.liquidityGenerationStartTimestamp().call()).toString());
-    const timeEnd = parseInt((await yam.contracts.LSW.methods.liquidityGenerationEndTimestamp().call()).toString());
-    const totalSeconds = parseInt((await yam.contracts.LSW.methods.LSW_RUN_TIME().call()).toString());
+    const currentTimestamp = Date.now() / 1000;
+    const timeStart = parseInt(await yam.contracts.LSW.methods.liquidityGenerationStartTimestamp().call());
+    const timeEnd = parseInt(await yam.contracts.LSW.methods.liquidityGenerationEndTimestamp().call());
+    const totalSeconds = parseInt(await yam.contracts.LSW.methods.LSW_RUN_TIME().call());
 
     let percentCompletion = DATA_UNAVAILABLE;
     let currentTimeBonus = DATA_UNAVAILABLE;
@@ -36,7 +36,7 @@ const useLSWStats = () => {
     // is the LSW started?
     if (timeStart > 0) {
       percentCompletion = (timeEnd - timeStart) / timeEnd;
-      secondsLeft = timeEnd - currentTime;
+      secondsLeft = timeEnd - currentTimestamp;
       percentLeft = secondsLeft / totalSeconds;
       currentTimeBonus = MAX_BONUS * percentLeft;
     }
