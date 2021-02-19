@@ -15,7 +15,10 @@ const initialState = {
   timeEnd: DATA_UNAVAILABLE,
   secondsLeft: DATA_UNAVAILABLE,
   totalSeconds: DATA_UNAVAILABLE,
-  currentTimeBonus: DATA_UNAVAILABLE
+  currentTimeBonus: DATA_UNAVAILABLE,
+  refCode: DATA_UNAVAILABLE,
+  totalEthContributed: DATA_UNAVAILABLE,
+  totalWETHEarmarkedForReferrers: DATA_UNAVAILABLE
 };
 
 const useLSWStats = () => {
@@ -29,21 +32,25 @@ const useLSWStats = () => {
 
     const timeStart = parseInt(await yam.contracts.LSW.methods.liquidityGenerationStartTimestamp().call());
     const timeEnd = parseInt(await yam.contracts.LSW.methods.liquidityGenerationEndTimestamp().call());
+    const totalEthContributed = (await yam.contracts.wETH.methods.balanceOf(yam.contracts.LSW._address).call()) / 1e18;
+    const totalWETHEarmarkedForReferrers = (await yam.contracts.LSW.methods.totalWETHEarmarkedForReferrers().call()) / 1e18;
     const totalSeconds = parseInt(await yam.contracts.LSW.methods.LSW_RUN_TIME().call());
     const currentTimestamp = Date.now() / 1000;
     let currentReferralBonus = 0;
 
-    const refId = parseInt(localStorage.getItem('lastRef'));
+    let refCode = parseInt(localStorage.getItem('lastRef'));
 
     /**
      * Verify if the referral id is good.
      */
-    if (!Number.isNaN(refId)) {
-      const address = await yam.contracts.LSW.methods.referralCodeMappingIndexedByID(refId).call();
+    if (!Number.isNaN(refCode)) {
+      const address = await yam.contracts.LSW.methods.referralCodeMappingIndexedByID(refCode).call();
 
       if (address !== ethers.constants.AddressZero) {
         currentReferralBonus = REFERRAL_BONUS;
       }
+    } else {
+      refCode = 0;
     }
 
     let percentCompletion = 0;
@@ -68,7 +75,10 @@ const useLSWStats = () => {
       secondsLeft,
       totalSeconds,
       percentCompletion,
-      percentLeft
+      percentLeft,
+      refCode,
+      totalEthContributed,
+      totalWETHEarmarkedForReferrers
     });
   };
 

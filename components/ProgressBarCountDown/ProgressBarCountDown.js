@@ -1,15 +1,11 @@
-import { useEffect, useMemo } from 'react';
 import Countdown from 'react-countdown';
 import { DATA_UNAVAILABLE } from '../../config';
-import { useLSWStats } from '../../hooks';
 
-const ProgressBarCountDown = () => {
+const ProgressBarCountDown = ({ lswStats }) => {
   const second = 1000;
   const minute = second * 60;
   const hour = minute * 60;
   const day = hour * 24;
-
-  const lswStats = useLSWStats();
 
   const renderer = ({ days, hours, minutes }) => {
     return (
