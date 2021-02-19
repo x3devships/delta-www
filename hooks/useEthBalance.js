@@ -4,18 +4,18 @@ import useYam from './useYam';
 import { hooks } from '../helpers';
 import { DATA_UNAVAILABLE } from '../config';
 
-const REFRESH_RATE = 30 * 1000;
+const REFRESH_RATE = 5 * 1000;
 const initialState = DATA_UNAVAILABLE;
 
-const useWethBalance = () => {
+const useEthBalance = () => {
   const yam = useYam();
   const wallet = useWallet();
 
-  const [wethBalance, setWethBalance] = useState(initialState);
+  const [ethBalance, setEthBalance] = useState(initialState);
 
   async function getTokenBalance() {
     const tokenBalance = await yam.web3.eth.getBalance(wallet.account);
-    setWethBalance(tokenBalance);
+    setEthBalance(tokenBalance);
   }
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const useWethBalance = () => {
     return () => clearInterval(interval);
   }, [yam, wallet]);
 
-  return wethBalance;
+  return ethBalance;
 };
 
-export default useWethBalance;
+export default useEthBalance;

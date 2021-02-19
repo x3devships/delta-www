@@ -40,7 +40,7 @@ const useLSWStats = () => {
      */
     if (!Number.isNaN(refId)) {
       const address = await yam.contracts.LSW.methods.referralCodeMappingIndexedByID(refId).call();
-      console.log(address);
+
       if (address !== ethers.constants.AddressZero) {
         currentReferralBonus = REFERRAL_BONUS;
       }

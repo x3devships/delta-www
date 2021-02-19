@@ -15,7 +15,9 @@ const useLSWReferralCode = () => {
     if (!yam || !wallet?.account) return;
 
     const referralId = await yam.contracts.LSW.methods.referralCodeMappingIndexedByAddress(wallet.account).call();
-    setReferralId(referralId);
+    if (referralId > 0) {
+      setReferralId(referralId);
+    }
   };
 
   useEffect(() => {

@@ -11,10 +11,6 @@ const ProgressBarCountDown = () => {
 
   const lswStats = useLSWStats();
 
-  useEffect(() => {
-    console.log(lswStats);
-  }, [lswStats]);
-
   const renderer = ({ days, hours, minutes }) => {
     return (
       <span>

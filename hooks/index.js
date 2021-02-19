@@ -3,7 +3,7 @@ export { default as useYam } from './useYam';
 export { default as useETHPrice } from './useETHPrice';
 export { default as useWBTCPrice } from './useWBTCPrice';
 export { default as useUserTokenBalance } from './useUserTokenBalance';
-export { default as useWethBalance } from './useWethBalance';
+export { default as useEthBalance } from './useEthBalance';
 export { default as useUserApprovalOfContract } from './useUserApprovalOfContract';
 export { default as useCorePairBalances } from './useCorePairBalances';
 export { default as useLSWStats } from './useLSWStats';

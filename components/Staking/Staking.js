@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Input } from '@windmill/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
-import { useYam } from '../../hooks';
+import { useEthBalance, useYam } from '../../hooks';
 import { ProgressBarCountDown } from '../ProgressBarCountDown';
 import { TransactionButton } from '../Button';
 import plus from '../../public/plus.svg';
@@ -12,6 +12,11 @@ import { BonusProgressBar } from '../BonusProgressBar';
 const Staking = ({ onWalletConnect }) => {
   const { t } = useTranslation('home');
   const yam = useYam();
+  const ethBalance = useEthBalance();
+
+  useEffect(() => {
+    console.log('eth balance', ethBalance / 1e18);
+  }, [ethBalance]);
   const wallet = useWallet();
   const [connectWalletVisible, setConnectWalletVisible] = useState(true);
   useEffect(() => {
