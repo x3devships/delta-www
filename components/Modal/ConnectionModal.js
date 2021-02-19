@@ -4,8 +4,8 @@ import { useWallet } from 'use-wallet';
 import { useEffect, useState } from 'react';
 import plus from '../../public/plus.svg';
 
-import metaMask from '../../public/metaMask.svg';
-import walletConnect from '../../public/walletConnect.svg';
+import metaMask from '../../public/metaMask.png';
+import walletConnect from '../../public/walletConnect.png';
 
 const ConnectionModal = ({ closeModal, isModalOpen }) => {
   const wallet = useWallet();

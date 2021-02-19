@@ -1,19 +1,8 @@
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from '@windmill/react-ui';
-import { useContext } from 'react';
-import { ModalContext } from '../../contexts';
-import { ModalType } from '../../contexts/Modal/ModalProvider';
 
-const ErrorModal = () => {
-  const { type, title, content, okContent, onOk, onClose } = useContext(ModalContext);
-
+const ErrorModal = ({ title, content, okContent, onOk, onClose, onOpen }) => {
   return (
-    <Modal
-      isOpen={type === ModalType.Error}
-      onClose={onClose}
-      style={{
-        visibility: type === ModalType.Error ? 'inherit' : 'hidden'
-      }}
-    >
+    <Modal isOpen={onOpen} onClose={onClose}>
       <ModalHeader>{title}</ModalHeader>
       <ModalBody>{content}</ModalBody>
       <ModalFooter>

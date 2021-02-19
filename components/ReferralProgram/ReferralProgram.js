@@ -75,13 +75,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
         </div>
       );
     }
-    return (
-      <TransactionButton
-        text={getCopyForButton()}
-        secondaryLooks
-        onClick={() => (wallet.account ? onGenerateCode() : onWalletConnect())}
-      />
-    );
+    return <TransactionButton text={getCopyForButton()} secondaryLooks onClick={() => (wallet.account ? onGenerateCode() : onWalletConnect())} />;
   };
 
   return (
@@ -102,16 +96,8 @@ const ReferralProgram = ({ onWalletConnect }) => {
                           text="LSW"
                           image={github}
                         />
-                        <ConnectionButton
-                          url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Governance"
-                          text="Governance"
-                          image={github}
-                        />
-                        <ConnectionButton
-                          url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery"
-                          text="Periphery"
-                          image={github}
-                        />
+                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Governance" text="Governance" image={github} />
+                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery" text="Periphery" image={github} />
                         <br />
                         <hr />
                         <br />

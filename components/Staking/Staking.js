@@ -11,7 +11,7 @@ import plus from '../../public/plus.svg';
 import chevron from '../../public/chevron.svg';
 import { BonusProgressBar } from '../BonusProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
-import { ConfirmModal } from '../Modal';
+import { ConfirmModal, ErrorModal } from '../Modal';
 
 const Staking = ({ onWalletConnect }) => {
   const { t } = useTranslation('home');
@@ -24,6 +24,7 @@ const Staking = ({ onWalletConnect }) => {
   const [ethAmount, setEthAmount] = useState(false);
   const [notValidNumber, setNotValidNumber] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalError, setOpenModalError] = useState(false);
   const [agreementMessage, setAgreementMessage] = useState('');
 
   useEffect(() => {
@@ -91,8 +92,7 @@ const Staking = ({ onWalletConnect }) => {
           gas: transactionGasEstimate
         });
       } catch (error) {
-        alert(error.message);
-        console.log(error);
+        setOpenModalError(true);
       }
     }
   };
@@ -200,6 +200,16 @@ const Staking = ({ onWalletConnect }) => {
           }}
           cancelContent="Cancel"
           okContent="Confirm"
+        />
+        <ErrorModal
+          title="Error"
+          content="An error has risen please try again"
+          onOpen={openModalError}
+          onClose={() => setOpenModalError(false)}
+          onOk={() => {
+            setOpenModalError(false);
+          }}
+          okContent="Okay"
         />
       </main>
     </section>
