@@ -57,7 +57,7 @@ export default function Main() {
           cardType: 'summary_large_image'
         }}
       />
-      <div className="w-full flex justify-center flex-col">
+      <div className="w-full flex justify-center flex-col bg-backgroundWebsite">
         <Header onWalletConnect={onWalletConnect} />
 
         <div className="w-full flex flex-col max-w-6xl self-center">

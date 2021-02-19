@@ -38,7 +38,8 @@ module.exports = windmill({
       backgroundLightPurple: '#EDEAF4',
       backgroundPage: '#E5E5E5',
       backgroundButton: '#C7C7C7',
-      greenText: '#4DA560'
+      greenText: '#4DA560',
+      backgroundWebsite: '#ebebeb'
     },
     extend: {
       fontFamily: {

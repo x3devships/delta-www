@@ -31,9 +31,7 @@ const BonusProgressBar = () => {
       </div>
       <div className="mt-8">
         <div className="text-xs font-thin text-greenText">{t('eligibility')}</div>
-        <div className="text-xs font-thin text-greenText">
-          {t('contributionBonus', { bonus: (bonus * 100).toFixed(0) })}
-        </div>
+        <div className="text-xs font-thin text-greenText">{t('contributionBonus', { bonus: (bonus * 100).toFixed(0) })}</div>
       </div>
     </div>
   );

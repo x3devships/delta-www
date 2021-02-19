@@ -11,7 +11,7 @@ import plus from '../../public/plus.svg';
 import chevron from '../../public/chevron.svg';
 import { BonusProgressBar } from '../BonusProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
-import { ConfirmModal, ErrorModal } from '../Modal';
+import { ConfirmModal, ErrorModal, ReceiptModal } from '../Modal';
 
 const Staking = ({ onWalletConnect }) => {
   const { t } = useTranslation('home');
@@ -25,6 +25,7 @@ const Staking = ({ onWalletConnect }) => {
   const [notValidNumber, setNotValidNumber] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [openModalError, setOpenModalError] = useState(false);
+  const [openReceiptModal, setOpenReceiptModal] = useState(false);
   const [agreementMessage, setAgreementMessage] = useState('');
 
   useEffect(() => {
@@ -148,7 +149,8 @@ const Staking = ({ onWalletConnect }) => {
                               border: '0.063rem solid black',
                               marginRight: '0.313rem',
                               marginTop: '0.938rem',
-                              minWidth: '45%'
+                              minWidth: '45%',
+                              backgroundColor: 'transparent'
                             }}
                             onChange={onEthAmountChanged}
                             valid={notValidNumber}
@@ -198,6 +200,19 @@ const Staking = ({ onWalletConnect }) => {
           onOk={() => {
             onStake();
             setOpenModal(false);
+            setOpenReceiptModal(true);
+          }}
+          cancelContent="Cancel"
+          okContent="Confirm"
+        />
+        <ReceiptModal
+          title="Receipt"
+          content={lswStats}
+          contribution={ethAmountText}
+          onOpen={openReceiptModal}
+          onClose={() => setOpenReceiptModal(false)}
+          onOk={() => {
+            setOpenReceiptModal(false);
           }}
           cancelContent="Cancel"
           okContent="Confirm"
