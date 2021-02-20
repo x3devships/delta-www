@@ -15,7 +15,7 @@ const MessageModal = () => {
         visibility: type === ModalType.Message ? 'inherit' : 'hidden'
       }}
     >
-      <ModalHeader>{title}</ModalHeader>
+      <ModalHeader><div className="text-2xl font-semibold font-wulkan">{title}</div></ModalHeader>
       <ModalBody>{content}</ModalBody>
       <ModalFooter>
         {onOk && <Button className="w-full sm:w-auto text-white" style={{

@@ -86,28 +86,73 @@ const Staking = ({ onWalletConnect }) => {
     return amount * bonusPercent;
   };
 
-  const getContributionConfirmationModalContent = (contributionAmountE18, timeBonus, referralBonus) => {
+  const getContributionDetails = (value, timeBonus, referralBonus, refCode) => {
     timeBonus = parseFloat(timeBonus) || 0;
     referralBonus = parseFloat(referralBonus) || 0;
 
-    const baseContributionAmount = contributionAmountE18 / 1e18;
+    const baseContributionAmount = value / 1e18;
     const timeBonusAmount = getContributionWithBonus(baseContributionAmount, timeBonus);
     const referralBonusAmount = getContributionWithBonus(baseContributionAmount, referralBonus);
-    const total = baseContributionAmount + timeBonus + referralBonusAmount;
+    const total = baseContributionAmount + timeBonusAmount + referralBonusAmount;
 
+    return {
+      value,
+      baseContributionAmount,
+      timeBonusAmount,
+      timeBonus,
+      referralBonusAmount,
+      referralBonus,
+      refCode,
+      total
+    };
+  };
+
+  const getContributionConfirmationDetailsContent = details => {
     return <div>
-      <div className="text-lg">
-        Contribution Amount: <span className="text-green-500">{baseContributionAmount.toLocaleString()} eth</span>
+      <div className="text-base">
+        <span className="inline-block font-medium">Your Contribution: </span>
+        <span className="inline-block text-green-500">{details.baseContributionAmount.toLocaleString()} ETH</span>
       </div>
-      <div className="text-lg">
-        Time Bonus: <span className="text-green-500">+ {timeBonusAmount.toLocaleString()} eth</span>
+      <div className="text-base">
+        <span className="inline-block font-medium">Early Signup Bonus ({(details.timeBonus * 100).toFixed(2)}%): </span>
+        <span className="inline-block text-green-500">{details.timeBonusAmount.toLocaleString()} ETH</span>
       </div>
-      <div className="text-lg">
-        Referral Bonus: <span className="text-green-500">+ {referralBonusAmount.toLocaleString()} eth</span>
-      </div>
+      {details.refCode > 0 &&
+        <div className="text-base">
+          <span className="inline-block font-medium">Referral Signup Bonus ({(details.referralBonus * 100).toFixed(2)})%: </span>
+          <span className="inline-block text-green-500">{details.referralBonusAmount.toLocaleString()} ETH</span>
+        </div>}
       <hr />
-      <div className="text-lg">
-        Total: <span className="text-green-500">{total.toLocaleString()} eth</span>
+      <div className="text-base">
+        <span className="inline-block font-medium">Total contribution Value: </span>
+        <span className="inline-block text-green-500">{details.total.toLocaleString()} ETH</span>
+      </div>
+    </div>
+  };
+
+  const getContributionReceiptContent = (details, txId) => {
+    return <div>
+      <div className="text-base">
+        <span className="inline-block font-medium">Your Contribution: </span>
+        <span className="inline-block">{details.baseContributionAmount.toLocaleString()} ETH</span>
+      </div>
+      <div className="text-base">
+        <span className="inline-block font-medium">Early Signup Bonus ({(details.timeBonus * 100).toFixed(2)}%): </span>
+        <span className="inline-block">+ {details.timeBonusAmount.toLocaleString()} ETH</span>
+      </div>
+      {details.refCode > 0 &&
+        <div className="text-base">
+          <span className="inline-block font-medium">Referral Signup Bonus ({(details.referralBonus * 100).toFixed(2)})%: </span>
+          <span className="inline-block">+ {details.referralBonusAmount.toLocaleString()} ETH</span>
+        </div>}
+      <hr />
+      <div className="text-base">
+        <span className="inline-block font-medium">Total contribution Value: </span>
+        <span className="inline-block">{details.total.toLocaleString()} ETH</span>
+      </div>
+      <div className="text-base">
+        <span className="inline-block font-medium">Transaction Id: </span>
+        <span><a className="underline" target="_blank" rel="noopener noreferrer" href={`https://etherscan.io/tx/${txId}`}>{txId}</a></span>
       </div>
     </div>
   };
@@ -130,10 +175,10 @@ const Staking = ({ onWalletConnect }) => {
 
     const value = ethers.utils.parseEther(ethAmount.toString());
 
-    const contributionConfirmed = await modalContext.showConfirm(
-      'Transaction Confirmation',
-      getContributionConfirmationModalContent(value, lswStats.data.currentTimeBonus, lswStats.data.currentReferralBonus)
-    );
+    const contributionDetails = getContributionDetails(value, lswStats.data.currentTimeBonus, lswStats.data.currentReferralBonus, lswStats.data.refCode);
+    const contributionDetailsContent = getContributionConfirmationDetailsContent(contributionDetails);
+
+    const contributionConfirmed = await modalContext.showConfirm('Transaction Confirmation', contributionDetailsContent);
 
     if (!contributionConfirmed) {
       return Promise.reject();
@@ -157,13 +202,24 @@ const Staking = ({ onWalletConnect }) => {
         from: wallet.account,
         value: value.toString()
       });
-      await transaction.send({
+
+      const receipt = await transaction.send({
         from: wallet.account,
         value: value.toString(),
         gas: transactionGasEstimate
       });
 
       transactionMessage.close();
+
+      await modalContext.showMessage('Congratulations!', <>
+        <div className="text-base mt-2">
+          You have successfully contributed your Ethereum. You will receive your rLP after the Limited Staking Window has closed.
+        </div>
+        <hr />
+        <div className="mt-5">
+          {getContributionReceiptContent(contributionDetails, receipt.transactionHash)}
+        </div>
+      </>)
     } catch (error) {
       return modalContext.showError('Error contributing', 'An error occured while contributing');
     }

@@ -37,6 +37,7 @@ const useLSWStats = () => {
     const totalSeconds = parseInt(await yam.contracts.LSW.methods.LSW_RUN_TIME().call());
     const currentTimestamp = Date.now() / 1000;
     let currentReferralBonus = 0;
+    let refAddress = ethers.constants.AddressZero;
 
     let refCode = parseInt(localStorage.getItem('lastRef'));
 
@@ -50,6 +51,7 @@ const useLSWStats = () => {
 
       if (address !== ethers.constants.AddressZero || address !== walletAddress) {
         currentReferralBonus = REFERRAL_BONUS;
+        refAddress = address;
       }
     } else {
       refCode = 0;
@@ -79,6 +81,7 @@ const useLSWStats = () => {
       percentCompletion,
       percentLeft,
       refCode,
+      refAddress,
       totalEthContributed,
       totalWETHEarmarkedForReferrers
     });

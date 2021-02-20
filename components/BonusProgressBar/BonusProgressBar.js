@@ -30,8 +30,11 @@ const BonusProgressBar = () => {
         </div>
       </div>
       <div className="mt-8">
-        <div className="text-xs font-thin text-greenText">{t('eligibility')}</div>
-        <div className="text-xs font-thin text-greenText">{t('contributionBonus', { bonus: (bonus * 100).toFixed(0) })}</div>
+        <div className="text-xs font-thin text-greenText font-bold">{t('contributionBonus', { bonus: (bonus * 100).toFixed(0) })}</div>
+        {lwfStats.data.refCode > 0 && <>
+          <div className="text-xs font-bold text-greenText mt-1">You are getting a bonus of 10% for being referred by:</div>
+          <div className="text-xs font-bold text-greenText">(Referral ID: {lwfStats.data.refCode})</div>
+        </>}
       </div>
     </div>
   );
