@@ -4,27 +4,21 @@ import { useContext } from 'react';
 import { ModalContext } from '../../contexts';
 import { ModalType } from '../../contexts/Modal/ModalProvider';
 
-const ErrorModal = () => {
+const MessageModal = () => {
   const { type, title, content, okContent, onOk, onClose } = useContext(ModalContext);
 
   return (
     <Modal
-      isOpen={type === ModalType.Error}
+      isOpen={type === ModalType.Message}
       onClose={onClose}
       style={{
-        visibility: type === ModalType.Error ? 'inherit' : 'hidden'
+        visibility: type === ModalType.Message ? 'inherit' : 'hidden'
       }}
     >
       <ModalHeader>{title}</ModalHeader>
       <ModalBody>{content}</ModalBody>
       <ModalFooter>
-        <Button className="w-full sm:w-auto text-white" style={{
-          marginRight: '1px',
-          borderRadius: '0px',
-          backgroundColor: 'black',
-          padding: '1rem',
-          marginTop: '1rem'
-        }} onClick={onOk}>
+        <Button className="w-full sm:w-auto" onClick={onOk}>
           {okContent}
         </Button>
       </ModalFooter>
@@ -32,4 +26,4 @@ const ErrorModal = () => {
   );
 };
 
-export default ErrorModal;
+export default MessageModal;

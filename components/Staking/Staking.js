@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Input, HelperText } from '@windmill/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
@@ -11,7 +11,8 @@ import plus from '../../public/plus.svg';
 import chevron from '../../public/chevron.svg';
 import { BonusProgressBar } from '../BonusProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
-import { ConfirmModal, ErrorModal, ReceiptModal } from '../Modal';
+import { ReceiptModal } from '../Modal';
+import { ModalContext } from '../../contexts';
 
 const Staking = ({ onWalletConnect }) => {
   const { t } = useTranslation('home');
@@ -23,10 +24,9 @@ const Staking = ({ onWalletConnect }) => {
   const [ethAmountText, setEthAmountText] = useState('');
   const [ethAmount, setEthAmount] = useState(false);
   const [validEthAmount, setValidEthAmount] = useState(true);
-  const [openModal, setOpenModal] = useState(false);
-  const [openModalError, setOpenModalError] = useState(false);
   const [openReceiptModal, setOpenReceiptModal] = useState(false);
-  const [agreementMessage, setAgreementMessage] = useState('');
+
+  const modalContext = useContext(ModalContext);
 
   useEffect(() => {
     console.log('totalEthContributed', lswStats.data.totalEthContributed);
@@ -71,44 +71,53 @@ const Staking = ({ onWalletConnect }) => {
     setEthAmount(ethBalance);
   };
 
-  const fetchAgreementText = async () => {
-    const agreement = await yam.contracts.LSW.methods.liquidityGenerationParticipationAgreement().call();
-    setAgreementMessage(agreement);
-  };
-
   const isContributionValid = () => {
     return lswStats.data.timeStart !== DATA_UNAVAILABLE &&
-      ethBalance !== DATA_UNAVAILABLE ||
+      ethBalance !== DATA_UNAVAILABLE &&
       validEthAmount &&
       ethAmountText.toString().trim() !== '';
   };
 
   const onContribute = async () => {
-    if (yam && wallet.account && isContributionValid()) {
-      const value = ethers.utils.parseEther(ethAmount.toString());
-
-      const transaction = await yam.contracts.LSW.methods.contributeLiquidity(
-        true,
-        ethers.constants.AddressZero,
-        lswStats.data.refCode // will be 0 if not defined
-      );
-
-      console.log('value', value / 1e18);
-      try {
-        const transactionGasEstimate = await transaction.estimateGas({
-          from: wallet.account,
-          value: value.toString()
-        });
-
-        await transaction.send({
-          from: wallet.account,
-          value: value.toString(),
-          gas: transactionGasEstimate
-        });
-      } catch (error) {
-        setOpenModalError(true);
-      }
+    if (!yam || !wallet.account) {
+      return modalContext.showError('Wallet Connect', 'Please connect to your wallet to continue');
     }
+
+    if (!isContributionValid()) {
+      return modalContext.showError('Contribution', 'Please specify a valid contribution amount');
+    }
+
+    const agreement = await yam.contracts.LSW.methods.liquidityGenerationParticipationAgreement().call();
+    const confimed = await modalContext.showConfirm('Agreement', agreement, 'I Agree', 'Cancel');
+
+    if (!confimed) {
+      return Promise.reject();
+    }
+
+    const value = ethers.utils.parseEther(ethAmount.toString());
+
+    const transaction = await yam.contracts.LSW.methods.contributeLiquidity(
+      true,
+      ethers.constants.AddressZero,
+      lswStats.data.refCode // will be 0 if not defined
+    );
+
+    try {
+      const transactionGasEstimate = await transaction.estimateGas({
+        from: wallet.account,
+        value: value.toString()
+      });
+
+      await transaction.send({
+        from: wallet.account,
+        value: value.toString(),
+        gas: transactionGasEstimate
+      });
+    } catch (error) {
+      return modalContext.showError('Error contributing', 'An error occured while contributing');
+    }
+
+    return Promise.resolve();
   };
 
   return (
@@ -186,10 +195,7 @@ const Staking = ({ onWalletConnect }) => {
                               text="Contribute"
                               textLoading="Contributing..."
                               secondaryLooks
-                              onClick={async () => {
-                                await fetchAgreementText();
-                                setOpenModal(true);
-                              }}
+                              onClick={onContribute}
                             />
                           </div>
                         )}
@@ -204,19 +210,6 @@ const Staking = ({ onWalletConnect }) => {
             </div>
           </div>
         </section>
-        <ConfirmModal
-          title="Confirmation"
-          content={agreementMessage}
-          onOpen={openModal}
-          onClose={() => setOpenModal(false)}
-          onOk={async () => {
-            setOpenModal(false);
-            await onContribute();
-            // setOpenReceiptModal(true);
-          }}
-          cancelContent="Cancel"
-          okContent="Confirm"
-        />
         <ReceiptModal
           title="Receipt"
           content={lswStats}
@@ -228,16 +221,6 @@ const Staking = ({ onWalletConnect }) => {
           }}
           cancelContent="Cancel"
           okContent="Confirm"
-        />
-        <ErrorModal
-          title="Error"
-          content="An error has risen please try again"
-          onOpen={openModalError}
-          onClose={() => setOpenModalError(false)}
-          onOk={() => {
-            setOpenModalError(false);
-          }}
-          okContent="Okay"
         />
       </main>
     </section>

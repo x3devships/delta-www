@@ -84,10 +84,7 @@ const TransactionButton = ({ onClick, allowanceRequiredFor, icon, text, textLoad
   };
 
   const renderButtonText = () => {
-    if (secondaryLooks) {
-      return <>{text}</>;
-    }
-    if (loading && !secondaryLooks) {
+    if (loading) {
       return <span>{allowanceSatisfied ? textLoading : textApproving}</span>;
     }
 
@@ -117,7 +114,7 @@ const TransactionButton = ({ onClick, allowanceRequiredFor, icon, text, textLoad
       style={secondaryLooks ? { backgroundColor: 'black', color: 'white', padding: '1rem', marginTop: '1rem', borderRadius: '0px', marginRight: '1rem' } : {}}
     >
       {renderButtonText()}
-      {secondaryLooks && <img src={plus} className="m-auto pl-8" />}
+      {secondaryLooks && <img alt="+" src={plus} className="m-auto pl-8" />}
     </Button>
   );
 };

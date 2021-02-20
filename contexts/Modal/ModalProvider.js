@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ModalContext from './ModalContext';
 
 export const ModalType = Object.freeze({
+  Message: 'message',
   Error: 'error',
   Confirm: 'confirm'
 });
@@ -26,6 +27,10 @@ const ModalProvider = ({ children }) => {
     });
   };
 
+  const showMessage = async (title, content, okContent = 'Ok') => {
+    return _showModal(ModalType.Message, { title, content, okContent });
+  };
+
   const showError = async (title, content, okContent = 'Ok') => {
     return _showModal(ModalType.Error, { title, content, okContent });
   };
@@ -38,6 +43,7 @@ const ModalProvider = ({ children }) => {
     <ModalContext.Provider
       value={{
         ...modal,
+        showMessage,
         showError,
         showConfirm
       }}
