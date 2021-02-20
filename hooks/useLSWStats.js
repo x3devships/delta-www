@@ -44,9 +44,11 @@ const useLSWStats = () => {
      * Verify if the referral id is good.
      */
     if (!Number.isNaN(refCode)) {
-      const address = await yam.contracts.LSW.methods.referralCodeMappingIndexedByID(refCode).call();
+      let address = await yam.contracts.LSW.methods.referralCodeMappingIndexedByID(refCode).call();
+      address = yam.web3.utils.toChecksumAddress(address);
+      const walletAddress = yam.web3.utils.toChecksumAddress(wallet.account);
 
-      if (address !== ethers.constants.AddressZero) {
+      if (address !== ethers.constants.AddressZero || address !== walletAddress) {
         currentReferralBonus = REFERRAL_BONUS;
       }
     } else {

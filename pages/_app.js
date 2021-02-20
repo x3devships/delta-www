@@ -5,7 +5,7 @@ import { WalletProvider, YamProvider, Web3Provider, SettingsProvider, ModalProvi
 import theme from '../config/default.theme';
 
 import '../styles/globals.css';
-import 'tailwindcss/tailwind.css';
+
 
 import { ModalContainer } from '../components/Modal';
 

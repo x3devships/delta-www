@@ -18,9 +18,15 @@ const MessageModal = () => {
       <ModalHeader>{title}</ModalHeader>
       <ModalBody>{content}</ModalBody>
       <ModalFooter>
-        <Button className="w-full sm:w-auto" onClick={onOk}>
+        {onOk && <Button className="w-full sm:w-auto text-white" style={{
+          marginRight: '1px',
+          borderRadius: '0px',
+          backgroundColor: 'black',
+          padding: '1rem',
+          marginTop: '1rem'
+        }} onClick={onOk}>
           {okContent}
-        </Button>
+        </Button>}
       </ModalFooter>
     </Modal>
   );

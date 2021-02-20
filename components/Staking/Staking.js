@@ -11,7 +11,6 @@ import plus from '../../public/plus.svg';
 import chevron from '../../public/chevron.svg';
 import { BonusProgressBar } from '../BonusProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
-import { ReceiptModal } from '../Modal';
 import { ModalContext } from '../../contexts';
 
 const Staking = ({ onWalletConnect }) => {
@@ -24,7 +23,6 @@ const Staking = ({ onWalletConnect }) => {
   const [ethAmountText, setEthAmountText] = useState('');
   const [ethAmount, setEthAmount] = useState(false);
   const [validEthAmount, setValidEthAmount] = useState(true);
-  const [openReceiptModal, setOpenReceiptModal] = useState(false);
 
   const modalContext = useContext(ModalContext);
 
@@ -78,6 +76,42 @@ const Staking = ({ onWalletConnect }) => {
       ethAmountText.toString().trim() !== '';
   };
 
+  const getContributionWithBonus = (amount, bonusPercent) => {
+    bonusPercent = parseFloat(bonusPercent);
+
+    if (Number.isNaN(bonusPercent)) {
+      return 0;
+    }
+
+    return amount * bonusPercent;
+  };
+
+  const getContributionConfirmationModalContent = (contributionAmountE18, timeBonus, referralBonus) => {
+    timeBonus = parseFloat(timeBonus) || 0;
+    referralBonus = parseFloat(referralBonus) || 0;
+
+    const baseContributionAmount = contributionAmountE18 / 1e18;
+    const timeBonusAmount = getContributionWithBonus(baseContributionAmount, timeBonus);
+    const referralBonusAmount = getContributionWithBonus(baseContributionAmount, referralBonus);
+    const total = baseContributionAmount + timeBonus + referralBonusAmount;
+
+    return <div>
+      <div className="text-lg">
+        Contribution Amount: <span className="text-green-500">{baseContributionAmount.toLocaleString()} eth</span>
+      </div>
+      <div className="text-lg">
+        Time Bonus: <span className="text-green-500">+ {timeBonusAmount.toLocaleString()} eth</span>
+      </div>
+      <div className="text-lg">
+        Referral Bonus: <span className="text-green-500">+ {referralBonusAmount.toLocaleString()} eth</span>
+      </div>
+      <hr />
+      <div className="text-lg">
+        Total: <span className="text-green-500">{total.toLocaleString()} eth</span>
+      </div>
+    </div>
+  };
+
   const onContribute = async () => {
     if (!yam || !wallet.account) {
       return modalContext.showError('Wallet Connect', 'Please connect to your wallet to continue');
@@ -88,13 +122,29 @@ const Staking = ({ onWalletConnect }) => {
     }
 
     const agreement = await yam.contracts.LSW.methods.liquidityGenerationParticipationAgreement().call();
-    const confimed = await modalContext.showConfirm('Agreement', agreement, 'I Agree', 'Cancel');
+    const agreed = await modalContext.showConfirm('Agreement', agreement, 'I Agree', 'Cancel');
 
-    if (!confimed) {
+    if (!agreed) {
       return Promise.reject();
     }
 
     const value = ethers.utils.parseEther(ethAmount.toString());
+
+    const contributionConfirmed = await modalContext.showConfirm(
+      'Transaction Confirmation',
+      getContributionConfirmationModalContent(value, lswStats.data.currentTimeBonus, lswStats.data.currentReferralBonus)
+    );
+
+    if (!contributionConfirmed) {
+      return Promise.reject();
+    }
+
+    const transactionMessage = modalContext.showControlledMessage('Transaction in progress...',
+      <button type="button" className="bg-rose-600" disabled>
+        <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24" />
+        {/* TODO: style with animation doesn't work ... Transaction in progress... */}
+      </button>
+    );
 
     const transaction = await yam.contracts.LSW.methods.contributeLiquidity(
       true,
@@ -107,12 +157,13 @@ const Staking = ({ onWalletConnect }) => {
         from: wallet.account,
         value: value.toString()
       });
-
       await transaction.send({
         from: wallet.account,
         value: value.toString(),
         gas: transactionGasEstimate
       });
+
+      transactionMessage.close();
     } catch (error) {
       return modalContext.showError('Error contributing', 'An error occured while contributing');
     }
@@ -140,7 +191,10 @@ const Staking = ({ onWalletConnect }) => {
                     {t('yourContribution')} {lswStats.data.totalEthContributed}
                   </div>
                   <div className="flex space-x-160 sm:flex-wrap sm:space-x-0">
-                    <iframe title="contribution" src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="100%" height="391" />
+                    <iframe style={{
+                      marginLeft: 'auto',
+                      marginRight: 'auto'
+                    }} title="contribution" src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="95%" height="391" />
                   </div>
                 </div>
                 <div className="flex h-128 border-2 pt-2 border-black border-t-0 pl-9 sm:block sm:pb-5 sm:pl-2">
@@ -195,6 +249,7 @@ const Staking = ({ onWalletConnect }) => {
                               text="Contribute"
                               textLoading="Contributing..."
                               secondaryLooks
+                              disabled={lswStats.timeStart === DATA_UNAVAILABLE}
                               onClick={onContribute}
                             />
                           </div>
@@ -210,18 +265,6 @@ const Staking = ({ onWalletConnect }) => {
             </div>
           </div>
         </section>
-        <ReceiptModal
-          title="Receipt"
-          content={lswStats}
-          contribution={ethAmountText}
-          onOpen={openReceiptModal}
-          onClose={() => setOpenReceiptModal(false)}
-          onOk={() => {
-            setOpenReceiptModal(false);
-          }}
-          cancelContent="Cancel"
-          okContent="Confirm"
-        />
       </main>
     </section>
   );

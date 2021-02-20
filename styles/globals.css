@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @font-face {
   font-family: Wulkan Display;
   src: url('/fonts/Wulkan/Wulkan-Display-Medium.woff2') format('woff2'), /* Super Modern Browsers */

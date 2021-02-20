@@ -10,7 +10,6 @@ const ConfirmModal = () => {
 
   return (
     <Modal
-      type={type}
       isOpen={type === ModalType.Confirm}
       onClose={onClose}
       style={{

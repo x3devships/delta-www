@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import useTranslation from 'next-translate/useTranslation';
 import { Button, Modal, ModalHeader, ModalBody } from '@windmill/react-ui';
 import { useWallet } from 'use-wallet';
@@ -65,7 +66,7 @@ const ConnectionModal = ({ closeModal, isModalOpen }) => {
                   }}
                 >
                   <span>{t('installMetaMask')}</span>
-                  <img src={plus} className="m-auto pl-8" />
+                  <img alt="+" src={plus} className="m-auto pl-8" />
                 </Button>
               </div>
               <div>
@@ -80,7 +81,7 @@ const ConnectionModal = ({ closeModal, isModalOpen }) => {
                   }}
                 >
                   <span>{t('howToInstall')}</span>
-                  <img src={plus} className="m-auto pl-8" />
+                  <img alt="+" src={plus} className="m-auto pl-8" />
                 </Button>
               </div>
             </div>

@@ -27,6 +27,23 @@ const ModalProvider = ({ children }) => {
     });
   };
 
+  const showControlledMessage = (title, content) => {
+    const props = { title, content };
+
+    setModal({
+      ...props,
+      type: ModalType.Message,
+      onOk: undefined,
+      onClose: () => false,
+    });
+
+    return {
+      close: () => {
+        setModal();
+      }
+    }
+  };
+
   const showMessage = async (title, content, okContent = 'Ok') => {
     return _showModal(ModalType.Message, { title, content, okContent });
   };
@@ -45,7 +62,8 @@ const ModalProvider = ({ children }) => {
         ...modal,
         showMessage,
         showError,
-        showConfirm
+        showConfirm,
+        showControlledMessage
       }}
     >
       {children}
