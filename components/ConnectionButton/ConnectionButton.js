@@ -17,7 +17,7 @@ const LimitedWindow = ({ text, image, url }) => {
       </Button>
       <Button
         onClick={gourl}
-        className="bg-black shadow-xl flex-grow p-4 mt-4 inline-block text-white text-center uppercase flex font-gt_americare"
+        className="bg-black shadow-xl flex-grow p-4 mt-4 inline-block text-white text-center uppercase flex font-gt_america"
         style={{
           minWidth: '14.1%',
           justifyContent: 'space-between',

@@ -59,7 +59,6 @@ export default function Main() {
         }}
       />
       <Head>
-        <link rel="preload" href="/fonts/Wulkan/WulkanDisplay-Medium.otf" as="font" crossOrigin="" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -68,6 +67,30 @@ export default function Main() {
         <link rel="shortcut icon" href="/android-chrome-192x192.png" />
         <meta name="msapplication-TileColor" content="#000000" />
         <meta name="theme-color" content="#ffffff" />
+        <link
+          rel="preload"
+          href="/fonts/Wulkan/Wulkan-Display-Medium.woff"
+          as="font"
+          crossOrigin=""
+        />
+        <link
+          rel="preload"
+          href="/fonts/Wulkan/Wulkan-Display-Medium.woff"
+          as="font"
+          crossOrigin=""
+        />
+        <link
+          rel="preload"
+          href="/fonts/GT-America/GT-America-Standard-Regular.woff"
+          as="font"
+          crossOrigin=""
+        />
+        <link
+          rel="preload"
+          href="/fonts/GT-America/GT-America-Standard-Regular.woff2"
+          as="font"
+          crossOrigin=""
+        />
       </Head>
       <div className="w-full flex justify-center flex-col bg-backgroundWebsite">
         <Header onWalletConnect={onWalletConnect} />

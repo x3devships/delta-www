@@ -23,7 +23,7 @@ const header = ({ onWalletConnect }) => {
       <div>
         <button
           onClick={() => (connectWalletVisible ? onWalletConnect() : wallet.reset())}
-          className="inline-block text-sm px-4 py-2 leading-none text-white hover:border-transparent mt-4 lg:mt-0 uppercase font-gt_americare"
+          className="inline-block text-sm px-4 py-2 leading-none text-white hover:border-transparent mt-4 lg:mt-0 uppercase font-gt_america"
         >
           {connectWalletVisible ? <>{t('connectWallet')}</> : <>{t('disconnect')}</>}
         </button>

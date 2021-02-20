@@ -90,7 +90,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
                     <div className="grid grid-cols-2 gap-x-96 sm:block" style={{ justifyContent: 'space-between' }}>
                       <div>
                         <div className="text-4xl pb-4 font-wulkan">{t('48Hours')}</div>
-                        <div className="pb-2 font-gt_americare">{t('contracts')}</div>
+                        <div className="pb-2 font-gt_america">{t('contracts')}</div>
                         <ConnectionButton
                           url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/Periphery/DELTA_Limited_Staking_Window.sol"
                           text="LSW"
@@ -101,7 +101,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
                         <br />
                         <hr />
                         <br />
-                        <div className="text-4xl pb-4">{t('deltaReferral')} </div>
+                        <div className="text-4xl pb-4 font-wulkan">{t('deltaReferral')} </div>
                         <div className="pb-2 sm:mr-2.5">
                           <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
                         </div>

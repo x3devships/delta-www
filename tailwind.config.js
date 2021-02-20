@@ -4,6 +4,12 @@ module.exports = windmill({
   purge: ['./pages/**/*.{js,jsx}', './components/**/*.{js,jsx}'],
   darkMode: true,
   theme: {
+    fontFamily: {
+      wulkan: ['Wulkan Display'],
+      gt_america: ['GT America'],
+      sans: ['GT America', 'sans-serif'],
+      serif: ['GT America', 'serif'],
+    },
     screens: {
       '2xl': { max: '1535px' },
       // => @media (max-width: 1535px) { ... }
@@ -40,13 +46,6 @@ module.exports = windmill({
       backgroundButton: '#C7C7C7',
       greenText: '#4DA560',
       backgroundWebsite: '#ebebeb'
-    },
-    extend: {
-      fontFamily: {
-        r: ['robotoRegular'],
-        Wulkan: ['wulkan'],
-        gt_americare: ['gt_americaregular']
-      }
     }
   },
   variants: {

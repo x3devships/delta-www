@@ -1,11 +1,12 @@
-import Head from 'next/head';
 import { Windmill } from '@windmill/react-ui';
 import { UseWalletProvider } from 'use-wallet';
 import { WEB3_PROVIDER_URL } from '../config';
 import { WalletProvider, YamProvider, Web3Provider, SettingsProvider, ModalProvider } from '../contexts';
 import theme from '../config/default.theme';
 
+import '../styles/globals.css';
 import 'tailwindcss/tailwind.css';
+
 import { ModalContainer } from '../components/Modal';
 
 function App({ Component, pageProps }) {
@@ -21,10 +22,6 @@ function App({ Component, pageProps }) {
 const Providers = props => {
   return (
     <div>
-      <Head>
-        <link rel="preload" href="/fonts/Wulkan/WulkanDisplay-Medium.woff" as="font" crossOrigin="" />
-        <link rel="preload" href="/fonts/Roboto-Regular.woff" as="font" crossOrigin="" />
-      </Head>{' '}
       <SettingsProvider>
         <UseWalletProvider
           chainId={1}

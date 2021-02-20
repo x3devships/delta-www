@@ -137,7 +137,7 @@ const Staking = ({ onWalletConnect }) => {
                 <div className="flex h-128 border-2 pt-2 border-black border-t-0 pl-9 sm:block sm:pb-5 sm:pl-2">
                   <div className="flex-1 m-auto w-11/12 py-9 pl-9 mb-9 sm:pl-0">
                     <div className="text-4xl pb-4 font-wulkan">{t('bonus')}</div>
-                    <div className="pb-2 font-gt_americare" dangerouslySetInnerHTML={{ __html: t('earnWithDelta') }} />
+                    <div className="pb-2" dangerouslySetInnerHTML={{ __html: t('earnWithDelta') }} />
                     <div>
                       {connectWalletVisible ? (
                         <Button
