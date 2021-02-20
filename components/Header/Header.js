@@ -16,7 +16,7 @@ const header = ({ onWalletConnect }) => {
   }, [wallet]);
 
   return (
-    <nav className="flex items-center justify-between flex-wrap bg-black p-6">
+    <nav className="flex items-center justify-between flex-wrap bg-black p-6 xs:flex-nowrap">
       <a href="/" className="flex items-center flex-no-shrink text-white mr-6">
         <img src={logo} height="150" width="150" />
       </a>

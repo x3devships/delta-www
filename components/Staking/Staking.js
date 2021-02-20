@@ -126,8 +126,8 @@ const Staking = ({ onWalletConnect }) => {
         <section className="flex-1 pt-3 md:p-6 lg:mb-0 lg:min-h-0 lg:min-w-0">
           <div className="flex flex-col lg:flex-row w-full">
             <div className="w-full lg:flex-1 px-3 min-h-0 min-w-0">
-              <div className="w-full min-h-0 min-w-0">
-                <div className="m-auto h-80 border-black border-2 border-b">
+              <div className="w-full min-h-0 min-w-0 xs:pb-50">
+                <div className="m-auto h-80 border-black border-2 border-b xs:h-96">
                   <div className="flex">
                     <div className="m-auto w-10/12 text-4xl py-9 font-wulkan">{t('limitedStaking')}</div>
                     <img src={chevron} alt="chevron" className="m-auto" />

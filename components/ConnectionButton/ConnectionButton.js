@@ -7,7 +7,7 @@ const LimitedWindow = ({ text, image, url }) => {
     window.open(url);
   }
   return (
-    <div className="flex w-80">
+    <div className="flex w-80 xs:w-72 xs:-m-2">
       <Button
         onClick={gourl}
         className="shadow-xl p-4 mt-4 inline-block text-white uppercase flex ml-2"
