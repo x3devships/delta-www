@@ -228,6 +228,7 @@ const Staking = ({ onWalletConnect }) => {
         <div className="bg-white flex border border-black">
           <div className="p-3">
             <Input
+              type="number"
               value={ethAmountText}
               placeholder='0.00'
               onChange={onEthAmountChanged}
@@ -244,6 +245,9 @@ const Staking = ({ onWalletConnect }) => {
           </Button>
         </div>
       </div>
+      {!validEthAmount && <HelperText valid={false}>{t('validContribution')}</HelperText>}
+      <div className="text-gray-600 font-thin text-sm">Staked ETH cannot be withdrawn</div>
+
       <TransactionButton
         text="Contribute"
         textLoading="Contributing..."
@@ -281,7 +285,7 @@ const Staking = ({ onWalletConnect }) => {
                     <div className="font-bold">{t('yourContribution')}</div><div>{lswStats.data.totalEthContributed.toLocaleString()} ETH</div>
                   </div>
                 </div>
-                <div className="flex h-128 border-2 pt-2 border-black border-t-0 pl-9 sm:block sm:pb-5 sm:pl-2">
+                <div className="flex h-128 border-2 pt-2 border-black border-t-0 pl-9 sm:block sm:pb-5 sm:pl-2 p-1">
                   <div className="flex-1 m-auto py-9 pl-9 mb-9 sm:pl-0">
                     <div className="text-4xl pb-4 font-wulkan">{t('contribute')}</div>
                     <div className="pb-2" dangerouslySetInnerHTML={{ __html: t('earnWithDelta') }} />
@@ -303,7 +307,6 @@ const Staking = ({ onWalletConnect }) => {
                         </Button>
                       ) : renderContributeForm()}
                     </div>
-                    {!validEthAmount && <HelperText valid={false}>{t('validContribution')}</HelperText>}
                   </div>
                   <div className="flex-1 pr-9 pt-9">
                     <BonusProgressBar />

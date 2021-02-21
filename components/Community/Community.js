@@ -1,5 +1,4 @@
 import useTranslation from 'next-translate/useTranslation';
-import discord from '../../public/Discord.svg';
 import github from '../../public/Github.svg';
 import telegram from '../../public/Telegram.svg';
 import twitter from '../../public/Twitter.svg';

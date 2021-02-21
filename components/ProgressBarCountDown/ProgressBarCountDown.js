@@ -25,7 +25,7 @@ const ProgressBarCountDown = ({ lswStats }) => {
   };
 
   return (
-    <div className="m-auto w-11/12 text-center">
+    <div className="m-auto p-2 text-center">
       <div className="border-black border p-2">
         <div className="w-full bg-backgroundLightPurple h-16 w-32">
           <div
@@ -34,9 +34,9 @@ const ProgressBarCountDown = ({ lswStats }) => {
           />
         </div>
       </div>
-      <div className="mt-8">
-        <div className="text-2xl">{renderCountdown()}</div>
-        <div className="text-xs font-thin">Until Limited Staking Window Is Closed</div>
+      <div className="mt-3">
+        <div className="text-2xl md:text-xl">{renderCountdown()}</div>
+        <div className="text-xs font-thin mt-2">Until Limited Staking Window Is Closed</div>
       </div>
     </div>
   );
