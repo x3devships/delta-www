@@ -12,6 +12,7 @@ import chevron from '../../public/chevron.svg';
 import { BonusProgressBar } from '../BonusProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
 import { ModalContext } from '../../contexts';
+import { errors } from '../../helpers';
 
 const Staking = ({ onWalletConnect }) => {
   const { t } = useTranslation('home');
@@ -191,9 +192,11 @@ const Staking = ({ onWalletConnect }) => {
 
     const transaction = await yam.contracts.LSW.methods.contributeLiquidity(
       true,
-      ethers.constants.AddressZero,
+      lswStats.data.refAddress, // will be address 0x0 if not defined
       lswStats.data.refCode // will be 0 if not defined
     );
+
+    console.log(transaction);
 
     try {
       const transactionGasEstimate = await transaction.estimateGas({
@@ -216,7 +219,9 @@ const Staking = ({ onWalletConnect }) => {
         </div>
       </>)
     } catch (error) {
-      return modalContext.showError('Error contributing', 'An error occured while contributing');
+      const decodedError = errors.getTransactionError(error, 'An error occured while contributing');
+      console.log(decodedError);
+      return modalContext.showError('Error contributing', decodedError.message);
     }
 
     return Promise.resolve();

@@ -17,6 +17,7 @@ const initialState = {
   totalSeconds: DATA_UNAVAILABLE,
   currentTimeBonus: DATA_UNAVAILABLE,
   refCode: DATA_UNAVAILABLE,
+  refAddress: ethers.constants.AddressZero,
   totalEthContributed: DATA_UNAVAILABLE,
   totalWETHEarmarkedForReferrers: DATA_UNAVAILABLE
 };
@@ -36,25 +37,30 @@ const useLSWStats = () => {
     const totalWETHEarmarkedForReferrers = (await yam.contracts.LSW.methods.totalWETHEarmarkedForReferrers().call()) / 1e18;
     const totalSeconds = parseInt(await yam.contracts.LSW.methods.LSW_RUN_TIME().call());
     const currentTimestamp = Date.now() / 1000;
+    const lastRef = localStorage.getItem('lastRef');
+    const walletAddress = yam.web3.utils.toChecksumAddress(wallet.account);
+
     let currentReferralBonus = 0;
     let refAddress = ethers.constants.AddressZero;
+    let refCode = 0;
 
-    let refCode = parseInt(localStorage.getItem('lastRef'));
-
-    /**
-     * Verify if the referral id is good.
-     */
-    if (!Number.isNaN(refCode)) {
-      let address = await yam.contracts.LSW.methods.referralCodeMappingIndexedByID(refCode).call();
-      address = yam.web3.utils.toChecksumAddress(address);
-      const walletAddress = yam.web3.utils.toChecksumAddress(wallet.account);
-
-      if (address !== ethers.constants.AddressZero || address !== walletAddress) {
-        currentReferralBonus = REFERRAL_BONUS;
+    // Check if the ref code is a valid ethereum address
+    if (yam.web3.utils.isAddress(lastRef)) {
+      const address = yam.web3.utils.toChecksumAddress(lastRef);
+      if (address !== walletAddress) {
         refAddress = address;
       }
-    } else {
-      refCode = 0;
+    }
+
+    // Check if the referral code is an id
+    else if (!Number.isNaN(parseInt(lastRef))) {
+      let address = await yam.contracts.LSW.methods.referralCodeMappingIndexedByID(lastRef).call();
+      address = yam.web3.utils.toChecksumAddress(address);
+
+      if (address !== ethers.constants.AddressZero && address !== walletAddress) {
+        currentReferralBonus = REFERRAL_BONUS;
+        refCode = lastRef;
+      }
     }
 
     let percentCompletion = 0;
@@ -70,6 +76,7 @@ const useLSWStats = () => {
       currentTimeBonus = MAX_TIME_BONUS * percentLeft;
     }
 
+    console.log(refCode, refAddress);
     setData({
       timeStart,
       timeEnd,
