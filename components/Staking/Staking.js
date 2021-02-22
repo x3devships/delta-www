@@ -273,15 +273,15 @@ const Staking = ({ onWalletConnect }) => {
     </DeltaPanel>
     <DeltaSectionBlock>
       <div className="block md:grid md:grid-cols-2 ">
-        <div className="pt-4">
+        <div className="pt-0 md:pt-4">
           <DeltaTitleH2>{t('lswExplanationTitle')}</DeltaTitleH2>
-          <div className="text-justify  mt-4 md:mt-2 pr-8 break-normal">
-            <p className="pt-4">Delta is using a special event called Limited Staking Window to launch its tokens.
+          <div className="text-justify mt-4 md:mt-2 pr-0 md:pr-8 break-normal">
+            <p className="pt-0 md:pt-4">Delta is using a special event called Limited Staking Window to launch its tokens.
             The Limited Staking Window allows participants to stake Ethereum and receive rLP tokens in return.
    at the end of the Limited Staking Window (March 4th, 9:30AM PST). </p>
-            <p className="pt-4"> The window will remain open for 10 days, rewarding early stakers with a bonus of up to 30%.</p>
-            <p className="pt-4"> Once the Limited Staking Window closed, participants can claim rLP tokens and stake them in the Deep Farming Vault to earn yield. </p>
-            <p className="pt-4"> The Delta token will launch on Uniswap and become tradable while the first liquidity rebasing will increase the minting price of rLP by ~150%.</p>
+            <p className="pt-0 md:pt-4"> The window will remain open for 10 days, rewarding early stakers with a bonus of up to 30%.</p>
+            <p className="pt-0 md:pt-4"> Once the Limited Staking Window closed, participants can claim rLP tokens and stake them in the Deep Farming Vault to earn yield. </p>
+            <p className="pt-0 md:pt-4"> The Delta token will launch on Uniswap and become tradable while the first liquidity rebasing will increase the minting price of rLP by ~150%.</p>
 
 
 
