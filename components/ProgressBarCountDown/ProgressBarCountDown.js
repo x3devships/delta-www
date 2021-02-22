@@ -25,16 +25,16 @@ const ProgressBarCountDown = ({ lswStats }) => {
   };
 
   return (
-    <div className="m-auto p-2 text-center">
-      <div className="border-black border p-2">
-        <div className="w-full bg-backgroundLightPurple h-16 w-32">
+    <div className="m-auto text-center">
+      <div>
+        <div className="w-full bg-purple-100 min-h-12 border border-purple-500 p-1">
           <div
-            className="bg-backgroundLightPurple bg-gradient-to-r from-gradiantBlue to-gradiantPurple leading-none py-1 h-16 w-32"
+            className="bg-purple bg-purple-400 leading-none h-12"
             style={{ width: `${lswStats.data.percentCompletion * 100}%` }}
           />
         </div>
       </div>
-      <div className="mt-3">
+      <div className="mt-8">
         <div className="text-2xl md:text-xl">{renderCountdown()}</div>
         <div className="text-xs font-thin mt-2">Until Limited Staking Window Is Closed</div>
       </div>

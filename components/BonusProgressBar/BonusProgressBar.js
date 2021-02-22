@@ -39,10 +39,10 @@ const BonusProgressBar = () => {
   return (
     <div className="m-auto text-center">
       <div>
-        <div className="w-full bg-backgroundLightPurple h-16 w-32 border border-black">
+        <div className="w-full bg-green-100 min-h-12 border border-green-500 p-1">
           <div
-            className="bg-backgroundLightPurple bg-gradient-to-r from-gradiantGreen to-gradiantLightGreen leading-none w-32 h-16 border border-black border-r-0"
-            style={{ width: `${(bonus / lwfStats.data.maxBonus) * 100}%`, position: 'relative', top: '-1px', left: '-1px' }}
+            className="bg-green bg-green-400 leading-none h-12"
+            style={{ width: `${(bonus / lwfStats.data.maxBonus) * 100}%` }}
           />
         </div>
       </div>

@@ -20,7 +20,7 @@ const hero = ({ onWalletConnect }) => {
 
   return (
     <div className="pt-10 pb-20">
-      <div className="px-3 lg:2/6 xl:w-3/4 mt-20 lg:mt-40 lg:ml-16 text-left sm:ml-8">
+      <div className="px-3 lg:2/6 xl:w-3/4 mt-20 ">
         <div className="text-6xl font-semibold text-gray-900 leading-none font-wulkan">
           {t('limitedStakingFirstPart')} <br /> {t('limitedStakingSecondPart')}
         </div>

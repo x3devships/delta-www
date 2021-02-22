@@ -1,5 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 import medium from '../../public/Medium.svg';
+import pdf from '../../public/pdf.svg';
 
 import { FancyButton } from '../Buttons';
 import { DeltaPanel, DeltaSection } from '../Section';
@@ -13,23 +14,23 @@ const LimitedWindow = () => {
       <DeltaTitleH2>
         <div>{t('deltaAcademy')}</div>
       </DeltaTitleH2>
-      <DeltaPanel>
+      <div className="mt-6">
         <FancyButton
-          url="https://medium.com/delta-financial/introducing-delta-financial-769d387e9430"
-          text="ANNOUNCING DELTA"
+          url="https://link.medium.com/w9qBWOVQKdb"
+          text="Introducing Delta"
           image={medium}
         />
         <FancyButton
-          url="https://medium.com/delta-financial/delta-tokenizing-open-vested-liquidity-7b115d03fb5"
-          text="DELTA BASICS"
+          url="https://link.medium.com/GLMhwp8d3db"
+          text="Limited Staking Window"
           image={medium}
         />
         <FancyButton
-          url="https://medium.com/delta-financial/deep-farming-vault-yield-maximizing-strategy-a453a24a68d4"
-          text="HOW TO PARTICIPATE"
-          image={medium}
+          url="https://gateway.pinata.cloud/ipfs/Qmaf1WduB8mzYoL5nqAvcTh4tvf7RqaRBTWZohM2oC9jBg/Delta_Summary.pdf"
+          text="Delta Onepager"
+          image={pdf}
         />
-      </DeltaPanel>
+      </div>
     </DeltaPanel>
   </DeltaSection>;
 };

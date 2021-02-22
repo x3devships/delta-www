@@ -12,7 +12,7 @@ import { BonusProgressBar } from '../BonusProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
 import { ModalContext } from '../../contexts';
 import { errors } from '../../helpers';
-import { DeltaSection, DeltaSectionBlock } from '../Section';
+import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
 import { DeltaTitleH2 } from '../Title';
 
 const Staking = ({ onWalletConnect }) => {
@@ -268,7 +268,9 @@ const Staking = ({ onWalletConnect }) => {
   };
 
   return <DeltaSection title={t('limitedStaking')}>
-    <ProgressBarCountDown lswStats={lswStats} />
+    <DeltaPanel>
+      <ProgressBarCountDown lswStats={lswStats} />
+    </DeltaPanel>
     <DeltaSectionBlock>
       <div className="block md:grid md:grid-cols-2">
         <div>
@@ -305,7 +307,10 @@ const Staking = ({ onWalletConnect }) => {
             ) : renderContributeForm()}
           </div>
         </div>
-        <div className="mt-4 md:mt-2"> <BonusProgressBar /></div>
+        <div className="mt-6 md:mt-0">
+          <DeltaTitleH2>Your Bonus</DeltaTitleH2>
+          <div className="mt-4 md:mt-2"> <BonusProgressBar /></div>
+        </div>
       </div>
     </DeltaSectionBlock>
   </DeltaSection>

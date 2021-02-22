@@ -1,3 +1,7 @@
+/* eslint-disable react/no-danger */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 import { useContext, useEffect, useState } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
@@ -9,7 +13,7 @@ import github from '../../public/Github.svg';
 import { FancyButton } from '../Buttons';
 import { TransactionButton } from '../Button';
 import { DeltaPanel, DeltaSection } from '../Section';
-import { DeltaTitleH1 } from '../Title';
+import { DeltaTitleH2 } from '../Title';
 import { errors } from '../../helpers';
 import { ModalContext } from '../../contexts';
 
@@ -19,7 +23,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
   const lswRefCode = useLSWReferralCode();
   const [generating, setGenerating] = useState(false);
   const { t } = useTranslation('home');
-  const [connectWalletVisible, setConnectWalletVisible] = useState(true);
+  const [_, setConnectWalletVisible] = useState(true);
   const modalContext = useContext(ModalContext);
 
   useEffect(() => {
@@ -72,7 +76,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
   const renderGenerateLinkButton = () => {
     if (lswRefCode.referralId !== DATA_UNAVAILABLE) {
       return (
-        <div className="w-full md:w-6/12 bg-black shadow-xl p-4 mt-4 inline-block text-white font-mono sm:mr-2.5">
+        <div className="w-full md:w-6/12 bg-black shadow-xl p-4 mt-6 inline-block text-white font-mono sm:mr-2.5">
           <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
           <div onClick={copy} className="bg-backgroundPage shadow-xl p-4 mt-4 inline-block text-black flex font-mono">
             <span>{copied ? `Copied !` : `delta.financial/join/${lswRefCode.referralId}`}</span>
@@ -97,14 +101,14 @@ const ReferralProgram = ({ onWalletConnect }) => {
       <FancyButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery" text="Periphery" image={github} />
     </DeltaPanel>
     <DeltaPanel>
-      <DeltaTitleH1>
+      <DeltaTitleH2>
         {t('deltaReferral')}
-      </DeltaTitleH1>
+      </DeltaTitleH2>
     </DeltaPanel>
     <DeltaPanel>
       <div className="w-full md:w-6/12">{t('referral')}</div>
+      {renderGenerateLinkButton()}
     </DeltaPanel>
-    <DeltaPanel>{renderGenerateLinkButton()}</DeltaPanel>
   </DeltaSection>
 };
 
