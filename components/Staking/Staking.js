@@ -267,7 +267,7 @@ const Staking = ({ onWalletConnect }) => {
     </div>;
   };
 
-  return <DeltaSection title={t('limitedStaking')}>
+  return <DeltaSection center title={t('limitedStaking')}>
     <DeltaPanel>
       <ProgressBarCountDown lswStats={lswStats} />
     </DeltaPanel>

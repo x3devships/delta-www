@@ -87,11 +87,11 @@ const ReferralProgram = ({ onWalletConnect }) => {
     return <TransactionButton text={getCopyForButton()} secondaryLooks onClick={() => (wallet.account ? onGenerateCode() : onWalletConnect())} />;
   };
 
-  return <DeltaSection title={t('48Hours')}>
-    <DeltaPanel>
+  return <DeltaSection title={t('deltaReferral')}>
+    {/* <DeltaPanel>
       <div>{t('contracts')}</div>
-    </DeltaPanel>
-    <DeltaPanel>
+    </DeltaPanel> */}
+    {/* <DeltaPanel>
       <FancyButton
         url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/Periphery/DELTA_Limited_Staking_Window.sol"
         text="LSW"
@@ -99,12 +99,12 @@ const ReferralProgram = ({ onWalletConnect }) => {
       />
       <FancyButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Governance" text="Governance" image={github} />
       <FancyButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery" text="Periphery" image={github} />
-    </DeltaPanel>
-    <DeltaPanel>
+    </DeltaPanel> */}
+    {/* <DeltaPanel>
       <DeltaTitleH2>
         {t('deltaReferral')}
       </DeltaTitleH2>
-    </DeltaPanel>
+    </DeltaPanel> */}
     <DeltaPanel>
       <div className="w-full md:w-6/12">{t('referral')}</div>
       {renderGenerateLinkButton()}
