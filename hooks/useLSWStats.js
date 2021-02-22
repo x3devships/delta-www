@@ -49,6 +49,8 @@ const useLSWStats = () => {
       const address = yam.web3.utils.toChecksumAddress(lastRef);
       if (address !== walletAddress) {
         refAddress = address;
+        currentReferralBonus = REFERRAL_BONUS;
+
       }
     }
 

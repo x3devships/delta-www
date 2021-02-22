@@ -9,6 +9,7 @@ const BonusProgressBar = () => {
 
   const [bonus, setBonus] = useState(DATA_UNAVAILABLE);
   const lwfStats = useLSWStats();
+  console.log(lwfStats.data.currentReferralBonus)
 
   useEffect(() => {
     if (lwfStats.data.currentTimeBonus !== DATA_UNAVAILABLE) {
@@ -23,14 +24,14 @@ const BonusProgressBar = () => {
   const renderReferral = () => {
     if (lwfStats.data.refCode > 0) {
       return <>
-        <div className="text-xs font-bold text-greenText mt-1">You are getting a bonus of 10% for being referred by</div>
+        <div className="text-xs font-bold text-greenText mt-1">You are also getting a bonus of 10% for being referred by</div>
         <div className="text-xs font-bold text-greenText">Referral ID: {lwfStats.data.refCode}</div>
       </>
     }
 
     if (lwfStats.data.refAddress !== ethers.constants.AddressZero) {
       return <>
-        <div className="text-xs font-bold text-greenText mt-1">You are getting a bonus of 10% for being referred by</div>
+        <div className="text-xs font-bold text-greenText mt-1">You are also getting a bonus of 10% for being referred by</div>
         <div className="text-xs font-bold text-greenText">Referral Address: {lwfStats.data.refAddress}</div>
       </>
     }
