@@ -28,6 +28,7 @@
     "bignumber.js": "^9.0.0",
     "classnames": "^2.2.6",
     "ethers": "^5.0.31",
+    "js-cookie": "^2.2.1",
     "moment": "^2.29.1",
     "next": "10.0.4",
     "next-absolute-url": "^1.2.2",

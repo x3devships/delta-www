@@ -9,13 +9,12 @@ import useCopy from '@react-hook/copy';
 import { useYam } from '../../hooks';
 import useLSWReferralCode from '../../hooks/useLSWReferralCode';
 import { DATA_UNAVAILABLE } from '../../config';
-import github from '../../public/Github.svg';
-import { FancyButton } from '../Buttons';
 import { TransactionButton } from '../Button';
 import { DeltaPanel, DeltaSection } from '../Section';
-import { DeltaTitleH2 } from '../Title';
+import { DeltaTitleH3 } from '../Title';
 import { errors } from '../../helpers';
 import { ModalContext } from '../../contexts';
+import { ConnectWalletButton } from '../Buttons';
 
 const ReferralProgram = ({ onWalletConnect }) => {
   const yam = useYam();
@@ -23,7 +22,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
   const lswRefCode = useLSWReferralCode();
   const [generating, setGenerating] = useState(false);
   const { t } = useTranslation('home');
-  const [_, setConnectWalletVisible] = useState(true);
+  const [connectWalletVisible, setConnectWalletVisible] = useState(true);
   const modalContext = useContext(ModalContext);
 
   useEffect(() => {
@@ -105,10 +104,30 @@ const ReferralProgram = ({ onWalletConnect }) => {
         {t('deltaReferral')}
       </DeltaTitleH2>
     </DeltaPanel> */}
+
+
+
     <DeltaPanel>
       <div className="w-full md:w-6/12">{t('referral')}</div>
       {renderGenerateLinkButton()}
     </DeltaPanel>
+
+    {/* <DeltaPanel>
+      <div className="block md:grid md:grid-cols-2 md:gap-6 ">
+        <div className="md:border-0 md:border-gray-400 md:border-r md:pr-2">
+          <div className="w-full md:w-6/12">{t('referral')}</div>
+          <div className="mt-6 md:mt-0">
+            {renderGenerateLinkButton()}
+          </div>
+        </div>
+        <div className="mt-6 md:mt-0">
+          {connectWalletVisible ? <ConnectWalletButton onWalletConnect={onWalletConnect} /> :
+            <>
+              <DeltaTitleH3>Your Referral Rewards</DeltaTitleH3>
+            </>}
+        </div>
+      </div>
+    </DeltaPanel> */}
   </DeltaSection>
 };
 

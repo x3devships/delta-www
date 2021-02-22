@@ -9,10 +9,13 @@ import { LimitedWindow } from '../components/LimitedWindow';
 import { Community } from '../components/Community';
 import { ReferralProgram } from '../components/ReferralProgram';
 import { ConnectionModal } from '../components/Modal';
+import { useLSWStats } from '../hooks';
 
 export default function Main() {
   const wallet = useWallet();
   const [isWalletConnectModalOpen, setIsModalOpen] = useState(false);
+
+  const lswStats = useLSWStats();
 
   const closeWalletConnectModal = () => {
     setIsModalOpen(false);
@@ -98,8 +101,8 @@ export default function Main() {
         <div className="w-full flex flex-col max-w-6xl self-center p-2 md:p-6">
           {' '}
           <Hero onWalletConnect={onWalletConnect} />
-          <Staking onWalletConnect={onWalletConnect} />
-          <ReferralProgram onWalletConnect={onWalletConnect} />
+          <Staking onWalletConnect={onWalletConnect} lswStats={lswStats} />
+          <ReferralProgram onWalletConnect={onWalletConnect} lswStats={lswStats} />
           <LimitedWindow />
           <Community />
           <ConnectionModal isModalOpen={isWalletConnectModalOpen} closeModal={closeWalletConnectModal} />

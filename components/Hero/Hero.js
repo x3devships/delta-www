@@ -1,8 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
-import { Button } from '@windmill/react-ui';
 import { useWallet } from 'use-wallet';
 import { useEffect, useState } from 'react';
-import plus from '../../public/plus.svg';
+import { ConnectWalletButton } from '../Buttons';
 
 const hero = ({ onWalletConnect }) => {
   const { t } = useTranslation('home');
@@ -26,20 +25,7 @@ const hero = ({ onWalletConnect }) => {
         </div>
         <div className="mt-6 text-xl xl:w-2/4 text-true-gray-500 antialiased font-wulkan sm:w-full" dangerouslySetInnerHTML={{ __html: t('deltaLSW') }} />
         {connectWalletVisible && (
-          <Button
-            onClick={() => onWalletConnect()}
-            className="p-4 mt-4 inline-block text-white uppercase flex ml-2"
-            style={{
-              marginRight: '1px',
-              borderRadius: '0px',
-              backgroundColor: 'black',
-              padding: '1rem',
-              marginTop: '1rem'
-            }}
-          >
-            <span>{connectWalletVisible ? <>{t('connectWallet')}</> : <></>}</span>
-            <img alt="+" src={plus} className="m-auto pl-8" />
-          </Button>
+          <ConnectWalletButton onWalletConnect={onWalletConnect} />
         )}
       </div>
     </div>

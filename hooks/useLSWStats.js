@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
+import Cookies from 'js-cookie'
 import { DATA_UNAVAILABLE } from '../config';
 import useYam from './useYam';
 
@@ -19,6 +20,7 @@ const initialState = {
   refCode: DATA_UNAVAILABLE,
   refAddress: ethers.constants.AddressZero,
   totalEthContributed: DATA_UNAVAILABLE,
+  accountContributedEth: DATA_UNAVAILABLE,
   totalWETHEarmarkedForReferrers: DATA_UNAVAILABLE
 };
 
@@ -34,10 +36,11 @@ const useLSWStats = () => {
     const timeStart = parseInt(await yam.contracts.LSW.methods.liquidityGenerationStartTimestamp().call());
     const timeEnd = parseInt(await yam.contracts.LSW.methods.liquidityGenerationEndTimestamp().call());
     const totalEthContributed = (await yam.contracts.wETH.methods.balanceOf(yam.contracts.LSW._address).call()) / 1e18;
+    const accountContributedEth = (await yam.contracts.LSW.methods.liquidityContributedInETHUnitsMapping(wallet.account).call()) / 1e18;
     const totalWETHEarmarkedForReferrers = (await yam.contracts.LSW.methods.totalWETHEarmarkedForReferrers().call()) / 1e18;
     const totalSeconds = parseInt(await yam.contracts.LSW.methods.LSW_RUN_TIME().call());
     const currentTimestamp = Date.now() / 1000;
-    const lastRef = localStorage.getItem('lastRef');
+    const lastRef = localStorage.getItem('lastRef') || Cookies.get('lastRef');
     const walletAddress = yam.web3.utils.toChecksumAddress(wallet.account);
 
     let currentReferralBonus = 0;
@@ -92,6 +95,7 @@ const useLSWStats = () => {
       refCode,
       refAddress,
       totalEthContributed,
+      accountContributedEth,
       totalWETHEarmarkedForReferrers
     });
   };

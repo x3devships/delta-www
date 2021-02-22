@@ -4,22 +4,21 @@ import { Button, Input, HelperText } from '@windmill/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
 import { ethers } from 'ethers';
-import { useEthBalance, useLSWStats, useYam } from '../../hooks';
+import { useEthBalance, useYam } from '../../hooks';
 import { ProgressBarCountDown } from '../ProgressBarCountDown';
 import { TransactionButton } from '../Button';
-import plus from '../../public/plus.svg';
 import { BonusProgressBar } from '../BonusProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
 import { ModalContext } from '../../contexts';
 import { errors } from '../../helpers';
 import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
-import { DeltaTitleH2 } from '../Title';
+import { DeltaTitleH2, DeltaTitleH3 } from '../Title';
+import { ConnectWalletButton } from '../Buttons';
 
-const Staking = ({ onWalletConnect }) => {
+const Staking = ({ onWalletConnect, lswStats }) => {
   const { t } = useTranslation('home');
   const yam = useYam();
   const ethBalance = useEthBalance();
-  const lswStats = useLSWStats();
   const wallet = useWallet();
   const [connectWalletVisible, setConnectWalletVisible] = useState(true);
   const [ethAmountText, setEthAmountText] = useState('');
@@ -119,7 +118,7 @@ const Staking = ({ onWalletConnect }) => {
         <span className="block font-medium">Early Signup Bonus ({(details.timeBonus * 100).toFixed(2)}%):</span>
         <span className="block text-green-500">+ {details.timeBonusAmount.toLocaleString()} ETH</span>
       </div>
-      {details.refCode > 0 &&
+      {(details.refCode > 0 || details.refAddress !== ethers.constants.AddressZero) &&
         <div className="text-base">
           <span className="block font-medium">Referral Signup Bonus ({(details.referralBonus * 100).toFixed(2)}%):</span>
           <span className="block text-green-500">+ {details.referralBonusAmount.toLocaleString()} ETH</span>
@@ -140,7 +139,7 @@ const Staking = ({ onWalletConnect }) => {
         <span className="block font-medium">Early Signup Bonus ({(details.timeBonus * 100).toFixed(2)}%):</span>
         <span className="block">{details.timeBonusAmount.toLocaleString()} ETH</span>
       </div>
-      {details.refCode > 0 &&
+      {(details.refCode > 0 || details.refAddress !== ethers.constants.AddressZero) &&
         <div className="text-base">
           <span className="block font-medium">Referral Signup Bonus ({(details.referralBonus * 100).toFixed(2)}%):</span>
           <span className="block">{details.referralBonusAmount.toLocaleString()} ETH</span>
@@ -272,7 +271,7 @@ const Staking = ({ onWalletConnect }) => {
       <ProgressBarCountDown lswStats={lswStats} />
     </DeltaPanel>
     <DeltaSectionBlock>
-      <div className="block md:grid md:grid-cols-2 ">
+      <div className="block md:grid md:grid-cols-2 md:gap-1">
         <div className="pt-0 md:pt-4">
           <DeltaTitleH2>{t('lswExplanationTitle')}</DeltaTitleH2>
           <div className="text-justify mt-4 md:mt-2 pr-0 md:pr-8 break-normal">
@@ -282,15 +281,15 @@ const Staking = ({ onWalletConnect }) => {
             <p className="pt-0 md:pt-4"> The window will remain open for 10 days, rewarding early stakers with a bonus of up to 30%.</p>
             <p className="pt-0 md:pt-4"> Once the Limited Staking Window closed, participants can claim rLP tokens and stake them in the Deep Farming Vault to earn yield. </p>
             <p className="pt-0 md:pt-4"> The Delta token will launch on Uniswap and become tradable while the first liquidity rebasing will increase the minting price of rLP by ~150%.</p>
-
-
-
           </div>
         </div>
-        <div className="mt-4 md:mt-2 pt-4 pl-2"><iframe title="contribution" src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="100%" height="391" /></div>
+        <div className="mt-4 md:mt-2 pt-4 pl-2">
+          {!connectWalletVisible && <><DeltaTitleH3>Total Contribution: {lswStats.data.totalEthContributed.toLocaleString()} ETH </DeltaTitleH3></>}
+          <iframe title="contribution" src="https://duneanalytics.com/embeds/20685/42546/3g7eM1VpRNaNfHFVeIgIpYjTbQ4YTa6n4JGAFoNl" width="100%" height="391" />
+        </div>
       </div>
       <div className="m-auto text-xl mt-4 text-center">
-        <div className="font-bold">{t('yourContribution')}</div><div>{lswStats.data.totalEthContributed.toLocaleString()} ETH</div>
+        {!connectWalletVisible && <><div className="font-bold">Your Contribution: </div><div>{lswStats.data.accountContributedEth.toLocaleString()} ETH</div></>}
       </div>
     </DeltaSectionBlock>
     <DeltaSectionBlock>
@@ -299,31 +298,18 @@ const Staking = ({ onWalletConnect }) => {
           <DeltaTitleH2>{t('contribute')}</DeltaTitleH2>
           <div className="pb-2 mt-3">{t('earnWithDelta')}</div>
           <div>
-            {connectWalletVisible ? (
-              <Button
-                onClick={() => onWalletConnect()}
-                className="p-4 mt-4 inline-block text-white uppercase flex ml-2"
-                style={{
-                  marginRight: '1px',
-                  borderRadius: '0px',
-                  backgroundColor: 'black',
-                  padding: '1rem',
-                  marginTop: '1rem'
-                }}
-              >
-                <span>{t('connectWallet')}</span>
-                <img alt="+" src={plus} className="m-auto pl-8" />
-              </Button>
-            ) : renderContributeForm()}
+            {!connectWalletVisible && renderContributeForm()}
           </div>
         </div>
         <div className="mt-6 md:mt-0">
-          <DeltaTitleH2>Your Bonus</DeltaTitleH2>
-          <div className="mt-4 md:mt-2"> <BonusProgressBar /></div>
+          {!connectWalletVisible ? <>
+            <DeltaTitleH2>Your Bonus</DeltaTitleH2>
+            <div className="mt-4 md:mt-2"> <BonusProgressBar lswStats={lswStats} /></div>
+          </> : <ConnectWalletButton onWalletConnect={onWalletConnect} />}
         </div>
       </div>
     </DeltaSectionBlock>
-  </DeltaSection>
+  </DeltaSection >
 };
 
 export default Staking;
