@@ -7,7 +7,7 @@ import { useYam } from '../../hooks';
 import useLSWReferralCode from '../../hooks/useLSWReferralCode';
 import { DATA_UNAVAILABLE } from '../../config';
 import github from '../../public/Github.svg';
-import { ConnectionButton } from '../ConnectionButton';
+import { FancyButton } from '../Buttons';
 import { TransactionButton } from '../Button';
 import Square from '../Square';
 
@@ -80,34 +80,33 @@ const ReferralProgram = ({ onWalletConnect }) => {
   };
 
   return (
-    <section className="w-12/12 flex flex-col-reverse sm:flex-row min-h-0 min-w-0 overflow-hidden">
+    <section className="flex flex-col-reverse sm:flex-row min-h-0 min-w-0 overflow-hidden">
       <main className="sm:h-full flex-1 flex flex-col min-h-0 min-w-0">
         <section className="flex-1  md:p-6 lg:mb-0 lg:min-h-0 lg:min-w-0">
           <div className="flex flex-col lg:flex-row w-full">
             <div className="w-full lg:flex-1 px-3 min-h-0 min-w-0">
               <div className="w-full min-h-0 min-w-0">
                 <Square>
-                    <div className="grid grid-cols-2 gap-x-96 sm:block" style={{ justifyContent: 'space-between' }}>
-                      <div>
-                        <div className="text-4xl pb-4 font-wulkan">{t('48Hours')}</div>
-                        <div className="pb-2 font-gt_america">{t('contracts')}</div>
-                        <ConnectionButton
+                  <div className="sm:block" style={{ justifyContent: 'space-between' }}>
+                    <div>
+                      <div className="text-4xl pb-4 font-wulkan">{t('48Hours')}</div>
+                      <div>{t('contracts')}</div>
+                      <div className="mt-6">
+                        <FancyButton
                           url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/Periphery/DELTA_Limited_Staking_Window.sol"
                           text="LSW"
                           image={github}
                         />
-                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Governance" text="Governance" image={github} />
-                        <ConnectionButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery" text="Periphery" image={github} />
-                        <br />
-                        <hr />
-                        <br />
-                        <div className="text-4xl pb-4 font-wulkan">{t('deltaReferral')} </div>
-                        <div className="pb-2 sm:mr-2.5">
-                          <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
-                        </div>
-                        <div>{renderGenerateLinkButton()}</div>
+                        <FancyButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Governance" text="Governance" image={github} />
+                        <FancyButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery" text="Periphery" image={github} />
                       </div>
-                      {/* 
+                      <div className="text-4xl pb-4 font-wulkan mt-6">{t('deltaReferral')} </div>
+                      <div className="pb-2 sm:mr-2.5">
+                        <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
+                      </div>
+                      <div>{renderGenerateLinkButton()}</div>
+                    </div>
+                    {/* 
                       <div className="m-auto w-12/12 text-4xl py-9 pt-0">
                         <div className="grid grid-cols-2">
                           <div>Your Referral Rewards</div>
@@ -134,7 +133,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
                       </div>
                       */}
                   </div>
-                  </Square>
+                </Square>
               </div>
             </div>
           </div>

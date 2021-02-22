@@ -10,31 +10,6 @@ module.exports = windmill({
       sans: ['GT America', 'sans-serif'],
       serif: ['GT America', 'serif'],
     },
-    screens: {
-      '2xl': { max: '1535px' },
-      // => @media (max-width: 1535px) { ... }
-
-      xl: { max: '1279px' },
-      // => @media (max-width: 1279px) { ... }
-
-      lg: { max: '1023px' },
-      // => @media (max-width: 1023px) { ... }
-
-      md: { max: '767px' },
-      // => @media (max-width: 767px) { ... }
-
-      sm: { max: '639px' },
-      // => @media (max-width: 639px) { ... }
-      xs: {max: '400px'}
-    },
-    minWidth: {
-      '0': '0',
-      '1/5': '14.1%',
-      '1/4': '25%',
-      '1/2': '50%',
-      '3/4': '75%',
-      full: '100%'
-    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',

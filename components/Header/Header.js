@@ -16,18 +16,17 @@ const header = ({ onWalletConnect }) => {
   }, [wallet]);
 
   return (
-    <nav className="flex items-center justify-between flex-wrap bg-black p-6 xs:flex-nowrap">
+    <nav className="flex items-center justify-between flex-wrap bg-black p-3 md:p-6">
       <a href="/" className="flex items-center flex-no-shrink text-white mr-6">
-        <img src={logo} height="150" width="150" />
+        <img alt="logo" src={logo} height="150" width="150" />
       </a>
-      <div>
-        <button
-          onClick={() => (connectWalletVisible ? onWalletConnect() : wallet.reset())}
-          className="inline-block text-sm px-4 py-2 leading-none text-white hover:border-transparent mt-4 lg:mt-0 uppercase font-gt_america"
-        >
-          {connectWalletVisible ? <>{t('connectWallet')}</> : <>{t('disconnect')}</>}
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={() => (connectWalletVisible ? onWalletConnect() : wallet.reset())}
+        className="items-center inline-block text-sm px-4 py-2 leading-none text-white hover:border-transparent lg:mt-0 uppercase self-center"
+      >
+        {connectWalletVisible ? <>{t('connectWallet')}</> : <>{t('disconnect')}</>}
+      </button>
     </nav>
   );
 };
