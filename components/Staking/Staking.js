@@ -139,11 +139,13 @@ const Staking = ({ onWalletConnect, lswStats }) => {
         <span className="block font-medium">Early Signup Bonus ({(details.timeBonus * 100).toFixed(2)}%):</span>
         <span className="block">{details.timeBonusAmount.toLocaleString()} ETH</span>
       </div>
-      {(details.refCode > 0 || details.refAddress !== ethers.constants.AddressZero) &&
+      {
+        (details.refCode > 0 || details.refAddress !== ethers.constants.AddressZero) &&
         <div className="text-base">
           <span className="block font-medium">Referral Signup Bonus ({(details.referralBonus * 100).toFixed(2)}%):</span>
           <span className="block">{details.referralBonusAmount.toLocaleString()} ETH</span>
-        </div>}
+        </div>
+      }
       <hr />
       <div className="text-base">
         <span className="block font-medium">Total contribution Value:</span>
@@ -153,7 +155,7 @@ const Staking = ({ onWalletConnect, lswStats }) => {
         <span className="block font-medium">Transaction Id:</span>
         <span className="block font-medium"><a className="underline" target="_blank" rel="noopener noreferrer" href={`https://etherscan.io/tx/${txId}`}>{shortTxId}</a></span>
       </div>
-    </div>
+    </div >
   };
 
   const onContribute = async () => {
