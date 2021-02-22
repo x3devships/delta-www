@@ -6,21 +6,12 @@ import { errors } from '../../helpers';
 import { useUserApprovalOfContract, useUserTokenBalance, useYam } from '../../hooks';
 import { DATA_UNAVAILABLE } from '../../config';
 import { ModalContext } from '../../contexts';
-
+import plus from '../../public/plus.svg';
 /**
  * A button that supports sending a transaction and keeping track of allowance/approval
  * if allowanceRequiredFor is specified with the contract and token name.
  */
-const TransactionButton = ({
-  onClick,
-  allowanceRequiredFor,
-  icon,
-  text,
-  textLoading,
-  textApprove,
-  textApproving,
-  ...props
-}) => {
+const TransactionButton = ({ onClick, allowanceRequiredFor, icon, text, textLoading, textApprove, textApproving, secondaryLooks, ...props }) => {
   textApprove = textApprove || 'Approve';
   textLoading = textLoading || 'Loading...';
   textApproving = textApproving || 'Approving...';
@@ -44,10 +35,7 @@ const TransactionButton = ({
    */
   useEffect(() => {
     setAlowanceSatisfied(
-      !allowanceRequiredFor.contract ||
-        (approval.amount !== DATA_UNAVAILABLE &&
-          tokenBalance.balance !== DATA_UNAVAILABLE &&
-          approval.amount.gte(tokenBalance.balance))
+      !allowanceRequiredFor.contract || (approval.amount !== DATA_UNAVAILABLE && tokenBalance.balance !== DATA_UNAVAILABLE && approval.amount.gte(tokenBalance.balance))
     );
 
     setInitialized(true);
@@ -62,10 +50,7 @@ const TransactionButton = ({
 
     try {
       const contract = yam.contracts[allowanceRequiredFor.contract]._address;
-      const transaction = yam.contracts[allowanceRequiredFor.token].methods.approve(
-        contract,
-        ethers.constants.MaxUint256
-      );
+      const transaction = yam.contracts[allowanceRequiredFor.token].methods.approve(contract, ethers.constants.MaxUint256);
       const gasEstimation = await transaction.estimateGas({
         from: wallet.account
       });
@@ -126,8 +111,10 @@ const TransactionButton = ({
           handleApproval();
         }
       }}
+      style={secondaryLooks ? { backgroundColor: 'black', color: 'white', padding: '1rem', marginTop: '1rem', borderRadius: '0px', marginRight: '1rem' } : {}}
     >
       {renderButtonText()}
+      {secondaryLooks && <img alt="+" src={plus} className="m-auto pl-8" />}
     </Button>
   );
 };

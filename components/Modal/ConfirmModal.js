@@ -10,20 +10,31 @@ const ConfirmModal = () => {
 
   return (
     <Modal
-      type={type}
       isOpen={type === ModalType.Confirm}
       onClose={onClose}
       style={{
         visibility: type === ModalType.Confirm ? 'inherit' : 'hidden'
       }}
     >
-      <ModalHeader>{title}</ModalHeader>
+      <ModalHeader><div className="text-2xl font-semibold font-wulkan">{title}</div></ModalHeader>
       <ModalBody>{content}</ModalBody>
       <ModalFooter>
-        <Button className="w-full sm:w-auto" layout="outline" onClick={onOk}>
+        <Button className="w-full sm:w-auto" style={{
+          marginRight: '1px',
+          borderRadius: '0px',
+          backgroundColor: 'black',
+          padding: '1rem',
+          marginTop: '1rem'
+        }} onClick={onOk}>
           {okContent}
         </Button>
-        <Button className="w-full sm:w-auto" onClick={onClose}>
+        <Button style={{
+          marginRight: '1px',
+          borderRadius: '0px',
+          backgroundColor: 'black',
+          padding: '1rem',
+          marginTop: '1rem'
+        }} className="w-full sm:w-auto" onClick={onClose}>
           {cancelContent}
         </Button>
       </ModalFooter>

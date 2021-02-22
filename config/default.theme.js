@@ -167,20 +167,20 @@ export default {
   // Button
   button: {
     base:
-      'align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none',
+      'align-bottom bg-black inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none',
     block: 'w-full',
     size: {
-      larger: 'px-10 py-4 rounded-lg',
-      large: 'px-5 py-3 rounded-lg',
-      regular: 'px-4 py-2 rounded-lg text-sm',
-      small: 'px-3 py-1 rounded-md text-sm',
+      larger: 'px-10 py-4',
+      large: 'px-5 py-3',
+      regular: 'px-4 py-2 text-sm',
+      small: 'px-3 py-1 text-sm',
       icon: {
-        larger: 'p-4 rounded-lg',
-        large: 'p-3 rounded-lg',
-        regular: 'p-2 rounded-lg',
-        small: 'p-2 rounded-md'
+        larger: 'p-4',
+        large: 'p-3',
+        regular: 'p-2',
+        small: 'p-2'
       },
-      pagination: 'px-3 py-1 rounded-md text-xs'
+      pagination: 'px-3 py-1 text-xs'
     },
     // styles applied to the SVG icon
     icon: {
@@ -192,8 +192,8 @@ export default {
       right: 'ml-2 -mr-1'
     },
     primary: {
-      base: 'text-white bg-purple-600 border border-transparent',
-      active: 'active:bg-purple-600 hover:bg-purple-700 focus:shadow-outline-purple',
+      base: 'text-white bg-black border border-transparent uppercase rounded-none',
+      active: 'active:bg-black hover:bg-black focus:shadow-outline-gray',
       disabled: 'opacity-50 cursor-not-allowed'
     },
     outline: {

@@ -23,7 +23,7 @@ const AuthenticationLayer = ({ children }) => {
   //   authenticate(localStorage.password);
   // }, []);
 
-  return <>{children}</>
+  return <>{children}</>;
 };
 
 export default AuthenticationLayer;

@@ -1,13 +1,15 @@
 import ConfirmModal from './ConfirmModal';
-import ErrorModal from './ErrorModal';
 import ConnectionModal from './ConnectionModal';
+import ErrorModal from './ErrorModal';
+import MessageModal from './MessageModal';
 
 const ModalContainer = () => {
   return (
     <>
-      <ConnectionModal />
       <ErrorModal />
       <ConfirmModal />
+      <MessageModal />
+      <ConnectionModal />
     </>
   );
 };

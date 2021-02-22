@@ -15,7 +15,6 @@ const WalletProvider = ({ children }) => {
   }, []);
 
   const fetchConnection = useCallback(async () => {
-    console.log(status);
     if (status === 'disconnected') {
       setUserAccount(null);
       localStorage.removeItem('account');

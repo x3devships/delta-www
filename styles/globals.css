@@ -1,19 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind screens;
 @font-face {
-  font-family:"Wulkan Display" !important;
+  font-family: Wulkan Display;
+  src: url('/fonts/Wulkan/Wulkan-Display-Medium.woff2') format('woff2'), /* Super Modern Browsers */
+  url('/fonts/Wulkan/Wulkan-Display-Medium.woff') format('woff');
+  /* Pretty Modern Browsers */
+  font-weight: 500;
+  font-style: normal;
   font-display: swap;
-  src: local('Wulkan Display'), url("/fonts/WulkanDisplay-Medium.otf") format("opentype");
 }
-html * 
-{
-  font-size: 4rem;
-  color: #333333 !important;
-  background-color: #F4F4F4 !important;
-  font-family: "Wulkan Display" !important;
 
-}
-body{
-  font-family: 'Wulkan Display' !important;
+@font-face {
+  font-family: GT America;
+  src: url('/fonts/GT-America/GT-America-Standard-Regular.woff2') format('woff2'), /* Super Modern Browsers */
+  url('/fonts/GT-America/GT-America-Standard-Regular.woff') format('woff');
+  /* Pretty Modern Browsers */
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
