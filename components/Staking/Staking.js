@@ -272,19 +272,29 @@ const Staking = ({ onWalletConnect }) => {
       <ProgressBarCountDown lswStats={lswStats} />
     </DeltaPanel>
     <DeltaSectionBlock>
-      <div className="block md:grid md:grid-cols-2">
-        <div>
+      <div className="block md:grid md:grid-cols-2 ">
+        <div className="pt-4">
           <DeltaTitleH2>{t('lswExplanationTitle')}</DeltaTitleH2>
-          <div className="text-justify mt-4 md:mt-2">{t('lswExplanationContent')}</div>
+          <div className="text-justify  mt-4 md:mt-2 pr-8 break-normal">
+            <p className="pt-4">Delta is using a special event called Limited Staking Window to launch its tokens.
+            The Limited Staking Window allows participants to stake Ethereum and receive rLP tokens in return.
+   at the end of the Limited Staking Window (March 4th, 9:30AM PST). </p>
+            <p className="pt-4"> The window will remain open for 10 days, rewarding early stakers with a bonus of up to 30%.</p>
+            <p className="pt-4"> Once the Limited Staking Window closed, participants can claim rLP tokens and stake them in the Deep Farming Vault to earn yield. </p>
+            <p className="pt-4"> The Delta token will launch on Uniswap and become tradable while the first liquidity rebasing will increase the minting price of rLP by ~150%.</p>
+
+
+
+          </div>
         </div>
-        <div className="mt-4 md:mt-2"><iframe title="contribution" src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="100%" height="391" /></div>
+        <div className="mt-4 md:mt-2 pt-4 pl-2"><iframe title="contribution" src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="100%" height="391" /></div>
       </div>
       <div className="m-auto text-xl mt-4 text-center">
         <div className="font-bold">{t('yourContribution')}</div><div>{lswStats.data.totalEthContributed.toLocaleString()} ETH</div>
       </div>
     </DeltaSectionBlock>
     <DeltaSectionBlock>
-      <div className="block md:grid md:grid-cols-2 md:gap-6">
+      <div className="block md:grid md:grid-cols-2 md:gap-6 ">
         <div className="md:border-0 md:border-gray-400 md:border-r md:pr-2">
           <DeltaTitleH2>{t('contribute')}</DeltaTitleH2>
           <div className="pb-2 mt-3">{t('earnWithDelta')}</div>
