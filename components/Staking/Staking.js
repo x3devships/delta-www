@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import { useContext, useEffect, useState } from 'react';
+import { Children, useContext, useEffect, useState } from 'react';
 import { Button, Input, HelperText } from '@windmill/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
@@ -13,6 +13,7 @@ import { BonusProgressBar } from '../BonusProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
 import { ModalContext } from '../../contexts';
 import { errors } from '../../helpers';
+import Square from '../Square';
 
 const Staking = ({ onWalletConnect }) => {
   const { t } = useTranslation('home');
@@ -263,35 +264,40 @@ const Staking = ({ onWalletConnect }) => {
     </>;
   };
 
+
+
+
   return (
     <section className="w-12/12 flex flex-col-reverse sm:flex-row min-h-0 min-w-0 overflow-hidden">
       <main className="sm:h-full flex-1 flex flex-col min-h-0 min-w-0">
         <section className="flex-1 pt-3 md:p-6 lg:mb-0 lg:min-h-0 lg:min-w-0">
-          <div className="flex flex-col lg:flex-row w-full">
+          <div className="flex  flex-col lg:flex-row w-full">
             <div className="w-full lg:flex-1 px-3 min-h-0 min-w-0">
               <div className="w-full min-h-0 min-w-0 xs:pb-50">
-                <div className="m-auto h-80 border-black border-2 border-b xs:h-96">
+
+                <Square>
                   <div className="flex">
                     <div className="m-auto w-10/12 text-4xl py-9 font-wulkan">{t('limitedStaking')}</div>
                     <img src={chevron} alt="chevron" className="m-auto" />
                   </div>
                   <ProgressBarCountDown lswStats={lswStats} />
-                </div>
-                <div className="h-4/6 border-2 pt-2 border-black border-t-0 p-2">
-                  <div className="m-auto text-4xl py-9 font-wulkan">{t('lswExplanationTitle')}</div>
-                  <div className="m-auto">
-                    {t('lswExplanationContent')}
-                  </div>
-                  <iframe style={{
-                    marginLeft: 'auto',
-                    marginRight: 'auto'
-                  }} title="contribution" src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="100%" height="391" />
-                  <div className="m-auto text-xl py-2 text-center">
-                    <div className="font-bold">{t('yourContribution')}</div><div>{lswStats.data.totalEthContributed.toLocaleString()} ETH</div>
-                  </div>
-                </div>
-                <div className="flex h-128 border-2 pt-2 border-black border-t-0 pl-9 sm:block sm:pb-5 sm:pl-2 p-1">
-                  <div className="flex-1 m-auto py-9 pl-9 mb-9 sm:pl-0">
+                </Square>
+
+                <Square>
+                    <div className="m-auto text-4xl py-9 font-wulkan">{t('lswExplanationTitle')}</div>
+                    <div className="m-auto">
+                      {t('lswExplanationContent')}
+                    </div>
+                    <iframe style={{
+                      marginLeft: 'auto',
+                      marginRight: 'auto'
+                    }} title="contribution" src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="100%" height="391" />
+                    <div className="m-auto text-xl py-2 text-center">
+                      <div className="font-bold">{t('yourContribution')}</div><div>{lswStats.data.totalEthContributed.toLocaleString()} ETH</div>
+                    </div>
+                </Square>
+
+                <Square>
                     <div className="text-4xl pb-4 font-wulkan">{t('contribute')}</div>
                     <div className="pb-2" dangerouslySetInnerHTML={{ __html: t('earnWithDelta') }} />
                     <div>
@@ -312,11 +318,10 @@ const Staking = ({ onWalletConnect }) => {
                         </Button>
                       ) : renderContributeForm()}
                     </div>
-                  </div>
                   <div className="flex-1 pr-9 pt-9">
                     <BonusProgressBar />
                   </div>
-                </div>
+                </Square>
               </div>
             </div>
           </div>

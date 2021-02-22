@@ -3,6 +3,7 @@ import medium from '../../public/Medium.svg';
 import youtube from '../../public/Youtube.svg';
 import chevron from '../../public/chevron.svg';
 import { ConnectionButton } from '../ConnectionButton';
+import Square from '../Square';
 
 const LimitedWindow = () => {
   const { t } = useTranslation('home');
@@ -13,17 +14,17 @@ const LimitedWindow = () => {
           <div className="flex flex-col lg:flex-row h-full w-full">
             <div className="h-full w-full lg:flex-1 px-3 min-h-0 min-w-0">
               <div className="w-full h-full min-h-0 min-w-0">
-                <div className="border-2 border-black">
+                <Square >
                   <div className="flex">
                     <div
-                      className="m-auto w-10/12 text-4xl py-9 font-wulkan"
+                      className=" text-4xl py-9 font-wulkan"
                       dangerouslySetInnerHTML={{ __html: t('limitedWindow') }}
                     />
                     <img src={chevron} alt="chevron" className="m-auto" />
                   </div>
 
-                  <div className="m-auto w-11/12 font-wulkan">{t('deltaAcademy')}</div>
-                  <div className="w-11/12 pl-12 pb-12 sm:pl-1">
+                  <div className="font-wulkan">{t('deltaAcademy')}</div>
+                  <div className="  pb-12 sm:pl-1">
                     <ConnectionButton
                       url="https://medium.com/delta-financial/introducing-delta-financial-769d387e9430"
                       text="ANNOUNCING DELTA"
@@ -40,7 +41,7 @@ const LimitedWindow = () => {
                       image={medium}
                     />
                   </div>
-                </div>
+                </Square>
               </div>
             </div>
           </div>

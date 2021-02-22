@@ -9,6 +9,7 @@ import { DATA_UNAVAILABLE } from '../../config';
 import github from '../../public/Github.svg';
 import { ConnectionButton } from '../ConnectionButton';
 import { TransactionButton } from '../Button';
+import Square from '../Square';
 
 const ReferralProgram = ({ onWalletConnect }) => {
   const yam = useYam();
@@ -81,12 +82,11 @@ const ReferralProgram = ({ onWalletConnect }) => {
   return (
     <section className="w-12/12 flex flex-col-reverse sm:flex-row min-h-0 min-w-0 overflow-hidden">
       <main className="sm:h-full flex-1 flex flex-col min-h-0 min-w-0">
-        <section className="flex-1 pt-3 md:p-6 lg:mb-0 lg:min-h-0 lg:min-w-0">
+        <section className="flex-1  md:p-6 lg:mb-0 lg:min-h-0 lg:min-w-0">
           <div className="flex flex-col lg:flex-row w-full">
             <div className="w-full lg:flex-1 px-3 min-h-0 min-w-0">
               <div className="w-full min-h-0 min-w-0">
-                <div className="flex h-128 border-2 pt-2 border-black pl-9 sm:pl-0">
-                  <div className="flex-1 m-auto w-11/12 py-9 pl-9 mb-9 sm:pl-2">
+                <Square>
                     <div className="grid grid-cols-2 gap-x-96 sm:block" style={{ justifyContent: 'space-between' }}>
                       <div>
                         <div className="text-4xl pb-4 font-wulkan">{t('48Hours')}</div>
@@ -133,9 +133,8 @@ const ReferralProgram = ({ onWalletConnect }) => {
                         </div>
                       </div>
                       */}
-                    </div>
                   </div>
-                </div>
+                  </Square>
               </div>
             </div>
           </div>
