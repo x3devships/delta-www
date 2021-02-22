@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
 import useCopy from '@react-hook/copy';
-import chevron from '../../public/chevron.svg';
 import { useYam } from '../../hooks';
 import useLSWReferralCode from '../../hooks/useLSWReferralCode';
 import { DATA_UNAVAILABLE } from '../../config';
 import github from '../../public/Github.svg';
 import { FancyButton } from '../Buttons';
 import { TransactionButton } from '../Button';
-import Square from '../Square';
+import { DeltaPanel, DeltaSection } from '../Section';
+import { DeltaTitleH1 } from '../Title';
+import { errors } from '../../helpers';
+import { ModalContext } from '../../contexts';
 
 const ReferralProgram = ({ onWalletConnect }) => {
   const yam = useYam();
@@ -18,6 +20,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
   const [generating, setGenerating] = useState(false);
   const { t } = useTranslation('home');
   const [connectWalletVisible, setConnectWalletVisible] = useState(true);
+  const modalContext = useContext(ModalContext);
 
   useEffect(() => {
     if (!wallet.account) {
@@ -42,7 +45,8 @@ const ReferralProgram = ({ onWalletConnect }) => {
 
         setGenerating(false);
       } catch (error) {
-        alert(error.message);
+        const transactionError = errors.getTransactionError(error);
+        modalContext.showError('Error while approving', transactionError.message);
         console.log(error);
         setGenerating(false);
       }
@@ -68,7 +72,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
   const renderGenerateLinkButton = () => {
     if (lswRefCode.referralId !== DATA_UNAVAILABLE) {
       return (
-        <div className="bg-black shadow-xl p-4 mt-4 inline-block text-white font-mono sm:mr-2.5">
+        <div className="w-full md:w-6/12 bg-black shadow-xl p-4 mt-4 inline-block text-white font-mono sm:mr-2.5">
           <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
           <div onClick={copy} className="bg-backgroundPage shadow-xl p-4 mt-4 inline-block text-black flex font-mono">
             <span>{copied ? `Copied !` : `delta.financial/join/${lswRefCode.referralId}`}</span>
@@ -79,68 +83,29 @@ const ReferralProgram = ({ onWalletConnect }) => {
     return <TransactionButton text={getCopyForButton()} secondaryLooks onClick={() => (wallet.account ? onGenerateCode() : onWalletConnect())} />;
   };
 
-  return (
-    <section className="flex flex-col-reverse sm:flex-row min-h-0 min-w-0 overflow-hidden">
-      <main className="sm:h-full flex-1 flex flex-col min-h-0 min-w-0">
-        <section className="flex-1  md:p-6 lg:mb-0 lg:min-h-0 lg:min-w-0">
-          <div className="flex flex-col lg:flex-row w-full">
-            <div className="w-full lg:flex-1 px-3 min-h-0 min-w-0">
-              <div className="w-full min-h-0 min-w-0">
-                <Square>
-                  <div className="sm:block" style={{ justifyContent: 'space-between' }}>
-                    <div>
-                      <div className="text-4xl pb-4 font-wulkan">{t('48Hours')}</div>
-                      <div>{t('contracts')}</div>
-                      <div className="mt-6">
-                        <FancyButton
-                          url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/Periphery/DELTA_Limited_Staking_Window.sol"
-                          text="LSW"
-                          image={github}
-                        />
-                        <FancyButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Governance" text="Governance" image={github} />
-                        <FancyButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery" text="Periphery" image={github} />
-                      </div>
-                      <div className="text-4xl pb-4 font-wulkan mt-6">{t('deltaReferral')} </div>
-                      <div className="pb-2 sm:mr-2.5">
-                        <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
-                      </div>
-                      <div>{renderGenerateLinkButton()}</div>
-                    </div>
-                    {/* 
-                      <div className="m-auto w-12/12 text-4xl py-9 pt-0">
-                        <div className="grid grid-cols-2">
-                          <div>Your Referral Rewards</div>
-                          <div>
-                            <img src={chevron} alt="chevron" className="m-auto mt-0" />
-                          </div>
-                        </div>
-                        <div className="pr-32">
-                          <iframe
-                            className="mb-9 pr-9"
-                            src="https://duneanalytics.com/embeds/20141/41387/X2NcJgZdr4I0XfujHlfTkrPjgR7tFBA9ql0XyWSe"
-                            width="720"
-                            height="391"
-                          />
-                        </div>
-                        <div className="m-auto w-12/12 text-4xl py-9">
-                          Your Referral Bonus
-                          <ul className="pl-7" style={{ listStyleType: 'disc' }}>
-                            <li>Your Referrals: 07</li>
-                            <li>Credit earned: 2.8 LP Credit</li>
-                            <li>ETH earned: 2.7 ETH</li>
-                          </ul>
-                        </div>
-                      </div>
-                      */}
-                  </div>
-                </Square>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-    </section>
-  );
+  return <DeltaSection title={t('48Hours')}>
+    <DeltaPanel>
+      <div>{t('contracts')}</div>
+    </DeltaPanel>
+    <DeltaPanel>
+      <FancyButton
+        url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/Periphery/DELTA_Limited_Staking_Window.sol"
+        text="LSW"
+        image={github}
+      />
+      <FancyButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Governance" text="Governance" image={github} />
+      <FancyButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery" text="Periphery" image={github} />
+    </DeltaPanel>
+    <DeltaPanel>
+      <DeltaTitleH1>
+        {t('deltaReferral')}
+      </DeltaTitleH1>
+    </DeltaPanel>
+    <DeltaPanel>
+      <div className="w-full md:w-6/12">{t('referral')}</div>
+    </DeltaPanel>
+    <DeltaPanel>{renderGenerateLinkButton()}</DeltaPanel>
+  </DeltaSection>
 };
 
 export default ReferralProgram;

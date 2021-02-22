@@ -95,7 +95,7 @@ export default function Main() {
       <div className="w-full flex justify-center flex-col bg-backgroundWebsite">
         <Header onWalletConnect={onWalletConnect} />
 
-        <div className="w-full flex flex-col max-w-6xl self-center">
+        <div className="w-full flex flex-col max-w-6xl self-center p-2 md:p-6">
           {' '}
           <Hero onWalletConnect={onWalletConnect} />
           <Staking onWalletConnect={onWalletConnect} />

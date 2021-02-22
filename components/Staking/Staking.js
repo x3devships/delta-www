@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import { Children, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button, Input, HelperText } from '@windmill/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
@@ -8,12 +8,12 @@ import { useEthBalance, useLSWStats, useYam } from '../../hooks';
 import { ProgressBarCountDown } from '../ProgressBarCountDown';
 import { TransactionButton } from '../Button';
 import plus from '../../public/plus.svg';
-import chevron from '../../public/chevron.svg';
 import { BonusProgressBar } from '../BonusProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
 import { ModalContext } from '../../contexts';
 import { errors } from '../../helpers';
-import Square from '../Square';
+import { DeltaSection, DeltaSectionBlock } from '../Section';
+import { DeltaTitleH2 } from '../Title';
 
 const Staking = ({ onWalletConnect }) => {
   const { t } = useTranslation('home');
@@ -213,6 +213,9 @@ const Staking = ({ onWalletConnect }) => {
 
       transactionMessage.close();
 
+      setEthAmountText('');
+      setEthAmount(false);
+
       await modalContext.showMessage('Congratulations!', <>
         <div className="text-lg">You will be able to claim your rLP tokens after the Limited Staking Window has closed.</div>
         <div className="mt-4">
@@ -229,8 +232,8 @@ const Staking = ({ onWalletConnect }) => {
   };
 
   const renderContributeForm = () => {
-    return <>
-      <div className="grid gap-2 grid-cols-2 md:flex">
+    return <div className="mt-4">
+      <div className="flex md:grid md:gap-2 md:grid-cols-2">
         <div className="bg-white flex border border-black">
           <div className="p-3">
             <Input
@@ -245,7 +248,7 @@ const Staking = ({ onWalletConnect }) => {
           </div>
           <div className="pr-3 text-sm self-end mb-3">ETH</div>
         </div>
-        <div className="p-1 max-w-max border border-black">
+        <div className="p-1 max-w-max border border-black ml-1 md:ml-0">
           <Button onClick={() => onMaxEthAmount()} className="bg-gray-400 h-full ring-pink-300 ring-inset focus:bg-gray-400">
             <span className="uppercase">{t('max')}</span>
           </Button>
@@ -261,74 +264,51 @@ const Staking = ({ onWalletConnect }) => {
         disabled={lswStats.timeStart === DATA_UNAVAILABLE}
         onClick={onContribute}
       />
-    </>;
+    </div>;
   };
 
-
-
-
-  return (
-    <section className="w-12/12 flex flex-col-reverse sm:flex-row min-h-0 min-w-0 overflow-hidden">
-      <main className="sm:h-full flex-1 flex flex-col min-h-0 min-w-0">
-        <section className="flex-1 pt-3 md:p-6 lg:mb-0 lg:min-h-0 lg:min-w-0">
-          <div className="flex  flex-col lg:flex-row w-full">
-            <div className="w-full lg:flex-1 px-3 min-h-0 min-w-0">
-              <div className="w-full min-h-0 min-w-0 xs:pb-50">
-
-                <Square>
-                  <div className="flex">
-                    <div className="m-auto w-10/12 text-4xl py-9 font-wulkan">{t('limitedStaking')}</div>
-                    <img src={chevron} alt="chevron" className="m-auto" />
-                  </div>
-                  <ProgressBarCountDown lswStats={lswStats} />
-                </Square>
-
-                <Square>
-                    <div className="m-auto text-4xl py-9 font-wulkan">{t('lswExplanationTitle')}</div>
-                    <div className="m-auto">
-                      {t('lswExplanationContent')}
-                    </div>
-                    <iframe style={{
-                      marginLeft: 'auto',
-                      marginRight: 'auto'
-                    }} title="contribution" src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="100%" height="391" />
-                    <div className="m-auto text-xl py-2 text-center">
-                      <div className="font-bold">{t('yourContribution')}</div><div>{lswStats.data.totalEthContributed.toLocaleString()} ETH</div>
-                    </div>
-                </Square>
-
-                <Square>
-                    <div className="text-4xl pb-4 font-wulkan">{t('contribute')}</div>
-                    <div className="pb-2" dangerouslySetInnerHTML={{ __html: t('earnWithDelta') }} />
-                    <div>
-                      {connectWalletVisible ? (
-                        <Button
-                          onClick={() => onWalletConnect()}
-                          className="p-4 mt-4 inline-block text-white uppercase flex ml-2"
-                          style={{
-                            marginRight: '1px',
-                            borderRadius: '0px',
-                            backgroundColor: 'black',
-                            padding: '1rem',
-                            marginTop: '1rem'
-                          }}
-                        >
-                          <span>{t('connectWallet')}</span>
-                          <img alt="+" src={plus} className="m-auto pl-8" />
-                        </Button>
-                      ) : renderContributeForm()}
-                    </div>
-                  <div className="flex-1 pr-9 pt-9">
-                    <BonusProgressBar />
-                  </div>
-                </Square>
-              </div>
-            </div>
+  return <DeltaSection title={t('limitedStaking')}>
+    <ProgressBarCountDown lswStats={lswStats} />
+    <DeltaSectionBlock>
+      <div className="block md:grid md:grid-cols-2">
+        <div>
+          <DeltaTitleH2>{t('lswExplanationTitle')}</DeltaTitleH2>
+          <div className="text-justify mt-4 md:mt-2">{t('lswExplanationContent')}</div>
+        </div>
+        <div className="mt-4 md:mt-2"><iframe title="contribution" src="https://duneanalytics.com/embeds/20459/42016/MCZSRgV5KrBby66NVZpKK7FxOdTHxg0JEJecWbu9" width="100%" height="391" /></div>
+      </div>
+      <div className="m-auto text-xl mt-4 text-center">
+        <div className="font-bold">{t('yourContribution')}</div><div>{lswStats.data.totalEthContributed.toLocaleString()} ETH</div>
+      </div>
+    </DeltaSectionBlock>
+    <DeltaSectionBlock>
+      <div className="block md:grid md:grid-cols-2 md:gap-6">
+        <div className="md:border-0 md:border-gray-400 md:border-r md:pr-2">
+          <DeltaTitleH2>{t('contribute')}</DeltaTitleH2>
+          <div className="pb-2 mt-3">{t('earnWithDelta')}</div>
+          <div>
+            {connectWalletVisible ? (
+              <Button
+                onClick={() => onWalletConnect()}
+                className="p-4 mt-4 inline-block text-white uppercase flex ml-2"
+                style={{
+                  marginRight: '1px',
+                  borderRadius: '0px',
+                  backgroundColor: 'black',
+                  padding: '1rem',
+                  marginTop: '1rem'
+                }}
+              >
+                <span>{t('connectWallet')}</span>
+                <img alt="+" src={plus} className="m-auto pl-8" />
+              </Button>
+            ) : renderContributeForm()}
           </div>
-        </section>
-      </main>
-    </section>
-  );
+        </div>
+        <div className="mt-4 md:mt-2"> <BonusProgressBar /></div>
+      </div>
+    </DeltaSectionBlock>
+  </DeltaSection>
 };
 
 export default Staking;

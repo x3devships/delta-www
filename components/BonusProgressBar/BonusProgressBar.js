@@ -37,7 +37,7 @@ const BonusProgressBar = () => {
   }
 
   return (
-    <div className="m-auto w-11/12 text-center">
+    <div className="m-auto text-center">
       <div>
         <div className="w-full bg-backgroundLightPurple h-16 w-32 border border-black">
           <div
