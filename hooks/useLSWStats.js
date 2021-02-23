@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import Cookies from 'js-cookie'
+import BigNumber from 'bignumber.js';
 import { DATA_UNAVAILABLE } from '../config';
 import useYam from './useYam';
 
@@ -11,7 +12,6 @@ const REFERRAL_BONUS = 0.1;
 
 const initialState = {
   percentCompletion: DATA_UNAVAILABLE,
-  percentLeft: DATA_UNAVAILABLE,
   timeStart: DATA_UNAVAILABLE,
   timeEnd: DATA_UNAVAILABLE,
   secondsLeft: DATA_UNAVAILABLE,
@@ -74,13 +74,11 @@ const useLSWStats = () => {
     }
     let currentTimeBonus = DATA_UNAVAILABLE;
     let secondsLeft = DATA_UNAVAILABLE;
-    let percentLeft = DATA_UNAVAILABLE;
 
     // is the LSW started?
     if (timeStart > 0) {
       secondsLeft = timeEnd - currentTimestamp;
-      percentLeft = secondsLeft / totalSeconds;
-      currentTimeBonus = MAX_TIME_BONUS * percentLeft;
+      currentTimeBonus = Math.trunc(MAX_TIME_BONUS * secondsLeft / totalSeconds * 100) / 100;
     }
 
     setData({
@@ -91,7 +89,6 @@ const useLSWStats = () => {
       currentReferralBonus,
       secondsLeft,
       totalSeconds,
-      percentLeft,
       referralBonusWETH,
       liquidityCredits,
       refCode,
