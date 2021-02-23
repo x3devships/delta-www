@@ -11,7 +11,14 @@ export const DEFAULT_CONFIRMATIONS = 1;
 export const DEFAULT_GAS = '6000000';
 export const DEFAULT_GAS_PRICE = '1000000000000';
 export const DATA_UNAVAILABLE = '--';
-export const WEB3_PROVIDER_URL = 'https://mainnet.eth.aragon.network/';
+
+// This provider is no longer working and fails with CORS.
+// export const WEB3_PROVIDER_URL = 'https://mainnet.eth.aragon.network/';
+
+// Endpoint found from inspecting XHR request from metamask dev mode in google chrome. Could change in
+// the futur and break. This would then need to be updated.
+export const WEB3_PROVIDER_URL = 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
+
 
 export const pairNames = {
   coreCbtc: 'coreCbtc',
