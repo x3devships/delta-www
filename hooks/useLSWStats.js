@@ -2,7 +2,6 @@ import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import Cookies from 'js-cookie'
-import BigNumber from 'bignumber.js';
 import { DATA_UNAVAILABLE } from '../config';
 import useYam from './useYam';
 

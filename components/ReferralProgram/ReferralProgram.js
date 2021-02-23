@@ -6,6 +6,8 @@ import { useContext, useEffect, useState } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
 import useCopy from '@react-hook/copy';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import moment from 'moment';
 import { useYam } from '../../hooks';
 import useLSWReferralCode from '../../hooks/useLSWReferralCode';
 import { DATA_UNAVAILABLE } from '../../config';
@@ -15,6 +17,7 @@ import { DeltaTitleH3 } from '../Title';
 import { errors } from '../../helpers';
 import { ModalContext } from '../../contexts';
 import { ConnectWalletButton } from '../Buttons';
+import useReferralRewardsChartData from '../../hooks/useReferralRewardsChartData';
 
 const ReferralProgram = ({ lswStats, onWalletConnect }) => {
   const yam = useYam();
@@ -24,6 +27,7 @@ const ReferralProgram = ({ lswStats, onWalletConnect }) => {
   const { t } = useTranslation('home');
   const [connectWalletVisible, setConnectWalletVisible] = useState(true);
   const modalContext = useContext(ModalContext);
+  const chartData = useReferralRewardsChartData();
 
   useEffect(() => {
     if (!wallet.account) {
@@ -86,6 +90,10 @@ const ReferralProgram = ({ lswStats, onWalletConnect }) => {
     return <TransactionButton text={getCopyForButton()} secondaryLooks onClick={() => (wallet.account ? onGenerateCode() : onWalletConnect())} />;
   };
 
+  const formatXAxis = (tickItem) => {
+    return moment(tickItem).format('MMM Do YY');
+  };
+
   return <DeltaSection title={t('deltaReferral')}>
     <DeltaPanel>
       <div className="block md:grid md:grid-cols-2 md:gap-6 ">
@@ -99,6 +107,24 @@ const ReferralProgram = ({ lswStats, onWalletConnect }) => {
           {connectWalletVisible ? <ConnectWalletButton onWalletConnect={onWalletConnect} /> :
             <>
               <DeltaTitleH3>Your Referral Bonus</DeltaTitleH3>
+
+              <ResponsiveContainer className="mt-6" aspect={1} height="75%">
+                <AreaChart
+                  data={chartData.data}
+                  margin={{
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                  }}
+                >
+                  <XAxis interval={24} dataKey="date" tickFormatter={formatXAxis} />
+                  <YAxis dataKey="referralBonusWETH" name="ETH" />
+                  <Tooltip label="ETH" labelFormatter={() => 'ETH'} />
+                  <Area scale="time" dataKey="referralBonusWETH" stroke="#8884d8" fill="#8884d8" />
+                </AreaChart >
+              </ResponsiveContainer>
+
               <DeltaPanel>
                 <ul className="list-disc">
                   <li>Credit earned: {lswStats.data.liquidityCredits}</li>

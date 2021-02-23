@@ -27,8 +27,10 @@
     "autoprefixer": "^10.1.0",
     "bignumber.js": "^9.0.0",
     "classnames": "^2.2.6",
+    "ethereum-block-by-date": "^1.2.5",
     "ethers": "^5.0.31",
     "js-cookie": "^2.2.1",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "next": "10.0.4",
     "next-absolute-url": "^1.2.2",
@@ -62,7 +64,6 @@
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-prettier": "3.0.1",
     "eslint-plugin-react": "7.14.2",
-    "eslint-plugin-react-hooks": "1.4.0",
     "husky": "^5.0.6",
     "lint-staged": "^10.5.3",
     "prettier": "1.16.4"

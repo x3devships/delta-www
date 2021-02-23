@@ -28,18 +28,6 @@ const Staking = ({ onWalletConnect, lswStats }) => {
   const modalContext = useContext(ModalContext);
 
   useEffect(() => {
-    console.log('totalEthContributed', lswStats.data.totalEthContributed);
-  }, [lswStats]);
-
-  useEffect(() => {
-    console.log('eth balance', ethBalance);
-  }, [ethBalance]);
-
-  useEffect(() => {
-    console.log('ethAmount', ethAmount);
-  }, [ethAmount]);
-
-  useEffect(() => {
     if (!wallet.account) {
       setConnectWalletVisible(true);
     } else {

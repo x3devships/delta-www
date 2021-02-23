@@ -4304,11 +4304,6 @@ eslint-plugin-prettier@3.0.1:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-react-hooks@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.npmjs.org/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-1.4.0.tgz#ad86001e05519368e55a888b1b31004b8e2ae8f6"
-  integrity sha512-fMGlzztW/5hSQT0UBnlPwulao0uF8Kyp0Uv6PA81lzmcDz2LBtthkWQaE8Wz2F2kEe7mSRDgK8ABEFK1ipeDxw==
-
 eslint-plugin-react@7.14.2:
   version "7.14.2"
   resolved "https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-7.14.2.tgz#94c193cc77a899ac0ecbb2766fbef88685b7ecc1"
@@ -4691,6 +4686,13 @@ eth-tx-summary@^3.1.2:
     ethereumjs-util "^5.0.1"
     ethereumjs-vm "^2.6.0"
     through2 "^2.0.3"
+
+ethereum-block-by-date@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/ethereum-block-by-date/-/ethereum-block-by-date-1.2.5.tgz#1f03d86634e50b2fee6e96d7d8ceda0343773653"
+  integrity sha512-2/PGr/CVD6QB+Pev29DFT9KVefycEvllNoQXJR7FZIxHB8Z0zu+snjUX69WU8Boz7SVSPZ+qI3xEQ4afL2muJg==
+  dependencies:
+    moment "^2.27.0"
 
 ethereum-bloom-filters@^1.0.6:
   version "1.0.7"
@@ -6825,6 +6827,11 @@ lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
+lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+
 log-symbols@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-4.0.0.tgz#69b3cc46d20f448eccdb75ea1fa733d9e821c920"
@@ -7223,7 +7230,7 @@ modern-normalize@^1.0.0:
   resolved "https://registry.yarnpkg.com/modern-normalize/-/modern-normalize-1.0.0.tgz#539d84a1e141338b01b346f3e27396d0ed17601e"
   integrity sha512-1lM+BMLGuDfsdwf3rsgBSrxJwAZHFIrQ8YR61xIqdHo0uNKI9M52wNpHSrliZATJp51On6JD0AfRxd4YGSU0lw==
 
-moment@^2.29.1:
+moment@^2.27.0, moment@^2.29.1:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
