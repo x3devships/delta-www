@@ -306,7 +306,7 @@ const Staking = ({ onWalletConnect, lswStats }) => {
         </div>
         <div className="mt-4 md:mt-2 pt-4 pl-2">
           {!connectWalletVisible && <><DeltaTitleH3>Total Contribution: {lswStats.data.totalEthContributed.toLocaleString()} ETH </DeltaTitleH3></>}
-          <iframe title="contribution" src="https://duneanalytics.com/embeds/20685/42546/3g7eM1VpRNaNfHFVeIgIpYjTbQ4YTa6n4JGAFoNl" width="100%" height="391" />
+          <iframe title="contribution" src="https://duneanalytics.com/embeds/20836/42857/9ikucIvbRprjyWfCz8ISqI29yDJiDR3llCIour2q" width="100%" height="391" />
         </div>
       </div>
       <div className="m-auto text-xl mt-4 text-center font-wulkan">
