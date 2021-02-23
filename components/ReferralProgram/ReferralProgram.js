@@ -16,7 +16,7 @@ import { errors } from '../../helpers';
 import { ModalContext } from '../../contexts';
 import { ConnectWalletButton } from '../Buttons';
 
-const ReferralProgram = ({ onWalletConnect }) => {
+const ReferralProgram = ({ lswStats, onWalletConnect }) => {
   const yam = useYam();
   const wallet = useWallet();
   const lswRefCode = useLSWReferralCode();
@@ -87,32 +87,7 @@ const ReferralProgram = ({ onWalletConnect }) => {
   };
 
   return <DeltaSection title={t('deltaReferral')}>
-    {/* <DeltaPanel>
-      <div>{t('contracts')}</div>
-    </DeltaPanel> */}
-    {/* <DeltaPanel>
-      <FancyButton
-        url="https://github.com/Delta-Financial/Smart-Contracts/blob/master/Periphery/DELTA_Limited_Staking_Window.sol"
-        text="LSW"
-        image={github}
-      />
-      <FancyButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Governance" text="Governance" image={github} />
-      <FancyButton url="https://github.com/Delta-Financial/Smart-Contracts/tree/master/Periphery" text="Periphery" image={github} />
-    </DeltaPanel> */}
-    {/* <DeltaPanel>
-      <DeltaTitleH2>
-        {t('deltaReferral')}
-      </DeltaTitleH2>
-    </DeltaPanel> */}
-
-
-
     <DeltaPanel>
-      <div className="w-full md:w-6/12">{t('referral')}</div>
-      {renderGenerateLinkButton()}
-    </DeltaPanel>
-
-    {/* <DeltaPanel>
       <div className="block md:grid md:grid-cols-2 md:gap-6 ">
         <div className="md:border-0 md:border-gray-400 md:border-r md:pr-2">
           <div className="w-full md:w-6/12">{t('referral')}</div>
@@ -123,11 +98,17 @@ const ReferralProgram = ({ onWalletConnect }) => {
         <div className="mt-6 md:mt-0">
           {connectWalletVisible ? <ConnectWalletButton onWalletConnect={onWalletConnect} /> :
             <>
-              <DeltaTitleH3>Your Referral Rewards</DeltaTitleH3>
+              <DeltaTitleH3>Your Referral Bonus</DeltaTitleH3>
+              <DeltaPanel>
+                <ul className="list-disc">
+                  <li>Credit earned: {lswStats.data.liquidityCredits}</li>
+                  <li>ETH earned: {lswStats.data.referralBonusWETH}</li>
+                </ul>
+              </DeltaPanel>
             </>}
         </div>
       </div>
-    </DeltaPanel> */}
+    </DeltaPanel>
   </DeltaSection>
 };
 

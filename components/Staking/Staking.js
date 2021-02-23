@@ -87,7 +87,7 @@ const Staking = ({ onWalletConnect, lswStats }) => {
     return amount * bonusPercent;
   };
 
-  const getContributionDetails = (value, timeBonus, referralBonus, refCode) => {
+  const getContributionDetails = (value, timeBonus, referralBonus, refCode, refAddress) => {
     timeBonus = parseFloat(timeBonus) || 0;
     referralBonus = parseFloat(referralBonus) || 0;
 
@@ -104,11 +104,26 @@ const Staking = ({ onWalletConnect, lswStats }) => {
       referralBonusAmount,
       referralBonus,
       refCode,
+      refAddress,
       total
     };
   };
 
   const getContributionConfirmationDetailsContent = details => {
+    const renderReferralSection = () => {
+      if (details.refCode > 0 || (details.refAddress && details.refAddress !== ethers.constants.AddressZero)) {
+        return <div className="text-base">
+          <span className="block font-medium">Referral Signup Bonus ({(details.referralBonus * 100).toFixed(2)}%):</span>
+          <span className="block text-green-500">+ {details.referralBonusAmount.toLocaleString()} ETH</span>
+        </div>
+      }
+
+      return <div className="text-base">
+        <span className="block font-medium">Referral Signup Bonus (none):</span>
+        <span className="block">-</span>
+      </div>
+    };
+
     return <div>
       <div className="text-base">
         <span className="block font-medium">Your Contribution:</span>
@@ -118,17 +133,27 @@ const Staking = ({ onWalletConnect, lswStats }) => {
         <span className="block font-medium">Early Signup Bonus ({(details.timeBonus * 100).toFixed(2)}%):</span>
         <span className="block text-green-500">+ {details.timeBonusAmount.toLocaleString()} ETH</span>
       </div>
-      {(details.refCode > 0 || details.refAddress !== ethers.constants.AddressZero) &&
-        <div className="text-base">
-          <span className="block font-medium">Referral Signup Bonus ({(details.referralBonus * 100).toFixed(2)}%):</span>
-          <span className="block text-green-500">+ {details.referralBonusAmount.toLocaleString()} ETH</span>
-        </div>}
+      {renderReferralSection()}
       <hr />
     </div>
   };
 
   const getContributionReceiptContent = (details, txId) => {
     const shortTxId = `${txId.substring(0, 8)}...${txId.substring(txId.length - 7, txId.length - 1)}`;
+
+    const renderReferralSection = () => {
+      if (details.refCode > 0 || (details.refAddress && details.refAddress !== ethers.constants.AddressZero)) {
+        return <div className="text-base">
+          <span className="block font-medium">Referral Signup Bonus ({(details.referralBonus * 100).toFixed(2)}%):</span>
+          <span className="block">{details.referralBonusAmount.toLocaleString()} ETH</span>
+        </div>
+      }
+
+      return <div className="text-base">
+        <span className="block font-medium">Referral Signup Bonus (none):</span>
+        <span className="block">-</span>
+      </div>
+    };
 
     return <div>
       <div className="text-base">
@@ -139,13 +164,7 @@ const Staking = ({ onWalletConnect, lswStats }) => {
         <span className="block font-medium">Early Signup Bonus ({(details.timeBonus * 100).toFixed(2)}%):</span>
         <span className="block">{details.timeBonusAmount.toLocaleString()} ETH</span>
       </div>
-      {
-        (details.refCode > 0 || details.refAddress !== ethers.constants.AddressZero) &&
-        <div className="text-base">
-          <span className="block font-medium">Referral Signup Bonus ({(details.referralBonus * 100).toFixed(2)}%):</span>
-          <span className="block">{details.referralBonusAmount.toLocaleString()} ETH</span>
-        </div>
-      }
+      {renderReferralSection()}
       <hr />
       <div className="text-base">
         <span className="block font-medium">Total contribution Value:</span>
@@ -176,7 +195,7 @@ const Staking = ({ onWalletConnect, lswStats }) => {
 
     const value = ethers.utils.parseEther(ethAmount.toString());
 
-    const contributionDetails = getContributionDetails(value, lswStats.data.currentTimeBonus, lswStats.data.currentReferralBonus, lswStats.data.refCode);
+    const contributionDetails = getContributionDetails(value, lswStats.data.currentTimeBonus, lswStats.data.currentReferralBonus, lswStats.data.refCode, lswStats.data.refAddress);
     const contributionDetailsContent = getContributionConfirmationDetailsContent(contributionDetails);
 
     const contributionConfirmed = await modalContext.showConfirm('Transaction Confirmation', contributionDetailsContent);
@@ -270,7 +289,7 @@ const Staking = ({ onWalletConnect, lswStats }) => {
 
   return <DeltaSection center title={t('limitedStaking')}>
     <DeltaPanel>
-      <ProgressBarCountDown lswStats={lswStats} />
+      <ProgressBarCountDown />
     </DeltaPanel>
     <DeltaSectionBlock>
       <div className="block md:grid md:grid-cols-2 md:gap-1">
@@ -290,8 +309,8 @@ const Staking = ({ onWalletConnect, lswStats }) => {
           <iframe title="contribution" src="https://duneanalytics.com/embeds/20685/42546/3g7eM1VpRNaNfHFVeIgIpYjTbQ4YTa6n4JGAFoNl" width="100%" height="391" />
         </div>
       </div>
-      <div className="m-auto text-xl mt-4 text-center">
-        {!connectWalletVisible && <><div className="font-bold">Your Contribution: </div><div>{lswStats.data.accountContributedEth.toLocaleString()} ETH</div></>}
+      <div className="m-auto text-xl mt-4 text-center font-wulkan">
+        {!connectWalletVisible && <><div>Your Contribution: </div><div>{lswStats.data.accountContributedEth.toLocaleString()} ETH</div></>}
       </div>
     </DeltaSectionBlock>
     <DeltaSectionBlock>

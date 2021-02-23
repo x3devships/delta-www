@@ -21,7 +21,9 @@ const initialState = {
   refAddress: ethers.constants.AddressZero,
   totalEthContributed: DATA_UNAVAILABLE,
   accountContributedEth: DATA_UNAVAILABLE,
-  totalWETHEarmarkedForReferrers: DATA_UNAVAILABLE
+  totalWETHEarmarkedForReferrers: DATA_UNAVAILABLE,
+  referralBonusWETH: DATA_UNAVAILABLE,
+  liquidityCredits: DATA_UNAVAILABLE
 };
 
 const useLSWStats = () => {
@@ -33,10 +35,13 @@ const useLSWStats = () => {
   const update = async () => {
     if (!yam || !wallet?.account) return;
 
+    const accountContributedEth = (await yam.contracts.LSW.methods.liquidityContributedInETHUnitsMapping(wallet.account).call()) / 1e18;
+    const liquidityCredits = (await yam.contracts.LSW.methods.liquidityCreditsMapping(wallet.account).call()) / 1e18;
+    const referralBonusWETH = (await yam.contracts.LSW.methods.referralBonusWETH(wallet.account).call()) / 1e18;
+
     const timeStart = parseInt(await yam.contracts.LSW.methods.liquidityGenerationStartTimestamp().call());
     const timeEnd = parseInt(await yam.contracts.LSW.methods.liquidityGenerationEndTimestamp().call());
     const totalEthContributed = (await yam.contracts.wETH.methods.balanceOf(yam.contracts.LSW._address).call()) / 1e18;
-    const accountContributedEth = (await yam.contracts.LSW.methods.liquidityContributedInETHUnitsMapping(wallet.account).call()) / 1e18;
     const totalWETHEarmarkedForReferrers = (await yam.contracts.LSW.methods.totalWETHEarmarkedForReferrers().call()) / 1e18;
     const totalSeconds = parseInt(await yam.contracts.LSW.methods.LSW_RUN_TIME().call());
     const currentTimestamp = Date.now() / 1000;
@@ -67,21 +72,17 @@ const useLSWStats = () => {
         refCode = lastRef;
       }
     }
-
-    let percentCompletion = 0;
     let currentTimeBonus = DATA_UNAVAILABLE;
     let secondsLeft = DATA_UNAVAILABLE;
     let percentLeft = DATA_UNAVAILABLE;
 
     // is the LSW started?
     if (timeStart > 0) {
-      percentCompletion = (currentTimestamp - timeStart) / totalSeconds;
       secondsLeft = timeEnd - currentTimestamp;
       percentLeft = secondsLeft / totalSeconds;
       currentTimeBonus = MAX_TIME_BONUS * percentLeft;
     }
 
-    console.log(refCode, refAddress);
     setData({
       timeStart,
       timeEnd,
@@ -90,8 +91,9 @@ const useLSWStats = () => {
       currentReferralBonus,
       secondsLeft,
       totalSeconds,
-      percentCompletion,
       percentLeft,
+      referralBonusWETH,
+      liquidityCredits,
       refCode,
       refAddress,
       totalEthContributed,
