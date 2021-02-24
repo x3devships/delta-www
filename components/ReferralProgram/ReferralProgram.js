@@ -127,8 +127,7 @@ const ReferralProgram = ({ lswStats, onWalletConnect }) => {
 
               <DeltaPanel>
                 <ul className="list-disc">
-                                    <li>ETH earned: {lswStats.data.referralBonusWETH}</li>
-
+                  <li>ETH earned: {lswStats.data.referralBonusWETH}</li>
                   <li>Credit earned: {lswStats.data.referralBonusWETH}</li>
                 </ul>
               </DeltaPanel>
