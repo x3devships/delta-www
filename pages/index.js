@@ -4,6 +4,7 @@ import { Community } from '../components/Community';
 import { ReferralProgram } from '../components/ReferralProgram';
 import { useLSWStats } from '../hooks';
 import { MainLayout } from '../components/Layout';
+import { Vesting } from '../components/Vesting';
 
 export default function Main() {
   const lswStats = useLSWStats();
@@ -12,6 +13,7 @@ export default function Main() {
     <Hero />
     <Staking lswStats={lswStats} />
     <ReferralProgram lswStats={lswStats} />
+    <Vesting />
     <Community />
   </MainLayout>;
 }
