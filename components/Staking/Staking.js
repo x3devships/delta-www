@@ -8,6 +8,7 @@ import { DeltaTitleH3, DeltaTitleH4 } from '../Title';
 import { useYam } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
+import { Spinner } from '../Spinner';
 
 const Staking = ({ lswStats }) => {
   const yam = useYam();
@@ -25,7 +26,7 @@ const Staking = ({ lswStats }) => {
         'Your rLP tokens have been claimed and staked. You can see them displayed on the main page' :
         'Your rLP tokens have been claimed and there are now available in your wallet';
 
-      const transactionMessage = modalContext.showControlledMessage(transactionTitle, <></>);
+      const transactionMessage = modalContext.showControlledMessage(transactionTitle, <Spinner label="Transaction in progress..." />);
 
       await transaction.send({
         from: wallet.account,

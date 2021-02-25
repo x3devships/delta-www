@@ -15,6 +15,7 @@ import { DATA_UNAVAILABLE } from '../../config';
 import TransactionButton from '../Button/TransactionButton';
 import { useYam } from '../../hooks';
 import { ModalContext } from '../../contexts';
+import { Spinner } from '../Spinner';
 
 const ReferralProgram = ({ lswStats }) => {
   const yam = useYam();
@@ -29,7 +30,7 @@ const ReferralProgram = ({ lswStats }) => {
     try {
       const transactionGasEstimate = await transaction.estimateGas({ from: wallet.account });
 
-      const transactionMessage = modalContext.showControlledMessage('Claiming...', <></>);
+      const transactionMessage = modalContext.showControlledMessage('Claiming...', <Spinner label="Transaction in progress..." />);
 
       await transaction.send({
         from: wallet.account,

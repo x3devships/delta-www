@@ -8,6 +8,7 @@ import metaMaskLogo from '../../public/metamask-fox.svg';
 import walletConnectLogo from '../../public/wallet-connect.svg';
 import { ModalContext } from '../../contexts';
 import { ModalType } from '../../contexts/Modal/ModalProvider';
+import { Spinner } from '../Spinner';
 
 const ConnectionModal = () => {
   const wallet = useWallet();
@@ -21,7 +22,7 @@ const ConnectionModal = () => {
   const [selectMetaMask, setMetaMask] = useState(false);
 
   const close = () => {
-    onOk();
+    if (onOk) onOk();
     setConnectingToMetaMask(false);
     setShowInstructions(false);
     setMetaMask(false);
@@ -42,7 +43,7 @@ const ConnectionModal = () => {
 
   const renderContent = () => {
     if (connectingToMetaMask) {
-      return <div className="text-xl">Connecting...</div>
+      return <Spinner label="Connecting..." />
     }
 
     return <>
