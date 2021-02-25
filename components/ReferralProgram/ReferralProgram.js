@@ -48,7 +48,7 @@ const ReferralProgram = ({ lswStats }) => {
               </ResponsiveContainer>
 
               <DeltaPanel>
-                <ul className="list-disc">
+                <ul className="list-disc list-inside">
                   <li>ETH earned: {formatting.getTokenAmount(lswStats.data.referralBonusWETH, 0, 8)}</li>
                   <li>Credit earned: {formatting.getTokenAmount(lswStats.data.referralBonusWETH, 0, 8)}</li>
                 </ul>

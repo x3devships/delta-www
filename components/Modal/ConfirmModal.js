@@ -19,22 +19,10 @@ const ConfirmModal = () => {
       <ModalHeader><div className="text-2xl font-semibold font-wulkan">{title}</div></ModalHeader>
       <ModalBody>{content}</ModalBody>
       <ModalFooter>
-        <Button className="w-full sm:w-auto" style={{
-          marginRight: '1px',
-          borderRadius: '0px',
-          backgroundColor: 'black',
-          padding: '1rem',
-          marginTop: '1rem'
-        }} onClick={onOk}>
+        <Button className="w-full sm:w-auto text-white rounded-none py-4" onClick={onOk}>
           {okContent}
         </Button>
-        <Button style={{
-          marginRight: '1px',
-          borderRadius: '0px',
-          backgroundColor: 'black',
-          padding: '1rem',
-          marginTop: '1rem'
-        }} className="w-full sm:w-auto" onClick={onClose}>
+        <Button className="w-full sm:w-auto text-white rounded-none py-4" onClick={onClose}>
           {cancelContent}
         </Button>
       </ModalFooter>

@@ -1,14 +1,18 @@
 /* eslint-disable react/no-danger */
 import { useWallet } from 'use-wallet';
+import { useContext } from 'react';
 import { ProgressBarCountDown } from '../ProgressBarCountDown';
 import { errors, formatting } from '../../helpers';
 import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
 import { DeltaTitleH2, DeltaTitleH3 } from '../Title';
 import { useYam } from '../../hooks';
+import TransactionButton from '../Button/TransactionButton';
+import { ModalContext } from '../../contexts';
 
 const Staking = ({ lswStats }) => {
   const yam = useYam();
   const wallet = useWallet();
+  const modalContext = useContext(ModalContext);
 
   /*
   const onContribute = async () => {
@@ -85,6 +89,38 @@ const Staking = ({ lswStats }) => {
   };
 */
 
+  const onClaim = async stake => {
+    const claimToWallet = !stake;
+    const transaction = await yam.contracts.LSW.methods.claimOrStakeAndClaimLP(claimToWallet);
+
+    try {
+      const transactionGasEstimate = await transaction.estimateGas({ from: wallet.account });
+      const transactionTitle = stake ? 'Claiming and staking...' : 'Claiming...';
+      const successMessage = stake ?
+        'Your rLP tokens have been claimed and staked. You can see them displayed on the main page' :
+        'Your rLP tokens have been claimed and there are now available in your wallet';
+
+      const transactionMessage = modalContext.showControlledMessage(transactionTitle, <></>);
+
+      await transaction.send({
+        from: wallet.account,
+        gas: transactionGasEstimate
+      });
+
+      transactionMessage.close();
+
+      await modalContext.showMessage('Success', <>
+        <div className="text-lg">{successMessage}</div>
+      </>)
+    } catch (error) {
+      const decodedError = errors.getTransactionError(error, 'An error occured while claiming');
+      console.log(decodedError);
+      return modalContext.showError('Claiming Error', decodedError.message);
+    }
+
+    return Promise.resolve();
+  };
+
   return <DeltaSection center title="Limited Staking Window is closed">
     <DeltaPanel>
       <ProgressBarCountDown />
@@ -93,6 +129,12 @@ const Staking = ({ lswStats }) => {
     <DeltaSectionBlock requiresConnectedWallet>
       <DeltaTitleH2>You Contributed: {formatting.getTokenAmount(lswStats.data.accountContributedEth, 0, 6)} ETH</DeltaTitleH2>
       <DeltaTitleH2>rLP to be claimed: {formatting.getTokenAmount(lswStats.data.claimableRlp, 0, 6)} rLP</DeltaTitleH2>
+      <DeltaPanel>
+        <div className="flex items-center text-center flex-wrap">
+          <div><TransactionButton text="Claim &amp; Stake" textLoading="Staking..." onClick={() => onClaim(true)} /></div>
+          <div><TransactionButton text="Claim" textLoading="Claiming..." onClick={() => onClaim(false)} /></div>
+        </div>
+      </DeltaPanel>
     </DeltaSectionBlock>
   </DeltaSection >
 };

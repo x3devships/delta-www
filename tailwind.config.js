@@ -21,7 +21,8 @@ module.exports = windmill({
       backgroundPage: '#E5E5E5',
       backgroundButton: '#C7C7C7',
       greenText: '#4DA560',
-      whisper: '#ebebeb'
+      whisper: '#EBEBEB',
+      whisperMore: '#E9E9E7'
     }
   },
   variants: {

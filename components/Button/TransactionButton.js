@@ -111,7 +111,7 @@ const TransactionButton = ({ onClick, allowanceRequiredFor, icon, text, textLoad
           handleApproval();
         }
       }}
-      className="bg-black text-white p-5 rounded-none mt-4 mr-4"
+      className="bg-black text-white p-5 rounded-none mt-4 mr-4 py-4"
     >
       {renderButtonText()}
       <img alt="+" src={plus} className="m-auto pl-8" />
