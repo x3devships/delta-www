@@ -47,10 +47,10 @@
     "react-focus-lock": "^2.5.0",
     "react-moment": "^1.0.0",
     "react-use-localstorage": "^3.5.3",
-    "recharts": "^2.0.6",
     "styled-components": "^5.2.0",
     "tailwindcss": "^2.0.2",
     "use-wallet": "^0.8.0",
+    "victory": "^35.4.9",
     "web3": "1.2.11"
   },
   "devDependencies": {
