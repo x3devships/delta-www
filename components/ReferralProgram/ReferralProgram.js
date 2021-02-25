@@ -7,16 +7,48 @@ import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
 import { VictoryChart, VictoryGroup, VictoryArea } from 'victory';
 import { DeltaPanel, DeltaSection } from '../Section';
-import { DeltaTitleH3 } from '../Title';
-import { formatting } from '../../helpers';
+import { DeltaTitleH3, DeltaTitleH4 } from '../Title';
+import { errors, formatting } from '../../helpers';
 import { ConnectWalletButton } from '../Buttons';
 import useReferralRewardsChartData from '../../hooks/useReferralRewardsChartData';
 import { DATA_UNAVAILABLE } from '../../config';
+import TransactionButton from '../Button/TransactionButton';
+import { useYam } from '../../hooks';
+import { ModalContext } from '../../contexts';
 
 const ReferralProgram = ({ lswStats }) => {
+  const yam = useYam();
   const wallet = useWallet();
+  const modalContext = useContext(ModalContext);
   const { t } = useTranslation('home');
   const chartData = useReferralRewardsChartData();
+
+  const onClaim = async () => {
+    const transaction = await yam.contracts.LSW.methods.getWETHBonusForReferrals();
+
+    try {
+      const transactionGasEstimate = await transaction.estimateGas({ from: wallet.account });
+
+      const transactionMessage = modalContext.showControlledMessage('Claiming...', <></>);
+
+      await transaction.send({
+        from: wallet.account,
+        gas: transactionGasEstimate
+      });
+
+      transactionMessage.close();
+
+      await modalContext.showMessage('Success', <>
+        <div className="text-lg">Your bonus has been claimed and is now available in your wallet</div>
+      </>)
+    } catch (error) {
+      const decodedError = errors.getTransactionError(error, 'An error occured while claiming');
+      console.log(decodedError);
+      return modalContext.showError('Claiming Error', decodedError.message);
+    }
+
+    return Promise.resolve();
+  };
 
   return <DeltaSection title={t('deltaReferral')}>
     <DeltaPanel>
@@ -46,11 +78,19 @@ const ReferralProgram = ({ lswStats }) => {
                   </VictoryChart>
                 </div>
                 : <></>}
+
               <DeltaPanel>
-                <ul className="list-disc list-inside">
-                  <li>ETH earned: {formatting.getTokenAmount(lswStats.data.referralBonusWETH, 0, 8)}</li>
-                  <li>Credit earned: {formatting.getTokenAmount(lswStats.data.referralBonusWETH, 0, 8)}</li>
-                </ul>
+                <DeltaTitleH4 className="flex mt-4 md:mt-2 flex-col md:flex-row">
+                  <div className="mr-4">ETH earned:</div>
+                  <div>{formatting.getTokenAmount(lswStats.data.referralBonusWETH, 0, 8)}</div>
+                </DeltaTitleH4>
+                <DeltaTitleH4 className="flex mt-4 md:mt-2 flex-col md:flex-row">
+                  <div className="mr-4">Credit earned:</div>
+                  <div>{formatting.getTokenAmount(lswStats.data.referralBonusWETH, 0, 8)}</div>
+                </DeltaTitleH4>
+                <DeltaPanel>
+                  <TransactionButton text="Claim" textLoading="Staking..." onClick={() => onClaim()} />
+                </DeltaPanel>
               </DeltaPanel>
             </>}
         </div>

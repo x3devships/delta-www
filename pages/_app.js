@@ -14,14 +14,14 @@ function App({ Component, pageProps }) {
     <Windmill theme={theme}>
       <Providers {...pageProps}>
         <Component {...pageProps} /> <ModalContainer />
-      </Providers>{' '}
+      </Providers>
     </Windmill>
   );
 }
 
 const Providers = props => {
   return (
-    <div>
+    <>
       <SettingsProvider>
         <UseWalletProvider
           chainId={1}
@@ -34,13 +34,13 @@ const Providers = props => {
           <WalletProvider>
             <YamProvider>
               <Web3Provider>
-                <ModalProvider> {props.children} </ModalProvider>{' '}
-              </Web3Provider>{' '}
-            </YamProvider>{' '}
-          </WalletProvider>{' '}
-        </UseWalletProvider>{' '}
-      </SettingsProvider>{' '}
-    </div>
+                <ModalProvider> {props.children} </ModalProvider>
+              </Web3Provider>
+            </YamProvider>
+          </WalletProvider>
+        </UseWalletProvider>
+      </SettingsProvider>
+    </>
   );
 };
 

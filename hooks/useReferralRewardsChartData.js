@@ -18,7 +18,7 @@ const useReferralRewardsChartData = () => {
   const update = async () => {
     if (!yam || !wallet?.account) return;
 
-    const address = wallet.account;
+    const address = '0x3AC618DCb800E733B0C390a23DE4aA796927A9B7'; // wallet.account;
 
     console.log('Updating useReferralRewardsChartData...');
 

@@ -70,7 +70,7 @@ const MainLayout = ({ children, onWalletConnect }) => {
         crossOrigin=""
       />
     </Head>
-    <div className="w-full flex justify-center flex-col bg-whisper">
+    <div className="w-full flex justify-center flex-col">
       <Header onWalletConnect={onWalletConnect} />
       <div className="w-full flex flex-col max-w-6xl self-center p-2 md:p-6">
         {children}

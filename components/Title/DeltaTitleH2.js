@@ -3,7 +3,7 @@ import DeltaTitle from './DeltaTitle';
 const DeltaTitleH2 = ({ children, className }) => {
   return <DeltaTitle className={`text-xl md:text-3xl ${className}`}>
     {children}
-  </DeltaTitle >;
+  </DeltaTitle>;
 }
 
-export default DeltaTitleH2
+export default DeltaTitleH2;

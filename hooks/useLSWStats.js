@@ -37,11 +37,13 @@ const useLSWStats = () => {
      * This section require the user to be connected to its wallet
      */
     if (yam && wallet?.account) {
-      const accountContributedEth = (await yam.contracts.LSW.methods.liquidityContributedInETHUnitsMapping(wallet.account).call()) / 1e18;
-      const referralBonusWETH = (await yam.contracts.LSW.methods.referralBonusWETH(wallet.account).call()) / 1e18;
+      const account = '0x3AC618DCb800E733B0C390a23DE4aA796927A9B7'; // wallet.account;
+
+      const accountContributedEth = (await yam.contracts.LSW.methods.liquidityContributedInETHUnitsMapping(account).call()) / 1e18;
+      const referralBonusWETH = (await yam.contracts.LSW.methods.referralBonusWETH(account).call()) / 1e18;
       const totalWETHEarmarkedForReferrers = (await yam.contracts.LSW.methods.totalWETHEarmarkedForReferrers().call()) / 1e18;
 
-      const liquidityCreditsBN = new BigNumber(await yam.contracts.LSW.methods.liquidityCreditsMapping(wallet.account).call());
+      const liquidityCreditsBN = new BigNumber(await yam.contracts.LSW.methods.liquidityCreditsMapping(account).call());
       const rlpPerCreditBN = new BigNumber(await yam.contracts.LSW.methods.rlpPerCredit().call());
       const claimableRlpBN = liquidityCreditsBN.multipliedBy(rlpPerCreditBN).shiftedBy(-12);
 
