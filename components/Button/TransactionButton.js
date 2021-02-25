@@ -111,10 +111,10 @@ const TransactionButton = ({ onClick, allowanceRequiredFor, icon, text, textLoad
           handleApproval();
         }
       }}
-      style={secondaryLooks ? { backgroundColor: 'black', color: 'white', padding: '1rem', marginTop: '1rem', borderRadius: '0px', marginRight: '1rem' } : {}}
+      className="bg-black text-white p-5 rounded-none mt-4 mr-4"
     >
       {renderButtonText()}
-      {secondaryLooks && <img alt="+" src={plus} className="m-auto pl-8" />}
+      <img alt="+" src={plus} className="m-auto pl-8" />
     </Button>
   );
 };

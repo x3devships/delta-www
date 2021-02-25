@@ -1,35 +1,22 @@
-import useTranslation from 'next-translate/useTranslation';
-import { useWallet } from 'use-wallet';
-import { useEffect, useState } from 'react';
-import { ConnectWalletButton } from '../Buttons';
-
-const hero = ({ onWalletConnect }) => {
-  const { t } = useTranslation('home');
-  const wallet = useWallet();
-  const [connectWalletVisible, setConnectWalletVisible] = useState(true);
-
-  useEffect(() => {
-    console.log(wallet.error);
-    if (!wallet.account) {
-      setConnectWalletVisible(true);
-    } else {
-      setConnectWalletVisible(false);
-    }
-  }, [wallet]);
-
+const Hero = () => {
   return (
-    <div className="pt-10 pb-20">
-      <div className="px-3 lg:2/6 xl:w-3/4 mt-20 ">
-        <div className="text-6xl font-semibold text-gray-900 leading-none font-wulkan">
-          {t('limitedStakingFirstPart')} <br /> {t('limitedStakingSecondPart')}
+    <div className="pt-10 p-6 pb-20 mt-20 font-semibold text-gray-900 leading-none">
+      <div className="text-6xl font-wulkan">
+        Delta has launched!
+      </div>
+      <div className="text-justify">
+        <div className="mt-12 text-2xl">
+          The Limited Staking Window has successfully come to an end.
         </div>
-        <div className="mt-6 text-xl xl:w-2/4 text-true-gray-500 antialiased font-wulkan sm:w-full" dangerouslySetInnerHTML={{ __html: t('deltaLSW') }} />
-        {connectWalletVisible && (
-          <ConnectWalletButton onWalletConnect={onWalletConnect} />
-        )}
+        <div className="mt-6 text-2xl">
+          Delta is now tradable on Uniswap, the rLP tokens are claimable and the Deep Farming Vault is producing yields!
+        </div>
+        <div className="mt-6 text-2xl">
+          Make sure to claim and stake your rLP to earn yield from the Deep Farming Vault.
+        </div>
       </div>
     </div>
   );
 };
 
-export default hero;
+export default Hero;

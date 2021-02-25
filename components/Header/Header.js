@@ -1,19 +1,13 @@
-import { useEffect, useState } from 'react';
 import useTranslation from 'next-translate/useTranslation';
+import { useContext } from 'react';
 import { useWallet } from 'use-wallet';
+import { ModalContext } from '../../contexts';
 import logo from '../../public/HeaderLogo.svg';
 
-const header = ({ onWalletConnect }) => {
+const Header = () => {
   const wallet = useWallet();
-  const [connectWalletVisible, setConnectWalletVisible] = useState(true);
+  const modalContext = useContext(ModalContext);
   const { t } = useTranslation('home');
-  useEffect(() => {
-    if (!wallet.account) {
-      setConnectWalletVisible(true);
-    } else {
-      setConnectWalletVisible(false);
-    }
-  }, [wallet]);
 
   return (
     <nav className="flex items-center justify-between flex-wrap bg-black p-3 md:p-6">
@@ -22,13 +16,19 @@ const header = ({ onWalletConnect }) => {
       </a>
       <button
         type="button"
-        onClick={() => (connectWalletVisible ? onWalletConnect() : wallet.reset())}
+        onClick={() => {
+          if (!wallet?.account) {
+            modalContext.showConnectWallet();
+          } else {
+            wallet.reset();
+          }
+        }}
         className="items-center inline-block text-sm px-4 py-2 leading-none text-white hover:border-transparent lg:mt-0 uppercase self-center"
       >
-        {connectWalletVisible ? <>{t('connectWallet')}</> : <>{t('disconnect')}</>}
+        {wallet?.account ? <>{t('disconnect')}</> : <>{t('connectWallet')}</>}
       </button>
     </nav>
   );
 };
 
-export default header;
+export default Header;

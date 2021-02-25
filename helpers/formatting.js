@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { DATA_UNAVAILABLE } from '../config';
 
-const getTokenAmount = (amount, decimals = 18, precision = 4) => {
+const getTokenAmount = (amount, decimals = 18, precision = 4, toLocaleString = true) => {
   if (amount === DATA_UNAVAILABLE) {
     return amount;
   }
@@ -20,7 +20,11 @@ const getTokenAmount = (amount, decimals = 18, precision = 4) => {
     amount = parseInt(amount);
   }
 
-  return amount;
+  if (toLocaleString) {
+    amount = amount.toLocaleString();
+  }
+
+  return amount
 };
 
 export default {

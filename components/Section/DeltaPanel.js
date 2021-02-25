@@ -1,5 +1,5 @@
 const DeltaPanel = ({ children }) => {
-  return <div className="w-full p-3 md:p-6">
+  return <div className="w-full py-3 md:py-6">
     {children}
   </div>;
 }
