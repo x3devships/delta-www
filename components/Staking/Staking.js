@@ -9,10 +9,12 @@ import { useYam } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 import { Spinner } from '../Spinner';
+import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 
-const Staking = ({ lswStats }) => {
+const Staking = () => {
   const yam = useYam();
   const wallet = useWallet();
+  const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
 
   const onClaim = async stake => {
@@ -35,7 +37,7 @@ const Staking = ({ lswStats }) => {
 
       transactionMessage.close();
 
-      lswStats.update();
+      globalHooks.lswStats.update();
       await modalContext.showMessage('Success', <>
         <div className="text-lg">{successMessage}</div>
       </>)
@@ -52,17 +54,17 @@ const Staking = ({ lswStats }) => {
   return <DeltaSection center title="Limited Staking Window is closed">
     <DeltaPanel>
       <ProgressBarCountDown />
-      <DeltaTitleH3 className="text-center mt-6">{Math.round(lswStats.data.totalEthContributed).toFixed(0).toLocaleString()} ETH contributed!</DeltaTitleH3>
+      <div className="text-center mt-6">{Math.round(globalHooks.lswStats.data.totalEthContributed).toFixed(0).toLocaleString()} ETH contributed!</div>
     </DeltaPanel>
     <DeltaSectionBlock requiresConnectedWallet>
-      <DeltaTitleH4 className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row">
         <div className="mr-4">You Contributed:</div>
-        <div className="block">{formatting.getTokenAmount(lswStats.data.accountContributedEth, 0, 6)} ETH</div>
-      </DeltaTitleH4>
-      <DeltaTitleH4 className="flex mt-4 md:mt-2 flex-col md:flex-row">
+        <div className="block">{formatting.getTokenAmount(globalHooks.lswStats.data.accountContributedEth, 0, 6)} ETH</div>
+      </div>
+      <div className="flex mt-4 md:mt-2 flex-col md:flex-row">
         <div className="mr-4">rLP to be claimed:</div>
-        <div>{formatting.getTokenAmount(lswStats.data.claimableRlp, 0, 6)} rLP</div>
-      </DeltaTitleH4>
+        <div>{formatting.getTokenAmount(globalHooks.lswStats.data.claimableRlp, 0, 6)} rLP</div>
+      </div>
       <DeltaPanel className="flex items-center text-center flex-wrap">
         <TransactionButton text="Claim &amp; Stake" textLoading="Staking..." onClick={() => onClaim(true)} />
         <TransactionButton text="Claim" textLoading="Claiming..." onClick={() => onClaim(false)} />

@@ -16,10 +16,12 @@ import TransactionButton from '../Button/TransactionButton';
 import { useYam } from '../../hooks';
 import { ModalContext } from '../../contexts';
 import { Spinner } from '../Spinner';
+import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 
-const ReferralProgram = ({ lswStats }) => {
+const ReferralProgram = () => {
   const yam = useYam();
   const wallet = useWallet();
+  const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
   const { t } = useTranslation('home');
   const chartData = useReferralRewardsChartData();
@@ -38,7 +40,7 @@ const ReferralProgram = ({ lswStats }) => {
       });
 
       transactionMessage.close();
-      lswStats.update();
+      globalHooks.lswStats.update();
 
       await modalContext.showMessage('Success', <>
         <div className="text-lg">Your bonus has been claimed and is now available in your wallet</div>
@@ -60,9 +62,9 @@ const ReferralProgram = ({ lswStats }) => {
             <>
               <DeltaTitleH3>Your Referral Bonus</DeltaTitleH3>
 
-              {lswStats.data.referralBonusWETH !== DATA_UNAVAILABLE && lswStats.data.referralBonusWETH > 0 ?
-                <div className="w-full md:w-8/12">
-                  <VictoryChart padding={34} width={400} height={400} scale={{ x: "time", y: "linear" }} minDomain={{ y: 0 }}>
+              {globalHooks.lswStats.data.referralBonusWETH !== DATA_UNAVAILABLE && globalHooks.lswStats.data.referralBonusWETH > 0 ?
+                <div className="w-full md:w-6/12">
+                  <VictoryChart padding={34} width={400} height={300} scale={{ x: "time", y: "linear" }} minDomain={{ y: 0 }}>
                     <VictoryGroup
                       style={{
                         data: { strokeWidth: 1, fillOpacity: 0.6 }
@@ -82,14 +84,14 @@ const ReferralProgram = ({ lswStats }) => {
                 : <></>}
 
               <DeltaPanel>
-                <DeltaTitleH4 className="flex mt-4 md:mt-2 flex-col md:flex-row">
+                <div className="flex mt-4 md:mt-2 flex-col md:flex-row">
                   <div className="mr-4">ETH earned:</div>
-                  <div>{formatting.getTokenAmount(lswStats.data.referralBonusWETH, 0, 8)}</div>
-                </DeltaTitleH4>
-                <DeltaTitleH4 className="flex mt-4 md:mt-2 flex-col md:flex-row">
+                  <div>{formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</div>
+                </div>
+                <div className="flex mt-4 md:mt-2 flex-col md:flex-row">
                   <div className="mr-4">Credit earned:</div>
-                  <div>{formatting.getTokenAmount(lswStats.data.referralBonusWETH, 0, 8)}</div>
-                </DeltaTitleH4>
+                  <div>{formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</div>
+                </div>
                 <DeltaPanel>
                   <TransactionButton text="Claim" textLoading="Staking..." onClick={() => onClaim()} />
                 </DeltaPanel>

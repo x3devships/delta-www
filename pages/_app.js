@@ -1,7 +1,7 @@
 import { Windmill } from '@windmill/react-ui';
 import { UseWalletProvider } from 'use-wallet';
 import { WEB3_PROVIDER_URL } from '../config';
-import { WalletProvider, YamProvider, Web3Provider, SettingsProvider, ModalProvider } from '../contexts';
+import { WalletProvider, YamProvider, Web3Provider, SettingsProvider, GlobalHooksProvider, ModalProvider } from '../contexts';
 import theme from '../config/default.theme';
 
 import '../styles/globals.css';
@@ -34,7 +34,11 @@ const Providers = props => {
           <WalletProvider>
             <YamProvider>
               <Web3Provider>
-                <ModalProvider> {props.children} </ModalProvider>
+                <ModalProvider>
+                  <GlobalHooksProvider>
+                    {props.children}
+                  </GlobalHooksProvider>
+                </ModalProvider>
               </Web3Provider>
             </YamProvider>
           </WalletProvider>

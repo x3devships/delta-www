@@ -1,12 +1,11 @@
 import { ethers } from 'ethers';
 import { useWallet } from 'use-wallet';
 import { useContext, useEffect, useState } from 'react';
-import { Button } from '@windmill/react-ui';
 import { errors } from '../../helpers';
 import { useUserApprovalOfContract, useUserTokenBalance, useYam } from '../../hooks';
 import { DATA_UNAVAILABLE } from '../../config';
 import { ModalContext } from '../../contexts';
-import plus from '../../public/plus.svg';
+import DeltaButton from './DeltaButton';
 
 /**
  * A button that supports sending a transaction and keeping track of allowance/approval
@@ -102,7 +101,7 @@ const TransactionButton = ({ onClick, allowanceRequiredFor, icon, text, textLoad
   };
 
   return (
-    <Button
+    <DeltaButton
       {...props}
       disabled={isDisabled()}
       onClick={() => {
@@ -112,11 +111,9 @@ const TransactionButton = ({ onClick, allowanceRequiredFor, icon, text, textLoad
           handleApproval();
         }
       }}
-      className="bg-black text-white p-5 rounded-none mt-4 mr-4 py-4"
     >
       {renderButtonText()}
-      <img alt="+" src={plus} className="m-auto pl-8" />
-    </Button>
+    </DeltaButton>
   );
 };
 

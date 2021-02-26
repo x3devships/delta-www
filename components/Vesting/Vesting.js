@@ -1,13 +1,13 @@
 import { VictoryPie, VictoryLabel, VictoryLegend } from 'victory';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button } from '@windmill/react-ui';
-import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
-import { DeltaTitleH2, DeltaTitleH3 } from '../Title';
-import { useDelta } from '../../hooks';
+import { DeltaPanel, DeltaSection } from '../Section';
+import { DeltaTitleH2 } from '../Title';
 import { formatting } from '../../helpers';
 import { VestingTransactionProgressBar } from '../ProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
+import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 
 const FULLY_VESTING_REFRESH_RATE = 1 * 60 * 1000;
 
@@ -16,7 +16,7 @@ const Vesting = () => {
   const [transactionDetailsVisible, setTransactionDetailsVisible] = useState(false);
 
   const chartWidth = 400;
-  const delta = useDelta();
+  const globalHooks = useContext(GlobalHooksContext);
 
   const getTimeDifferenceFromNow = endTime => {
     const now = moment.now();
@@ -33,21 +33,21 @@ const Vesting = () => {
 
   useEffect(() => {
     const update = () => {
-      if (delta.data.vestingInProgress) {
-        const timeDifference = getTimeDifferenceFromNow(delta.data.fullyVestedAt);
+      if (globalHooks.delta.data.vestingInProgress) {
+        const timeDifference = getTimeDifferenceFromNow(globalHooks.delta.data.fullyVestedAt);
         setFullyVestedAtInfo(timeDifference);
       } else {
         setFullyVestedAtInfo(DATA_UNAVAILABLE);
       }
     };
 
-    if (delta.data.fullyVestedAt !== DATA_UNAVAILABLE) {
+    if (globalHooks.delta.data.fullyVestedAt !== DATA_UNAVAILABLE) {
       update();
     }
 
     const interval = setInterval(update, FULLY_VESTING_REFRESH_RATE);
     return () => clearInterval(interval);
-  }, [delta.data.fullyVestedAt]);
+  }, [globalHooks.delta.data.fullyVestedAt]);
 
   const onToggleTransactionDetails = () => {
     setTransactionDetailsVisible(transactionDetailsVisible => !transactionDetailsVisible);
@@ -75,7 +75,7 @@ const Vesting = () => {
     };
 
     return <>
-      {delta.data.vestingTransactions.map((tx, index) => renderTransaction(tx, index))}
+      {globalHooks.delta.data.vestingTransactions.map((tx, index) => renderTransaction(tx, index))}
     </>;
   };
 
@@ -98,8 +98,8 @@ const Vesting = () => {
             labelRadius={125}
             labels={({ datum }) => `${(datum.y * 100).toFixed(0)}%`}
             data={[
-              { x: "mature", y: delta.data.percentVested },
-              { x: "unmature", y: 1.0 - delta.data.percentVested },
+              { x: "mature", y: globalHooks.delta.data.percentVested },
+              { x: "unmature", y: 1.0 - globalHooks.delta.data.percentVested },
             ]}
           />
           <VictoryLabel
@@ -127,24 +127,6 @@ const Vesting = () => {
           {renderVestingTransactions()}
         </DeltaPanel>
       </div>
-      <DeltaSectionBlock>
-        <DeltaTitleH2>
-          <div className="mr-4 text-center">My Wallet</div>
-
-          <DeltaTitleH3 className="flex mt-4 md:mt-2 flex-col md:flex-row">
-            <div className="mr-4">Total DELTA:</div>
-            <div>{formatting.getTokenAmount(delta.data.total, 0, 4)}</div>
-          </DeltaTitleH3>
-          <DeltaTitleH3 className="flex mt-4 md:mt-2 flex-col md:flex-row">
-            <div className="mr-4">Mature DELTA:</div>
-            <div>{formatting.getTokenAmount(delta.data.mature, 0, 4)}</div>
-          </DeltaTitleH3>
-          <DeltaTitleH3 className="flex mt-4 md:mt-2 flex-col md:flex-row">
-            <div className="mr-4">Immature DELTA:</div>
-            <div>{formatting.getTokenAmount(delta.data.immature, 0, 4)}</div>
-          </DeltaTitleH3>
-        </DeltaTitleH2>
-      </DeltaSectionBlock>
     </div>
   </DeltaSection>
 };
