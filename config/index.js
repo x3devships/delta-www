@@ -19,7 +19,7 @@ export const DATA_UNAVAILABLE = '--';
 // - If one endpoint stop working here is a list of endpoint that can be used: https://ethereumnodes.com/
 // - Endpoint found from inspecting XHR request from metamask dev mode in google chrome.Could change in
 //   the futur and break: https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161
-export const WEB3_PROVIDER_URL = 'https://cloudflare-eth.com/';
+export const WEB3_PROVIDER_URL = 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
 
 export const pairNames = {
   coreCbtc: 'coreCbtc',
