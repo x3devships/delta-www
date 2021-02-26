@@ -38,6 +38,7 @@ const ReferralProgram = ({ lswStats }) => {
       });
 
       transactionMessage.close();
+      lswStats.update();
 
       await modalContext.showMessage('Success', <>
         <div className="text-lg">Your bonus has been claimed and is now available in your wallet</div>

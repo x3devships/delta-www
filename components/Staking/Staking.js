@@ -35,9 +35,11 @@ const Staking = ({ lswStats }) => {
 
       transactionMessage.close();
 
+      lswStats.update();
       await modalContext.showMessage('Success', <>
         <div className="text-lg">{successMessage}</div>
       </>)
+
     } catch (error) {
       const decodedError = errors.getTransactionError(error, 'An error occured while claiming');
       console.log(decodedError);

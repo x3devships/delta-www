@@ -7,3 +7,4 @@ export { default as useEthBalance } from './useEthBalance';
 export { default as useUserApprovalOfContract } from './useUserApprovalOfContract';
 export { default as useCorePairBalances } from './useCorePairBalances';
 export { default as useLSWStats } from './useLSWStats';
+export { default as useDelta } from './useDelta';

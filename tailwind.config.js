@@ -22,7 +22,8 @@ module.exports = windmill({
       backgroundButton: '#C7C7C7',
       greenText: '#4DA560',
       whisper: '#EBEBEB',
-      whisperMore: '#E9E9E7'
+      whisperMore: '#E9E9E7',
+      whisperEvenMore: '#E4E4E4'
     }
   },
   variants: {
