@@ -20,7 +20,7 @@ const useReferralRewardsChartData = () => {
 
     let currentData = data;
 
-    const address = '0x3AC618DCb800E733B0C390a23DE4aA796927A9B7'; // account;
+    const address = account;
     console.log('Updating useReferralRewardsChartData...');
 
     if (currentData.length === 0) {
