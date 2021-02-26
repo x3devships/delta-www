@@ -96,10 +96,10 @@ const Vesting = () => {
             categories={{ x: ["mature", "unmature"] }}
             innerRadius={110}
             labelRadius={125}
-            labels={({ datum }) => `${datum.y}%`}
+            labels={({ datum }) => `${(datum.y * 100).toFixed(0)}%`}
             data={[
-              { x: "mature", y: 20 },
-              { x: "unmature", y: 80 },
+              { x: "mature", y: delta.data.percentVested },
+              { x: "unmature", y: 1.0 - delta.data.percentVested },
             ]}
           />
           <VictoryLabel

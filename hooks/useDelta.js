@@ -19,6 +19,7 @@ const useDelta = () => {
     immature: DATA_UNAVAILABLE,
     fullyVestedAt: DATA_UNAVAILABLE,
     vestingInProgress: false,
+    percentVested: DATA_UNAVAILABLE,
     vestingTransactions: []
   });
 
@@ -54,6 +55,7 @@ const useDelta = () => {
       total,
       mature,
       immature,
+      percentVested: mature / total,
       fullyVestedAt: fullyVestedAt * 1000,
       vestingInProgress: fullyVestedAt * 1000 > moment.now(),
       vestingTransactions
