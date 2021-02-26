@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 import { useWallet } from 'use-wallet';
 import { useContext } from 'react';
-import { ProgressBarCountDown } from '../ProgressBarCountDown';
+import { ProgressBarCountDown } from '../ProgressBar';
 import { errors, formatting } from '../../helpers';
 import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
 import { DeltaTitleH3, DeltaTitleH4 } from '../Title';

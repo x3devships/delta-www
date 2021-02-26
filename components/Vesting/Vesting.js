@@ -6,6 +6,7 @@ import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
 import { DeltaTitleH2, DeltaTitleH3, DeltaTitleH4 } from '../Title';
 import { useDelta } from '../../hooks';
 import { formatting } from '../../helpers';
+import { VestingTransactionProgressBar } from '../ProgressBar';
 
 const Vesting = () => {
   const [currentTime, setCurrentTime] = useState(1);
@@ -29,9 +30,11 @@ const Vesting = () => {
         return <></>
       };
 
-      return <div className="border-t border-gray-200 text-left pt-4">
-        <DeltaTitleH4>Transaction #{index}</DeltaTitleH4>
+      tx.index = index;
+
+      return <div key={`tx-${index}`} className="text-left pt-4">
         <DeltaPanel>
+          <VestingTransactionProgressBar transaction={tx} />
           <div>{formatting.getTokenAmount(tx.amount, 18, 4)}</div>
           <div>{tx.fullVestingTimestamp}</div>
           <div>{tx.percentVested}</div>
@@ -47,7 +50,7 @@ const Vesting = () => {
   };
 
   return <DeltaSection requiresConnectedWallet title="Delta Vesting Schedule">
-    <div className="bg-whisperEvenMore p-4">
+    <div className="bg-whisperEvenMore border border-gray-400 p-4">
       <DeltaTitleH2 center>Total Delta</DeltaTitleH2>
       <div className="w-full text-center">
         <svg viewBox="0 0 600 400">

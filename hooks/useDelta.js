@@ -42,7 +42,7 @@ const useDelta = () => {
         fullVestingTimestamp: vestingTransactionDetails.fullVestingTimestamp,
         immature: vestingTransactionDetails.immature / 1e18,
         mature: vestingTransactionDetails.mature / 1e18,
-        percentVested: vestingTransactionDetails.amount / 1e4,
+        percentVested: vestingTransactionDetails.percentVestedE4 / 1e4,
       })
     }
 
