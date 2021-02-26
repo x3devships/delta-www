@@ -46,7 +46,7 @@ const useReferralRewardsChartData = () => {
     const dater = new EthDater(yam.web3);
 
     // Only fetch the missing new blocks
-    const newBlockInfo = await dater.getEvery('hours', lastBlockTimestamp, Date.now());
+    const newBlockInfo = [];// await dater.getEvery('hours', lastBlockTimestamp, Date.now());
 
     // Fetch the new information for these blocks
     const newChartData = await Promise.all(newBlockInfo.map(async blockInfo => {

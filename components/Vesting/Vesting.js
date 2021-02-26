@@ -3,22 +3,51 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Button } from '@windmill/react-ui';
 import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
-import { DeltaTitleH2, DeltaTitleH3, DeltaTitleH4 } from '../Title';
+import { DeltaTitleH2, DeltaTitleH3 } from '../Title';
 import { useDelta } from '../../hooks';
 import { formatting } from '../../helpers';
 import { VestingTransactionProgressBar } from '../ProgressBar';
+import { DATA_UNAVAILABLE } from '../../config';
+
+const FULLY_VESTING_REFRESH_RATE = 1 * 60 * 1000;
 
 const Vesting = () => {
-  const [currentTime, setCurrentTime] = useState(1);
+  const [fullyVestedAtInfo, setFullyVestedAtInfo] = useState(DATA_UNAVAILABLE);
   const [transactionDetailsVisible, setTransactionDetailsVisible] = useState(false);
 
   const chartWidth = 400;
   const delta = useDelta();
 
+  const getTimeDifferenceFromNow = endTime => {
+    const now = moment.now();
+    const fullyVestedAt = moment(endTime);
+    const diffTime = fullyVestedAt - now;
+    const duration = moment.duration(diffTime, 'milliseconds');
+
+    return {
+      days: duration.days(),
+      hours: duration.hours(),
+      minutes: duration.minutes()
+    }
+  };
+
   useEffect(() => {
-    const interval = setInterval(() => setCurrentTime(t => t + 1), 1000);
+    const update = () => {
+      if (delta.data.vestingInProgress) {
+        const timeDifference = getTimeDifferenceFromNow(delta.data.fullyVestedAt);
+        setFullyVestedAtInfo(timeDifference);
+      } else {
+        setFullyVestedAtInfo(DATA_UNAVAILABLE);
+      }
+    };
+
+    if (delta.data.fullyVestedAt !== DATA_UNAVAILABLE) {
+      update();
+    }
+
+    const interval = setInterval(update, FULLY_VESTING_REFRESH_RATE);
     return () => clearInterval(interval);
-  });
+  }, [delta.data.fullyVestedAt]);
 
   const onToggleTransactionDetails = () => {
     setTransactionDetailsVisible(transactionDetailsVisible => !transactionDetailsVisible);
@@ -27,19 +56,20 @@ const Vesting = () => {
   const renderVestingTransactions = () => {
     const renderTransaction = (tx, index) => {
       if (tx.amount === 0) {
-        return <></>
+        return <div key={`tx-${index}`} />
       };
 
       tx.index = index;
+      const timeDifference = getTimeDifferenceFromNow(tx.fullVestingTimestamp);
 
       return <div key={`tx-${index}`} className="text-left pt-4">
         <DeltaPanel>
           <VestingTransactionProgressBar transaction={tx} />
-          <div>{formatting.getTokenAmount(tx.amount, 18, 4)}</div>
-          <div>{tx.fullVestingTimestamp}</div>
-          <div>{tx.percentVested}</div>
-          <div>{formatting.getTokenAmount(tx.immature, 18, 4)}</div>
-          <div>{formatting.getTokenAmount(tx.mature, 18, 4)}</div>
+          <div>{formatting.getTokenAmount(tx.amount, 18, 4)} DELTA</div>
+          <div>{timeDifference.days} day(s), {timeDifference.hours} hour(s), {timeDifference.minutes} minute(s) remaining</div>
+          <div>{tx.percentVested * 100}% completed</div>
+          <div>{formatting.getTokenAmount(tx.mature, 18, 4)} mature DELTA</div>
+          <div>{formatting.getTokenAmount(tx.immature, 18, 4)} immature DELTA</div>
         </DeltaPanel>
       </div>;
     };
@@ -73,12 +103,13 @@ const Vesting = () => {
             ]}
           />
           <VictoryLabel
+            className={fullyVestedAtInfo === DATA_UNAVAILABLE ? 'invisible' : 'visible'}
             textAnchor="middle"
             standalone={false}
             x={chartWidth / 2} y={190}
-            lineHeight={[1.5, 1, 2]}
-            style={[{ fontSize: 16, fill: 'black' }, { fontSize: 16, fill: 'black' }, { fontSize: 16, fill: 'gray' }]}
-            text={['Time until fully', 'matured', currentTime]}
+            lineHeight={[1, 1.5, 1.5, 1.5, 1.5]}
+            style={[{ fontSize: 16, fill: 'black' }, { fontSize: 16, fill: 'black' }, { fontSize: 16, fill: 'gray' }, { fontSize: 16, fill: 'gray' }, { fontSize: 16, fill: 'gray' }]}
+            text={['Time Until', 'Fully Matured', `${fullyVestedAtInfo.days} days`, `${fullyVestedAtInfo.hours} hours`, `${fullyVestedAtInfo.minutes} minutes`]}
           />
           <VictoryLegend x={380} y={150} standalone={false}
             title=""
