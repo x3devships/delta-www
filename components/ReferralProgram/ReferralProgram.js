@@ -91,7 +91,7 @@ const ReferralProgram = ({ lswStats, onWalletConnect }) => {
   };
 
   const formatXAxis = (tickItem) => {
-    return '';
+    return moment(tickItem).format('MMM Do YY');
   };
 
   return <DeltaSection title={t('deltaReferral')}>
