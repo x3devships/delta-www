@@ -1,17 +1,18 @@
 import { ethers } from 'ethers';
 import { Button, HelperText, Input } from '@windmill/react-ui';
 import { useState } from 'react';
-import { addressMap } from '../../config';
+import { addressMap, tokenMap } from '../../config';
 import { useTokenBalance } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 
-const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading, labelBottom, onOk, disabled = false, }) => {
+const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading, labelBottom, onOk, className, disabled = false }) => {
   const [amountText, setAmountText] = useState('');
   const [amount, setAmount] = useState(false);
   const [validAmount, setValidAmount] = useState(true);
-  const balance = useTokenBalance(token);
+  const { balance } = useTokenBalance(token);
 
-  const tokenInfo = addressMap[token];
+  const tokenAddress = addressMap[token];
+  const tokenInfo = tokenMap[tokenAddress];
 
   const onBeforeOk = () => {
     const amountBN = ethers.utils.parseUnits(amount, tokenInfo.decimals);
@@ -34,16 +35,15 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
     }
 
     const potentialAmount = parseFloat(e.target.value);
-    if (potentialAmount > balance || potentialAmount < 0 || Number.isNaN(potentialAmount) || potentialAmount == 0) {
+    if (potentialAmount > balance || potentialAmount < 0 || Number.isNaN(potentialAmount) || potentialAmount === 0) {
       setValidAmount(false);
     } else if (potentialAmount > 0) {
       setAmount(potentialAmount);
     }
   };
 
-
-  return <div className="mt-4">
-    <div className="flex md:grid md:gap-2 md:grid-cols-2">
+  const renderInput = () => {
+    return <>
       <div className="bg-white flex border border-black">
         <div className="p-3">
           <Input
@@ -58,24 +58,54 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
         </div>
         <div className="pr-3 text-sm self-end mb-3">{tokenInfo.friendlyName}</div>
       </div>
-      <div className="p-1 max-w-max border border-black ml-1 md:ml-0">
-        <Button disabled={disabled} onClick={() => onMaxAmount()} className="bg-gray-400 h-full ring-pink-300 ring-inset focus:bg-gray-400">
-          <span className="uppercase">max</span>
-        </Button>
-      </div>
-    </div>
-    {!validAmount && <HelperText valid={false}>The amount is not valid</HelperText>}
-    <div className="text-gray-600 font-thin text-sm">{labelBottom}</div>
+    </>;
+  };
 
-    <TransactionButton
+  const renderHelpers = () => {
+    return <>
+      <HelperText className={`${validAmount ? 'hidden' : ''} text-sm block`} valid={false}>The amount is not valid</HelperText>
+      <HelperText className=" text-sm block">{labelBottom}</HelperText>
+    </>;
+  };
+
+  const renderMaxButton = () => {
+    return <div className="p-1 border border-black ml-1">
+      <Button disabled={disabled} onClick={() => onMaxAmount()} className="bg-gray-400 h-full ring-pink-300 ring-inset focus:bg-gray-400">
+        <span className="uppercase">max</span>
+      </Button>
+    </div>;
+  };
+
+  const renderTransactionButton = () => {
+    return <TransactionButton
       allowanceRequiredFor={allowanceRequiredFor}
       text={buttonText}
       textLoading={buttonTextLoading}
       secondaryLooks
       disabled={disabled}
       onClick={onBeforeOk}
-    />
-  </div>;
+    />;
+  };
+
+  return <div className={className}>
+    <div className="flex">
+      <div className="flex flex-col">
+        <div className="flex flex-row">
+          <div className="flex flex">
+            {renderInput()}
+            {renderMaxButton()}
+            <div className="ml-1 hidden md:flex">
+              {renderTransactionButton()}
+            </div>
+          </div>
+        </div>
+        {renderHelpers()}
+      </div>
+    </div>
+    <div className="mt-4 md:hidden">
+      {renderTransactionButton()}
+    </div>
+  </div >;
 };
 
 export default TokenInput;
