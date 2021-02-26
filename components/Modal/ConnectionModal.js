@@ -48,7 +48,8 @@ const ConnectionModal = () => {
 
     return <>
       <div className="flex justify-center">
-        <buttton
+        <button
+          type="button"
           onClick={() => {
             setConnectingToMetaMask(true);
             setMetaMask(true);
@@ -60,7 +61,7 @@ const ConnectionModal = () => {
             <img src={metaMaskLogo} alt="metamask" className="m-auto pt-2 pb-2 pr-2" />
             <div className="m-auto">{t('metaMask')}</div>
           </div>
-        </buttton>
+        </button>
       </div>
       {showInstructions && selectMetaMask && (
         <div className="m-auto text-center justify-center">
@@ -88,12 +89,12 @@ const ConnectionModal = () => {
       )}
       {!selectMetaMask && (
         <div className="flex justify-center text-black mt-4">
-          <buttton onClick={() => wallet.connect('walletconnect')} className="bg-transparent text-black text-xl  border-t border-b border-gray-400">
+          <button type="button" onClick={() => wallet.connect('walletconnect')} className="bg-transparent text-black text-xl  border-t border-b border-gray-400">
             <div className="border-t border-b flex">
               <img src={walletConnectLogo} alt="walletConnect" className="m-auto border-b pb-2 pt-2 pr-2" style={{ width: '35px', height: '51px' }} />
               <div className="m-auto">{t('walletConnect')}</div>
             </div>
-          </buttton>
+          </button>
         </div>
       )}
     </>
@@ -108,11 +109,9 @@ const ConnectionModal = () => {
         visibility: type === ModalType.ConnectWallet ? 'inherit' : 'hidden'
       }}
     >
-      <ModalHeader><div className="text-2xl font-semibold font-wulkan">{t('connectToDelta')}</div></ModalHeader>
-      <ModalBody>
-        <div className="pt-8 m-auto text-base">
-          {renderContent()}
-        </div>
+      <ModalHeader className="text-2xl font-semibold font-wulkan">{t('connectToDelta')}</ModalHeader>
+      <ModalBody className="pt-8 m-auto text-base">
+        {renderContent()}
       </ModalBody>
     </Modal>
   );

@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import { ProgressBarCountDown } from '../ProgressBar';
 import { errors, formatting } from '../../helpers';
 import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
-import { DeltaTitleH3, DeltaTitleH4 } from '../Title';
 import { useYam } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';

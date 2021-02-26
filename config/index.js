@@ -61,12 +61,18 @@ addressDecimalsMap[addressMap.wCORE] = 18;
 addressDecimalsMap[addressMap.wbtcWeth] = 18;
 addressDecimalsMap[addressMap.wBTC] = 8;
 addressDecimalsMap[addressMap.cDAI] = 18;
+addressDecimalsMap[addressMap.delta] = 18;
 
 export const tokenMap = {};
 tokenMap[addressMap.wETH] = {
   name: 'WETH',
   friendlyName: 'ETH',
   decimals: addressDecimalsMap[addressMap.wETH]
+};
+tokenMap[addressMap.delta] = {
+  name: 'DELTA',
+  friendlyName: 'DELTA',
+  decimals: addressDecimalsMap[addressMap.delta]
 };
 tokenMap[addressMap.wBTC] = {
   name: 'WBTC',

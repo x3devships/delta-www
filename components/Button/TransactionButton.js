@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import { useWallet } from 'use-wallet';
 import { useContext, useEffect, useState } from 'react';
 import { errors } from '../../helpers';
-import { useUserApprovalOfContract, useUserTokenBalance, useYam } from '../../hooks';
+import { useUserApprovalOfContract, useTokenBalance, useYam } from '../../hooks';
 import { DATA_UNAVAILABLE } from '../../config';
 import { ModalContext } from '../../contexts';
 import DeltaButton from './DeltaButton';
@@ -24,7 +24,7 @@ const TransactionButton = ({ onClick, allowanceRequiredFor, icon, text, textLoad
   const wallet = useWallet();
   const modalContext = useContext(ModalContext);
   const [loading, setLoading] = useState(false);
-  const tokenBalance = useUserTokenBalance(allowanceRequiredFor.token);
+  const tokenBalance = useTokenBalance(allowanceRequiredFor.token);
   const approval = useUserApprovalOfContract(allowanceRequiredFor.contract, allowanceRequiredFor.token);
   const [allowanceSatisfied, setAlowanceSatisfied] = useState(allowanceRequiredFor.contract === undefined);
   const [initialized, setInitialized] = useState(allowanceRequiredFor.contract === undefined);
@@ -64,7 +64,7 @@ const TransactionButton = ({ onClick, allowanceRequiredFor, icon, text, textLoad
       modalContext.showError('Error while approving', transactionError.message);
     } finally {
       setLoading(false);
-      tokenBalance.refresh();
+      tokenBalance.update();
       approval.refresh();
     }
   };
