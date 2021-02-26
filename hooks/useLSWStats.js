@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
-import { useWeb3 } from '.';
+import useWeb3 from './useWeb3';
 import { DATA_UNAVAILABLE } from '../config';
 import useYam from './useYam';
 
@@ -37,7 +37,7 @@ const useLSWStats = () => {
      * This section require the user to be connected to its wallet
      */
     if (yam && wallet?.account) {
-      const account = '0x3AC618DCb800E733B0C390a23DE4aA796927A9B7'; // wallet.account;
+      const { account } = wallet;
 
       const accountContributedEth = (await yam.contracts.LSW.methods.liquidityContributedInETHUnitsMapping(account).call()) / 1e18;
       const referralBonusWETH = (await yam.contracts.LSW.methods.referralBonusWETH(account).call()) / 1e18;
