@@ -10,7 +10,7 @@ const useETHPrice = () => {
   const [ETHprice, setETHPrice] = useState(initialState);
 
   async function update() {
-    const priceOfUSDTinETH = await web3.contracts.UNIUSDT.methods.getReserves().call();
+    const priceOfUSDTinETH = await web3.contracts.ethUsdtPair.methods.getReserves().call();
 
     setETHPrice(parseFloat(priceOfUSDTinETH.reserve1 / 1e6 / (priceOfUSDTinETH.reserve0 / 1e18)));
   }

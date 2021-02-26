@@ -18,27 +18,28 @@ const useReferralRewardsChartData = () => {
   const update = async () => {
     if (!yam || !wallet?.account) return;
 
-    const address = '0x3AC618DCb800E733B0C390a23DE4aA796927A9B7'; // wallet.account;
+    let currentData = data;
 
+    const address = wallet.account;
     console.log('Updating useReferralRewardsChartData...');
 
-    if (data.length === 0) {
+    if (currentData.length === 0) {
       const key = getLocalStorageKey(address);
       const storedData = localStorage.getItem(key);
 
       if (storedData) {
         try {
-          setData(JSON.parse(storedData));
+          currentData = JSON.parse(storedData);
+          setData(currentData);
         } catch {
           localStorage.removeItem(key);
         }
       }
     }
-
     let lastBlockTimestamp = LSW_STARTDATE_IN_MILLIS;
 
-    if (data.length > 0) {
-      const lastSample = data[data.length - 1];
+    if (currentData.length > 0) {
+      const lastSample = currentData[currentData.length - 1];
       lastBlockTimestamp = new Date(lastSample.date).valueOf();
     }
 
@@ -60,6 +61,7 @@ const useReferralRewardsChartData = () => {
 
     setData(data => {
       const previousLength = data.length;
+
       // Concatenate and remove duplicated block entries
       const newData = _.uniqBy([...data, ...newChartData], 'date');
 
