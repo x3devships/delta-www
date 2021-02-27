@@ -16,7 +16,7 @@ const ConfirmModal = () => {
         visibility: type === ModalType.Confirm ? 'inherit' : 'hidden'
       }}
     >
-      <ModalHeader><div className="text-2xl font-semibold font-wulkan">{title}</div></ModalHeader>
+      <ModalHeader className="text-2xl font-semibold font-wulkan">{title}</ModalHeader>
       <ModalBody>{content}</ModalBody>
       <ModalFooter>
         <Button className="w-full sm:w-auto text-white rounded-none py-4" onClick={onOk}>

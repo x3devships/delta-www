@@ -7,3 +7,4 @@ export { default as useUserApprovalOfContract } from './useUserApprovalOfContrac
 export { default as useCorePairBalances } from './useCorePairBalances';
 export { default as useLSWStats } from './useLSWStats';
 export { default as useDelta } from './useDelta';
+export { default as useStaking } from './useStaking';

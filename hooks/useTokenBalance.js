@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import useYam from './useYam';
 import { hooks } from '../helpers';
-import { addressMap, DATA_UNAVAILABLE } from '../config';
+import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../config';
 
 const REFRESH_RATE = 30 * 1000;
 
@@ -10,7 +10,8 @@ const useTokenBalance = (tokenName) => {
   const yam = useYam();
   const wallet = useWallet();
   const [balance, setBalance] = useState(DATA_UNAVAILABLE);
-  const decimals = addressMap[tokenName]?.decimals || 18;
+  const tokenAddress = addressMap[tokenName];
+  const decimals = tokenMap[tokenAddress]?.decimals || 18;
 
   const update = async () => {
     if (tokenName?.toUpperCase() === 'ETH') {

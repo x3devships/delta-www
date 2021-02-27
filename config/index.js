@@ -22,6 +22,7 @@ export const DATA_UNAVAILABLE = '--';
 export const WEB3_PROVIDER_URL = 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
 
 export const pairNames = {
+  deltaWeth: 'deltaWeth',
   coreCbtc: 'coreCbtc',
   coreWeth: 'coreWeth',
   cDaiWcore: 'cDaiWcore',
@@ -36,6 +37,7 @@ export const addressMap = {
   uniswapRouter: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
 
   // Pairs
+  deltaWeth: '0x169f31b4452aF181Ca8d802cE18b62FCAd8B1b9b',
   coreCbtc: '0x6fad7d44640c5cd0120deec0301e8cf850becb68',
   coreWeth: '0x32ce7e48debdccbfe0cd037cc89526e4382cb81b',
   cDaiWcore: '0x01AC08E821185b6d87E68c67F9dc79A8988688EB',
@@ -44,6 +46,7 @@ export const addressMap = {
 
   // Tokens
   delta: '0x397B352DCdA5A4C141B801447173D88B2862a591',
+  rLP: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
   core: '0x62359ed7505efc61ff1d56fef82158ccaffa23d7',
   wCORE: '0x17b8c1a92b66b1cf3092c5d223cb3a129023b669',
   wETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
@@ -68,6 +71,11 @@ tokenMap[addressMap.wETH] = {
   name: 'WETH',
   friendlyName: 'ETH',
   decimals: addressDecimalsMap[addressMap.wETH]
+};
+tokenMap[addressMap.rLP] = {
+  name: 'rLP',
+  friendlyName: 'rLP',
+  decimals: addressDecimalsMap[addressMap.rLP]
 };
 tokenMap[addressMap.delta] = {
   name: 'DELTA',
@@ -113,33 +121,9 @@ pairInfoMap[pairNames.coreWeth] = {
   address: addressMap.coreWeth,
   pid: 0
 };
-pairInfoMap[pairNames.coreCbtc] = {
-  name: 'CORE/CBTC',
-  reserve0: tokenMap[addressMap.core],
-  reserve1: tokenMap[addressMap.CBTC],
-  supplyScale: 1e5,
-  unit: 'cmLP',
-  tokenName: 'CBTC',
-  friendlyTokenName: 'BTC',
-  pid: 1,
-  address: addressMap.coreCbtc,
-  routerUnavailable: true
-};
-pairInfoMap[pairNames.cDaiWcore] = {
-  name: 'CORE/DAI',
-  reserve0: tokenMap[addressMap.cDAI],
-  reserve1: tokenMap[addressMap.wCORE],
-  supplyScale: 1,
-  unit: 'LP',
-  tokenName: 'cDAI',
-  friendlyTokenName: 'DAI',
-  pid: 2,
-  address: addressMap.cDaiWcore,
-  routerUnavailable: true
-};
 
 export const ethereumStats = {};
 ethereumStats.approximatedBlockPerDay = 6650;
 ethereumStats.approximatedBlockPerYear = ethereumStats.approximatedBlockPerDay * 365;
 
-verifyAddressMap(addressMap);
+// verifyAddressMap(addressMap);

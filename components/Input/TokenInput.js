@@ -15,13 +15,31 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
   const tokenInfo = tokenMap[tokenAddress];
 
   const onBeforeOk = () => {
-    const amountBN = ethers.utils.parseUnits(amount, tokenInfo.decimals);
-    onOk(amount, amountBN);
+    let amountBN;
+
+    if (amount) {
+      try {
+        amountBN = ethers.utils.parseUnits(amount.toString(), tokenInfo.decimals);
+      } catch (e) {
+        throw new Error(`Error converting float number to bignumber, ${e.message}`);
+      }
+    }
+
+    onOk(amount, amountBN, validAmount && amount);
+  };
+
+  const setValidatedAmount = (amount) => {
+    if (amount > balance || amount < 0 || Number.isNaN(amount) || amount === 0) {
+      setValidAmount(false);
+    } else if (amount > 0) {
+      setValidAmount(true);
+      setAmount(amount);
+    }
   };
 
   const onMaxAmount = () => {
     setAmountText(balance);
-    setAmount(balance);
+    setValidatedAmount(balance);
   };
 
   const onAmountChanged = e => {
@@ -29,17 +47,13 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
     setAmountText(text);
     setValidAmount(true);
 
-    if (text === '') {
+    if (text.trim() === '') {
       setAmount(false);
       return;
     }
 
     const potentialAmount = parseFloat(e.target.value);
-    if (potentialAmount > balance || potentialAmount < 0 || Number.isNaN(potentialAmount) || potentialAmount === 0) {
-      setValidAmount(false);
-    } else if (potentialAmount > 0) {
-      setAmount(potentialAmount);
-    }
+    setValidatedAmount(potentialAmount);
   };
 
   const renderInput = () => {

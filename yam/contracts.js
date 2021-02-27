@@ -11,6 +11,7 @@ import cDAI from '../contracts/cDAI.json';
 import wCORE from '../contracts/wCORE.json';
 import LSW from '../contracts/LSW.json';
 import DELTA from '../contracts/DELTA.json';
+import RLP from '../contracts/rLP.json';
 
 export class Contracts {
   constructor(web3) {
@@ -23,6 +24,7 @@ export class Contracts {
     // Tokens
     this.core = new web3.eth.Contract(CORE.abi);
     this.delta = new web3.eth.Contract(DELTA.abi);
+    this.rLP = new web3.eth.Contract(RLP.abi);
     this.wCORE = new web3.eth.Contract(wCORE.abi);
     this.cDAI = new web3.eth.Contract(cDAI.abi);
     this.wBTC = new web3.eth.Contract(WBTC.abi);
@@ -50,6 +52,7 @@ export class Contracts {
     this.wETH.options.address = addressMap.wETH;
     this.core.options.address = addressMap.core;
     this.delta.options.address = addressMap.delta;
+    this.rLP.options.address = addressMap.rLP;
     this.cBTC.options.address = addressMap.cBTC;
     this.cDAI.options.address = addressMap.cDAI;
 
