@@ -70,11 +70,12 @@ const Vesting = () => {
       return <div key={`tx-${index}`} className="text-left pt-4">
         <DeltaPanel className="text-sm">
           <VestingTransactionProgressBar transaction={tx} />
-          <div>{formatting.getTokenAmount(tx.amount, 18, 4)} DELTA</div>
-          <div>{timeDifference.days} day(s), {timeDifference.hours} hour(s), {timeDifference.minutes} minute(s) remaining</div>
-          <div>{tx.percentVested * 100}% completed</div>
-          <div>{formatting.getTokenAmount(tx.mature, 18, 4)} mature DELTA</div>
-          <div>{formatting.getTokenAmount(tx.immature, 18, 4)} immature DELTA</div>
+          <ul className="list-disc list-inside ml-1">
+            <li>{timeDifference.days} day(s), {timeDifference.hours} hour(s), {timeDifference.minutes} minute(s) remaining</li>
+            <li>{tx.percentVested * 100}% completed</li>
+            <li>{formatting.getTokenAmount(tx.mature, 18, 4)} mature DELTA</li>
+            <li>{formatting.getTokenAmount(tx.immature, 18, 4)} immature DELTA</li>
+          </ul>
         </DeltaPanel>
       </div>;
     };
