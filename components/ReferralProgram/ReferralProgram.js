@@ -54,50 +54,59 @@ const ReferralProgram = () => {
     return Promise.resolve();
   };
 
-  return <DeltaSection title={t('deltaReferral')}>
-    <DeltaPanel>
-      <div className="block">
-        <div className="md:mt-0">
-          {!wallet?.account ? <ConnectWalletButton /> :
-            <>
-              <DeltaTitleH3>Your Referral Bonus</DeltaTitleH3>
+  return <DeltaSection title="Delta Referral Program">
+    <DeltaPanel className="md:mt-0">
+      <div className="md:mt-0">
+        {!wallet?.account ? <ConnectWalletButton /> :
+          <>
+            <div className="md:hidden">
+              The Delta Referral Program has ended.<br />
+              You can claim your rewards below.
+            </div>
 
-              {globalHooks.lswStats.data.referralBonusWETH !== DATA_UNAVAILABLE && globalHooks.lswStats.data.referralBonusWETH > 0 ?
-                <div className="w-full md:w-6/12">
-                  <VictoryChart padding={34} width={400} height={300} scale={{ x: "time", y: "linear" }} minDomain={{ y: 0 }}>
-                    <VictoryGroup
-                      style={{
-                        data: { strokeWidth: 1, fillOpacity: 0.6 }
-                      }}
-                    >
-                      <VictoryArea
+            <div className="flex flex-col md:flex-row-reverse">
+              <div className="w-full">
+                <DeltaTitleH3 className="mt-8 md:mt-0">Your Referral Rewards</DeltaTitleH3>
+                {globalHooks.lswStats.data.referralBonusWETH !== DATA_UNAVAILABLE && globalHooks.lswStats.data.referralBonusWETH > 0 ?
+                  <div className="w-full">
+                    <VictoryChart padding={34} width={400} height={300} scale={{ x: "time", y: "linear" }} minDomain={{ y: 0 }}>
+                      <VictoryGroup
                         style={{
-                          data: { fill: "#b794f4", stroke: "#b794f4" }
+                          data: { strokeWidth: 1, fillOpacity: 0.6 }
                         }}
-                        x={d => new Date(d.date)}
-                        y="referralBonusWETH"
-                        data={chartData.data}
-                      />
-                    </VictoryGroup>
-                  </VictoryChart>
-                </div>
-                : <></>}
+                      >
+                        <VictoryArea
+                          style={{
+                            data: { fill: "#b794f4", stroke: "#b794f4" }
+                          }}
+                          x={d => new Date(d.date)}
+                          y="referralBonusWETH"
+                          data={chartData.data}
+                        />
+                      </VictoryGroup>
+                    </VictoryChart>
+                  </div>
+                  : <></>}
+              </div>
+              <DeltaPanel className="mt-8 md:mt-0">
+                <p className="hidden md:block">
+                  The Delta Referral Program has ended.<br />
+                You can claim your rewards below.
+              </p>
+                <div className="mt-0 md:mt-8">
+                  <DeltaTitleH3>Your Referral Bonus</DeltaTitleH3>
 
-              <DeltaPanel>
-                <div className="flex mt-4 md:mt-2 flex-col md:flex-row">
-                  <div className="mr-4">ETH earned:</div>
-                  <div>{formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</div>
+                  <ul className="list-disc list-inside py-4">
+                    <li>ETH earned: {formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</li>
+                    <li>Credit earned: {formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</li>
+                  </ul>
+                  <DeltaPanel>
+                    <TransactionButton text="Claim Bonus" textLoading="Claiming..." onClick={() => onClaim()} />
+                  </DeltaPanel>
                 </div>
-                <div className="flex mt-4 md:mt-2 flex-col md:flex-row">
-                  <div className="mr-4">Credit earned:</div>
-                  <div>{formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</div>
-                </div>
-                <DeltaPanel>
-                  <TransactionButton text="Claim" textLoading="Staking..." onClick={() => onClaim()} />
-                </DeltaPanel>
               </DeltaPanel>
-            </>}
-        </div>
+            </div>
+          </>}
       </div>
     </DeltaPanel>
   </DeltaSection>

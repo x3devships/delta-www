@@ -56,17 +56,13 @@ const Staking = () => {
       <div className="text-center mt-6">{Math.round(globalHooks.lswStats.data.totalEthContributed).toFixed(0).toLocaleString()} ETH contributed!</div>
     </DeltaPanel>
     <DeltaSectionBlock requiresConnectedWallet>
-      <div className="flex flex-col md:flex-row">
-        <div className="mr-4">You Contributed:</div>
-        <div className="block">{formatting.getTokenAmount(globalHooks.lswStats.data.accountContributedEth, 0, 6)} ETH</div>
-      </div>
-      <div className="flex mt-4 md:mt-2 flex-col md:flex-row">
-        <div className="mr-4">rLP to be claimed:</div>
-        <div>{formatting.getTokenAmount(globalHooks.lswStats.data.claimableRlp, 0, 6)} rLP</div>
-      </div>
+      <ul className="list-disc list-inside py-4">
+        <li>You Contributed: {formatting.getTokenAmount(globalHooks.lswStats.data.accountContributedEth, 0, 6)} ETH</li>
+        <li>rLP to be claimed: {formatting.getTokenAmount(globalHooks.lswStats.data.claimableRlp, 0, 6)} rLP</li>
+      </ul>
       <DeltaPanel className="flex items-center text-center flex-wrap">
-        <TransactionButton text="Claim &amp; Stake" textLoading="Staking..." onClick={() => onClaim(true)} />
-        <TransactionButton className="ml-4" text="Claim" textLoading="Claiming..." onClick={() => onClaim(false)} />
+        <TransactionButton className="flex-1 mr-2 md:mr-0 md:flex-grow-0" text="Claim &amp; Stake" textLoading="Staking..." onClick={() => onClaim(true)} />
+        <TransactionButton className="flex-1 ml-2 md:ml-4 md:flex-grow-0" text="Claim" textLoading="Claiming..." onClick={() => onClaim(false)} />
       </DeltaPanel>
     </DeltaSectionBlock>
   </DeltaSection >

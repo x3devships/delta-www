@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <nav className="flex items-center justify-between flex-wrap bg-black p-3 md:p-6">
       <a href="/" className="flex items-center flex-no-shrink text-white">
-        <img alt="logo" src={logo} height="150" width="150" />
+        <img alt="logo" src={logo} height="150" width="150" className="w-8/12 md:w-full" />
       </a>
       <button
         type="button"
@@ -23,7 +23,7 @@ const Header = () => {
             wallet.reset();
           }
         }}
-        className="items-center inline-block text-sm py-2 leading-none text-white hover:border-transparent lg:mt-0 uppercase self-center"
+        className="items-center inline-block text-xs md:text-sm py-2 leading-none text-white hover:border-transparent lg:mt-0 uppercase self-center"
       >
         {wallet?.account ? <>{t('disconnect')}</> : <>{t('connectWallet')}</>}
       </button>
