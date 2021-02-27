@@ -92,7 +92,7 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
 
   const renderTransactionButton = () => {
     return <TransactionButton
-      className="flex"
+      className="flex md:p-1 md:border md:border-black"
       allowanceRequiredFor={allowanceRequiredFor}
       text={buttonText}
       textLoading={buttonTextLoading}
