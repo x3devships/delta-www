@@ -59,7 +59,7 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
   const renderInput = () => {
     return <>
       <div className="bg-white flex border border-black">
-        <div className="p-3">
+        <div className="p-2">
           <Input
             disabled={disabled}
             type="number"
@@ -92,6 +92,7 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
 
   const renderTransactionButton = () => {
     return <TransactionButton
+      className="flex"
       allowanceRequiredFor={allowanceRequiredFor}
       text={buttonText}
       textLoading={buttonTextLoading}

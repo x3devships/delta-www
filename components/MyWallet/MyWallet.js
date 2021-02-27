@@ -1,9 +1,10 @@
 import { useContext } from 'react';
-import { DeltaSection, DeltaSectionBlock } from '../Section';
+import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
 import { formatting } from '../../helpers';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { TokenInput } from "../Input";
 import { ModalContext } from '../../contexts';
+import DeltaButton from '../Button/DeltaButton';
 
 const MyWallet = () => {
   const globalHooks = useContext(GlobalHooksContext);
@@ -32,6 +33,10 @@ const MyWallet = () => {
           <div className="mr-4">Immature DELTA:</div>
           <div>{formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)}</div>
         </div>
+        <DeltaPanel className="flex items-center text-center flex-wrap">
+          <DeltaButton labelBottom="Earn Yield">Stake in vault</DeltaButton>
+          <DeltaButton labelBottom="on Uniswap" className="ml-4">Trade Delta</DeltaButton>
+        </DeltaPanel>
       </DeltaSectionBlock>
     </DeltaSection>
     <DeltaSection requiresConnectedWallet title="rLP Stats">

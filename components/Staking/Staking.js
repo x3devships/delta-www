@@ -66,7 +66,7 @@ const Staking = () => {
       </div>
       <DeltaPanel className="flex items-center text-center flex-wrap">
         <TransactionButton text="Claim &amp; Stake" textLoading="Staking..." onClick={() => onClaim(true)} />
-        <TransactionButton text="Claim" textLoading="Claiming..." onClick={() => onClaim(false)} />
+        <TransactionButton className="ml-4" text="Claim" textLoading="Claiming..." onClick={() => onClaim(false)} />
       </DeltaPanel>
     </DeltaSectionBlock>
   </DeltaSection >
