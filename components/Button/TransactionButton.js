@@ -65,7 +65,7 @@ const TransactionButton = ({ onClick, allowanceRequiredFor, icon, text, textLoad
     } finally {
       setLoading(false);
       tokenBalance.update();
-      approval.refresh();
+      approval.update();
     }
   };
 

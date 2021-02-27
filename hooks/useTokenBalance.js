@@ -14,6 +14,8 @@ const useTokenBalance = (tokenName) => {
   const decimals = tokenMap[tokenAddress]?.decimals || 18;
 
   const update = async () => {
+    if (!yam || !wallet?.account) return;
+
     if (tokenName?.toUpperCase() === 'ETH') {
       const balance = (await yam.web3.eth.getBalance(wallet.account)).toString() / 10 ** decimals
       setBalance(balance);
@@ -32,6 +34,7 @@ const useTokenBalance = (tokenName) => {
     let interval;
 
     if (yam) {
+      update();
       interval = hooks.setWalletAwareInterval(wallet, update, REFRESH_RATE);
     }
 

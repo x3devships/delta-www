@@ -72,12 +72,12 @@ const ReferralProgram = () => {
                     <VictoryChart padding={34} width={400} height={300} scale={{ x: "time", y: "linear" }} minDomain={{ y: 0 }}>
                       <VictoryGroup
                         style={{
-                          data: { strokeWidth: 1, fillOpacity: 0.6 }
+                          data: { strokeWidth: 1, fillOpacity: 0.5 }
                         }}
                       >
                         <VictoryArea
                           style={{
-                            data: { fill: "#b794f4", stroke: "#b794f4" }
+                            data: { fill: "#9E9E9E", stroke: "#9E9E9E" }
                           }}
                           x={d => new Date(d.date)}
                           y="referralBonusWETH"

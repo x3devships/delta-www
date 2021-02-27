@@ -13,6 +13,8 @@ const useStaking = () => {
   const { decimals } = tokenMap[addressMap.delta];
 
   const update = async () => {
+    if (!yam || !wallet?.account) return;
+
     // TODO: Replace using DFV contract
     const balance = (await yam.contracts.delta.methods.balanceOf(wallet.account).call()) / 10 ** decimals;
     setRlpStaked(balance);
