@@ -136,16 +136,18 @@ const Vault = () => {
   };
 
   const renderRLPStats = () => {
-    return <div>
+    return <div className="mt-4 md:mt-0">
       <ul className="list-disc list-inside py-4">
-        <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
-        <li>Unstaked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} rLP</li>
-        <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
+        <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
+        <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
+        <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
       </ul>
-      <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." labelBottom="this token will be staked" onOk={onStake} />
+      <DeltaButton>See all withdrawal contracts</DeltaButton>
+      {/* <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." labelBottom="this token will be staked" onOk={onStake} /> */}
     </div >
   };
 
+  const rewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
 
   return <DeltaSection requiresConnectedWallet title="Delta Farming Vault">
     <DeltaPanel className="md:mt-0">
@@ -162,12 +164,22 @@ const Vault = () => {
         </div>
         <div className="mt-4 md:mt-2">
           <DeltaTitleH2 lineunder>rLP Token</DeltaTitleH2>
-          <DeltaPanel className="mt-4 flex flex-col md:flex-row">
-            <div className="flex w-full flex-grow">
+          <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
+            <div className="flex w-full flex-grow flex-col md:flex-col">
               <VaultInfoBox className="flex flex-grow mr-0 md:mr-24" />
+              <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
+                <div className="text-xs flex mb-1">Reward Multiplier</div>
+                <ProgressBarDiamonds className="flex w-full flex-grow" />
+                <div className="text-xs text-gray-400 flex mt-1">{rewardMultiplierDescription}</div>
+              </div>
+              {renderRLPStats()}
             </div>
-            <div className="flex w-full flex-grow">
-              <ProgressBarDiamonds className="flex flex-grow" />
+            <div className="w-full flex-grow hidden flex-col md:flex self-start">
+              <ProgressBarDiamonds className="flex flex-grow w-full" />
+              <div className="flex flex-row mt-4">
+                <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
+                <div className="text-xs flex text-gray-400">{rewardMultiplierDescription}</div>
+              </div>
             </div>
           </DeltaPanel>
         </div>
