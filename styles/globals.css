@@ -24,6 +24,6 @@
 
 @layer base {
   body {
-    @apply bg-whisper;
+    @apply bg-white;
   }
 }

@@ -1,20 +1,15 @@
 const VestingTransactionProgressBar = ({ transaction }) => {
-  return <div className="relative pt-1">
-    <div className="flex mb-2 items-center justify-between">
-      <div>
-        <span className="text-sm font-semibold inline-block py-1 px-2 uppercase rounded-none text-gray-900 bg-gray-300">
-          Transaction #{transaction.index}
-        </span>
-      </div>
-      <div className="text-right">
-        <span className="text-sm font-semibold inline-block text-black">
-          {transaction.percentVested * 100}%
-      </span>
-      </div>
+  transaction.percentVested = 0.10;
+  const percentMature = transaction.percentVested * 100;
+  const percentImmature = (1 - transaction.percentVested) * 100;
+
+  return <div className="w-full flex min-h-6 border border-black p-1 text-xs">
+    <div className="flex bg-gradiantBlue leading-none h-6 w-full mr-0.5 text-left text-white" style={{ width: `${percentMature}%` }}>
+      <div className="ml-1 md:ml-1 self-center">{percentMature.toFixed(0)}%</div>
     </div>
-    <div className="overflow-hidden h-2 mb-4 text-sm flex rounded bg-gray-400">
-      <div style={{ width: `${transaction.percentVested * 100}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-black" />
-    </div>
+    {percentMature < 100 && <div className="flex bg-gradient-to-r from-gradientPink to-gradientPink2 leading-none h-6 w-full text-left text-white" style={{ width: `${percentImmature}%` }}>
+      {percentMature <= 90 && <div className="ml-1 md:ml-1 self-center">{percentImmature.toFixed(0)}%</div>}
+    </div>}
   </div>
 };
 

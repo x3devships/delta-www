@@ -47,7 +47,42 @@ const useDelta = () => {
         immature: vestingTransactionDetails.immature / 1e18,
         mature: vestingTransactionDetails.mature / 1e18,
         percentVested: vestingTransactionDetails.percentVestedE4 / 1e4,
-      })
+      });
+      vestingTransactions.push({
+        amount: vestingTransactionDetails.amount / 1e18,
+        fullVestingTimestamp: vestingTransactionDetails.fullVestingTimestamp * 1000,
+        immature: vestingTransactionDetails.immature / 1e18,
+        mature: vestingTransactionDetails.mature / 1e18,
+        percentVested: vestingTransactionDetails.percentVestedE4 / 1e4,
+      });
+      vestingTransactions.push({
+        amount: vestingTransactionDetails.amount / 1e18,
+        fullVestingTimestamp: vestingTransactionDetails.fullVestingTimestamp * 1000,
+        immature: vestingTransactionDetails.immature / 1e18,
+        mature: vestingTransactionDetails.mature / 1e18,
+        percentVested: vestingTransactionDetails.percentVestedE4 / 1e4,
+      });
+      vestingTransactions.push({
+        amount: vestingTransactionDetails.amount / 1e18,
+        fullVestingTimestamp: vestingTransactionDetails.fullVestingTimestamp * 1000,
+        immature: vestingTransactionDetails.immature / 1e18,
+        mature: vestingTransactionDetails.mature / 1e18,
+        percentVested: vestingTransactionDetails.percentVestedE4 / 1e4,
+      });
+      vestingTransactions.push({
+        amount: vestingTransactionDetails.amount / 1e18,
+        fullVestingTimestamp: vestingTransactionDetails.fullVestingTimestamp * 1000,
+        immature: vestingTransactionDetails.immature / 1e18,
+        mature: vestingTransactionDetails.mature / 1e18,
+        percentVested: vestingTransactionDetails.percentVestedE4 / 1e4,
+      });
+      vestingTransactions.push({
+        amount: vestingTransactionDetails.amount / 1e18,
+        fullVestingTimestamp: vestingTransactionDetails.fullVestingTimestamp * 1000,
+        immature: vestingTransactionDetails.immature / 1e18,
+        mature: vestingTransactionDetails.mature / 1e18,
+        percentVested: vestingTransactionDetails.percentVestedE4 / 1e4,
+      });
     }
 
     setData(data => ({

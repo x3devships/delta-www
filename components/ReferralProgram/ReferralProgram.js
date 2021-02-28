@@ -69,6 +69,14 @@ const ReferralProgram = () => {
                 <DeltaTitleH3 className="mt-8 md:mt-0">Your Referral Rewards</DeltaTitleH3>
                 {globalHooks.lswStats.data.referralBonusWETH !== DATA_UNAVAILABLE && globalHooks.lswStats.data.referralBonusWETH > 0 ?
                   <div className="w-full">
+                    <svg style={{ height: 0 }}>
+                      <defs>
+                        <linearGradient id="chartGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+                          <stop offset="0%" stopColor="#2F45C5" stopOpacity="1" />
+                          <stop offset="100%" stopColor="#2F45C5" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
                     <VictoryChart padding={34} width={400} height={300} scale={{ x: "time", y: "linear" }} minDomain={{ y: 0 }}>
                       <VictoryGroup
                         style={{
@@ -77,7 +85,7 @@ const ReferralProgram = () => {
                       >
                         <VictoryArea
                           style={{
-                            data: { fill: "#9E9E9E", stroke: "#9E9E9E" }
+                            data: { fill: "url(#chartGradient)", stroke: "#2F45C5" }
                           }}
                           x={d => new Date(d.date)}
                           y="referralBonusWETH"

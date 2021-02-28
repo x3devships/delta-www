@@ -2,7 +2,7 @@ import { VictoryPie, VictoryLabel, VictoryLegend } from 'victory';
 import moment from 'moment';
 import { useContext, useEffect, useState } from 'react';
 import { Button } from '@windmill/react-ui';
-import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
+import { DeltaPanel, DeltaSection, DeltaSectionBlock, DeltaSectionBox } from '../Section';
 import { DeltaTitleH2, DeltaTitleH3 } from '../Title';
 import { formatting } from '../../helpers';
 import { VestingTransactionProgressBar } from '../ProgressBar';
@@ -67,16 +67,15 @@ const Vesting = () => {
       tx.index = index;
       const timeDifference = getTimeDifferenceFromNow(tx.fullVestingTimestamp);
 
-      return <div key={`tx-${index}`} className="text-left pt-4">
-        <DeltaPanel className="text-sm">
+      return <div key={`tx-${index}`} className="text-left mt-4">
+        <DeltaSectionBox title={`Transaction ${index}`}>
+          <div className="mb-2">
+            <div>Time until fully matured:</div>
+            <div>{timeDifference.days} Day(s), {timeDifference.hours} Hour(s), {timeDifference.minutes} Minute(s)</div>
+          </div>
           <VestingTransactionProgressBar transaction={tx} />
-          <ul className="list-disc list-inside ml-1">
-            <li>{timeDifference.days} day(s), {timeDifference.hours} hour(s), {timeDifference.minutes} minute(s) remaining</li>
-            <li>{tx.percentVested * 100}% completed</li>
-            <li>{formatting.getTokenAmount(tx.mature, 18, 4)} mature DELTA</li>
-            <li>{formatting.getTokenAmount(tx.immature, 18, 4)} immature DELTA</li>
-          </ul>
-        </DeltaPanel>
+          <div className="ml-1">{formatting.getTokenAmount(tx.mature, 18, 4)} / {formatting.getTokenAmount(tx.immature, 18, 4)}  mature</div>
+        </DeltaSectionBox>
       </div>;
     };
 
@@ -125,11 +124,17 @@ const Vesting = () => {
 
     return <div className="w-full">
       <svg viewBox="0 40 400 370">
+        <defs>
+          <linearGradient id="chartGradient2" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" stopColor="#DB77EB" stopOpacity="1" />
+            <stop offset="100%" stopColor="#DBC9D6" stopOpacity="0.5" />
+          </linearGradient>
+        </defs>
         <VictoryPie
           standalone={false}
           width={chartWidth} height={400}
-          style={{ labels: { fill: f => f.datum.x === "mature" ? 'white' : 'black' }, data: { fillOpacity: 1, stroke: "black", strokeWidth: 1 } }}
-          colorScale={["#000000", "#9E9E9E"]}
+          style={{ labels: { fill: f => f.datum.x === "mature" ? 'white' : 'black' }, data: { fill: f => f.datum.x === "mature" ? '#4315C7' : "url(#chartGradient2)", fillOpacity: 1, stroke: "black", strokeWidth: 0 } }}
+          colorScale={["#4315C7", "#9E9E9E"]}
           categories={{ x: ["mature", "unmature"] }}
           innerRadius={110}
           labelRadius={125}
@@ -145,7 +150,7 @@ const Vesting = () => {
           standalone={false}
           x={chartWidth / 2} y={190}
           lineHeight={[1, 1.5, 1.5, 1.5, 1.5]}
-          style={[{ fontSize: 16, fill: 'black' }, { fontSize: 16, fill: 'black' }, { fontSize: 14, fill: 'gray' }, { fontSize: 14, fill: 'gray' }, { fontSize: 14, fill: 'gray' }]}
+          style={[{ fontSize: 18, fill: 'black' }, { fontSize: 18, fill: 'black' }, { fontSize: 14, fill: 'black' }, { fontSize: 14, fill: 'black' }, { fontSize: 14, fill: 'black' }]}
           text={['Time Until', 'Fully Matured', `${fullyVestedAtInfo.days} days`, `${fullyVestedAtInfo.hours} hours`, `${fullyVestedAtInfo.minutes} minutes`]}
         />
         <VictoryLegend x={115} y={380} standalone={false}
@@ -154,8 +159,8 @@ const Vesting = () => {
           orientation="horizontal"
           itemsPerRow={2}
           data={[
-            { name: "Mature", symbol: { fill: "black" } },
-            { name: "Unmature", symbol: { fill: "#9E9E9E" } }
+            { name: "Mature", symbol: { type: 'square', fill: "#4315C7" } },
+            { name: "Unmature", symbol: { type: 'square', fill: "#DBC9D6" } }
           ]}
         />
       </svg>

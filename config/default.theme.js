@@ -48,7 +48,7 @@ export default {
   },
   // TableBody
   tableBody: {
-    base: 'bg-whisper divide-y dark:divide-gray-700 dark:bg-gray-800 text-gray-700 dark:text-gray-400'
+    base: 'bg-white divide-y dark:divide-gray-700 dark:bg-gray-800 text-gray-700 dark:text-gray-400'
   },
   // DropdownItem
   // this is the <li> that lives inside the Dropdown <ul>
@@ -59,7 +59,7 @@ export default {
   // Dropdown
   dropdown: {
     base:
-      'absolute w-56 p-2 mt-2 text-gray-600 bg-whisper border border-gray-100 rounded-lg shadow-md min-w-max-content dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700',
+      'absolute w-56 p-2 mt-2 text-gray-600 bg-white border border-gray-100 rounded-lg shadow-md min-w-max-content dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700',
     align: {
       left: 'left-0',
       right: 'right-0'
@@ -76,7 +76,7 @@ export default {
   },
   // Modal
   modal: {
-    base: 'w-full px-6 py-4 overflow-hidden bg-whisper rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl'
+    base: 'w-full px-6 py-4 overflow-hidden bg-white rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl'
   },
   // ModalBody
   modalBody: {
@@ -85,7 +85,7 @@ export default {
   // ModalFooter
   modalFooter: {
     base:
-      'flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-whisperMore border-t border-gray-300 dark:bg-gray-800'
+      'flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-whiteMore border-t border-gray-300 dark:bg-gray-800'
   },
   // ModalHeader
   modalHeader: {
@@ -159,7 +159,7 @@ export default {
   // Card
   card: {
     base: 'min-w-0 rounded-lg shadow-xs overflow-hidden',
-    default: 'bg-whisper dark:bg-gray-800'
+    default: 'bg-white dark:bg-gray-800'
   },
   cardBody: {
     base: 'p-4'
