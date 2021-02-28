@@ -46,13 +46,12 @@ const RLPStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
 
   return <div className="mt-4 md:mt-0">
-    <ul className="list-disc list-inside py-4">
+    <ul className="list-disc list-inside py-4 md:py-8">
       <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
     </ul>
     <DeltaButton>See all withdrawal contracts</DeltaButton>
-    {/* <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." labelBottom="this token will be staked" onOk={onStake} /> */}
   </div >
 };
 
@@ -60,13 +59,12 @@ const DeltaStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
 
   return <div className="mt-4 md:mt-0">
-    <ul className="list-disc list-inside py-4">
+    <ul className="list-disc list-inside py-4 md:py-8">
       <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
     </ul>
     <DeltaButton>See all withdrawal contracts</DeltaButton>
-    {/* <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." labelBottom="this token will be staked" onOk={onStake} /> */}
   </div >
 };
 
