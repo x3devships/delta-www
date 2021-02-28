@@ -20,7 +20,7 @@ const DeltaSection = ({ title, children, showConnectWalletButton, requiresConnec
     return <></>;
   }
 
-  return <section className="w-full border-2 mt-4 border-black py-4 md:py-9 px-3 md:px-9 m-auto">
+  return <section className="w-full border-2 mt-4 border-black py-4 px-3 md:py-8 md:px-12 m-auto">
     <main>
       <div className="flex py-2 md:py-4">
         <DeltaTitleH1 className={`${center && "md:text-center"}`}>{title}</DeltaTitleH1>

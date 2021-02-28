@@ -13,8 +13,6 @@ import { TokenInput } from '../Input';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 
-const FULLY_VESTING_REFRESH_RATE = 1 * 60 * 1000;
-
 const VaultInfoBox = ({ className }) => {
   return <div className={`bg-purpleGray flex flex-row border border-black ${className}`}>
     <div className="flex border-r border-black flex-col text-center">
@@ -44,110 +42,62 @@ const VaultInfoBox = ({ className }) => {
   </div >
 };
 
-const Vault = () => {
-  const [fullyVestedAtInfo, setFullyVestedAtInfo] = useState(DATA_UNAVAILABLE);
-  const [transactionDetailsVisible, setTransactionDetailsVisible] = useState(false);
-  const modalContext = useContext(ModalContext);
-
-  const chartWidth = 400;
+const RLPStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
 
-  const getTimeDifferenceFromNow = endTime => {
-    const now = moment.now();
-    const fullyVestedAt = moment(endTime);
-    const diffTime = fullyVestedAt - now;
-    const duration = moment.duration(diffTime, 'milliseconds');
+  return <div className="mt-4 md:mt-0">
+    <ul className="list-disc list-inside py-4">
+      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
+    </ul>
+    <DeltaButton>See all withdrawal contracts</DeltaButton>
+    {/* <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." labelBottom="this token will be staked" onOk={onStake} /> */}
+  </div >
+};
 
-    return {
-      days: duration.days(),
-      hours: duration.hours(),
-      minutes: duration.minutes()
-    }
-  };
+const DeltaStats = () => {
+  const globalHooks = useContext(GlobalHooksContext);
 
-  useEffect(() => {
-    const update = () => {
-      if (globalHooks.delta.data.vestingInProgress) {
-        const timeDifference = getTimeDifferenceFromNow(globalHooks.delta.data.fullyVestedAt);
-        setFullyVestedAtInfo(timeDifference);
-      } else {
-        setFullyVestedAtInfo(DATA_UNAVAILABLE);
-      }
-    };
+  return <div className="mt-4 md:mt-0">
+    <ul className="list-disc list-inside py-4">
+      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
+    </ul>
+    <DeltaButton>See all withdrawal contracts</DeltaButton>
+    {/* <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." labelBottom="this token will be staked" onOk={onStake} /> */}
+  </div >
+};
 
-    if (globalHooks.delta.data.fullyVestedAt !== DATA_UNAVAILABLE) {
-      update();
-    }
-
-    const interval = setInterval(update, FULLY_VESTING_REFRESH_RATE);
-    return () => clearInterval(interval);
-  }, [globalHooks.delta.data.fullyVestedAt]);
-
-  const onToggleTransactionDetails = () => {
-    setTransactionDetailsVisible(transactionDetailsVisible => !transactionDetailsVisible);
-  };
-
-  const renderVestingTransactions = () => {
-    const renderTransaction = (tx, index) => {
-      if (tx.amount === 0) {
-        return <div key={`tx-${index}`} />
-      };
-
-      tx.index = index;
-      const timeDifference = getTimeDifferenceFromNow(tx.fullVestingTimestamp);
-
-      return <div key={`tx-${index}`} className="text-left mt-4">
-        <DeltaSectionBox title={`Transaction ${index}`}>
-          <div className="mb-2">
-            <div>Time until fully matured:</div>
-            <div>{timeDifference.days} Day(s), {timeDifference.hours} Hour(s), {timeDifference.minutes} Minute(s)</div>
-          </div>
-          <VestingTransactionProgressBar transaction={tx} />
-          <div className="ml-1">{formatting.getTokenAmount(tx.mature, 18, 4)} / {formatting.getTokenAmount(tx.immature, 18, 4)}  mature</div>
-        </DeltaSectionBox>
-      </div>;
-    };
-
-    return <>
-      {globalHooks.delta.data.vestingTransactions.map((tx, index) => renderTransaction(tx, index))}
-    </>;
-  };
-
-  const onStake = async (amount, amountBN, valid) => {
-    if (!valid) {
-      await modalContext.showError('Error', 'Invalid input');
-    } else {
-      await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} ? (${amountBN && amountBN.toString()})`);
-    }
-  };
-
-  const renderMyWallet = () => {
-    return <div >
-      <ul className="list-disc list-inside py-4">
-        <li>Total DELTA: {formatting.getTokenAmount(globalHooks.delta.data.total, 0, 4)} ETH</li>
-        <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} rLP</li>
-        <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} rLP</li>
-      </ul>
-      <DeltaPanel className="flex items-center text-center flex-wrap">
-        <TransactionButton className="flex-1 mr-2 md:mr-0 md:flex-grow-0" labelBottom="Earn Yield" text="Stake in vault" textLoading="Staking..." onClick={() => onStake()} />
-        <DeltaButton className="flex-1 ml-2 md:ml-4 md:flex-grow-0" labelBottom="Earn Yield" onClick={() => { }}>Trade Delta</DeltaButton>
-      </DeltaPanel>
-    </div>
-  };
-
-  const renderRLPStats = () => {
-    return <div className="mt-4 md:mt-0">
-      <ul className="list-disc list-inside py-4">
-        <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
-        <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
-        <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
-      </ul>
-      <DeltaButton>See all withdrawal contracts</DeltaButton>
-      {/* <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." labelBottom="this token will be staked" onOk={onStake} /> */}
-    </div >
-  };
-
+const TokenVault = ({ token, className }) => {
   const rewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
+
+  return <div className={`mt-4 md:mt-2 ${className}`}>
+    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
+    <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
+      <div className="flex w-full flex-grow flex-col md:flex-col">
+        <VaultInfoBox className="flex flex-grow mr-0 md:mr-24" />
+        <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
+          <div className="text-xs flex mb-1">Reward Multiplier</div>
+          <ProgressBarDiamonds className="flex w-full flex-grow" />
+          <div className="text-xs text-gray-400 flex mt-1">{rewardMultiplierDescription}</div>
+        </div>
+        {token === "rLP" ? <DeltaStats /> : <RLPStats />}
+      </div>
+      <div className="w-full flex-grow hidden flex-col md:flex self-start">
+        <ProgressBarDiamonds className="flex flex-grow w-full" />
+        <div className="flex flex-row mt-4">
+          <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
+          <div className="text-xs flex text-gray-400">{rewardMultiplierDescription}</div>
+        </div>
+      </div>
+    </DeltaPanel>
+  </div>;
+};
+
+const Vault = () => {
+  const modalContext = useContext(ModalContext);
 
   return <DeltaSection requiresConnectedWallet title="Delta Farming Vault">
     <DeltaPanel className="md:mt-0">
@@ -162,59 +112,11 @@ const Vault = () => {
             yield to staked rLP and Delta.
           </DeltaPanel>
         </div>
-        <div className="mt-4 md:mt-2">
-          <DeltaTitleH2 lineunder>rLP Token</DeltaTitleH2>
-          <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
-            <div className="flex w-full flex-grow flex-col md:flex-col">
-              <VaultInfoBox className="flex flex-grow mr-0 md:mr-24" />
-              <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
-                <div className="text-xs flex mb-1">Reward Multiplier</div>
-                <ProgressBarDiamonds className="flex w-full flex-grow" />
-                <div className="text-xs text-gray-400 flex mt-1">{rewardMultiplierDescription}</div>
-              </div>
-              {renderRLPStats()}
-            </div>
-            <div className="w-full flex-grow hidden flex-col md:flex self-start">
-              <ProgressBarDiamonds className="flex flex-grow w-full" />
-              <div className="flex flex-row mt-4">
-                <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
-                <div className="text-xs flex text-gray-400">{rewardMultiplierDescription}</div>
-              </div>
-            </div>
-          </DeltaPanel>
-        </div>
+        <TokenVault token="rLP" />
+        <TokenVault token="DELTA" className="mt-8 md:mt-12" />
       </div>
     </DeltaPanel>
   </DeltaSection>;
-
-  /* return <DeltaSection requiresConnectedWallet title="Delta Farming Vault">
-      <DeltaPanel className="md:mt-0">
-        <div className="md:mt-0">
-          <div className="flex flex-col-reverse md:flex-row-reverse">
-            <DeltaPanel className="w-full mt-4">
-              <div className="border border-black p-4 bg-gray-200 text-lg text-center mb-1">Up to 750 % APY*</div>
-              <div className="border border-black p-4 bg-gray-200 text-lg text-center">TVL: $145,223,123</div>
-            </DeltaPanel>
-            <DeltaPanel className="mt-4">
-              <div>
-                The Deep Farming Vault distributes<br />
-              yield to staked rLP and Delta.
-            </div>
-              <DeltaTitleH3>My Wallet</DeltaTitleH3>
-              {renderMyWallet()}
-              <DeltaTitleH3 className="mt-6">rLP Stats</DeltaTitleH3>
-              {renderRLPStats()}
-            </DeltaPanel>
-          </div>
-        </div>
-        <DeltaPanel className="flex items-center text-center flex-wrap mt-4">
-          <Button className="flex-1 md:flex-none" onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'See All Transactions ▼' : 'Hide All Transactions ▲'}</Button>
-        </DeltaPanel>
-        <DeltaPanel className={`${!transactionDetailsVisible ? 'hidden' : ''}`}>
-          {renderVestingTransactions()}
-        </DeltaPanel>
-      </DeltaPanel>
-    </DeltaSection> */
 };
 
 

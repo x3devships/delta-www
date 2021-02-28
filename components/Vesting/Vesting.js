@@ -100,8 +100,8 @@ const Vesting = () => {
         <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} rLP</li>
       </ul>
       <DeltaPanel className="flex items-center text-center flex-wrap">
-        <TransactionButton className="flex-1 mr-2 md:mr-0 md:flex-grow-0" labelBottom="Earn Yield" text="Stake in vault" textLoading="Staking..." onClick={() => onStake()} />
-        <DeltaButton className="flex-1 ml-2 md:ml-4 md:flex-grow-0" labelBottom="Earn Yield" onClick={() => { }}>Trade Delta</DeltaButton>
+        <TransactionButton className="flex-1 mr-4 md:flex-grow-0" labelBottom="Earn Yield" text="Stake in vault" textLoading="Staking..." onClick={() => onStake()} />
+        <DeltaButton className="flex-1 md:flex-grow-0" labelBottom="Earn Yield" onClick={() => { }}>Trade Delta</DeltaButton>
       </DeltaPanel>
     </div>
   };

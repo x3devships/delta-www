@@ -12,7 +12,7 @@ const DeltaButton = ({ children, className, labelBottom, ...props }) => {
       </div>
       <img alt="+" src={plus} className="m-auto ml-0 md:ml-4" />
     </Button>
-    <HelperText className={`${!labelBottom ? 'hidden' : ''} text-sm text-left text-gray-500 block mt-0.5`}>{labelBottom}</HelperText>
+    <HelperText className={`${!labelBottom ? 'hidden' : ''} text-sm text-left text-gray-400 block mt-0.5`}>{labelBottom}</HelperText>
   </div >
 }
 
