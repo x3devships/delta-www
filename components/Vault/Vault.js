@@ -5,7 +5,7 @@ import { Button } from '@windmill/react-ui';
 import { DeltaPanel, DeltaSection, DeltaSectionBlock, DeltaSectionBox } from '../Section';
 import { DeltaTitleH2, DeltaTitleH3 } from '../Title';
 import { formatting } from '../../helpers';
-import { VestingTransactionProgressBar } from '../ProgressBar';
+import { ProgressBarDiamonds, VestingTransactionProgressBar } from '../ProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import DeltaButton from '../Button/DeltaButton';
@@ -15,7 +15,7 @@ import { ModalContext } from '../../contexts';
 
 const FULLY_VESTING_REFRESH_RATE = 1 * 60 * 1000;
 
-const Vesting = () => {
+const Vault = () => {
   const [fullyVestedAtInfo, setFullyVestedAtInfo] = useState(DATA_UNAVAILABLE);
   const [transactionDetailsVisible, setTransactionDetailsVisible] = useState(false);
   const modalContext = useContext(ModalContext);
@@ -74,7 +74,7 @@ const Vesting = () => {
             <div>{timeDifference.days} Day(s), {timeDifference.hours} Hour(s), {timeDifference.minutes} Minute(s)</div>
           </div>
           <VestingTransactionProgressBar transaction={tx} />
-          <div className="ml-1 mt-1">{formatting.getTokenAmount(tx.mature, 18, 4)} / {formatting.getTokenAmount(tx.immature, 18, 4)}  mature</div>
+          <div className="ml-1">{formatting.getTokenAmount(tx.mature, 18, 4)} / {formatting.getTokenAmount(tx.immature, 18, 4)}  mature</div>
         </DeltaSectionBox>
       </div>;
     };
@@ -117,81 +117,61 @@ const Vesting = () => {
     </div >
   };
 
-  const renderChart = () => {
-    if (globalHooks.lswStats.data.referralBonusWETH === DATA_UNAVAILABLE || globalHooks.lswStats.data.referralBonusWETH <= 0) {
-      return <></>;
-    }
-
-    return <div className="w-full">
-      <svg viewBox="0 40 400 370">
-        <defs>
-          <linearGradient id="chartGradient2" x1="0%" x2="0%" y1="0%" y2="100%">
-            <stop offset="0%" stopColor="#DB77EB" stopOpacity="1" />
-            <stop offset="100%" stopColor="#DBC9D6" stopOpacity="0.5" />
-          </linearGradient>
-        </defs>
-        <VictoryPie
-          standalone={false}
-          width={chartWidth} height={400}
-          style={{ labels: { fill: f => f.datum.x === "mature" ? 'white' : 'black' }, data: { fill: f => f.datum.x === "mature" ? '#4315C7' : "url(#chartGradient2)", fillOpacity: 1, stroke: "black", strokeWidth: 0 } }}
-          colorScale={["#4315C7", "#9E9E9E"]}
-          categories={{ x: ["mature", "unmature"] }}
-          innerRadius={110}
-          labelRadius={125}
-          labels={({ datum }) => `${(datum.y * 100).toFixed(0)}%`}
-          data={[
-            { x: "mature", y: globalHooks.delta.data.percentVested },
-            { x: "unmature", y: 1.0 - globalHooks.delta.data.percentVested },
-          ]}
-        />
-        <VictoryLabel
-          className={fullyVestedAtInfo === DATA_UNAVAILABLE ? 'invisible' : 'visible'}
-          textAnchor="middle"
-          standalone={false}
-          x={chartWidth / 2} y={190}
-          lineHeight={[1, 1.5, 1.5, 1.5, 1.5]}
-          style={[{ fontSize: 18, fill: 'black' }, { fontSize: 18, fill: 'black' }, { fontSize: 14, fill: 'black' }, { fontSize: 14, fill: 'black' }, { fontSize: 14, fill: 'black' }]}
-          text={['Time Until', 'Fully Matured', `${fullyVestedAtInfo.days} days`, `${fullyVestedAtInfo.hours} hours`, `${fullyVestedAtInfo.minutes} minutes`]}
-        />
-        <VictoryLegend x={115} y={380} standalone={false}
-          title=""
-          centerTitle
-          orientation="horizontal"
-          itemsPerRow={2}
-          data={[
-            { name: "Mature", symbol: { type: 'square', fill: "#4315C7" } },
-            { name: "Unmature", symbol: { type: 'square', fill: "#DBC9D6" } }
-          ]}
-        />
-      </svg>
-    </div>
-  };
-
-  return <DeltaSection requiresConnectedWallet title="Delta Vesting Schedule">
+  return <DeltaSection requiresConnectedWallet title="Delta Farming Vault">
     <DeltaPanel className="md:mt-0">
       <div className="md:mt-0">
-        <div className="flex flex-col-reverse md:flex-row-reverse">
-          <DeltaPanel className="w-full mt-4">
-            <DeltaTitleH3>Total Delta</DeltaTitleH3>
-            {renderChart()}
+        <div className="flex flex-col md:flex-row-reverse">
+          <DeltaPanel className="w-full mt-4 mb-4">
+            <div className="border border-black p-4 bg-gray-200 text-lg text-center mb-1">Up to 750 % APY*</div>
+            <div className="border border-black p-4 bg-gray-200 text-lg text-center">TVL: $145,223,123</div>
           </DeltaPanel>
           <DeltaPanel className="mt-4">
-            <DeltaTitleH3>My Wallet</DeltaTitleH3>
-            {renderMyWallet()}
-            <DeltaTitleH3 className="mt-6">rLP Stats</DeltaTitleH3>
-            {renderRLPStats()}
+            <div>
+              The Deep Farming Vault distributes<br />
+              yield to staked rLP and Delta.
+            </div>
+          </DeltaPanel>
+        </div>
+        <div className="mt-4 md:mt-2">
+          <DeltaTitleH2 lineunder>rLP Token</DeltaTitleH2>
+
+          <DeltaPanel className="mt-4">
+            <ProgressBarDiamonds />
           </DeltaPanel>
         </div>
       </div>
-      <DeltaPanel className="flex items-center text-center flex-wrap mt-4">
-        <Button className="flex-1 md:flex-none py-4" onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'See All Transactions ▼' : 'Hide All Transactions ▲'}</Button>
-      </DeltaPanel>
-      <DeltaPanel className={`${!transactionDetailsVisible ? 'hidden' : ''}`}>
-        {renderVestingTransactions()}
-      </DeltaPanel>
     </DeltaPanel>
-  </DeltaSection>
+  </DeltaSection>;
+
+  /* return <DeltaSection requiresConnectedWallet title="Delta Farming Vault">
+      <DeltaPanel className="md:mt-0">
+        <div className="md:mt-0">
+          <div className="flex flex-col-reverse md:flex-row-reverse">
+            <DeltaPanel className="w-full mt-4">
+              <div className="border border-black p-4 bg-gray-200 text-lg text-center mb-1">Up to 750 % APY*</div>
+              <div className="border border-black p-4 bg-gray-200 text-lg text-center">TVL: $145,223,123</div>
+            </DeltaPanel>
+            <DeltaPanel className="mt-4">
+              <div>
+                The Deep Farming Vault distributes<br />
+              yield to staked rLP and Delta.
+            </div>
+              <DeltaTitleH3>My Wallet</DeltaTitleH3>
+              {renderMyWallet()}
+              <DeltaTitleH3 className="mt-6">rLP Stats</DeltaTitleH3>
+              {renderRLPStats()}
+            </DeltaPanel>
+          </div>
+        </div>
+        <DeltaPanel className="flex items-center text-center flex-wrap mt-4">
+          <Button className="flex-1 md:flex-none" onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'See All Transactions ▼' : 'Hide All Transactions ▲'}</Button>
+        </DeltaPanel>
+        <DeltaPanel className={`${!transactionDetailsVisible ? 'hidden' : ''}`}>
+          {renderVestingTransactions()}
+        </DeltaPanel>
+      </DeltaPanel>
+    </DeltaSection> */
 };
 
 
-export default Vesting;
+export default Vault;

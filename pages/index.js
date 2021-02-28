@@ -4,6 +4,7 @@ import { Community } from '../components/Community';
 import { ReferralProgram } from '../components/ReferralProgram';
 import { MainLayout } from '../components/Layout';
 import { Vesting } from '../components/Vesting';
+import { Vault } from '../components/Vault';
 
 export default function Main() {
   return <MainLayout>
@@ -11,6 +12,7 @@ export default function Main() {
     <Staking />
     <ReferralProgram />
     <Vesting />
+    <Vault />
     <Community />
   </MainLayout>;
 }

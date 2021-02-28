@@ -3,14 +3,21 @@ import chevron from '../../public/chevron.svg';
 import { DeltaTitleH1 } from '../Title';
 import { ConnectWalletButton } from '../Buttons';
 
-const DeltaSection = ({ title, children, requiresConnectedWallet, center }) => {
+const DeltaSection = ({ title, children, showConnectWalletButton, requiresConnectedWallet, center }) => {
   const wallet = useWallet();
 
   const renderContent = () => {
     if (requiresConnectedWallet && !wallet?.account) {
-      return <ConnectWalletButton />
+      if (showConnectWalletButton) {
+        return <ConnectWalletButton />
+      }
+      return <></>;
     }
     return children;
+  }
+
+  if (requiresConnectedWallet && !wallet?.account && !showConnectWalletButton) {
+    return <></>;
   }
 
   return <section className="w-full border-2 mt-4 border-black py-4 md:py-9 px-3 md:px-9 m-auto">

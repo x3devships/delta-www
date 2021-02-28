@@ -17,12 +17,13 @@ module.exports = windmill({
       gradiantPurple: '#CBC4E0',
       gradientPink: '#DB77EB',
       gradientPink2: '#DBC9D6',
-      gradiantGreen: '#4CA560',
-      gradiantLightGreen: '#DBF0E0',
+      gradiantGreen1: '#FBFCCD',
+      gradiantGreen2: '#85C78E',
       backgroundLightPurple: '#EDEAF4',
       backgroundPage: '#E5E5E5',
       backgroundButton: '#C7C7C7',
-      greenText: '#4DA560'
+      greenText: '#4DA560',
+      diamondGreen: '#023E0F'
     }
   },
   variants: {
