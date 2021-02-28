@@ -43,7 +43,7 @@ const ConnectionModal = () => {
 
   const renderContent = () => {
     if (connectingToMetaMask) {
-      return <Spinner label="Connecting..." />
+      return <Spinner className="ml-2" label="Connecting..." />
     }
 
     return <>

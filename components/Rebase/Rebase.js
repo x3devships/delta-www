@@ -2,7 +2,7 @@
 import { useWallet } from 'use-wallet';
 import { useContext } from 'react';
 import { ProgressBarCountDown } from '../ProgressBar';
-import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
+import { DeltaPanel, DeltaSection } from '../Section';
 import { useYam } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
@@ -10,11 +10,10 @@ import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 
 const Rebase = () => {
   const yam = useYam();
-  const wallet = useWallet();
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
 
-  return <DeltaSection requiresConnectedWallet title="Rebase is Soon">
+  return <DeltaSection requiresConnectedWallet title="Rebasing is Soon">
     <DeltaPanel>
       <ProgressBarCountDown progress={70} />
       <div className="text-center mt-2 md:mt-4 text-lg">2 Day(s) 5 Hour(s) 33 Minute(s)</div>
