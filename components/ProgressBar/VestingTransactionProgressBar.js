@@ -1,5 +1,4 @@
 const VestingTransactionProgressBar = ({ transaction }) => {
-  transaction.percentVested = 0.10;
   const percentMature = transaction.percentVested * 100;
   const percentImmature = (1 - transaction.percentVested) * 100;
 

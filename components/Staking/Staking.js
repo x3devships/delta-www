@@ -50,13 +50,13 @@ const Staking = () => {
     return Promise.resolve();
   };
 
-  return <DeltaSection center title="Limited Staking Window is closed">
-    <DeltaPanel>
+  return <DeltaSection title="Limited Staking Window is closed">
+    <DeltaPanel className="mt-2 md:mt-4">
       <ProgressBarCountDown />
-      <div className="text-center mt-6">{Math.round(globalHooks.lswStats.data.totalEthContributed).toFixed(0).toLocaleString()} ETH contributed!</div>
+      <div className="text-center mt-6 text-2xl">{Math.round(globalHooks.lswStats.data.totalEthContributed).toFixed(0).toLocaleString()} ETH contributed!</div>
     </DeltaPanel>
-    <DeltaSectionBlock requiresConnectedWallet>
-      <ul className="list-disc list-inside py-4">
+    <DeltaPanel requiresConnectedWallet>
+      <ul className="list-disc list-inside pt-6 pb-4 md:pb-6">
         <li>You Contributed: {formatting.getTokenAmount(globalHooks.lswStats.data.accountContributedEth, 0, 6)} ETH</li>
         <li>rLP to be claimed: {formatting.getTokenAmount(globalHooks.lswStats.data.claimableRlp, 0, 6)} rLP</li>
       </ul>
@@ -64,8 +64,8 @@ const Staking = () => {
         <TransactionButton className="flex-1 mr-2 md:mr-0 md:flex-grow-0" text="Claim &amp; Stake" textLoading="Staking..." onClick={() => onClaim(true)} />
         <TransactionButton className="flex-1 ml-2 md:ml-4 md:flex-grow-0" text="Claim" textLoading="Claiming..." onClick={() => onClaim(false)} />
       </DeltaPanel>
-    </DeltaSectionBlock>
-  </DeltaSection >
+    </DeltaPanel>
+  </DeltaSection>
 };
 
 export default Staking;

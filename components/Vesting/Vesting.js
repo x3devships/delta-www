@@ -71,7 +71,7 @@ const Vesting = () => {
         <DeltaSectionBox title={`Transaction ${index}`}>
           <div className="mb-2">
             <div>Time until fully matured:</div>
-            <div>{timeDifference.days} Day(s), {timeDifference.hours} Hour(s), {timeDifference.minutes} Minute(s)</div>
+            <div>{timeDifference.days} Day(s) {timeDifference.hours} Hour(s) {timeDifference.minutes} Minute(s)</div>
           </div>
           <VestingTransactionProgressBar transaction={tx} />
           <div className="ml-1 mt-1">{formatting.getTokenAmount(tx.mature, 18, 4)} / {formatting.getTokenAmount(tx.immature, 18, 4)}  mature</div>
