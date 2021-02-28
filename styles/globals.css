@@ -27,3 +27,25 @@
     @apply bg-white;
   }
 }
+
+@layer utilities {
+  @variants responsive {
+    .diamond-progressbar-base {
+      min-width: 45px;
+      max-width: 45px;
+      min-height: 45px;
+      max-height: 45px;
+      width: 45px;
+      height: 45px;
+    }
+
+    .diamond-progressbar-small {
+      min-width: 32px;
+      max-width: 32px;
+      min-height: 32px;
+      max-height: 32px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+}

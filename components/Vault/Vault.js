@@ -15,6 +15,35 @@ import { ModalContext } from '../../contexts';
 
 const FULLY_VESTING_REFRESH_RATE = 1 * 60 * 1000;
 
+const VaultInfoBox = ({ className }) => {
+  return <div className={`bg-purpleGray flex flex-row border border-black ${className}`}>
+    <div className="flex border-r border-black flex-col text-center">
+      <div className="text-xs px-2 pt-1 pb-2">
+        TVL
+      </div>
+      <div className="text-2xl self-center px-4">
+        rLP
+      </div>
+    </div>
+    <div className="flex border-r border-black flex-col text-center flex-grow">
+      <div className="text-xs px-2 pt-1 pb-2">
+        Amount Staked
+      </div>
+      <div className="text-2xl self-center px-4 self-end flex flex-grow">
+        12,001
+      </div>
+    </div>
+    <div className="flex flex-col text-center">
+      <div className="text-xs px-2 pt-1 pb-2">
+        Yearly ROI
+      </div>
+      <div className="text-2xl self-center px-4">
+        500%
+      </div>
+    </div>
+  </div >
+};
+
 const Vault = () => {
   const [fullyVestedAtInfo, setFullyVestedAtInfo] = useState(DATA_UNAVAILABLE);
   const [transactionDetailsVisible, setTransactionDetailsVisible] = useState(false);
@@ -117,26 +146,29 @@ const Vault = () => {
     </div >
   };
 
+
   return <DeltaSection requiresConnectedWallet title="Delta Farming Vault">
     <DeltaPanel className="md:mt-0">
       <div className="md:mt-0">
         <div className="flex flex-col md:flex-row-reverse">
-          <DeltaPanel className="w-full mt-4 mb-4">
-            <div className="border border-black p-4 bg-gray-200 text-lg text-center mb-1">Up to 750 % APY*</div>
-            <div className="border border-black p-4 bg-gray-200 text-lg text-center">TVL: $145,223,123</div>
+          <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12">
+            <div className="border border-black py-2 bg-gray-200 mb-1">Up to 750 % APY*</div>
+            <div className="border border-black py-2 bg-gray-200">TVL: $145,223,123</div>
           </DeltaPanel>
-          <DeltaPanel className="mt-4">
-            <div>
-              The Deep Farming Vault distributes<br />
-              yield to staked rLP and Delta.
-            </div>
+          <DeltaPanel className="mt-4 pr-12">
+            The Deep Farming Vault distributes<br />
+            yield to staked rLP and Delta.
           </DeltaPanel>
         </div>
         <div className="mt-4 md:mt-2">
           <DeltaTitleH2 lineunder>rLP Token</DeltaTitleH2>
-
-          <DeltaPanel className="mt-4">
-            <ProgressBarDiamonds />
+          <DeltaPanel className="mt-4 flex flex-col md:flex-row">
+            <div className="flex w-full flex-grow">
+              <VaultInfoBox className="flex flex-grow mr-0 md:mr-24" />
+            </div>
+            <div className="flex w-full flex-grow">
+              <ProgressBarDiamonds className="flex flex-grow" />
+            </div>
           </DeltaPanel>
         </div>
       </div>

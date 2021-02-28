@@ -23,7 +23,8 @@ module.exports = windmill({
       backgroundPage: '#E5E5E5',
       backgroundButton: '#C7C7C7',
       greenText: '#4DA560',
-      diamondGreen: '#023E0F'
+      diamondGreen: '#023E0F',
+      purpleGray: '#EDE9F5'
     }
   },
   variants: {
