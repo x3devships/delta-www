@@ -7,7 +7,9 @@ import VaultStaking from './VaultStaking';
 import DeltaButton from '../Button/DeltaButton';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting } from '../../helpers';
+import { TokenInput } from '../Input';
 
+// TODO: Add web3 integration
 const VaultInfoBox = ({ className = '' }) => {
   return <div className={`bg-purpleGray flex flex-row border border-black md:max-h-full md:h-20 ${className}`}>
     <div className="flex border-r border-black flex-col text-center py-1 md:py-0">
@@ -37,6 +39,7 @@ const VaultInfoBox = ({ className = '' }) => {
   </div>
 };
 
+// TODO: add web3 integration
 const RlpStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
 
@@ -49,6 +52,7 @@ const RlpStats = () => {
   </div >
 };
 
+// TODO: add web3 integration
 const DeltaStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
 
@@ -88,10 +92,44 @@ const RlpTokenVault = ({ className = '' }) => {
   </div>;
 };
 
+const TopUpDialogContent = () => {
+  const [toggle, setToggle] = useState(false);
+
+  /**
+ * stakingRewards = true means it uses Delta Staking Rewards
+ * otherwize the mature delta from wallet 
+ */
+  const onTopUp = async (stakingRewards) => {
+    // TODO: add web3 topup operation
+  };
+
+  return <DeltaPanel>
+    <div className="my-4">10% of your principle is necessary to maintain the multiplier. You can use Delta staking rewards to top up the multiplier</div>
+    <div>Reward Multiplier</div>
+    <div><ProgressBarDiamonds small minMultiplier={1} maxMultiplier={10} /></div>
+    <div>Time until downgrade: 6 days 13 hours</div>
+    <div className="mt-4">
+      <DeltaPanel className="flex items-center text-center flex-wrap">
+        <div className="flex border border-black p-1 flex-grow md:flex-none">
+          <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setToggle(t => !t)} grayLook={toggle}>Gelta staking rewards</DeltaButton>
+          <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setToggle(t => !t)} grayLook={!toggle}>Mature delta from wallet</DeltaButton>
+        </div>
+      </DeltaPanel>
+      <TokenInput className="mt-4" token="delta" buttonText="top up" buttonTextLoading="Loading..." onOk={() => onTopUp(toggle)} />
+    </div>
+  </DeltaPanel>;
+}
+
+// TODO: add web3 integration
 const DeltaTokenVault = ({ className = '' }) => {
   const token = 'delta';
+  const modalContext = useContext(ModalContext);
   const rewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
   const [showAllWithdrawalContracts, setShowAllWithdrawalContracts] = useState(false);
+
+  const onDepositToMultiplier = async () => {
+    await modalContext.showMessage('Top Up Reward Multiplier', <TopUpDialogContent />, false);
+  };
 
   return <div className={`mt-4 md:mt-2 ${className}`}>
     <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
@@ -106,7 +144,7 @@ const DeltaTokenVault = ({ className = '' }) => {
           <div className="text-xs flex mb-1">Reward Multiplier</div>
           <ProgressBarDiamonds minMultiplier={1} maxMultiplier={10} className="flex w-full flex-grow" />
           <div className="text-xs text-gray-400 flex mt-1">{rewardMultiplierDescription}</div>
-          <DeltaButton secondaryLook className="mt-4">Deposit to multipler</DeltaButton>
+          <DeltaButton secondaryLook className="mt-4" onClick={onDepositToMultiplier}>Deposit to multipler</DeltaButton>
         </div>
       </div>
       <div className="w-full flex-grow hidden flex-col md:flex self-start">
@@ -115,7 +153,7 @@ const DeltaTokenVault = ({ className = '' }) => {
           <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
           <div className="text-xs flex text-gray-400">{rewardMultiplierDescription}</div>
         </div>
-        <DeltaButton secondaryLook className="mt-4">Deposit to multiplier</DeltaButton>
+        <DeltaButton secondaryLook className="mt-4" onClick={onDepositToMultiplier}>Deposit to multiplier</DeltaButton>
       </div>
     </DeltaPanel>
     <VaultStaking showAllWithdrawalContracts={showAllWithdrawalContracts} token={token} />
@@ -123,8 +161,6 @@ const DeltaTokenVault = ({ className = '' }) => {
 };
 
 const Vault = () => {
-  const modalContext = useContext(ModalContext);
-
   return <DeltaSection requiresConnectedWallet title="Delta Farming Vault">
     <DeltaPanel className="md:mt-0">
       <div className="md:mt-0">
