@@ -23,7 +23,8 @@ export class Contracts {
 
     // Tokens
     this.core = new web3.eth.Contract(CORE.abi);
-    this.delta = new web3.eth.Contract(DELTA.abi);
+    // TODO: Enable Back When Ready
+    // this.delta = new web3.eth.Contract(DELTA.abi);
     this.rLP = new web3.eth.Contract(RLP.abi);
     this.wCORE = new web3.eth.Contract(wCORE.abi);
     this.cDAI = new web3.eth.Contract(cDAI.abi);
@@ -51,7 +52,8 @@ export class Contracts {
     this.wBTC.options.address = addressMap.wBTC;
     this.wETH.options.address = addressMap.wETH;
     this.core.options.address = addressMap.core;
-    this.delta.options.address = addressMap.delta;
+    // TODO: Enable Back When Ready
+    // this.delta.options.address = addressMap.delta;
     this.rLP.options.address = addressMap.rLP;
     this.cBTC.options.address = addressMap.cBTC;
     this.cDAI.options.address = addressMap.cDAI;

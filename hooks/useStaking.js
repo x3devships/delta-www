@@ -20,17 +20,18 @@ const useStaking = () => {
     setRlpStaked(balance);
   }
 
-  useEffect(() => {
-    let interval;
-
-    if (yam) {
-      update();
-      interval = hooks.setWalletAwareInterval(wallet, update, REFRESH_RATE);
-    }
-
-    return () => clearInterval(interval);
-  }, [yam, wallet]);
-
+  // TODO: Enable Back When Ready
+  /* useEffect(() => {
+     let interval;
+ 
+     if (yam) {
+       update();
+       interval = hooks.setWalletAwareInterval(wallet, update, REFRESH_RATE);
+     }
+ 
+     return () => clearInterval(interval);
+   }, [yam, wallet]);
+ */
   return {
     update,
     rlpStaked

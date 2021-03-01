@@ -62,12 +62,13 @@ const useDelta = () => {
     }))
   };
 
-  useEffect(() => {
+  // TODO: Enable Back When Ready
+  /* useEffect(() => {
     update();
     const interval = hooks.setWalletAwareInterval(wallet, update, REFRESH_RATE);
 
     return () => clearInterval(interval);
-  }, [yam]);
+  }, [yam]); */
 
   return {
     update,
