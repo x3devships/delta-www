@@ -1,48 +1,43 @@
-import { VictoryPie, VictoryLabel, VictoryLegend } from 'victory';
-import moment from 'moment';
-import { useContext, useEffect, useState } from 'react';
-import { Button } from '@windmill/react-ui';
-import { DeltaPanel, DeltaSection, DeltaSectionBlock, DeltaSectionBox } from '../Section';
-import { DeltaTitleH2, DeltaTitleH3 } from '../Title';
+import { useContext } from 'react';
+import { DeltaPanel, DeltaSection } from '../Section';
+import { DeltaTitleH2 } from '../Title';
 import { formatting } from '../../helpers';
-import { ProgressBarDiamonds, VestingTransactionProgressBar } from '../ProgressBar';
-import { DATA_UNAVAILABLE } from '../../config';
+import { ProgressBarDiamonds } from '../ProgressBar';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import DeltaButton from '../Button/DeltaButton';
-import { TokenInput } from '../Input';
-import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
+import VaultStaking from './VaultStaking';
 
-const VaultInfoBox = ({ className }) => {
+const VaultInfoBox = ({ className = '' }) => {
   return <div className={`bg-purpleGray flex flex-row border border-black md:max-h-full md:h-20 ${className}`}>
-    <div className="flex border-r border-black flex-col text-center py-1">
+    <div className="flex border-r border-black flex-col text-center py-1 md:py-0">
       <div className="text-xs px-2 pt-1 pb-2">
         TVL
       </div>
-      <div className="text-2xl self-center px-4">
+      <div className="text-2xl self-center px-4 mt-0 md:mt-1">
         rLP
       </div>
     </div>
-    <div className="flex border-r border-black flex-col text-center flex-grow">
+    <div className="flex border-r border-black flex-col text-center flex-grow py-1 md:py-0">
       <div className="text-xs px-2 pt-1 pb-2">
         Amount Staked
       </div>
-      <div className="text-2xl self-center px-4 self-end flex flex-grow">
+      <div className="text-2xl self-center px-4 self-end flex flex-grow mt-0 md:mt-1">
         12,001
       </div>
     </div>
-    <div className="flex flex-col text-center">
+    <div className="flex flex-col text-center py-1 md:py-0">
       <div className="text-xs px-2 pt-1 pb-2">
         Yearly ROI
       </div>
-      <div className="text-2xl self-center px-4">
+      <div className="text-2xl self-center px-4 mt-0 md:mt-1">
         500%
       </div>
     </div>
   </div >
 };
 
-const RLPStats = () => {
+const RlpStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
 
   return <div className="mt-4 md:mt-0">
@@ -51,11 +46,10 @@ const RLPStats = () => {
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
     </ul>
-    <DeltaButton>See all withdrawal contracts</DeltaButton>
   </div >
 };
 
-const DeltaStats = () => {
+const DeltaStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
 
   return <div className="mt-4 md:mt-0">
@@ -64,7 +58,6 @@ const DeltaStats = () => {
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
     </ul>
-    <DeltaButton>See all withdrawal contracts</DeltaButton>
   </div >
 };
 
@@ -73,7 +66,7 @@ const maxMultipliers = {
   DELTA: 10
 };
 
-const TokenVault = ({ token, className }) => {
+const TokenVault = ({ token, className = '' }) => {
   const rewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
 
   return <div className={`mt-4 md:mt-2 ${className}`}>
@@ -86,7 +79,7 @@ const TokenVault = ({ token, className }) => {
           <ProgressBarDiamonds minMultiplier={1} maxMultiplier={maxMultipliers[token]} className="flex w-full flex-grow" />
           <div className="text-xs text-gray-400 flex mt-1">{rewardMultiplierDescription}</div>
         </div>
-        {token === "rLP" ? <DeltaStats /> : <RLPStats />}
+        {token === "rLP" ? <DeltaStaking /> : <RlpStaking />}
       </div>
       <div className="w-full flex-grow hidden flex-col md:flex self-start">
         <ProgressBarDiamonds minMultiplier={1} maxMultiplier={maxMultipliers[token]} className="flex flex-grow w-full" />
@@ -96,6 +89,7 @@ const TokenVault = ({ token, className }) => {
         </div>
       </div>
     </DeltaPanel>
+    {token === "rLP" ? <VaultStaking token={token} /> : <VaultStaking token={token} />}
   </div>;
 };
 

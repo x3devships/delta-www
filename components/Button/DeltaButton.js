@@ -1,16 +1,17 @@
 import { Button, HelperText } from '@windmill/react-ui';
 import plus from '../../public/plus.svg';
+import plusGray from '../../public/plus-gray.svg';
 
-const DeltaButton = ({ children, className, labelBottom, ...props }) => {
+const DeltaButton = ({ children, className, labelBottom, grayLook, ...props }) => {
   return <div className={`${className || ''}`}>
     <Button
-      className="w-full md:w-max bg-black text-white p-5 rounded-none py-4"
+      className={`w-full md:w-max ${grayLook ? 'bg-gray-300 text-gray-500' : 'bg-black text-white'} p-5 rounded-none py-4`}
       {...props}
     >
       <div className="text-left flex-grow">
         {children}
       </div>
-      <img alt="+" src={plus} className="m-auto ml-0 md:ml-4" />
+      <img alt="+" src={grayLook ? plusGray : plus} className="m-auto ml-0 md:ml-4" />
     </Button>
     <HelperText className={`${!labelBottom ? 'hidden' : ''} text-sm text-left text-gray-400 block mt-0.5`}>{labelBottom}</HelperText>
   </div >

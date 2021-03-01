@@ -193,7 +193,7 @@ export default {
     },
     primary: {
       base: 'text-white bg-black border border-transparent uppercase rounded-none',
-      active: 'active:bg-black hover:bg-black focus:shadow-outline-gray',
+      active: '',
       disabled: 'opacity-50 cursor-not-allowed'
     },
     outline: {
