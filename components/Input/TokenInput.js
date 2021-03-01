@@ -5,7 +5,7 @@ import { addressMap, tokenMap } from '../../config';
 import { useTokenBalance } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 
-const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading, labelBottom, onOk, className, disabled = false }) => {
+const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading, labelBottom, onOk, className, transactionButtonUnder, disabled = false }) => {
   const [amountText, setAmountText] = useState('');
   const [amount, setAmount] = useState(false);
   const [validAmount, setValidAmount] = useState(true);
@@ -71,7 +71,7 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
             placeholder='0.00'
             onChange={onAmountChanged}
             valid={validAmount}
-            className="border-transparent text-xl border-b border-black"
+            className="border-transparent text-xl border-b border-black flex-grow"
           />
         </div>
         <div className="pr-3 text-sm self-end mb-3">{tokenInfo.friendlyName}</div>
@@ -96,7 +96,7 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
 
   const renderTransactionButton = () => {
     return <TransactionButton
-      className="flex md:p-1 md:border md:border-black"
+      className="flex md:p-1 md:border md:border-black flex-grow"
       allowanceRequiredFor={allowanceRequiredFor}
       text={buttonText}
       textLoading={buttonTextLoading}
@@ -113,7 +113,7 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
           <div className="flex flex">
             {renderInput()}
             {renderMaxButton()}
-            <div className="ml-1 hidden md:flex">
+            <div className={`ml-1 hidden ${!transactionButtonUnder ? 'md:flex' : ''}`}>
               {renderTransactionButton()}
             </div>
           </div>
@@ -121,7 +121,7 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
         {renderHelpers()}
       </div>
     </div>
-    <div className="mt-4 md:hidden">
+    <div className={`mt-4 ${!transactionButtonUnder ? 'md:hidden' : ''}`}>
       {renderTransactionButton()}
     </div>
   </div >;

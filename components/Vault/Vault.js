@@ -109,13 +109,13 @@ const TopUpDialogContent = () => {
     <div><ProgressBarDiamonds small minMultiplier={1} maxMultiplier={10} /></div>
     <div>Time until downgrade: 6 days 13 hours</div>
     <div className="mt-4">
-      <DeltaPanel className="flex items-center text-center flex-wrap">
-        <div className="flex border border-black p-1 flex-grow md:flex-none">
-          <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setToggle(t => !t)} grayLook={toggle}>Gelta staking rewards</DeltaButton>
-          <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setToggle(t => !t)} grayLook={!toggle}>Mature delta from wallet</DeltaButton>
+      <DeltaPanel className="flex flex-grow text-center">
+        <div className="flex flex-row border border-black p-1 flex-grow">
+          <DeltaButton className="flex mr-2 flex-1" onClick={() => setToggle(t => !t)} grayLook={toggle}>Delta staking rewards</DeltaButton>
+          <DeltaButton className="flex flex-1" onClick={() => setToggle(t => !t)} grayLook={!toggle}>Mature delta from wallet</DeltaButton>
         </div>
       </DeltaPanel>
-      <TokenInput className="mt-4" token="delta" buttonText="top up" buttonTextLoading="Loading..." onOk={() => onTopUp(toggle)} />
+      <TokenInput className="mt-4" token="delta" buttonText="top up" transactionButtonUnder buttonTextLoading="Loading..." onOk={() => onTopUp(toggle)} />
     </div>
   </DeltaPanel>;
 }
