@@ -5,8 +5,10 @@ import { ProgressBarDiamonds } from '../ProgressBar';
 import { ModalContext } from '../../contexts';
 import VaultStaking from './VaultStaking';
 import DeltaButton from '../Button/DeltaButton';
+import { GlobalHooksContext } from '../../contexts/GlobalHooks';
+import { formatting } from '../../helpers';
 
-const VaultInfoBox = ({ token, className = '' }) => {
+const VaultInfoBox = ({ className = '' }) => {
   return <div className={`bg-purpleGray flex flex-row border border-black md:max-h-full md:h-20 ${className}`}>
     <div className="flex border-r border-black flex-col text-center py-1 md:py-0">
       <div className="text-xs px-2 pt-1 pb-2">
@@ -35,12 +37,59 @@ const VaultInfoBox = ({ token, className = '' }) => {
   </div>
 };
 
-const maxMultipliers = {
-  rLP: 30,
-  DELTA: 10
+const RlpStats = () => {
+  const globalHooks = useContext(GlobalHooksContext);
+
+  return <div className="mt-4 md:mt-0">
+    <ul className="list-disc list-inside py-4 md:py-8">
+      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
+    </ul>
+  </div >
 };
 
-const TokenVault = ({ token, className = '' }) => {
+const DeltaStats = () => {
+  const globalHooks = useContext(GlobalHooksContext);
+
+  return <div className="mt-4 md:mt-0">
+    <ul className="list-disc list-inside py-4 md:py-8">
+      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
+    </ul>
+  </div >
+};
+
+const RlpTokenVault = ({ className = '' }) => {
+  const token = 'rLP';
+
+  return <div className={`mt-4 md:mt-2 ${className}`}>
+    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
+    <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
+      <div className="flex w-full flex-grow flex-col md:flex-col">
+        <div>
+          <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
+          <RlpStats />
+        </div>
+        <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
+          <div className="text-xs flex mb-1">Reward Multiplier</div>
+          <ProgressBarDiamonds minMultiplier={1} maxMultiplier={30} className="flex w-full flex-grow" />
+        </div>
+      </div>
+      <div className="w-full flex-grow hidden flex-col md:flex self-start">
+        <ProgressBarDiamonds minMultiplier={1} maxMultiplier={30} className="flex flex-grow w-full" />
+        <div className="flex flex-row mt-4">
+          <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
+        </div>
+      </div>
+    </DeltaPanel>
+    <VaultStaking token={token} />
+  </div>;
+};
+
+const DeltaTokenVault = ({ className = '' }) => {
+  const token = 'delta';
   const rewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
   const [showAllWithdrawalContracts, setShowAllWithdrawalContracts] = useState(false);
 
@@ -50,26 +99,27 @@ const TokenVault = ({ token, className = '' }) => {
       <div className="flex w-full flex-grow flex-col md:flex-col">
         <div>
           <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
+          <DeltaStats />
           <DeltaButton className="mt-4" onClick={() => setShowAllWithdrawalContracts(true)}>See all withdrawal contracts</DeltaButton>
         </div>
         <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
           <div className="text-xs flex mb-1">Reward Multiplier</div>
-          <ProgressBarDiamonds minMultiplier={1} maxMultiplier={maxMultipliers[token]} className="flex w-full flex-grow" />
+          <ProgressBarDiamonds minMultiplier={1} maxMultiplier={10} className="flex w-full flex-grow" />
           <div className="text-xs text-gray-400 flex mt-1">{rewardMultiplierDescription}</div>
           <DeltaButton secondaryLook className="mt-4">Deposit to multipler</DeltaButton>
         </div>
       </div>
       <div className="w-full flex-grow hidden flex-col md:flex self-start">
-        <ProgressBarDiamonds minMultiplier={1} maxMultiplier={maxMultipliers[token]} className="flex flex-grow w-full" />
+        <ProgressBarDiamonds minMultiplier={1} maxMultiplier={10} className="flex flex-grow w-full" />
         <div className="flex flex-row mt-4">
           <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
           <div className="text-xs flex text-gray-400">{rewardMultiplierDescription}</div>
         </div>
-        <DeltaButton secondaryLook className="mt-4">Deposit to multipler</DeltaButton>
+        <DeltaButton secondaryLook className="mt-4">Deposit to multiplier</DeltaButton>
       </div>
     </DeltaPanel>
     <VaultStaking showAllWithdrawalContracts={showAllWithdrawalContracts} token={token} />
-  </div >;
+  </div>;
 };
 
 const Vault = () => {
@@ -88,8 +138,8 @@ const Vault = () => {
             yield to staked rLP and Delta.
           </DeltaPanel>
         </div>
-        <TokenVault token="rLP" />
-        <TokenVault token="delta" className="mt-8 md:mt-12" />
+        <RlpTokenVault />
+        <DeltaTokenVault className="mt-8 md:mt-12" />
       </div>
     </DeltaPanel>
   </DeltaSection>;

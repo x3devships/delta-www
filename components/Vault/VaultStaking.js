@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting } from '../../helpers';
 import DeltaButton from '../Button/DeltaButton';
@@ -32,7 +32,7 @@ const DeltaStaking = () => {
     <ul className="list-disc list-inside py-4 md:py-8">
       <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
-      <li>Amount Due: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
     </ul>
     <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake('delta')} />
   </div >
