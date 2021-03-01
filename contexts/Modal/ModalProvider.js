@@ -4,7 +4,8 @@ import ModalContext from './ModalContext';
 export const ModalType = Object.freeze({
   Message: 'message',
   Error: 'error',
-  Confirm: 'confirm'
+  Confirm: 'confirm',
+  ConnectWallet: 'connect-wallet'
 });
 
 const ModalProvider = ({ children }) => {
@@ -48,6 +49,10 @@ const ModalProvider = ({ children }) => {
     return _showModal(ModalType.Message, { title, content, okContent });
   };
 
+  const showConnectWallet = async () => {
+    return _showModal(ModalType.ConnectWallet, {});
+  };
+
   const showError = async (title, content, okContent = 'Ok') => {
     return _showModal(ModalType.Error, { title, content, okContent });
   };
@@ -63,7 +68,8 @@ const ModalProvider = ({ children }) => {
         showMessage,
         showError,
         showConfirm,
-        showControlledMessage
+        showControlledMessage,
+        showConnectWallet
       }}
     >
       {children}

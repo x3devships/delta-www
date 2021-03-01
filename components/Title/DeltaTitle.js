@@ -1,5 +1,5 @@
-const DeltaTitle = ({ children, className }) => {
-  return <div className={`flex-grow font-wulkan ${className}`}>
+const DeltaTitle = ({ children, className, center }) => {
+  return <div className={`${center && "text-center"} flex-grow font-wulkan ${className || ''}`}>
     {children}
   </div >;
 }

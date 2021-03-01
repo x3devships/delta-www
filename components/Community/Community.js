@@ -3,21 +3,34 @@ import github from '../../public/Github.svg';
 import telegram from '../../public/Telegram.svg';
 import twitter from '../../public/Twitter.svg';
 import medium from '../../public/MediumJoin.svg';
-import { JoinButton } from '../joinButton';
+import { DeltaTitleH1 } from '../Title';
+
+const JoinButton = ({ logo, url, title }) => {
+  return (
+    <div className="m-1">
+      <a
+        href={url}
+        title={title}
+        className="bg-backgroundButton tracking-wide text-gray-800 hover:bg-gray-800 font-bold py-4 px-4 inline-flex items-center"
+      >
+        <img src={logo} alt="logo" className="mx-auto w-6 h-6 md:w-12 md:h-12 min-h-full min-w-full max-w-full max-h-full" />
+      </a>
+    </div>
+  );
+};
 
 const Community = () => {
   const { t } = useTranslation('home');
   return (
     <div className="flex items-center justify-center">
       <div className="container">
-        <div className=" p-5 md:p-20 mx-2 sm:p-5">
-          <div className="text-center text-4xl pt-12 font-wulkan">{t('joinTheCommunity')}</div>
-          <div className="flex flex-wrap mt-5 justify-center">
-            {/* <JoinButton url="" title="" logo={discord} width="60px" /> */}
-            <JoinButton url="https://twitter.com/Delta_Token" title="Twitter" logo={twitter} width="60px" />
-            <JoinButton url="https://t.me/Delta_Financial" title="Telegram" logo={telegram} width="60px" />
-            <JoinButton url="https://medium.com/delta-financial" title="Medium" logo={medium} width="60px" />
-            <JoinButton url="https://github.com/Delta-Financial" title="Github" logo={github} width="46px" />
+        <div className="p-5 md:p-8 mx-2 sm:p-5 text-center mt-4">
+          <DeltaTitleH1>{t('joinTheCommunity')}</DeltaTitleH1>
+          <div className="flex flex-wrap mt-2 md:mt-4 justify-center">
+            <JoinButton url="https://twitter.com/Delta_Token" title="Twitter" logo={twitter} />
+            <JoinButton url="https://t.me/Delta_Financial" title="Telegram" logo={telegram} />
+            <JoinButton url="https://medium.com/delta-financial" title="Medium" logo={medium} />
+            <JoinButton url="https://github.com/Delta-Financial" title="Github" logo={github} />
           </div>
         </div>
       </div>

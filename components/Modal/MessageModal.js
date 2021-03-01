@@ -15,16 +15,10 @@ const MessageModal = () => {
         visibility: type === ModalType.Message ? 'inherit' : 'hidden'
       }}
     >
-      <ModalHeader><div className="text-2xl font-semibold font-wulkan">{title}</div></ModalHeader>
+      <ModalHeader className="text-2xl font-semibold font-wulkan">{title}</ModalHeader>
       <ModalBody>{content}</ModalBody>
       <ModalFooter>
-        {onOk && <Button className="w-full sm:w-auto text-white" style={{
-          marginRight: '1px',
-          borderRadius: '0px',
-          backgroundColor: 'black',
-          padding: '1rem',
-          marginTop: '1rem'
-        }} onClick={onOk}>
+        {onOk && <Button className="w-full sm:w-auto text-white rounded-none py-4" onClick={onOk}>
           {okContent}
         </Button>}
       </ModalFooter>

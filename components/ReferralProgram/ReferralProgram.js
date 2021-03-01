@@ -5,133 +5,112 @@
 import { useContext, useEffect, useState } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { useWallet } from 'use-wallet';
-import useCopy from '@react-hook/copy';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import moment from 'moment';
-import { useYam } from '../../hooks';
-import useLSWReferralCode from '../../hooks/useLSWReferralCode';
-import { DATA_UNAVAILABLE } from '../../config';
-import { TransactionButton } from '../Button';
+import { VictoryChart, VictoryGroup, VictoryArea } from 'victory';
 import { DeltaPanel, DeltaSection } from '../Section';
-import { DeltaTitleH3 } from '../Title';
-import { errors } from '../../helpers';
-import { ModalContext } from '../../contexts';
+import { DeltaTitleH3, DeltaTitleH4 } from '../Title';
+import { errors, formatting } from '../../helpers';
 import { ConnectWalletButton } from '../Buttons';
 import useReferralRewardsChartData from '../../hooks/useReferralRewardsChartData';
+import { DATA_UNAVAILABLE } from '../../config';
+import TransactionButton from '../Button/TransactionButton';
+import { useYam } from '../../hooks';
+import { ModalContext } from '../../contexts';
+import { Spinner } from '../Spinner';
+import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 
-const ReferralProgram = ({ lswStats, onWalletConnect }) => {
+const ReferralProgram = () => {
   const yam = useYam();
   const wallet = useWallet();
-  const lswRefCode = useLSWReferralCode();
-  const [generating, setGenerating] = useState(false);
-  const { t } = useTranslation('home');
-  const [connectWalletVisible, setConnectWalletVisible] = useState(true);
+  const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
+  const { t } = useTranslation('home');
   const chartData = useReferralRewardsChartData();
 
-  useEffect(() => {
-    if (!wallet.account) {
-      setConnectWalletVisible(true);
-    } else {
-      setConnectWalletVisible(false);
+  const onClaim = async () => {
+    const transaction = await yam.contracts.LSW.methods.getWETHBonusForReferrals();
+
+    try {
+      const transactionGasEstimate = await transaction.estimateGas({ from: wallet.account });
+
+      const transactionMessage = modalContext.showControlledMessage('Claiming...', <Spinner label="Transaction in progress..." />);
+
+      await transaction.send({
+        from: wallet.account,
+        gas: transactionGasEstimate
+      });
+
+      transactionMessage.close();
+      globalHooks.lswStats.update();
+
+      await modalContext.showMessage('Success', <>
+        <div className="text-lg">Your bonus has been claimed and is now available in your wallet</div>
+      </>)
+    } catch (error) {
+      const decodedError = errors.getTransactionError(error, 'An error occured while claiming');
+      console.log(decodedError);
+      return modalContext.showError('Claiming Error', decodedError.message);
     }
-  }, [wallet]);
 
-  const onGenerateCode = async () => {
-    if (yam && wallet.account) {
-      const transaction = yam.contracts.LSW.methods.makeRefCode();
-
-      try {
-        setGenerating(true);
-        const transactionGasEstimate = await transaction.estimateGas({ from: wallet.account });
-
-        await transaction.send({
-          from: wallet.account,
-          gas: transactionGasEstimate
-        });
-
-        setGenerating(false);
-      } catch (error) {
-        const transactionError = errors.getTransactionError(error);
-        modalContext.showError('Error while approving', transactionError.message);
-        console.log(error);
-        setGenerating(false);
-      }
-    }
+    return Promise.resolve();
   };
 
-  const { copied, copy, reset } = useCopy(`https://delta.financial/join/${lswRefCode.referralId}`);
-
-  useEffect(() => {
-    setTimeout(reset, 1500);
-  }, [copied]);
-
-  function getCopyForButton() {
-    if (generating) {
-      return 'GENERATING LINK...';
-    }
-    if (!wallet.account) {
-      return 'CONNECT WALLET TO GENERATE REFERRAL LINK';
-    }
-    return 'GENERATE REFERRAL LINK';
-  }
-
-  const renderGenerateLinkButton = () => {
-    if (lswRefCode.referralId !== DATA_UNAVAILABLE) {
-      return (
-        <div className="w-full md:w-6/12 bg-black shadow-xl p-4 mt-6 inline-block text-white font-mono sm:mr-2.5">
-          <div dangerouslySetInnerHTML={{ __html: t('referral') }} />
-          <div onClick={copy} className="bg-backgroundPage shadow-xl p-4 mt-4 inline-block text-black flex font-mono">
-            <span>{copied ? `Copied !` : `delta.financial/join/${lswRefCode.referralId}`}</span>
-          </div>
+  return <DeltaSection requiresConnectedWallet title="Delta Referral Program">
+    <DeltaPanel className="md:mt-0">
+      <div className="md:mt-0">
+        <div className="md:hidden">
+          The Delta Referral Program has ended.<br />
+          You can claim your rewards below.
         </div>
-      );
-    }
-    return <TransactionButton text={getCopyForButton()} secondaryLooks onClick={() => (wallet.account ? onGenerateCode() : onWalletConnect())} />;
-  };
 
-  const formatXAxis = (tickItem) => {
-    return moment(tickItem).format('MMM Do YY');
-  };
-
-  return <DeltaSection title={t('deltaReferral')}>
-    <DeltaPanel>
-      <div className="block md:grid md:grid-cols-2 md:gap-6 ">
-        <div className="md:border-0 md:border-gray-400 md:border-r md:pr-2">
-          <div className="w-full md:w-6/12">{t('referral')}</div>
-          <div className="mt-6 md:mt-0">
-            {renderGenerateLinkButton()}
+        <div className="flex flex-col md:flex-row-reverse">
+          <div className="w-full">
+            <DeltaTitleH3 className="mt-8 md:mt-0">Your Referral Rewards</DeltaTitleH3>
+            {globalHooks.lswStats.data.referralBonusWETH !== DATA_UNAVAILABLE && globalHooks.lswStats.data.referralBonusWETH > 0 ?
+              <div className="w-full">
+                <svg style={{ height: 0 }}>
+                  <defs>
+                    <linearGradient id="chartGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+                      <stop offset="0%" stopColor="#2F45C5" stopOpacity="1" />
+                      <stop offset="100%" stopColor="#2F45C5" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <VictoryChart padding={34} width={400} height={300} scale={{ x: "time", y: "linear" }} minDomain={{ y: 0 }}>
+                  <VictoryGroup
+                    style={{
+                      data: { strokeWidth: 1, fillOpacity: 0.5 }
+                    }}
+                  >
+                    <VictoryArea
+                      style={{
+                        data: { fill: "url(#chartGradient)", stroke: "#2F45C5" }
+                      }}
+                      x={d => new Date(d.date)}
+                      y="referralBonusWETH"
+                      data={chartData.data}
+                    />
+                  </VictoryGroup>
+                </VictoryChart>
+              </div>
+              : <></>}
           </div>
-        </div>
-        <div className="mt-6 md:mt-0">
-          {connectWalletVisible ? <ConnectWalletButton onWalletConnect={onWalletConnect} /> :
-            <>
+          <DeltaPanel className="mt-8 md:mt-0">
+            <p className="hidden md:block">
+              The Delta Referral Program has ended.<br />
+              You can claim your rewards below.
+            </p>
+            <div className="mt-0 md:mt-8">
               <DeltaTitleH3>Your Referral Bonus</DeltaTitleH3>
 
-              <ResponsiveContainer className="mt-6" aspect={1} height="75%">
-                <AreaChart
-                  data={chartData.data}
-                  margin={{
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
-                  }}
-                >
-                  <XAxis interval={24} dataKey="date" tickFormatter={formatXAxis} />
-                  <YAxis dataKey="referralBonusWETH" name="ETH" />
-                  <Tooltip label="ETH" labelFormatter={() => 'ETH'} />
-                  <Area scale="time" dataKey="referralBonusWETH" stroke="#8884d8" fill="#8884d8" />
-                </AreaChart >
-              </ResponsiveContainer>
-
+              <ul className="list-disc list-inside py-4">
+                <li>ETH earned: {formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</li>
+                <li>Credit earned: {formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</li>
+              </ul>
               <DeltaPanel>
-                <ul className="list-disc">
-                  <li>ETH earned: {lswStats.data.referralBonusWETH}</li>
-                  <li>Credit earned: {lswStats.data.referralBonusWETH}</li>
-                </ul>
+                <TransactionButton text="Claim Bonus" textLoading="Claiming..." onClick={() => onClaim()} />
               </DeltaPanel>
-            </>}
+            </div>
+          </DeltaPanel>
         </div>
       </div>
     </DeltaPanel>

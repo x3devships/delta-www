@@ -1,0 +1,809 @@
+{
+  "contractName": "DELTAToken",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "lswAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Approval",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "QTY_EPOCHS",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "SECONDS_PER_EPOCH",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint112",
+              "name": "amount",
+              "type": "uint112"
+            },
+            {
+              "internalType": "uint112",
+              "name": "fullVestingTimestamp",
+              "type": "uint112"
+            }
+          ],
+          "internalType": "struct DELTAToken.VestingTransaction",
+          "name": "_tx",
+          "type": "tuple"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_blockTimestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "_getTransactionDetail",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint112",
+              "name": "amount",
+              "type": "uint112"
+            },
+            {
+              "internalType": "uint112",
+              "name": "fullVestingTimestamp",
+              "type": "uint112"
+            },
+            {
+              "internalType": "uint256",
+              "name": "percentVestedE4",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint112",
+              "name": "mature",
+              "type": "uint112"
+            },
+            {
+              "internalType": "uint112",
+              "name": "immature",
+              "type": "uint112"
+            }
+          ],
+          "internalType": "struct DELTAToken.VestingTransactionDetailed",
+          "name": "dtx",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        }
+      ],
+      "name": "allowance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "approve",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "balanceOf",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint112",
+              "name": "amount",
+              "type": "uint112"
+            },
+            {
+              "internalType": "uint112",
+              "name": "fullVestingTimestamp",
+              "type": "uint112"
+            },
+            {
+              "internalType": "uint256",
+              "name": "percentVestedE4",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint112",
+              "name": "mature",
+              "type": "uint112"
+            },
+            {
+              "internalType": "uint112",
+              "name": "immature",
+              "type": "uint112"
+            }
+          ],
+          "internalType": "struct DELTAToken.VestingTransactionDetailed",
+          "name": "dtx",
+          "type": "tuple"
+        },
+        {
+          "internalType": "uint256",
+          "name": "matureAmountNeeded",
+          "type": "uint256"
+        }
+      ],
+      "name": "calculateMaturityCredits",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "transactionCredit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "outputDebit",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct DELTAToken.MaturityInfo",
+          "name": "info",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "decimals",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "subtractedValue",
+          "type": "uint256"
+        }
+      ],
+      "name": "decreaseAllowance",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "deploymentTimestamp",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint112",
+              "name": "amount",
+              "type": "uint112"
+            },
+            {
+              "internalType": "uint112",
+              "name": "fullVestingTimestamp",
+              "type": "uint112"
+            }
+          ],
+          "internalType": "struct DELTAToken.VestingTransaction",
+          "name": "_tx",
+          "type": "tuple"
+        }
+      ],
+      "name": "getTransactionDetail",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint112",
+              "name": "amount",
+              "type": "uint112"
+            },
+            {
+              "internalType": "uint112",
+              "name": "fullVestingTimestamp",
+              "type": "uint112"
+            },
+            {
+              "internalType": "uint256",
+              "name": "percentVestedE4",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint112",
+              "name": "mature",
+              "type": "uint112"
+            },
+            {
+              "internalType": "uint112",
+              "name": "immature",
+              "type": "uint112"
+            }
+          ],
+          "internalType": "struct DELTAToken.VestingTransactionDetailed",
+          "name": "dtx",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "addedValue",
+          "type": "uint256"
+        }
+      ],
+      "name": "increaseAllowance",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "printDebugInfo",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "canSendToMatureBalances",
+          "type": "bool"
+        }
+      ],
+      "name": "setFullSenderWhitelist",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "canRecieveImmatureBalances",
+          "type": "bool"
+        }
+      ],
+      "name": "setImmatureRecipentWhitelist",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "recievesBalancesWithoutVestingProcess",
+          "type": "bool"
+        }
+      ],
+      "name": "setNoVestingWhitelist",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IDELTATransferHandler",
+          "name": "_newHandler",
+          "type": "address"
+        }
+      ],
+      "name": "setTokenTransferEventHandler",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "canSendToMatureBalances",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "canRecieveImmatureBalances",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "recievesBalancesWithoutVestingProcess",
+          "type": "bool"
+        }
+      ],
+      "name": "setWhitelists",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "symbol",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalSupply",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "totalsForWallet",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "mature",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "immature",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "total",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct DELTAToken.WalletTotals",
+          "name": "totals",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferFrom",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "uniswapDELTAxWETHPair",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "userInformation",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "mostMatureTxIndex",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint8",
+          "name": "lastInTxIndex",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint112",
+          "name": "maturedBalance",
+          "type": "uint112"
+        },
+        {
+          "internalType": "uint112",
+          "name": "maxBalance",
+          "type": "uint112"
+        },
+        {
+          "internalType": "bool",
+          "name": "fullSenderWhitelisted",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "immatureRecieverWhiteslited",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "noVestingWhitelisted",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "vestingTransactions",
+      "outputs": [
+        {
+          "internalType": "uint112",
+          "name": "amount",
+          "type": "uint112"
+        },
+        {
+          "internalType": "uint112",
+          "name": "fullVestingTimestamp",
+          "type": "uint112"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "wETH",
+      "outputs": [
+        {
+          "internalType": "contract IWETH",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}

@@ -12,18 +12,21 @@ const useUserApprovalOfContract = (contract, token) => {
   const wallet = useWallet();
   const [amount, setAmount] = useState(DATA_UNAVAILABLE);
 
-  async function refresh() {
+  const update = async () => {
+    if (!yam || !wallet?.account) return;
     if (!contract || !token) return;
 
     const amount = new BigNumber(
       await yam.contracts[token].methods.allowance(wallet.account, yam.contracts[contract]._address).call()
     );
     setAmount(amount);
-  }
+  };
+
   useEffect(() => {
     let interval;
     if (yam) {
-      interval = hooks.setWalletAwareInterval(wallet, refresh, REFRESH_RATE);
+      update();
+      interval = hooks.setWalletAwareInterval(wallet, update, REFRESH_RATE);
     }
     return () => clearInterval(interval);
   }, [yam, wallet]);
@@ -31,7 +34,7 @@ const useUserApprovalOfContract = (contract, token) => {
   return useMemo(
     () => ({
       amount,
-      refresh
+      update
     }),
     [amount]
   );
