@@ -14,7 +14,7 @@ import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 
 const VaultInfoBox = ({ className }) => {
-  return <div className={`bg-purpleGray flex flex-row border border-black max-h-full h-20 ${className}`}>
+  return <div className={`bg-purpleGray flex flex-row border border-black md:max-h-full md:h-20 ${className}`}>
     <div className="flex border-r border-black flex-col text-center py-1">
       <div className="text-xs px-2 pt-1 pb-2">
         TVL

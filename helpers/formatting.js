@@ -24,7 +24,7 @@ const getTokenAmount = (amount, decimals = 18, precision = 4, toLocaleString = t
     amount = amount.toLocaleString();
   }
 
-  if (!Number.isNaN(amount)) {
+  if (Number.isNaN(amount)) {
     return DATA_UNAVAILABLE;
   }
 
