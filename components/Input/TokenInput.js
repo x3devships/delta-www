@@ -14,6 +14,10 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
   const tokenAddress = addressMap[token];
   const tokenInfo = tokenMap[tokenAddress];
 
+  if (!tokenInfo) {
+    throw new Error(`${token} doesn't exist within tokenMap`);
+  }
+
   const onBeforeOk = () => {
     let amountBN;
 
