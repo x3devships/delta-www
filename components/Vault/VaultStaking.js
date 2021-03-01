@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting } from '../../helpers';
 import DeltaButton from '../Button/DeltaButton';
+import TransactionButton from '../Button/TransactionButton';
 import { TokenInput } from '../Input';
 import { DeltaPanel } from '../Section'
 
@@ -52,29 +53,93 @@ const VaultDeposit = ({ token }) => {
   </div>;
 };
 
+const DeltaWithdrawal = () => {
+  const onCreateContract = () => {
+
+  };
+
+  const onSelectAllContracts = () => {
+
+  };
+
+  return <div className="my-6">
+    <ul className="list-disc list-inside py-4 md:py-8">
+      <li>Claimable Delta: {formatting.getTokenAmount('543.777', 0, 4)} DELTA</li>
+    </ul>
+    <div className="flex p-1 flex-grow md:flex-none">
+      <TransactionButton className="flex-1 mr-2 md:flex-grow-0" text="Create Contract" onClick={onCreateContract} />
+      <TransactionButton className="flex-1 md:flex-grow-0" text="Select All Contracts" onClick={onSelectAllContracts} />
+    </div>
+  </div>
+};
+
+const EthereumWithdrawal = () => {
+  const onClaim = () => {
+
+  };
+
+  return <div className="my-6">
+    <ul className="list-disc list-inside py-4 md:py-8">
+      <li>Claimable Ethereum: {formatting.getTokenAmount('123.456', 0, 4)} ETH</li>
+    </ul>
+    <TransactionButton text="Claim" textLoading="Claiming..." onClick={onClaim} />
+  </div>
+};
+
+const RlpWithdrawal = () => {
+  const onUnstake = () => {
+
+  };
+
+  return <div className="my-6">
+    <ul className="list-disc list-inside py-4 md:py-8">
+      <li>Staked rLP: {formatting.getTokenAmount('543.777', 0, 4)} rLP</li>
+    </ul>
+    <TransactionButton text="Unstake" textLoading="Unstaking..." onClick={onUnstake} />
+  </div>
+};
+
 const VaultWithdraw = ({ token }) => {
-  const [selectedItem, setSelectedItem] = useState(false);
+  const [tokenToWithdraw, setTokenToWithdraw] = useState('eth');
+
+  const renderContent = (selectTokenToWithdraw) => {
+    switch (selectTokenToWithdraw) {
+      case 'eth':
+        return <EthereumWithdrawal />
+      case 'delta':
+        return <DeltaWithdrawal />
+      case 'rlp':
+        return <RlpWithdrawal />
+      default:
+        return <></>;
+    }
+  };
 
   const renderButtons = () => {
     if (token === 'delta') {
       return <>
-        <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setSelectedItem('eth')} grayLook={selectedItem !== 'eth'}>Ethereum</DeltaButton>
-        <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setSelectedItem('delta')} grayLook={selectedItem !== 'delta'}>Delta</DeltaButton>
+        <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setTokenToWithdraw('eth')} grayLook={tokenToWithdraw !== 'eth'}>Ethereum</DeltaButton>
+        <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setTokenToWithdraw('delta')} grayLook={tokenToWithdraw !== 'delta'}>Delta</DeltaButton>
       </>;
     }
 
     return <>
-      <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setSelectedItem('eth')} grayLook={selectedItem !== 'eth'}>Ethereum</DeltaButton>
-      <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setSelectedItem('delta')} grayLook={selectedItem !== 'delta'}>Delta</DeltaButton>
-      <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setSelectedItem('rlp')} grayLook={selectedItem !== 'rlp'}>rLP</DeltaButton>
+      <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setTokenToWithdraw('eth')} grayLook={tokenToWithdraw !== 'eth'}>Ethereum</DeltaButton>
+      <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setTokenToWithdraw('delta')} grayLook={tokenToWithdraw !== 'delta'}>Delta</DeltaButton>
+      <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setTokenToWithdraw('rlp')} grayLook={tokenToWithdraw !== 'rlp'}>rLP</DeltaButton>
     </>;
   };
 
-  return <DeltaPanel className="flex items-center text-center flex-wrap">
-    <div className="flex border border-black p-1 flex-grow md:flex-none">
-      {renderButtons()}
-    </div>
-  </DeltaPanel>;
+  return <div>
+    <DeltaPanel className="flex items-center text-center flex-wrap">
+      <div className="flex border border-black p-1 flex-grow md:flex-none">
+        {renderButtons()}
+      </div>
+    </DeltaPanel>
+    <DeltaPanel>
+      {renderContent(tokenToWithdraw)}
+    </DeltaPanel>
+  </div>;
 };
 
 const VaultStaking = ({ token, showAllWithdrawalContracts, className = '' }) => {
