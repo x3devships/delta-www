@@ -14,8 +14,8 @@ import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 
 const VaultInfoBox = ({ className }) => {
-  return <div className={`bg-purpleGray flex flex-row border border-black ${className}`}>
-    <div className="flex border-r border-black flex-col text-center">
+  return <div className={`bg-purpleGray flex flex-row border border-black max-h-full h-20 ${className}`}>
+    <div className="flex border-r border-black flex-col text-center py-1">
       <div className="text-xs px-2 pt-1 pb-2">
         TVL
       </div>
@@ -68,6 +68,11 @@ const DeltaStats = () => {
   </div >
 };
 
+const maxMultipliers = {
+  rLP: 30,
+  DELTA: 10
+};
+
 const TokenVault = ({ token, className }) => {
   const rewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
 
@@ -75,16 +80,16 @@ const TokenVault = ({ token, className }) => {
     <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
     <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
       <div className="flex w-full flex-grow flex-col md:flex-col">
-        <VaultInfoBox className="flex flex-grow mr-0 md:mr-24" />
+        <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" />
         <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
           <div className="text-xs flex mb-1">Reward Multiplier</div>
-          <ProgressBarDiamonds className="flex w-full flex-grow" />
+          <ProgressBarDiamonds minMultiplier={1} maxMultiplier={maxMultipliers[token]} className="flex w-full flex-grow" />
           <div className="text-xs text-gray-400 flex mt-1">{rewardMultiplierDescription}</div>
         </div>
         {token === "rLP" ? <DeltaStats /> : <RLPStats />}
       </div>
       <div className="w-full flex-grow hidden flex-col md:flex self-start">
-        <ProgressBarDiamonds className="flex flex-grow w-full" />
+        <ProgressBarDiamonds minMultiplier={1} maxMultiplier={maxMultipliers[token]} className="flex flex-grow w-full" />
         <div className="flex flex-row mt-4">
           <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
           <div className="text-xs flex text-gray-400">{rewardMultiplierDescription}</div>
