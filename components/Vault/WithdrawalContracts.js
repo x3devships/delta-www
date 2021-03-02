@@ -9,18 +9,19 @@ import { DeltaPanel, DeltaSectionBox } from '../Section';
 
 const FinalizeContractDialogContent = ({ contract }) => {
   return <DeltaPanel>
-    <div className="my-4 border border-black p-2 bg-gray-300">
+    <div className="my-4 border border-black p-2 bg-gray-200">
       <div className="flex">
         <div className="flex flex-grow border-b border-black text-xl">
-          {contract.mature}
+          <div className="flex flex-grow" />
+          <div className="flex">{formatting.getTokenAmount(contract.mature, 18, 4)}</div>
         </div>
         <div className="flex self-stretch">
-          <div className="flex self-end uppercase ml-1">Mature DELTA</div>
+          <div className="flex self-end uppercase ml-4">Mature DELTA</div>
         </div>
       </div>
     </div>
     <div className="mt-4">
-      Your {contract.immature} immature Delta will be distributed back to the Deep Farming Vault.
+      Your {formatting.getTokenAmount(contract.immature, 18, 4)} immature Delta will be distributed back to the Deep Farming Vault.
     </div>
     <div className="mt-2">This process cannot be undone.</div>
   </DeltaPanel>;
@@ -30,8 +31,8 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
   const modelContext = useContext(ModalContext);
   const vestingTimeLeft = vesting.getVestingTimeLeft(contract.fullVestingTimestamp);
 
-  const onFinalizeWithdrawal = async () => {
-    const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having unmature Delta Rewards.', <FinalizeContractDialogContent />, 'Finalize Withdrawal');
+  const onFinalizeWithdrawal = async (contract) => {
+    const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having unmature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');
 
     if (confirmed) {
       // TODO: add web3 call
@@ -47,7 +48,7 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
     </div>
     <VestingTransactionProgressBar transaction={contract} />
     <div className="ml-1 mt-1">{formatting.getTokenAmount(contract.mature, 18, 4)} / {formatting.getTokenAmount(contract.immature, 18, 4)}  mature</div>
-    <DeltaButton className="mt-4" onClick={onFinalizeWithdrawal}>FINALIZING WITHDRAWAL</DeltaButton>
+    <DeltaButton className="mt-4" onClick={() => onFinalizeWithdrawal(contract)}>FINALIZING WITHDRAWAL</DeltaButton>
   </DeltaSectionBox >;
 }
 
