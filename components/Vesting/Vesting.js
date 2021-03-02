@@ -116,9 +116,9 @@ const Vesting = () => {
 
     return <div >
       <ul className="list-disc list-inside py-4">
-        <li>Total DELTA: {formatting.getTokenAmount(globalHooks.delta.data.total, 0, 4)} ETH</li>
-        <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} rLP</li>
-        <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} rLP</li>
+        <li>Total DELTA: {formatting.getTokenAmount(globalHooks.delta.data.total, 0, 4)} DELTA</li>
+        <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} DELTA</li>
+        <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA</li>
       </ul>
       <DeltaPanel className="flex items-center text-center flex-wrap">
         <DeltaButton className="flex-1 mr-4 md:flex-grow-0" labelBottom="Earn Yield" onClick={() => onStakeDialog()}>Stake in vault</DeltaButton>
