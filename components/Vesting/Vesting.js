@@ -48,10 +48,6 @@ const Vesting = () => {
     const [currentOpened, setCurrentOpened] = useState(0);
 
     const renderTransaction = (tx, index, opened) => {
-      if (tx.amount === 0) {
-        return <div key={`tx-${index}`} />
-      };
-
       tx.index = index;
       const vestingTimeLeft = vesting.getVestingTimeLeft(tx.fullVestingTimestamp);
 
@@ -62,13 +58,15 @@ const Vesting = () => {
             <div>{vestingTimeLeft.days} Day(s) {vestingTimeLeft.hours} Hour(s) {vestingTimeLeft.minutes} Minute(s)</div>
           </div>
           <VestingTransactionProgressBar transaction={tx} />
-          <div className="ml-1 mt-1">{formatting.getTokenAmount(tx.mature, 18, 4)} / {formatting.getTokenAmount(tx.immature, 18, 4)}  mature</div>
+          <div className="ml-1 mt-1">{formatting.getTokenAmount(tx.mature, 18, 4)} / {formatting.getTokenAmount(tx.immature, 18, 4)} mature</div>
         </DeltaSectionBox>
       </div>;
     };
 
     return <>
-      {globalHooks.delta.data.vestingTransactions.map((tx, index) => renderTransaction(tx, index, index === currentOpened))}
+      {globalHooks.delta.data.vestingTransactions
+        .filter(tx => tx.amount !== 0)
+        .map((tx, index) => renderTransaction(tx, index, index === currentOpened))}
     </>;
   };
 
@@ -206,7 +204,7 @@ const Vesting = () => {
         </div>
       </div>
       <DeltaPanel className="flex items-center text-center flex-wrap mt-4">
-        <Button className="flex-1 md:flex-none py-4" onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'See All Transactions ▼' : 'Hide All Transactions ▲'}</Button>
+        <DeltaButton hidePlus lassName="flex-1 md:flex-none" onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'See All Transactions ▼' : 'Hide All Transactions ▲'}</DeltaButton>
       </DeltaPanel>
       <DeltaPanel className={`${!transactionDetailsVisible ? 'hidden' : ''}`}>
         {renderVestingTransactions()}

@@ -142,10 +142,6 @@ const DeltaWithdrawal = ({ token }) => {
     await modalContext.showMessage('You are about to unstake your Delta', <UnstakeDeltaDialogContent />, false);
   };
 
-  const onSelectAllContracts = () => {
-    setWithdrawalContractsVisible(i => !i);
-  };
-
   const renderWithdrawalContracts = () => {
     if (!withdrawalContractsVisible) {
       return <></>;
@@ -168,7 +164,7 @@ const DeltaWithdrawal = ({ token }) => {
     </ul>
     <div className="flex p-1 flex-grow md:flex-none">
       <TransactionButton className="flex-1 mr-2 md:flex-grow-0" text="Create Contract" onClick={onCreateContract} />
-      <TransactionButton className="flex-1 md:flex-grow-0" text="Select All Contracts" onClick={onSelectAllContracts} />
+      <DeltaButton hidePlus className="flex-1 md:flex-grow-0" onClick={() => setWithdrawalContractsVisible(i => !i)}>{!withdrawalContractsVisible ? 'Show All Contracts ▼' : 'Hide All Contracts ▲'}</DeltaButton>
     </div>
     {renderWithdrawalContracts()}
   </div>
