@@ -4,7 +4,7 @@ import { ReferralProgram } from '../components/ReferralProgram';
 import { MainLayout } from '../components/Layout';
 import { Vesting } from '../components/Vesting';
 import { Vault } from '../components/Vault';
-import { Rebase } from '../components/Rebase';
+import { Rebasing } from '../components/Rebasing';
 import { LSWStaking } from '../components/LSWStaking';
 
 export default function Main() {
@@ -14,7 +14,7 @@ export default function Main() {
     <ReferralProgram />
     <Vesting />
     <Vault />
-    <Rebase />
+    <Rebasing />
     <Community />
   </MainLayout>;
 }

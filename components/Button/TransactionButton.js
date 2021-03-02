@@ -53,7 +53,7 @@ const TransactionButton = ({
   }, [approval.amount, tokenBalance.balance]);
 
   const isDisabled = () => {
-    return !yam || !initialized || loading || !!props.disabled ? 'disabled' : '';
+    return (!yam || !initialized || loading || props.disabled === true) ? 'disabled' : '';
   };
 
   const handleApproval = async () => {
