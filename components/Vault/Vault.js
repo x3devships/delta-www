@@ -104,7 +104,7 @@ const TopUpDialogContent = () => {
   };
 
   return <DeltaPanel>
-    <div className="my-4">A weekly deposit of 10% of your principle is necessary to maintain the multiplier. You can use Delta staking rewards or mature Delta from your wallet to top up the multiplier.</div>
+    <div className="my-4 text-base">A weekly deposit of 10% of your principle is necessary to maintain the multiplier. You can use Delta staking rewards or mature Delta from your wallet to top up the multiplier.</div>
     <div>Reward Multiplier</div>
     <div><ProgressBarDiamonds small minMultiplier={1} maxMultiplier={10} /></div>
     <div>Time until downgrade: 6 days 13 hours</div>

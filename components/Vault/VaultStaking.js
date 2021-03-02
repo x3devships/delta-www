@@ -7,6 +7,7 @@ import { formatting } from '../../helpers';
 import DeltaButton from '../Button/DeltaButton';
 import TransactionButton from '../Button/TransactionButton';
 import { TokenInput } from '../Input';
+import { ProgressBarDiamonds } from '../ProgressBar';
 import { DeltaPanel } from '../Section'
 
 const onStake = (token) => {
@@ -54,9 +55,62 @@ const VaultDeposit = ({ token }) => {
   </div>;
 };
 
-const DeltaWithdrawal = () => {
-  const onCreateContract = () => {
 
+const CreateWithdrawalContractContent = ({ token }) => {
+  let message = 'This will automatically claim 3.543 ETH and start a Withdrawal contract for 3245 Delta.'
+  if (token === 'delta') {
+    message = `${message} And reduce your Reward Multiplier to 1x.`
+  }
+
+  const claimDelta = 123;
+  const claimEth = 432;
+
+  return <DeltaPanel>
+    <div className="my-4 text-base">{message}</div>
+    <div className="my-4 text-base">Current Reward Multiplier:</div>
+    <div>Reward Multiplier</div>
+    <div><ProgressBarDiamonds small minMultiplier={1} maxMultiplier={10} /></div>
+    <div>Time until downgrade: 6 days 13 hours</div>
+  </DeltaPanel>;
+}
+
+const UnstakeDeltaDialogContent = () => {
+  const onUnstake = async () => {
+    // TODO: add web3 topup operation
+  };
+
+  const claimDelta = 123;
+  const claimEth = 432;
+
+  return <DeltaPanel>
+    <div className="mt-4">
+      <TokenInput
+        className="mt-4"
+        token="delta"
+        labelBottom={`This will automatically claim ${claimEth} ETH and start a Withdrawal contract for ${claimDelta} Delta. And reduce your Reward Multiplier to 1x.`}
+        labelBottomClassName="mt-4"
+        buttonText="UNSTAKE DELTA AND FINALIZE WITHDRAWAL"
+        transactionButtonNoBorders
+        transactionButtonUnder
+        buttonTextLoading="Unstaking..."
+        onOk={onUnstake} />
+    </div>
+  </DeltaPanel>;
+}
+
+const DeltaWithdrawal = ({ token }) => {
+  const modalContext = useContext(ModalContext);
+
+  const onCreateContract = async () => {
+    const confirmed = await modalContext.showConfirm('Delta Withdrawal Contract', <CreateWithdrawalContractContent token={token} />, 'create withdrawal contract');
+
+    if (confirmed) {
+      // TODO: add web3 topup operation
+    }
+  };
+
+  const onUnstakeDelta = async () => {
+    await modalContext.showMessage('You are about to unstake your Delta', <UnstakeDeltaDialogContent />, false);
   };
 
   const onSelectAllContracts = () => {
@@ -64,6 +118,14 @@ const DeltaWithdrawal = () => {
   };
 
   return <div className="my-6">
+    {token === 'delta' && <>
+      <ul className="list-disc list-inside py-4 md:py-8">
+        <li>Staked Delta: {formatting.getTokenAmount('543.777', 0, 4)} DELTA</li>
+      </ul>
+      <div className="flex p-1 flex-grow md:flex-none">
+        <TransactionButton className="flex-1" text="unstake underlying delta" onClick={onUnstakeDelta} />
+      </div>
+    </>}
     <ul className="list-disc list-inside py-4 md:py-8">
       <li>Claimable Delta: {formatting.getTokenAmount('543.777', 0, 4)} DELTA</li>
     </ul>
@@ -87,7 +149,6 @@ const EthereumWithdrawal = () => {
   </div>
 };
 
-// TODO connect with web3
 const RlpWithdrawalDialogContent = () => {
   const claimEth = 3.543;
   const claimDelta = 3245;
@@ -135,7 +196,7 @@ const VaultWithdraw = ({ token }) => {
       case 'eth':
         return <EthereumWithdrawal />
       case 'delta':
-        return <DeltaWithdrawal />
+        return <DeltaWithdrawal token={token} />
       case 'rlp':
         return <RlpWithdrawal />
       default:
