@@ -1,10 +1,9 @@
 import { VictoryPie, VictoryLabel, VictoryLegend } from 'victory';
-import moment from 'moment';
 import { useContext, useEffect, useState } from 'react';
 import { Button } from '@windmill/react-ui';
 import { DeltaPanel, DeltaSection, DeltaSectionBox } from '../Section';
 import { DeltaTitleH3 } from '../Title';
-import { formatting, transactions } from '../../helpers';
+import { formatting, transactions, vesting } from '../../helpers';
 import { VestingTransactionProgressBar } from '../ProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
@@ -23,23 +22,10 @@ const Vesting = () => {
   const chartWidth = 400;
   const globalHooks = useContext(GlobalHooksContext);
 
-  const getTimeDifferenceFromNow = endTime => {
-    const now = moment.now();
-    const fullyVestedAt = moment(endTime);
-    const diffTime = fullyVestedAt - now;
-    const duration = moment.duration(diffTime, 'milliseconds');
-
-    return {
-      days: duration.days(),
-      hours: duration.hours(),
-      minutes: duration.minutes()
-    }
-  };
-
   useEffect(() => {
     const update = () => {
       if (globalHooks.delta.data.vestingInProgress) {
-        const timeDifference = getTimeDifferenceFromNow(globalHooks.delta.data.fullyVestedAt);
+        const timeDifference = vesting.getVestingTimeLeft(globalHooks.delta.data.fullyVestedAt);
         setFullyVestedAtInfo(timeDifference);
       } else {
         setFullyVestedAtInfo(DATA_UNAVAILABLE);
@@ -59,19 +45,21 @@ const Vesting = () => {
   };
 
   const renderVestingTransactions = () => {
-    const renderTransaction = (tx, index) => {
+    const [currentOpened, setCurrentOpened] = useState(0);
+
+    const renderTransaction = (tx, index, opened) => {
       if (tx.amount === 0) {
         return <div key={`tx-${index}`} />
       };
 
       tx.index = index;
-      const timeDifference = getTimeDifferenceFromNow(tx.fullVestingTimestamp);
+      const vestingTimeLeft = vesting.getVestingTimeLeft(tx.fullVestingTimestamp);
 
       return <div key={`tx-${index}`} className="text-left mt-4">
-        <DeltaSectionBox title={`Transaction ${index}`}>
+        <DeltaSectionBox opened={opened} onOpen={(i) => setCurrentOpened(i)} index={index} title={`Transaction ${index}`}>
           <div className="mb-2">
             <div>Time until fully matured:</div>
-            <div>{timeDifference.days} Day(s) {timeDifference.hours} Hour(s) {timeDifference.minutes} Minute(s)</div>
+            <div>{vestingTimeLeft.days} Day(s) {vestingTimeLeft.hours} Hour(s) {vestingTimeLeft.minutes} Minute(s)</div>
           </div>
           <VestingTransactionProgressBar transaction={tx} />
           <div className="ml-1 mt-1">{formatting.getTokenAmount(tx.mature, 18, 4)} / {formatting.getTokenAmount(tx.immature, 18, 4)}  mature</div>
@@ -80,7 +68,7 @@ const Vesting = () => {
     };
 
     return <>
-      {globalHooks.delta.data.vestingTransactions.map((tx, index) => renderTransaction(tx, index))}
+      {globalHooks.delta.data.vestingTransactions.map((tx, index) => renderTransaction(tx, index, index === currentOpened))}
     </>;
   };
 

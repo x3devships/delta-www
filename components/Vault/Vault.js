@@ -103,6 +103,9 @@ const TopUpDialogContent = () => {
     // TODO: add web3 topup operation
   };
 
+  // TODO: Once the Progress Diamong is dynamic, support setting a value, update using the current
+  // reward multiplier from the contract.
+
   return <DeltaPanel>
     <div className="my-4 text-base">A weekly deposit of 10% of your principle is necessary to maintain the multiplier. You can use Delta staking rewards or mature Delta from your wallet to top up the multiplier.</div>
     <div>Reward Multiplier</div>

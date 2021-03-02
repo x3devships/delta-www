@@ -19,6 +19,31 @@ const useStaking = () => {
     // TODO: Replace using DFV contract
     const balance = (await yam.contracts.delta.methods.balanceOf(wallet.account).call()) / 10 ** decimals;
     setRlpStaked(balance);
+
+    // TODO: remove mock data and use real contract
+    setWithdrawalContracts([
+      {
+        amount: 110,
+        fullVestingTimestamp: Date.now() * 1000,
+        immature: 100,
+        mature: 10,
+        percentVested: 0.1
+      },
+      {
+        amount: 220,
+        fullVestingTimestamp: (Date.now() * 1000) - 99999,
+        immature: 0.8 * 220,
+        mature: 0.2 * 220,
+        percentVested: 0.2
+      },
+      {
+        amount: 3568,
+        fullVestingTimestamp: (Date.now() * 1000) - 12323,
+        immature: 0.5 * 3568,
+        mature: 0.5 * 3568,
+        percentVested: 0.5
+      }
+    ]);
   }
 
 

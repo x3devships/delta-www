@@ -6,7 +6,7 @@ BigNumber.config({
   DECIMAL_PLACES: 80
 });
 
-export const TEMP_ENABLE_END_LSW_WEB3 = false;
+export const TEMP_ENABLE_END_LSW_WEB3 = true;
 
 export const SUBTRACT_GAS_LIMIT = 100000;
 export const DEFAULT_CONFIRMATIONS = 1;
@@ -128,4 +128,5 @@ export const ethereumStats = {};
 ethereumStats.approximatedBlockPerDay = 6650;
 ethereumStats.approximatedBlockPerYear = ethereumStats.approximatedBlockPerDay * 365;
 
+// TODO: Enable back
 // verifyAddressMap(addressMap);

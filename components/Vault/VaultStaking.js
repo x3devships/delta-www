@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useContext, useEffect, useState } from 'react';
+import { WithdrawalContracts } from '.';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting } from '../../helpers';
@@ -126,6 +127,7 @@ const UnstakeDeltaDialogContent = () => {
 
 const DeltaWithdrawal = ({ token }) => {
   const modalContext = useContext(ModalContext);
+  const [withdrawalContractsVisible, setWithdrawalContractsVisible] = useState(false);
 
   const onCreateContract = async () => {
     const confirmed = await modalContext.showConfirm('Delta Withdrawal Contract', <CreateWithdrawalContractContent token={token} />, 'create withdrawal contract');
@@ -141,7 +143,15 @@ const DeltaWithdrawal = ({ token }) => {
   };
 
   const onSelectAllContracts = () => {
+    setWithdrawalContractsVisible(i => !i);
+  };
 
+  const renderWithdrawalContracts = () => {
+    if (!withdrawalContractsVisible) {
+      return <></>;
+    }
+
+    return <WithdrawalContracts />;
   };
 
   return <div className="my-6">
@@ -160,6 +170,7 @@ const DeltaWithdrawal = ({ token }) => {
       <TransactionButton className="flex-1 mr-2 md:flex-grow-0" text="Create Contract" onClick={onCreateContract} />
       <TransactionButton className="flex-1 md:flex-grow-0" text="Select All Contracts" onClick={onSelectAllContracts} />
     </div>
+    {renderWithdrawalContracts()}
   </div>
 };
 
