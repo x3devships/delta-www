@@ -154,8 +154,8 @@ const Vesting = () => {
           style={{ labels: { fill: f => f.datum.x === "mature" ? 'white' : 'black' }, data: { fill: f => f.datum.x === "mature" ? '#4315C7' : "url(#chartGradient2)", fillOpacity: 1, stroke: "black", strokeWidth: 0 } }}
           colorScale={["#4315C7", "#9E9E9E"]}
           categories={{ x: ["mature", "immature"] }}
-          innerRadius={110}
-          labelRadius={125}
+          innerRadius={115}
+          labelRadius={123}
           labels={({ datum }) => `${(datum.y * 100).toFixed(0)}%`}
           data={[
             { x: "mature", y: globalHooks.delta.data.percentVested },
@@ -166,7 +166,7 @@ const Vesting = () => {
           className={fullyVestedAtInfo === DATA_UNAVAILABLE ? 'invisible' : 'visible'}
           textAnchor="middle"
           standalone={false}
-          x={chartWidth / 2} y={190}
+          x={chartWidth / 2} y={200}
           lineHeight={[1, 1.5, 1.5, 1.5, 1.5]}
           style={[{ fontSize: 18, fill: 'black' }, { fontSize: 18, fill: 'black' }, { fontSize: 14, fill: 'black' }, { fontSize: 14, fill: 'black' }, { fontSize: 14, fill: 'black' }]}
           text={['Time Until', 'Fully Matured', `${fullyVestedAtInfo.days} days`, `${fullyVestedAtInfo.hours} hours`, `${fullyVestedAtInfo.minutes} minutes`]}
