@@ -2,15 +2,15 @@
 import { useWallet } from 'use-wallet';
 import { useContext } from 'react';
 import { ProgressBarCountDown } from '../ProgressBar';
-import { errors, formatting } from '../../helpers';
-import { DeltaPanel, DeltaSection, DeltaSectionBlock } from '../Section';
+import { errors, formatting, transactions } from '../../helpers';
+import { DeltaPanel, DeltaSection } from '../Section';
 import { useYam } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 import { Spinner } from '../Spinner';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 
-const Staking = () => {
+const LSWStaking = () => {
   const yam = useYam();
   const wallet = useWallet();
   const globalHooks = useContext(GlobalHooksContext);
@@ -19,33 +19,22 @@ const Staking = () => {
   const onClaim = async stake => {
     const claimToWallet = !stake;
     const transaction = await yam.contracts.LSW.methods.claimOrStakeAndClaimLP(claimToWallet);
+    const transactionTitle = stake ? 'Claiming and staking...' : 'Claiming...';
+    const successMessage = stake ?
+      'Your rLP tokens have been claimed and staked. You can see them displayed on the main page' :
+      'Your rLP tokens have been claimed and there are now available in your wallet';
 
-    try {
-      const transactionGasEstimate = await transaction.estimateGas({ from: wallet.account });
-      const transactionTitle = stake ? 'Claiming and staking...' : 'Claiming...';
-      const successMessage = stake ?
-        'Your rLP tokens have been claimed and staked. You can see them displayed on the main page' :
-        'Your rLP tokens have been claimed and there are now available in your wallet';
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      successMessage,
+      'Success',
+      'Claiming Error',
+      transactionTitle
+    );
 
-      const transactionMessage = modalContext.showControlledMessage(transactionTitle, <Spinner label="Transaction in progress..." />);
-
-      await transaction.send({
-        from: wallet.account,
-        gas: transactionGasEstimate
-      });
-
-      transactionMessage.close();
-
-      globalHooks.lswStats.update();
-      await modalContext.showMessage('Success', <>
-        <div className="text-lg">{successMessage}</div>
-      </>)
-
-    } catch (error) {
-      const decodedError = errors.getTransactionError(error, 'An error occured while claiming');
-      console.log(decodedError);
-      return modalContext.showError('Claiming Error', decodedError.message);
-    }
+    globalHooks.lswStats.update();
 
     return Promise.resolve();
   };
@@ -68,4 +57,4 @@ const Staking = () => {
   </DeltaSection>
 };
 
-export default Staking;
+export default LSWStaking;

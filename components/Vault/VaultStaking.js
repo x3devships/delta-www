@@ -138,7 +138,7 @@ const DeltaWithdrawal = ({ token }) => {
 
 const EthereumWithdrawal = () => {
   const onClaim = () => {
-
+    // TODO: add web3 claim
   };
 
   return <div className="my-6">

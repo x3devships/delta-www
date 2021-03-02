@@ -10,6 +10,7 @@ const useStaking = () => {
   const yam = useYam();
   const wallet = useWallet();
   const [rlpStaked, setRlpStaked] = useState(DATA_UNAVAILABLE);
+  const [withdrawalContracts, setWithdrawalContracts] = useState([]);
   const { decimals } = tokenMap[addressMap.delta];
 
   const update = async () => {
@@ -34,7 +35,8 @@ const useStaking = () => {
  */
   return {
     update,
-    rlpStaked
+    rlpStaked,
+    withdrawalContracts
   };
 };
 
