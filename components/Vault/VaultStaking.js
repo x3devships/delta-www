@@ -103,7 +103,7 @@ const CreateWithdrawalContractContent = ({ token }) => {
 const UnstakeDeltaDialogContent = () => {
   const onUnstake = async () => {
     // TODO: add web3 topup operation
-    // TODO: call the staking update method
+    // TODO: call the staking update method and user's delta balance (delta update hook)
   };
 
   const claimDelta = 123;
@@ -133,7 +133,7 @@ const DeltaWithdrawal = ({ token }) => {
     const confirmed = await modalContext.showConfirm('Delta Withdrawal Contract', <CreateWithdrawalContractContent token={token} />, 'create withdrawal contract');
 
     if (confirmed) {
-      // TODO: add web3 topup operation
+      // TODO: add web3 operation
       // TODO: call the staking update method to refresh the list of withdrawal contracts
     }
   };

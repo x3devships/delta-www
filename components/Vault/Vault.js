@@ -130,7 +130,6 @@ const TopUpDialogContent = () => {
   </DeltaPanel>;
 }
 
-// TODO: add web3 integration
 const DeltaTokenVault = ({ className = '' }) => {
   const token = 'delta';
   const modalContext = useContext(ModalContext);
