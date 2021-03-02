@@ -79,11 +79,11 @@ const RlpTokenVault = ({ className = '' }) => {
         </div>
         <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
           <div className="text-xs flex mb-1">Reward Multiplier</div>
-          <ProgressBarDiamonds minMultiplier={1} maxMultiplier={30} className="flex w-full flex-grow" />
+          <ProgressBarDiamonds value={30} maxValue={30} className="flex w-full flex-grow" />
         </div>
       </div>
       <div className="w-full flex-grow hidden flex-col md:flex self-start">
-        <ProgressBarDiamonds minMultiplier={1} maxMultiplier={30} className="flex flex-grow w-full" />
+        <ProgressBarDiamonds value={30} maxValue={30} className="flex flex-grow w-full" />
         <div className="flex flex-row mt-4">
           <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
         </div>
@@ -110,7 +110,7 @@ const TopUpDialogContent = () => {
   return <DeltaPanel>
     <div className="my-4 text-base">A weekly deposit of 10% of your principle is necessary to maintain the multiplier. You can use Delta staking rewards or mature Delta from your wallet to top up the multiplier.</div>
     <div>Reward Multiplier</div>
-    <div><ProgressBarDiamonds small minMultiplier={1} maxMultiplier={10} /></div>
+    <div><ProgressBarDiamonds small value={10} maxValue={10} /></div>
     <div>Time until downgrade: 6 days 13 hours</div>
     <div className="mt-4">
       <DeltaPanel className="flex flex-grow text-center">
@@ -150,13 +150,13 @@ const DeltaTokenVault = ({ className = '' }) => {
         </div>
         <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
           <div className="text-xs flex mb-1">Reward Multiplier</div>
-          <ProgressBarDiamonds minMultiplier={1} maxMultiplier={10} className="flex w-full flex-grow" />
+          <ProgressBarDiamonds value={10} maxValue={10} className="flex w-full flex-grow" />
           <div className="text-xs text-gray-400 flex mt-1">{rewardMultiplierDescription}</div>
           <DeltaButton secondaryLook className="mt-4" onClick={onDepositToMultiplier}>Deposit to multipler</DeltaButton>
         </div>
       </div>
       <div className="w-full flex-grow hidden flex-col md:flex self-start">
-        <ProgressBarDiamonds minMultiplier={1} maxMultiplier={10} className="flex flex-grow w-full" />
+        <ProgressBarDiamonds value={10} maxValue={10} className="flex flex-grow w-full" />
         <div className="flex flex-row mt-4">
           <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
           <div className="text-xs flex text-gray-400">{rewardMultiplierDescription}</div>

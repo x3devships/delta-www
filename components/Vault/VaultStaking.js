@@ -94,7 +94,7 @@ const CreateWithdrawalContractContent = ({ token }) => {
     <div className="my-4 text-base">{message}</div>
     <div className="my-4 text-base">Current Reward Multiplier:</div>
     <div>Reward Multiplier</div>
-    <div><ProgressBarDiamonds small minMultiplier={1} maxMultiplier={10} /></div>
+    <div><ProgressBarDiamonds small value={10} maxValue={10} /></div>
     <div>Time until downgrade: 6 days 13 hours</div>
   </DeltaPanel>;
 }

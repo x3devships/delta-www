@@ -14,7 +14,7 @@ const NavBar = () => {
 
   const renderMenuItems = () => {
     const getStyle = href => {
-      const baseStyle = 'block px-3 py-2 rounded-none text-base font-medium ';
+      const baseStyle = 'block px-3 py-2 rounded-none text-small font-medium ';
 
       if (router.pathname === href) {
         return `${baseStyle} bg-gray-700 text-white`;
@@ -40,7 +40,7 @@ const NavBar = () => {
             wallet.reset();
           }
         }}
-        className="uppercase text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-none text-base font-medium"
+        className="uppercase text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-none text-small font-medium"
       >
         {wallet?.account ? <>{t('disconnect')}</> : <>{t('connectWallet')}</>}
       </button>
