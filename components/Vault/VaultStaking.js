@@ -10,12 +10,23 @@ import { TokenInput } from '../Input';
 import { ProgressBarDiamonds } from '../ProgressBar';
 import { DeltaPanel } from '../Section'
 
-const onStake = (token) => {
-
-};
 
 const RlpStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
+  const modalContext = useContext(ModalContext);
+
+  const onStake = async (amount, amountBN, valid) => {
+    if (!valid) {
+      await modalContext.showError('Error', 'Invalid input');
+    } else {
+      const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
+
+      if (confirmed) {
+        // TODO: add web3 call, be sure to use amountBN
+        // TODO: call the staking update method and user rlp balance
+      }
+    }
+  };
 
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
@@ -24,12 +35,26 @@ const RlpStaking = () => {
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
     </ul>
 
-    <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake('rlp')} />
+    <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
   </div >
 };
 
 const DeltaStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
+  const modalContext = useContext(ModalContext);
+
+  const onStake = async (amount, amountBN, valid) => {
+    if (!valid) {
+      await modalContext.showError('Error', 'Invalid input');
+    } else {
+      const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
+
+      if (confirmed) {
+        // TODO: add web3 call, be sure to use amountBN
+        // TODO: call the staking update method and delta react hook update
+      }
+    }
+  };
 
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
@@ -37,7 +62,7 @@ const DeltaStaking = () => {
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
     </ul>
-    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake('delta')} />
+    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
   </div >
 };
 
@@ -77,6 +102,7 @@ const CreateWithdrawalContractContent = ({ token }) => {
 const UnstakeDeltaDialogContent = () => {
   const onUnstake = async () => {
     // TODO: add web3 topup operation
+    // TODO: call the staking update method
   };
 
   const claimDelta = 123;
@@ -106,6 +132,7 @@ const DeltaWithdrawal = ({ token }) => {
 
     if (confirmed) {
       // TODO: add web3 topup operation
+      // TODO: call the staking update method to refresh the list of withdrawal contracts
     }
   };
 
@@ -139,6 +166,7 @@ const DeltaWithdrawal = ({ token }) => {
 const EthereumWithdrawal = () => {
   const onClaim = () => {
     // TODO: add web3 claim
+    // TODO: call the staking update method and user eth balance
   };
 
   return <div className="my-6">
@@ -157,6 +185,7 @@ const RlpWithdrawalDialogContent = () => {
 
   const onUnstake = async () => {
     // TODO: add web3 topup operation
+    // TODO: call the staking update method and user rLP token balance
   };
 
   return <DeltaPanel>
