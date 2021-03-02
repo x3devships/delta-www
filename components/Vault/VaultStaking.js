@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
+import useBus from 'use-bus'
 import { WithdrawalContracts } from '.';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
@@ -10,7 +11,7 @@ import TransactionButton from '../Button/TransactionButton';
 import { TokenInput } from '../Input';
 import { ProgressBarDiamonds } from '../ProgressBar';
 import { DeltaPanel } from '../Section'
-
+import events from '../../events';
 
 const RlpStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
@@ -125,9 +126,10 @@ const UnstakeDeltaDialogContent = () => {
   </DeltaPanel>;
 }
 
-const DeltaWithdrawal = ({ token }) => {
+const DeltaWithdrawal = ({ token, showWithdrawlContracts = false }) => {
   const modalContext = useContext(ModalContext);
-  const [withdrawalContractsVisible, setWithdrawalContractsVisible] = useState(false);
+  const [withdrawalContractsVisible, setWithdrawalContractsVisible] = useState(showWithdrawlContracts);
+
 
   const onCreateContract = async () => {
     const confirmed = await modalContext.showConfirm('Delta Withdrawal Contract', <CreateWithdrawalContractContent token={token} />, 'create withdrawal contract');
@@ -224,15 +226,15 @@ const RlpWithdrawal = () => {
   </div>
 };
 
-const VaultWithdraw = ({ token }) => {
-  const [tokenToWithdraw, setTokenToWithdraw] = useState('eth');
+const VaultWithdraw = ({ token, selectedTokenToWithdraw = 'eth', showWithdrawlContracts = false }) => {
+  const [tokenToWithdraw, setTokenToWithdraw] = useState(selectedTokenToWithdraw);
 
   const renderContent = (selectTokenToWithdraw) => {
     switch (selectTokenToWithdraw) {
       case 'eth':
         return <EthereumWithdrawal />
       case 'delta':
-        return <DeltaWithdrawal token={token} />
+        return <DeltaWithdrawal showWithdrawlContracts={showWithdrawlContracts} token={token} />
       case 'rlp':
         return <RlpWithdrawal />
       default:
@@ -267,13 +269,21 @@ const VaultWithdraw = ({ token }) => {
   </div>;
 };
 
-const VaultStaking = ({ token, showAllWithdrawalContracts, className = '' }) => {
+const VaultStaking = ({ token, className = '' }) => {
   const [depositAction, setDepositAction] = useState(true);
+  const [selectedTokenToWithdraw, setSelectedTokenToWithdraw] = useState('eth');
+  const [showWithdrawlContracts, setShowWithdrawlContracts] = useState('eth');
 
-  // TODO: Should toggle on showAllWithdrawalContracts value change
-  /* useEffect(() => {
-    setDepositAction(!showAllWithdrawalContracts);
-  }, [showAllWithdrawalContracts]); */
+  useBus(
+    events.WITHDRAWAL_CONTRACTS_SEE_ALL,
+    () => {
+      // WIP
+      /* setDepositAction(false);
+      setSelectedTokenToWithdraw('delta');
+      setShowWithdrawlContracts(true); */
+    },
+    []
+  );
 
   return <DeltaPanel className={`pt-2 border-t-2 mt-4 border-dashed border-black ${className}`}>
     <div className="flex uppercase" onClick={() => setDepositAction(t => !t)}>
@@ -285,7 +295,7 @@ const VaultStaking = ({ token, showAllWithdrawalContracts, className = '' }) => 
       </div>
     </div>
     <div className="mt-4 md:mt-1">
-      {depositAction ? <VaultDeposit token={token} /> : <VaultWithdraw token={token} />}
+      {depositAction ? <VaultDeposit token={token} /> : <VaultWithdraw showWithdrawlContracts={showWithdrawlContracts} selectedTokenToWithdraw={selectedTokenToWithdraw} token={token} />}
     </div>
   </DeltaPanel>
 };

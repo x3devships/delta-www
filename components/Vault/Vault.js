@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { dispatch } from 'use-bus'
 import { DeltaPanel, DeltaSection } from '../Section';
 import { DeltaTitleH2 } from '../Title';
 import { ProgressBarDiamonds } from '../ProgressBar';
@@ -7,6 +8,7 @@ import VaultStaking from './VaultStaking';
 import DeltaButton from '../Button/DeltaButton';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting } from '../../helpers';
+import events from '../../events';
 import { TokenInput } from '../Input';
 
 // TODO: Add web3 integration
@@ -134,7 +136,6 @@ const DeltaTokenVault = ({ className = '' }) => {
   const token = 'delta';
   const modalContext = useContext(ModalContext);
   const rewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
-  const [showAllWithdrawalContracts, setShowAllWithdrawalContracts] = useState(false);
 
   const onDepositToMultiplier = async () => {
     await modalContext.showMessage('Top Up Reward Multiplier', <TopUpDialogContent />, false);
@@ -147,7 +148,7 @@ const DeltaTokenVault = ({ className = '' }) => {
         <div>
           <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
           <DeltaStats />
-          <DeltaButton className="mt-4" onClick={() => setShowAllWithdrawalContracts(true)}>See all withdrawal contracts</DeltaButton>
+          <DeltaButton className="mt-4" onClick={() => dispatch({ type: events.WITHDRAWAL_CONTRACTS_SEE_ALL })}>See all withdrawal contracts</DeltaButton>
         </div>
         <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
           <div className="text-xs flex mb-1">Reward Multiplier</div>
@@ -165,7 +166,7 @@ const DeltaTokenVault = ({ className = '' }) => {
         <DeltaButton secondaryLook className="mt-4" onClick={onDepositToMultiplier}>Deposit to multiplier</DeltaButton>
       </div>
     </DeltaPanel>
-    <VaultStaking showAllWithdrawalContracts={showAllWithdrawalContracts} token={token} />
+    <VaultStaking token={token} />
   </div>;
 };
 
