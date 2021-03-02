@@ -1,8 +1,8 @@
 import { MainLayout } from '../components/Layout';
-import { Vault } from '../components/Vault';
+import { Contracts } from '../components/Contracts';
 
 export default function Main() {
   return <MainLayout>
-    <Vault />
-  </MainLayout>;
-}
+    <Contracts />
+  </MainLayout>
+};

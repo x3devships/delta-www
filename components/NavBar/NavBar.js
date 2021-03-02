@@ -25,7 +25,7 @@ const NavBar = () => {
     return <>
       <a href="/" className={getStyle('/')}>Home</a>
       <a href="/vaults" className={getStyle('/vaults')}>Vaults</a>
-      <a href="/withdrawal-contracts" className={getStyle('/withdrawal-contracts')}>Withdrawal Contracts</a>
+      <a href="/contracts" className={getStyle('/contracts')}>Withdrawal Contracts</a>
     </>;
   };
 
@@ -54,7 +54,7 @@ const NavBar = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <img alt="logo" src={logo} height="150" width="150" className="w-8/12 md:w-full" />
+                <a href="/"><img alt="logo" src={logo} height="150" width="150" className="w-8/12 md:w-full" /></a>
               </div>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-4">

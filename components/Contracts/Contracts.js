@@ -5,7 +5,7 @@ import { formatting, vesting } from '../../helpers';
 
 import DeltaButton from '../Button/DeltaButton';
 import { VestingTransactionProgressBar } from '../ProgressBar';
-import { DeltaPanel, DeltaSectionBox } from '../Section';
+import { DeltaPanel, DeltaSection, DeltaSectionBox } from '../Section';
 
 const FinalizeContractDialogContent = ({ contract }) => {
   return <DeltaPanel>
@@ -52,7 +52,7 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
   </DeltaSectionBox >;
 }
 
-const WithdrawalContracts = () => {
+const Contracts = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const [currentOpened, setCurrentOpened] = useState(0);
 
@@ -60,9 +60,11 @@ const WithdrawalContracts = () => {
     setCurrentOpened(index);
   };
 
-  return <DeltaPanel>
-    {globalHooks.staking.withdrawalContracts.map((contract, index) => <WithdrawalContractItem opened={index === currentOpened} className="mt-4" index={index} key={`contract-${index}`} contract={contract} onOpen={onOpen} />)}
-  </DeltaPanel>
+  return <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Withdrawal Contracts">
+    <DeltaPanel>
+      {globalHooks.staking.withdrawalContracts.map((contract, index) => <WithdrawalContractItem opened={index === currentOpened} className="mt-4" index={index} key={`contract-${index}`} contract={contract} onOpen={onOpen} />)}
+    </DeltaPanel>
+  </DeltaSection>
 };
 
-export default WithdrawalContracts;
+export default Contracts;

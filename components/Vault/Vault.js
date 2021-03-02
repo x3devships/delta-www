@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { dispatch } from 'use-bus'
+import { useRouter } from 'next/router'
 import { DeltaPanel, DeltaSection } from '../Section';
 import { DeltaTitleH2 } from '../Title';
 import { ProgressBarDiamonds } from '../ProgressBar';
@@ -8,7 +8,6 @@ import VaultStaking from './VaultStaking';
 import DeltaButton from '../Button/DeltaButton';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting } from '../../helpers';
-import events from '../../events';
 import { TokenInput } from '../Input';
 
 // TODO: Add web3 integration
@@ -148,7 +147,6 @@ const DeltaTokenVault = ({ className = '' }) => {
         <div>
           <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
           <DeltaStats />
-          <DeltaButton className="mt-4" onClick={() => dispatch({ type: events.WITHDRAWAL_CONTRACTS_SEE_ALL })}>See all withdrawal contracts</DeltaButton>
         </div>
         <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
           <div className="text-xs flex mb-1">Reward Multiplier</div>
@@ -171,6 +169,13 @@ const DeltaTokenVault = ({ className = '' }) => {
 };
 
 const Vault = () => {
+  const router = useRouter()
+
+  const seeWithdrawingContract = e => {
+    e.preventDefault();
+    router.push('/contracts');
+  };
+
   return <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Farming Vault">
     <DeltaPanel className="md:mt-0">
       <div className="md:mt-0">
@@ -184,6 +189,7 @@ const Vault = () => {
             yield to staked rLP and Delta.
           </DeltaPanel>
         </div>
+        <DeltaButton className="my-4 md:mb-12 md:mt-4" onClick={seeWithdrawingContract}>See all withdrawal contracts</DeltaButton>
         <RlpTokenVault />
         <DeltaTokenVault className="mt-8 md:mt-12" />
       </div>
