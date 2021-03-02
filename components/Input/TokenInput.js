@@ -5,7 +5,19 @@ import { addressMap, tokenMap } from '../../config';
 import { useTokenBalance } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 
-const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading, labelBottom, onOk, className, transactionButtonUnder, disabled = false }) => {
+const TokenInput = ({
+  token,
+  allowanceRequiredFor,
+  buttonText,
+  buttonTextLoading,
+  labelBottom,
+  labelBottomClassName = '',
+  onOk,
+  className,
+  transactionButtonUnder,
+  transactionButtonNoBorders,
+  disabled = false }) => {
+
   const [amountText, setAmountText] = useState('');
   const [amount, setAmount] = useState(false);
   const [validAmount, setValidAmount] = useState(true);
@@ -82,7 +94,7 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
   const renderHelpers = () => {
     return <>
       <HelperText className={`${validAmount ? 'hidden' : ''} text-sm block`} valid={false}>The amount is not valid</HelperText>
-      <HelperText className=" text-sm block">{labelBottom}</HelperText>
+      <HelperText className={`text-sm block ${labelBottomClassName}`}>{labelBottom}</HelperText>
     </>;
   };
 
@@ -96,7 +108,7 @@ const TokenInput = ({ token, allowanceRequiredFor, buttonText, buttonTextLoading
 
   const renderTransactionButton = () => {
     return <TransactionButton
-      className="flex md:p-1 md:border md:border-black flex-grow"
+      className={`flex ${!transactionButtonNoBorders ? 'md:p-1 md:border md:border-black' : ''} flex-grow`}
       allowanceRequiredFor={allowanceRequiredFor}
       text={buttonText}
       textLoading={buttonTextLoading}

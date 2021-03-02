@@ -11,7 +11,18 @@ import DeltaButton from './DeltaButton';
  * A button that supports sending a transaction and keeping track of allowance/approval
  * if allowanceRequiredFor is specified with the contract and token name.
  */
-const TransactionButton = ({ onClick, allowanceRequiredFor, icon, text, textLoading, textApprove, textApproving, secondaryLooks, className, ...props }) => {
+const TransactionButton = ({
+  onClick,
+  allowanceRequiredFor,
+  icon,
+  text,
+  textLoading,
+  textApprove,
+  textApproving,
+  secondaryLooks,
+  className,
+  ...props }) => {
+
   textApprove = textApprove || 'Approve';
   textLoading = textLoading || 'Loading...';
   textApproving = textApproving || 'Approving...';

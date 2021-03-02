@@ -104,7 +104,7 @@ const TopUpDialogContent = () => {
   };
 
   return <DeltaPanel>
-    <div className="my-4">10% of your principle is necessary to maintain the multiplier. You can use Delta staking rewards to top up the multiplier</div>
+    <div className="my-4">A weekly deposit of 10% of your principle is necessary to maintain the multiplier. You can use Delta staking rewards or mature Delta from your wallet to top up the multiplier.</div>
     <div>Reward Multiplier</div>
     <div><ProgressBarDiamonds small minMultiplier={1} maxMultiplier={10} /></div>
     <div>Time until downgrade: 6 days 13 hours</div>
@@ -115,7 +115,14 @@ const TopUpDialogContent = () => {
           <DeltaButton className="flex flex-1" onClick={() => setToggle(t => !t)} grayLook={!toggle}>Mature delta from wallet</DeltaButton>
         </div>
       </DeltaPanel>
-      <TokenInput className="mt-4" token="delta" buttonText="top up" transactionButtonUnder buttonTextLoading="Loading..." onOk={() => onTopUp(toggle)} />
+      <TokenInput
+        className="mt-4"
+        token="delta"
+        buttonText="top up"
+        transactionButtonNoBorders
+        transactionButtonUnder
+        buttonTextLoading="Loading..."
+        onOk={() => onTopUp(toggle)} />
     </div>
   </DeltaPanel>;
 }

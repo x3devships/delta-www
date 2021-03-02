@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useContext, useEffect, useState } from 'react';
+import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting } from '../../helpers';
 import DeltaButton from '../Button/DeltaButton';
@@ -86,16 +87,43 @@ const EthereumWithdrawal = () => {
   </div>
 };
 
-const RlpWithdrawal = () => {
-  const onUnstake = () => {
+// TODO connect with web3
+const RlpWithdrawalDialogContent = () => {
+  const claimEth = 3.543;
+  const claimDelta = 3245;
 
+  const confirmMessage = `This will automatically claim ${claimEth} ETH and start a Withdrawal contract for ${claimDelta} DELTA.`;
+
+  const onUnstake = async () => {
+    // TODO: add web3 topup operation
+  };
+
+  return <DeltaPanel>
+    <TokenInput
+      className="mt-4"
+      token="rLP"
+      buttonText="UNSTAKE rLP AND FINALIZE WITHDRAWAL"
+      transactionButtonUnder
+      transactionButtonNoBorders
+      labelBottomClassName="mt-4"
+      labelBottom={confirmMessage}
+      buttonTextLoading="Unstaking..."
+      onOk={() => onUnstake()} />
+  </DeltaPanel>;
+};
+
+const RlpWithdrawal = () => {
+  const modalContext = useContext(ModalContext);
+
+  const onUnstakDialog = async () => {
+    await modalContext.showMessage('You are about to unstake your rLP', <RlpWithdrawalDialogContent />, false);
   };
 
   return <div className="my-6">
     <ul className="list-disc list-inside py-4 md:py-8">
       <li>Staked rLP: {formatting.getTokenAmount('543.777', 0, 4)} rLP</li>
     </ul>
-    <TransactionButton text="Unstake" textLoading="Unstaking..." onClick={onUnstake} />
+    <TransactionButton text="Unstake" textLoading="Unstaking..." onClick={onUnstakDialog} />
   </div>
 };
 
