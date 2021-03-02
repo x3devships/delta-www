@@ -32,7 +32,7 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
   const vestingTimeLeft = vesting.getVestingTimeLeft(contract.fullVestingTimestamp);
 
   const onFinalizeWithdrawal = async (contract) => {
-    const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having unmature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');
+    const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having immature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');
 
     if (confirmed) {
       // TODO: add web3 call
@@ -41,7 +41,7 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
   };
 
   return <DeltaSectionBox showIndex opened={opened} className={className} index={index} indexFormatter={i => i + 1} title='Withdrawal Contract' onOpen={onOpen} >
-    <div className="mt-4">Delta is continuously maturing in the  Withdrawal contract. The Vesting cycle to fully mature your rewards is one year. Finalizing the withdrawal will distribute your unmatured Delta to the Deep Farming Vault. You will receive your matured Delta (minimum 5% of total Rewards)</div>
+    <div className="mt-4">Delta is continuously maturing in the  Withdrawal contract. The Vesting cycle to fully mature your rewards is one year. Finalizing the withdrawal will distribute your immatured Delta to the Deep Farming Vault. You will receive your matured Delta (minimum 5% of total Rewards)</div>
     <div className="mt-4 mb-2">
       <div>Time until fully matured:</div>
       <div>{vestingTimeLeft.days} Day(s) {vestingTimeLeft.hours} Hour(s) {vestingTimeLeft.minutes} Minute(s)</div>

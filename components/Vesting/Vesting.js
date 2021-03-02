@@ -91,8 +91,6 @@ const Vesting = () => {
           className="mt-4"
           token="delta"
           buttonText="Stake"
-          transactionButtonUnder
-          transactionButtonNoBorders
           buttonTextLoading="Staking..."
           onOk={onStake} />
       </DeltaPanel >;
@@ -155,13 +153,13 @@ const Vesting = () => {
           width={chartWidth} height={400}
           style={{ labels: { fill: f => f.datum.x === "mature" ? 'white' : 'black' }, data: { fill: f => f.datum.x === "mature" ? '#4315C7' : "url(#chartGradient2)", fillOpacity: 1, stroke: "black", strokeWidth: 0 } }}
           colorScale={["#4315C7", "#9E9E9E"]}
-          categories={{ x: ["mature", "unmature"] }}
+          categories={{ x: ["mature", "immature"] }}
           innerRadius={110}
           labelRadius={125}
           labels={({ datum }) => `${(datum.y * 100).toFixed(0)}%`}
           data={[
             { x: "mature", y: globalHooks.delta.data.percentVested },
-            { x: "unmature", y: 1.0 - globalHooks.delta.data.percentVested },
+            { x: "immature", y: 1.0 - globalHooks.delta.data.percentVested },
           ]}
         />
         <VictoryLabel
@@ -180,7 +178,7 @@ const Vesting = () => {
           itemsPerRow={2}
           data={[
             { name: "Mature", symbol: { type: 'square', fill: "#4315C7" } },
-            { name: "Unmature", symbol: { type: 'square', fill: "#DBC9D6" } }
+            { name: "Immature", symbol: { type: 'square', fill: "#DBC9D6" } }
           ]}
         />
       </svg>

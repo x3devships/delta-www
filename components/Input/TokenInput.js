@@ -108,7 +108,7 @@ const TokenInput = ({
 
   const renderTransactionButton = () => {
     return <TransactionButton
-      className={`flex ${!transactionButtonNoBorders ? 'md:p-1 md:border md:border-black' : ''} flex-grow`}
+      className={`flex ${!transactionButtonNoBorders ? 'md:p-1 md:border md:border-black' : ''} flex-grow ${transactionButtonUnder ? 'md:block text-right' : ''}`}
       allowanceRequiredFor={allowanceRequiredFor}
       text={buttonText}
       textLoading={buttonTextLoading}

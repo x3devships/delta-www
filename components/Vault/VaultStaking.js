@@ -203,6 +203,7 @@ const RlpWithdrawalDialogContent = () => {
       token="rLP"
       buttonText="UNSTAKE rLP AND FINALIZE WITHDRAWAL"
       transactionButtonUnder
+      transactionButtonClassName="w-full md:8/12"
       transactionButtonNoBorders
       labelBottomClassName="mt-4"
       labelBottom={confirmMessage}
