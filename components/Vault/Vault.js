@@ -171,7 +171,7 @@ const DeltaTokenVault = ({ className = '' }) => {
 };
 
 const Vault = () => {
-  return <DeltaSection requiresConnectedWallet title="Delta Farming Vault">
+  return <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Farming Vault">
     <DeltaPanel className="md:mt-0">
       <div className="md:mt-0">
         <div className="flex flex-col md:flex-row-reverse">
