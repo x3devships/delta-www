@@ -6,6 +6,9 @@ BigNumber.config({
   DECIMAL_PLACES: 80
 });
 
+// Temp flag, set to true to use the hardhat node and end_lsw operation.
+export const TEMP_ENABLE_END_LSW_WEB3 = false;
+
 export const SUBTRACT_GAS_LIMIT = 100000;
 export const DEFAULT_CONFIRMATIONS = 1;
 export const DEFAULT_GAS = '6000000';
@@ -126,4 +129,5 @@ export const ethereumStats = {};
 ethereumStats.approximatedBlockPerDay = 6650;
 ethereumStats.approximatedBlockPerYear = ethereumStats.approximatedBlockPerDay * 365;
 
+// TODO: Enable back
 // verifyAddressMap(addressMap);

@@ -8,7 +8,7 @@ import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 
-const Rebase = () => {
+const Rebasing = () => {
   const yam = useYam();
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
@@ -21,11 +21,13 @@ const Rebase = () => {
     <div className="mt-4 md:w-6/12">
       Liquidity Rebasing happens daily,<br />increasing the mint price of rLP by 10%.
     </div>
+    {/* TODO: Support for these buttons
     <DeltaPanel className="flex items-center text-center flex-wrap mt-2 md:mt-4">
-      <TransactionButton className="flex-1 mr-2 md:mr-0 md:flex-grow-0" text="Mint rLP" textLoading="Minting..." onClick={() => { }} />
+      <TransactionButton disabled className="flex-1 mr-2 md:mr-0 md:flex-grow-0" text="Mint rLP" textLoading="Minting..." onClick={() => { }} />
       <TransactionButton className="flex-1 ml-2 md:ml-4 md:flex-grow-0" text="Stake rLP" textLoading="Staking..." onClick={() => { }} />
     </DeltaPanel>
+    */}
   </DeltaSection >
 };
 
-export default Rebase;
+export default Rebasing;

@@ -17,11 +17,11 @@ const MessageModal = () => {
     >
       <ModalHeader className="text-2xl font-semibold font-wulkan">{title}</ModalHeader>
       <ModalBody>{content}</ModalBody>
-      <ModalFooter>
-        {onOk && <Button className="w-full sm:w-auto text-white rounded-none py-4" onClick={onOk}>
+      {onOk && okContent && <ModalFooter>
+        <Button className="w-full sm:w-auto text-white rounded-none py-4" onClick={onOk}>
           {okContent}
-        </Button>}
-      </ModalFooter>
+        </Button>
+      </ModalFooter>}
     </Modal>
   );
 };

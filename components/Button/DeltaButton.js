@@ -8,7 +8,7 @@ const DeltaButton = ({ children, className = '', labelBottom, secondaryLook, gra
     return <div className={className}>
       <div className="border border-black w-full md:w-max text-black p-0.5">
         <Button
-          className="w-full md:w-max bg-gray-300 text-black p-5 rounded-none py-4"
+          className="w-full md:w-max bg-gray-300 text-black p-5 rounded-none py-4 flex-grow"
           {...props}
         >
           <div className="text-left flex-grow">
@@ -23,7 +23,7 @@ const DeltaButton = ({ children, className = '', labelBottom, secondaryLook, gra
 
   return <div className={className}>
     <Button
-      className={`w-full md:w-max ${grayLook ? 'bg-gray-300 text-gray-500' : 'bg-black text-white'} p-5 rounded-none py-4`}
+      className={`w-full md:w-max ${grayLook ? 'bg-gray-300 text-gray-500' : 'bg-black text-white'} p-5 rounded-none py-4 flex-grow`}
       {...props}
     >
       <div className="text-left flex-grow">

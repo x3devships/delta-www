@@ -1,10 +1,9 @@
 import { VictoryPie, VictoryLabel, VictoryLegend } from 'victory';
-import moment from 'moment';
 import { useContext, useEffect, useState } from 'react';
 import { Button } from '@windmill/react-ui';
-import { DeltaPanel, DeltaSection, DeltaSectionBlock, DeltaSectionBox } from '../Section';
-import { DeltaTitleH2, DeltaTitleH3 } from '../Title';
-import { formatting } from '../../helpers';
+import { DeltaPanel, DeltaSection, DeltaSectionBox } from '../Section';
+import { DeltaTitleH3 } from '../Title';
+import { formatting, transactions, vesting } from '../../helpers';
 import { VestingTransactionProgressBar } from '../ProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
@@ -23,23 +22,10 @@ const Vesting = () => {
   const chartWidth = 400;
   const globalHooks = useContext(GlobalHooksContext);
 
-  const getTimeDifferenceFromNow = endTime => {
-    const now = moment.now();
-    const fullyVestedAt = moment(endTime);
-    const diffTime = fullyVestedAt - now;
-    const duration = moment.duration(diffTime, 'milliseconds');
-
-    return {
-      days: duration.days(),
-      hours: duration.hours(),
-      minutes: duration.minutes()
-    }
-  };
-
   useEffect(() => {
     const update = () => {
       if (globalHooks.delta.data.vestingInProgress) {
-        const timeDifference = getTimeDifferenceFromNow(globalHooks.delta.data.fullyVestedAt);
+        const timeDifference = vesting.getVestingTimeLeft(globalHooks.delta.data.fullyVestedAt);
         setFullyVestedAtInfo(timeDifference);
       } else {
         setFullyVestedAtInfo(DATA_UNAVAILABLE);
@@ -59,19 +45,21 @@ const Vesting = () => {
   };
 
   const renderVestingTransactions = () => {
-    const renderTransaction = (tx, index) => {
+    const [currentOpened, setCurrentOpened] = useState(0);
+
+    const renderTransaction = (tx, index, opened) => {
       if (tx.amount === 0) {
         return <div key={`tx-${index}`} />
       };
 
       tx.index = index;
-      const timeDifference = getTimeDifferenceFromNow(tx.fullVestingTimestamp);
+      const vestingTimeLeft = vesting.getVestingTimeLeft(tx.fullVestingTimestamp);
 
       return <div key={`tx-${index}`} className="text-left mt-4">
-        <DeltaSectionBox title={`Transaction ${index}`}>
+        <DeltaSectionBox opened={opened} onOpen={(i) => setCurrentOpened(i)} index={index} title={`Transaction ${index}`}>
           <div className="mb-2">
             <div>Time until fully matured:</div>
-            <div>{timeDifference.days} Day(s) {timeDifference.hours} Hour(s) {timeDifference.minutes} Minute(s)</div>
+            <div>{vestingTimeLeft.days} Day(s) {vestingTimeLeft.hours} Hour(s) {vestingTimeLeft.minutes} Minute(s)</div>
           </div>
           <VestingTransactionProgressBar transaction={tx} />
           <div className="ml-1 mt-1">{formatting.getTokenAmount(tx.mature, 18, 4)} / {formatting.getTokenAmount(tx.immature, 18, 4)}  mature</div>
@@ -80,33 +68,67 @@ const Vesting = () => {
     };
 
     return <>
-      {globalHooks.delta.data.vestingTransactions.map((tx, index) => renderTransaction(tx, index))}
+      {globalHooks.delta.data.vestingTransactions.map((tx, index) => renderTransaction(tx, index, index === currentOpened))}
     </>;
   };
 
-  const onStake = async (amount, amountBN, valid) => {
-    if (!valid) {
-      await modalContext.showError('Error', 'Invalid input');
-    } else {
-      await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} ? (${amountBN && amountBN.toString()})`);
-    }
-  };
-
   const renderMyWallet = () => {
+    const onStakeDialog = async () => {
+
+      const onStake = async (amount, amountBN, valid) => {
+        if (!valid) {
+          await modalContext.showError('Error', 'Invalid input');
+        } else {
+          const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} delta?`);
+
+          if (confirmed) {
+            // TODO: add web3 call, be sure to use amountBN
+            // TODO: Update delta balance using delta hook update function
+          }
+        }
+      };
+
+      const content = <DeltaPanel>
+        <TokenInput
+          className="mt-4"
+          token="delta"
+          buttonText="Stake"
+          transactionButtonUnder
+          transactionButtonNoBorders
+          buttonTextLoading="Staking..."
+          onOk={onStake} />
+      </DeltaPanel >;
+
+      await modalContext.showMessage('Staking', content, false);
+    };
+
     return <div >
       <ul className="list-disc list-inside py-4">
-        <li>Total DELTA: {formatting.getTokenAmount(globalHooks.delta.data.total, 0, 4)} ETH</li>
-        <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} rLP</li>
-        <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} rLP</li>
+        <li>Total DELTA: {formatting.getTokenAmount(globalHooks.delta.data.total, 0, 4)} DELTA</li>
+        <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} DELTA</li>
+        <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA</li>
       </ul>
       <DeltaPanel className="flex items-center text-center flex-wrap">
-        <TransactionButton className="flex-1 mr-4 md:flex-grow-0" labelBottom="Earn Yield" text="Stake in vault" textLoading="Staking..." onClick={() => onStake()} />
+        <DeltaButton className="flex-1 mr-4 md:flex-grow-0" labelBottom="Earn Yield" onClick={() => onStakeDialog()}>Stake in vault</DeltaButton>
         <DeltaButton className="flex-1 md:flex-grow-0" labelBottom="Earn Yield" onClick={() => { }}>Trade Delta</DeltaButton>
       </DeltaPanel>
     </div>
   };
 
   const renderRLPStats = () => {
+    const onStake = async (amount, amountBN, valid) => {
+      if (!valid) {
+        await modalContext.showError('Error', 'Invalid input');
+      } else {
+        const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP?`);
+
+        if (confirmed) {
+          // TODO: add web3 call
+          // TODO: call the staking update method and user rLP balance
+        }
+      }
+    };
+
     return <div>
       <ul className="list-disc list-inside py-4">
         <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
