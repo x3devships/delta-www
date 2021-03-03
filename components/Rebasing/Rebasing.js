@@ -1,22 +1,44 @@
 /* eslint-disable react/no-danger */
 import { useWallet } from 'use-wallet';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ProgressBarCountDown } from '../ProgressBar';
 import { DeltaPanel, DeltaSection } from '../Section';
 import { useYam } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
+import { DATA_UNAVAILABLE } from '../../config';
+import { time } from '../../helpers';
+
+const REFRESH_RATE = 1 * 60 * 1000;
 
 const Rebasing = () => {
   const yam = useYam();
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
+  const [timeLeftUntilNextRebase, setTimeLeftUntilNextRebase] = useState({
+    days: DATA_UNAVAILABLE,
+    hours: DATA_UNAVAILABLE,
+    minutes: DATA_UNAVAILABLE
+  });
+
+  useEffect(() => {
+    const update = () => {
+      setTimeLeftUntilNextRebase(time.getTimeLeft(globalHooks.rebasing.rebasingInfo.nextRebaseTimestamp));
+    };
+
+    if (globalHooks.rebasing.rebasingInfo.nextRebaseTimestamp !== DATA_UNAVAILABLE) {
+      update();
+    }
+
+    const interval = setInterval(update, REFRESH_RATE);
+    return () => clearInterval(interval);
+  }, [globalHooks.rebasing.rebasingInfo.nextRebaseTimestamp]);
 
   return <DeltaSection requiresConnectedWallet title="Rebasing is Soon">
     <DeltaPanel>
       <ProgressBarCountDown progress={70} />
-      <div className="text-center mt-2 md:mt-4 text-lg">2 Day(s) 5 Hour(s) 33 Minute(s)</div>
+      <div className="text-center mt-2 md:mt-4 text-lg">{timeLeftUntilNextRebase.days} Day(s) {timeLeftUntilNextRebase.hours} Hour(s) {timeLeftUntilNextRebase.minutes} Minute(s)</div>
     </DeltaPanel>
     <div className="mt-4 md:w-6/12">
       Liquidity Rebasing happens daily,<br />increasing the mint price of rLP by 10%.

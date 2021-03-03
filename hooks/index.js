@@ -8,3 +8,4 @@ export { default as useCorePairBalances } from './useCorePairBalances';
 export { default as useLSWStats } from './useLSWStats';
 export { default as useDelta } from './useDelta';
 export { default as useStaking } from './useStaking';
+export { default as useRebasing } from './useRebasing';

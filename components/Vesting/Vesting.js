@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Button } from '@windmill/react-ui';
 import { DeltaPanel, DeltaSection, DeltaSectionBox } from '../Section';
 import { DeltaTitleH3 } from '../Title';
-import { formatting, transactions, vesting } from '../../helpers';
+import { formatting, transactions, time } from '../../helpers';
 import { VestingTransactionProgressBar } from '../ProgressBar';
 import { DATA_UNAVAILABLE } from '../../config';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
@@ -25,8 +25,8 @@ const Vesting = () => {
   useEffect(() => {
     const update = () => {
       if (globalHooks.delta.data.vestingInProgress) {
-        const timeDifference = vesting.getVestingTimeLeft(globalHooks.delta.data.fullyVestedAt);
-        setFullyVestedAtInfo(timeDifference);
+        const timeLeft = time.getTimeLeft(globalHooks.delta.data.fullyVestedAt);
+        setFullyVestedAtInfo(timeLeft);
       } else {
         setFullyVestedAtInfo(DATA_UNAVAILABLE);
       }
@@ -49,7 +49,7 @@ const Vesting = () => {
 
     const renderTransaction = (tx, index, opened) => {
       tx.index = index;
-      const vestingTimeLeft = vesting.getVestingTimeLeft(tx.fullVestingTimestamp);
+      const vestingTimeLeft = time.getTimeLeft(tx.fullVestingTimestamp);
 
       return <div key={`tx-${index}`} className="text-left mt-4">
         <DeltaSectionBox opened={opened} onOpen={(i) => setCurrentOpened(i)} index={index} title={`Transaction ${index}`}>

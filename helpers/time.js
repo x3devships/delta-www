@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const getVestingTimeLeft = endTimeInMillis => {
+const getTimeLeft = endTimeInMillis => {
   const now = moment.now();
   const fullyVestedAt = moment(endTimeInMillis);
   const diffTime = fullyVestedAt - now;
@@ -14,5 +14,5 @@ const getVestingTimeLeft = endTimeInMillis => {
 };
 
 export default {
-  getVestingTimeLeft
+  getTimeLeft
 };

@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting, vesting } from '../../helpers';
+import time from '../../helpers/time';
 
 import DeltaButton from '../Button/DeltaButton';
 import { VestingTransactionProgressBar } from '../ProgressBar';
@@ -29,7 +30,7 @@ const FinalizeContractDialogContent = ({ contract }) => {
 
 const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) => {
   const modelContext = useContext(ModalContext);
-  const vestingTimeLeft = vesting.getVestingTimeLeft(contract.fullVestingTimestamp);
+  const vestingTimeLeft = time.getVestingTimeLeft(contract.fullVestingTimestamp);
 
   const onFinalizeWithdrawal = async (contract) => {
     const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having immature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');

@@ -89,8 +89,7 @@ const useStaking = () => {
         percentVested: 0.5
       }
     ]);
-  }
-
+  };
 
   useEffect(() => {
     if (TEMP_ENABLE_END_LSW_WEB3) {

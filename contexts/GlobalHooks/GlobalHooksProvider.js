@@ -1,10 +1,11 @@
-import { useDelta, useLSWStats, useStaking, useTokenBalance } from '../../hooks'
+import { useDelta, useLSWStats, useRebasing, useStaking, useTokenBalance } from '../../hooks'
 import GlobalHooksContext from './GlobalHooksContext';
 
 const GlobalHooksProvider = ({ children }) => {
   const delta = useDelta();
   const lswStats = useLSWStats();
   const staking = useStaking();
+  const rebasing = useRebasing();
 
   // TODO: change to rlp
   const rlpInfo = useTokenBalance('delta');
@@ -15,7 +16,8 @@ const GlobalHooksProvider = ({ children }) => {
         delta,
         lswStats,
         rlpInfo,
-        staking
+        staking,
+        rebasing
       }}
     >
       {children}
