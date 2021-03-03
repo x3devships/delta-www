@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import { DeltaPanel, DeltaSection } from '../Section';
 import { DeltaTitleH2 } from '../Title';
@@ -7,11 +7,12 @@ import { ModalContext } from '../../contexts';
 import VaultStaking from './VaultStaking';
 import DeltaButton from '../Button/DeltaButton';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
-import { formatting } from '../../helpers';
+import { formatting, time } from '../../helpers';
 import { TokenInput } from '../Input';
+import { DATA_UNAVAILABLE } from '../../config';
 
 // TODO: Add web3 integration
-const VaultInfoBox = ({ className = '' }) => {
+const VaultInfoBox = ({ token, className = '' }) => {
   const globalHooks = useContext(GlobalHooksContext);
 
   return <div className={`bg-purpleGray flex flex-row border border-black md:max-h-full md:h-20 ${className}`}>
@@ -20,7 +21,7 @@ const VaultInfoBox = ({ className = '' }) => {
         TVL
       </div>
       <div className="text-2xl self-center px-4 mt-0 md:mt-1">
-        rLP
+        {token}
       </div>
     </div>
     <div className="flex border-r border-black flex-col text-center flex-grow py-1 md:py-0">
@@ -28,7 +29,7 @@ const VaultInfoBox = ({ className = '' }) => {
         Amount Staked
       </div>
       <div className="text-2xl self-center px-4 self-end flex flex-grow mt-0 md:mt-1">
-        {formatting.getTokenAmount(globalHooks.vaultStats.amountTotal, 0, 2)}
+        {formatting.getTokenAmount(globalHooks.staking.vaultStats[token].amountTotal, 0, 2)}
       </div>
     </div>
     <div className="flex flex-col text-center py-1 md:py-0">
@@ -36,7 +37,7 @@ const VaultInfoBox = ({ className = '' }) => {
         Yearly ROI
       </div>
       <div className="text-2xl self-center px-4 mt-0 md:mt-1">
-        {formatting.getTokenAmount(globalHooks.vaultStats.apy, 0, 2)}%
+        {formatting.getTokenAmount(globalHooks.staking.vaultStats[token].apy, 0, 2)}%
       </div>
     </div>
   </div>
@@ -95,30 +96,53 @@ const RlpTokenVault = ({ className = '' }) => {
   </div>;
 };
 
+/**
+ * Only for the delta token
+ */
 const TopUpDialogContent = () => {
-  const [toggle, setToggle] = useState(false);
+  const [fromStakingRewards, setFromStakingRewards] = useState(false);
+  const globalHooks = useContext(GlobalHooksContext);
+  const modalContext = useContext(ModalContext);
 
   /**
  * stakingRewards = true means it uses Delta Staking Rewards
  * otherwize the mature delta from wallet 
  */
-  const onTopUp = async (stakingRewards) => {
-    // TODO: add web3 topup operation
+  const onTopUp = async (amount, amountBN) => {
+    // TODO: add web3 topup operation using amountBN
+    modalContext.closeModal();
   };
 
-  // TODO: Once the Progress Diamong is dynamic, support setting a value, update using the current
-  // reward multiplier from the contract.
+  const TOP_UP_DOWNGRADE_REFRESH_RATE = 1 * 60 * 1000;
+  const [timeleftUntilDowngrade, setTimeleftUntilDowngrade] = useState({
+    days: DATA_UNAVAILABLE,
+    hours: DATA_UNAVAILABLE,
+    minutes: DATA_UNAVAILABLE
+  });
+
+  useEffect(() => {
+    const update = () => {
+      setTimeleftUntilDowngrade(time.getTimeLeft(globalHooks.staking.deltaInfo.timeUntilDowngrade));
+    };
+
+    if (globalHooks.staking.deltaInfo.timeUntilDowngrade !== DATA_UNAVAILABLE) {
+      update();
+    }
+
+    const interval = setInterval(update, TOP_UP_DOWNGRADE_REFRESH_RATE);
+    return () => clearInterval(interval);
+  }, [globalHooks.staking.deltaInfo.timeUntilDowngrade]);
 
   return <DeltaPanel>
     <div className="my-4 text-base">A weekly deposit of 10% of your principle is necessary to maintain the multiplier. You can use Delta staking rewards or mature Delta from your wallet to top up the multiplier.</div>
     <div>Reward Multiplier</div>
-    <div><ProgressBarDiamonds small value={10} maxValue={10} /></div>
-    <div>Time until downgrade: 6 days 13 hours</div>
+    <div><ProgressBarDiamonds small value={globalHooks.staking.deltaInfo.rewardMultiplier} maxValue={10} /></div>
+    <div>Time until downgrade: {timeleftUntilDowngrade.days} day(s) {timeleftUntilDowngrade.hours} hour(s) {timeleftUntilDowngrade.minutes} minutes(s)</div>
     <div className="mt-4">
       <DeltaPanel className="flex flex-grow text-center">
         <div className="flex flex-row border border-black p-1 flex-grow">
-          <DeltaButton className="flex mr-2 flex-1" onClick={() => setToggle(t => !t)} grayLook={toggle}>Delta staking rewards</DeltaButton>
-          <DeltaButton className="flex flex-1" onClick={() => setToggle(t => !t)} grayLook={!toggle}>Mature delta from wallet</DeltaButton>
+          <DeltaButton className="flex mr-2 flex-1" onClick={() => setFromStakingRewards(t => !t)} grayLook={fromStakingRewards}>Delta staking rewards</DeltaButton>
+          <DeltaButton className="flex flex-1" onClick={() => setFromStakingRewards(t => !t)} grayLook={!fromStakingRewards}>Mature delta from wallet</DeltaButton>
         </div>
       </DeltaPanel>
       <TokenInput
@@ -127,8 +151,9 @@ const TopUpDialogContent = () => {
         buttonText="top up"
         transactionButtonNoBorders
         transactionButtonUnder
+        disableTransactionWhenInvalid
         buttonTextLoading="Loading..."
-        onOk={() => onTopUp(toggle)} />
+        onOk={onTopUp} />
     </div>
   </DeltaPanel>;
 }

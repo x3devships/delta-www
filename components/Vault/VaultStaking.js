@@ -15,24 +15,20 @@ const RlpStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
 
-  const onStake = async (amount, amountBN, valid) => {
-    if (!valid) {
-      await modalContext.showError('Error', 'Invalid input');
-    } else {
-      const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
+  const onStake = async (amount, amountBN) => {
+    const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
 
-      if (confirmed) {
-        // TODO: add web3 call, be sure to use amountBN
-        // TODO: call the staking update method and user rlp balance
-      }
+    if (confirmed) {
+      // TODO: add web3 call, be sure to use amountBN
+      // TODO: call the staking update method and user rlp balance
     }
   };
 
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
+      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableEth, 0, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableDelta, 0, 4)} DELTA</li>
     </ul>
 
     <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
@@ -58,25 +54,33 @@ const DeltaStaking = () => {
 
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
+      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.amountStaked, 0, 4)} rLP</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableEth, 0, 4)} ETH</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableDelta, 0, 4)} DELTA</li>
     </ul>
     <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
   </div >
 };
 
 const VaultDeposit = ({ token }) => {
-  const [toggle, setToggle] = useState(false);
+  const [depositAction, setDepositAction] = useState(true);
+
+  const renderContent = () => {
+    if (depositAction) {
+      return token === "rLP" ? <RlpStaking /> : <DeltaStaking />;
+    }
+
+    return <>Not Available</>;
+  };
 
   return <div>
     <DeltaPanel className="flex items-center text-center flex-wrap">
       <div className="flex border border-black p-1 flex-grow md:flex-none">
-        <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setToggle(t => !t)} grayLook={toggle}>Stake</DeltaButton>
-        <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setToggle(t => !t)} grayLook={!toggle}>Buy</DeltaButton>
+        <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setDepositAction(t => !t)} grayLook={!depositAction}>Stake</DeltaButton>
+        <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setDepositAction(t => !t)} grayLook={depositAction}>Buy</DeltaButton>
       </div>
     </DeltaPanel>
-    {token === "rLP" ? <RlpStaking /> : <DeltaStaking />}
+    {renderContent()}
   </div>;
 };
 

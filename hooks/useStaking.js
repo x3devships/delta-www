@@ -23,6 +23,7 @@ const useStaking = () => {
     amountStaked: DATA_UNAVAILABLE,
     claimableEth: DATA_UNAVAILABLE,
     claimableDelta: DATA_UNAVAILABLE,
+    rewardMultiplier: DATA_UNAVAILABLE
   });
 
   // TODO: Enter the information about the user's Delta staking
@@ -30,6 +31,8 @@ const useStaking = () => {
     amountStaked: DATA_UNAVAILABLE,
     claimableEth: DATA_UNAVAILABLE,
     claimableDelta: DATA_UNAVAILABLE,
+    rewardMultiplier: DATA_UNAVAILABLE,
+    timeUntilDowngrade: DATA_UNAVAILABLE
   });
 
   const [withdrawalContracts, setWithdrawalContracts] = useState([]);
@@ -41,8 +44,14 @@ const useStaking = () => {
     // TODO: Update global vault infos, doesn't require connected wallet
     // Call web3 vault to get the infos.
     setVaultStats({
-      amountTotal: 123,
-      apy: 999
+      delta: {
+        amountTotal: 123,
+        apy: 999
+      },
+      rLP: {
+        amountTotal: 654,
+        apy: 635
+      }
     });
 
 
@@ -56,13 +65,16 @@ const useStaking = () => {
     setRlpInfo({
       amountStaked: 123,
       claimableEth: 456,
-      claimableDelta: 567
+      claimableDelta: 567,
+      rewardMultiplier: 20
     });
 
     setDeltaInfo({
       amountStaked: 123,
       claimableEth: 456,
-      claimableDelta: 567
+      claimableDelta: 567,
+      rewardMultiplier: 8,
+      timeUntilDowngrade: Date.now() + 8888898
     });
 
     // TODO: remove mock data and use real contract

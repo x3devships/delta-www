@@ -1,9 +1,10 @@
 import { ethers } from 'ethers';
 import { Button, HelperText, Input } from '@windmill/react-ui';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { addressMap, tokenMap } from '../../config';
 import { useTokenBalance } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
+import { ModalContext } from '../../contexts';
 
 const TokenInput = ({
   token,
@@ -16,12 +17,14 @@ const TokenInput = ({
   className,
   transactionButtonUnder,
   transactionButtonNoBorders,
+  disableTransactionWhenInvalid,
   disabled = false }) => {
 
   const [amountText, setAmountText] = useState('');
   const [amount, setAmount] = useState(false);
   const [validAmount, setValidAmount] = useState(true);
   const { balance } = useTokenBalance(token);
+  const modalContext = useContext(ModalContext);
 
   const tokenAddress = addressMap[token];
   const tokenInfo = tokenMap[tokenAddress];
@@ -30,7 +33,7 @@ const TokenInput = ({
     throw new Error(`${token} doesn't exist within tokenMap`);
   }
 
-  const onBeforeOk = () => {
+  const onBeforeOk = async () => {
     let amountBN;
 
     if (amount) {
@@ -41,7 +44,12 @@ const TokenInput = ({
       }
     }
 
-    onOk(amount, amountBN, validAmount && amount);
+    const valid = validAmount && amount;
+    if (!valid) {
+      await modalContext.showError('Invalid Amount', 'The specified token amount is invalid');
+    } else {
+      onOk(amount, amountBN);
+    }
   };
 
   const setValidatedAmount = (amount) => {
@@ -113,7 +121,7 @@ const TokenInput = ({
       text={buttonText}
       textLoading={buttonTextLoading}
       secondaryLooks
-      disabled={disabled}
+      disabled={disabled || (disableTransactionWhenInvalid && !(validAmount && amount))}
       onClick={onBeforeOk}
     />;
   };

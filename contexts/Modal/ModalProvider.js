@@ -61,6 +61,10 @@ const ModalProvider = ({ children }) => {
     return _showModal(ModalType.Confirm, { title, content, okContent, cancelContent });
   };
 
+  const closeModal = () => {
+    setModal();
+  };
+
   return (
     <ModalContext.Provider
       value={{
@@ -69,7 +73,8 @@ const ModalProvider = ({ children }) => {
         showError,
         showConfirm,
         showControlledMessage,
-        showConnectWallet
+        showConnectWallet,
+        closeModal
       }}
     >
       {children}
