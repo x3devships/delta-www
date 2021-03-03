@@ -127,11 +127,11 @@ const Vesting = () => {
 
     return <div>
       <ul className="list-disc list-inside py-4">
-        <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
+        <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
         <li>Unstaked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} rLP</li>
-        <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
+        <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
       </ul>
-      <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." labelBottom="this token will be staked" onOk={onStake} />
+      <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={onStake} />
     </div >
   };
 

@@ -12,6 +12,8 @@ import { TokenInput } from '../Input';
 
 // TODO: Add web3 integration
 const VaultInfoBox = ({ className = '' }) => {
+  const globalHooks = useContext(GlobalHooksContext);
+
   return <div className={`bg-purpleGray flex flex-row border border-black md:max-h-full md:h-20 ${className}`}>
     <div className="flex border-r border-black flex-col text-center py-1 md:py-0">
       <div className="text-xs px-2 pt-1 pb-2">
@@ -26,7 +28,7 @@ const VaultInfoBox = ({ className = '' }) => {
         Amount Staked
       </div>
       <div className="text-2xl self-center px-4 self-end flex flex-grow mt-0 md:mt-1">
-        12,001
+        {formatting.getTokenAmount(globalHooks.vaultStats.amountTotal, 0, 2)}
       </div>
     </div>
     <div className="flex flex-col text-center py-1 md:py-0">
@@ -34,7 +36,7 @@ const VaultInfoBox = ({ className = '' }) => {
         Yearly ROI
       </div>
       <div className="text-2xl self-center px-4 mt-0 md:mt-1">
-        500%
+        {formatting.getTokenAmount(globalHooks.vaultStats.apy, 0, 2)}%
       </div>
     </div>
   </div>
@@ -46,9 +48,9 @@ const RlpStats = () => {
 
   return <div className="mt-4 md:mt-0">
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
+      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableEth, 0, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableDelta, 0, 4)} DELTA</li>
     </ul>
   </div >
 };
@@ -59,9 +61,9 @@ const DeltaStats = () => {
 
   return <div className="mt-4 md:mt-0">
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
+      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.amountStaked, 0, 4)} rLP</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableEth, 0, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableDelta, 0, 4)} DELTA</li>
     </ul>
   </div >
 };

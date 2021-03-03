@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import useYam from './useYam';
+import useWeb3 from './useWeb3';
 import { hooks } from '../helpers';
 import { addressMap, DATA_UNAVAILABLE, TEMP_ENABLE_END_LSW_WEB3, tokenMap } from '../config';
 
@@ -8,17 +9,61 @@ const REFRESH_RATE = 30 * 1000;
 
 const useStaking = () => {
   const yam = useYam();
+  const web3 = useWeb3();
   const wallet = useWallet();
-  const [rlpStaked, setRlpStaked] = useState(DATA_UNAVAILABLE);
+
+  // Here are the global vault's information, doesn't depend on connected wallet
+  const [vaultStats, setVaultStats] = useState({
+    amountTotal: DATA_UNAVAILABLE,
+    apy: DATA_UNAVAILABLE
+  });
+
+  // TODO: Enter the information about the user's rLP staking
+  const [rlpInfo, setRlpInfo] = useState({
+    amountStaked: DATA_UNAVAILABLE,
+    claimableEth: DATA_UNAVAILABLE,
+    claimableDelta: DATA_UNAVAILABLE,
+  });
+
+  // TODO: Enter the information about the user's Delta staking
+  const [deltaInfo, setDeltaInfo] = useState({
+    amountStaked: DATA_UNAVAILABLE,
+    claimableEth: DATA_UNAVAILABLE,
+    claimableDelta: DATA_UNAVAILABLE,
+  });
+
   const [withdrawalContracts, setWithdrawalContracts] = useState([]);
   const { decimals } = tokenMap[addressMap.delta];
 
   const update = async () => {
+    if (!web3) return;
+
+    // TODO: Update global vault infos, doesn't require connected wallet
+    // Call web3 vault to get the infos.
+    setVaultStats({
+      amountTotal: 123,
+      apy: 999
+    });
+
+
+    /**
+     * This section requires a connected wallet
+     */
     if (!yam || !wallet?.account) return;
 
     // TODO: Replace using DFV contract
-    const balance = (await yam.contracts.delta.methods.balanceOf(wallet.account).call()) / 10 ** decimals;
-    setRlpStaked(balance);
+    // const balance = (await yam.contracts.delta.methods.balanceOf(wallet.account).call()) / 10 ** decimals;
+    setRlpInfo({
+      amountStaked: 123,
+      claimableEth: 456,
+      claimableDelta: 567
+    });
+
+    setDeltaInfo({
+      amountStaked: 123,
+      claimableEth: 456,
+      claimableDelta: 567
+    });
 
     // TODO: remove mock data and use real contract
     setWithdrawalContracts([
@@ -49,20 +94,17 @@ const useStaking = () => {
 
   useEffect(() => {
     if (TEMP_ENABLE_END_LSW_WEB3) {
-      let interval;
-
-      if (yam) {
-        update();
-        interval = hooks.setWalletAwareInterval(wallet, update, REFRESH_RATE);
-      }
-
+      update();
+      const interval = setTimeout(update, REFRESH_RATE);
       return () => clearInterval(interval);
     }
-  }, [yam, wallet]);
+  }, [yam, web3, wallet]);
 
   return {
     update,
-    rlpStaked,
+    rlpInfo,
+    deltaInfo,
+    vaultStats,
     withdrawalContracts
   };
 };

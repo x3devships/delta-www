@@ -4,8 +4,10 @@ import GlobalHooksContext from './GlobalHooksContext';
 const GlobalHooksProvider = ({ children }) => {
   const delta = useDelta();
   const lswStats = useLSWStats();
-  const rlpInfo = useTokenBalance('delta');
   const staking = useStaking();
+
+  // TODO: change to rlp
+  const rlpInfo = useTokenBalance('delta');
 
   return (
     <GlobalHooksContext.Provider
