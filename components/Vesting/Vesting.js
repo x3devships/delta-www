@@ -52,7 +52,7 @@ const Vesting = () => {
       const vestingTimeLeft = time.getTimeLeft(tx.fullVestingTimestamp);
 
       return <div key={`tx-${index}`} className="text-left mt-4">
-        <DeltaSectionBox opened={opened} onOpen={(i) => setCurrentOpened(i)} index={index} title={`Transaction ${index}`}>
+        <DeltaSectionBox opened={opened} onOpen={(i) => setCurrentOpened(i)} index={index} title={`Transaction ${index + 1}`}>
           <div className="mb-2">
             <div>Time until fully matured:</div>
             <div>{vestingTimeLeft.days} Day(s) {vestingTimeLeft.hours} Hour(s) {vestingTimeLeft.minutes} Minute(s)</div>

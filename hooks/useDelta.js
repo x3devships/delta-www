@@ -6,7 +6,7 @@ import { DATA_UNAVAILABLE, TEMP_ENABLE_END_LSW_WEB3 } from '../config';
 import { hooks } from '../helpers';
 import useYam from './useYam';
 
-const REFRESH_RATE = 15 * 60 * 1000;
+const REFRESH_RATE = 1 * 60 * 1000;
 const NUM_EPOCH = 14;
 
 const useDelta = () => {
