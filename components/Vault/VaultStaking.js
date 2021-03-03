@@ -129,6 +129,7 @@ const UnstakeDeltaDialogContent = () => {
 }
 
 const DeltaWithdrawal = ({ token }) => {
+  const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
   const router = useRouter()
 
@@ -150,17 +151,25 @@ const DeltaWithdrawal = ({ token }) => {
     router.push('/contracts');
   };
 
+  const getClaimableDelta = () => {
+    if (token === 'delta') {
+      return globalHooks.staking.deltaInfo.claimableDelta;
+    }
+
+    return globalHooks.staking.rlpInfo.claimableDelta;
+  };
+
   return <div className="my-6">
     {token === 'delta' && <>
       <ul className="list-disc list-inside py-4 md:py-8">
-        <li>Staked Delta: {formatting.getTokenAmount('543.777', 0, 4)} DELTA</li>
+        <li>Staked Delta: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.amountStaked, 0, 4)} DELTA</li>
       </ul>
       <div className="flex p-1 flex-grow md:flex-none">
         <TransactionButton className="flex-1" text="unstake underlying delta" onClick={onUnstakeDelta} />
       </div>
     </>}
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Claimable Delta: {formatting.getTokenAmount('543.777', 0, 4)} DELTA</li>
+      <li>Claimable Delta: {formatting.getTokenAmount(getClaimableDelta(), 0, 4)} DELTA</li>
     </ul>
     <div className="flex p-1 flex-grow md:flex-none">
       <TransactionButton className="flex-1 mr-2 md:flex-grow-0" text="Create Contract" onClick={onCreateContract} />
@@ -169,15 +178,25 @@ const DeltaWithdrawal = ({ token }) => {
   </div>
 };
 
-const EthereumWithdrawal = () => {
+const EthereumWithdrawal = ({ token }) => {
+  const globalHooks = useContext(GlobalHooksContext);
+
   const onClaim = () => {
     // TODO: add web3 claim
     // TODO: call the staking update method and user eth balance
   };
 
+  const getClaimableEth = () => {
+    if (token === 'delta') {
+      return globalHooks.staking.deltaInfo.claimableEth;
+    }
+
+    return globalHooks.staking.rlpInfo.claimableEth;
+  };
+
   return <div className="my-6">
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Claimable Ethereum: {formatting.getTokenAmount('123.456', 0, 4)} ETH</li>
+      <li>Claimable Ethereum: {formatting.getTokenAmount(getClaimableEth(), 0, 4)} ETH</li>
     </ul>
     <TransactionButton text="Claim" textLoading="Claiming..." onClick={onClaim} />
   </div>
@@ -224,15 +243,15 @@ const RlpWithdrawal = () => {
   </div>
 };
 
-const VaultWithdraw = ({ token, selectedTokenToWithdraw = 'eth', showWithdrawlContracts = false }) => {
-  const [tokenToWithdraw, setTokenToWithdraw] = useState(selectedTokenToWithdraw);
+const VaultWithdraw = ({ token }) => {
+  const [tokenToWithdraw, setTokenToWithdraw] = useState('eth');
 
   const renderContent = (selectTokenToWithdraw) => {
     switch (selectTokenToWithdraw) {
       case 'eth':
-        return <EthereumWithdrawal />
+        return <EthereumWithdrawal token={token} />
       case 'delta':
-        return <DeltaWithdrawal showWithdrawlContracts={showWithdrawlContracts} token={token} />
+        return <DeltaWithdrawal token={token} />
       case 'rlp':
         return <RlpWithdrawal />
       default:

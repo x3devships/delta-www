@@ -72,7 +72,7 @@ const useStaking = () => {
     setDeltaInfo({
       amountStaked: 123,
       claimableEth: 456,
-      claimableDelta: 567,
+      claimableDelta: 888,
       rewardMultiplier: 8,
       timeUntilDowngrade: Date.now() + 8888898
     });
