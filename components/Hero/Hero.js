@@ -21,9 +21,8 @@ const hero = ({ onWalletConnect }) => {
     <div className="pt-10 pb-20">
       <div className="px-3 lg:2/6 xl:w-3/4 mt-20 ">
         <div className="text-6xl font-semibold text-gray-900 leading-none font-wulkan">
-          {t('limitedStakingFirstPart')} <br /> {t('limitedStakingSecondPart')}
+          {t('limitedStakingFirstPart')} <br /> Window is now closed!
         </div>
-        <div className="mt-6 text-xl xl:w-2/4 text-true-gray-500 antialiased font-wulkan sm:w-full" dangerouslySetInnerHTML={{ __html: t('deltaLSW') }} />
         {connectWalletVisible && (
           <ConnectWalletButton onWalletConnect={onWalletConnect} />
         )}

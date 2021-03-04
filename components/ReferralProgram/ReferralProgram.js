@@ -97,12 +97,6 @@ const ReferralProgram = ({ lswStats, onWalletConnect }) => {
   return <DeltaSection title={t('deltaReferral')}>
     <DeltaPanel>
       <div className="block md:grid md:grid-cols-2 md:gap-6 ">
-        <div className="md:border-0 md:border-gray-400 md:border-r md:pr-2">
-          <div className="w-full md:w-6/12">{t('referral')}</div>
-          <div className="mt-6 md:mt-0">
-            {renderGenerateLinkButton()}
-          </div>
-        </div>
         <div className="mt-6 md:mt-0">
           {connectWalletVisible ? <ConnectWalletButton onWalletConnect={onWalletConnect} /> :
             <>

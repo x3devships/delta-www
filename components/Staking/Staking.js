@@ -284,12 +284,11 @@ const Staking = ({ onWalletConnect, lswStats }) => {
         <div className="pt-0 md:pt-4">
           <DeltaTitleH2>{t('lswExplanationTitle')}</DeltaTitleH2>
           <div className="text-justify mt-4 md:mt-2 pr-0 md:pr-8 break-normal">
-            <p className="pt-0 md:pt-4">Delta is using a special event called Limited Staking Window to launch its tokens.
-            The Limited Staking Window allows participants to stake Ethereum and receive rLP tokens in return.
-   at the end of the Limited Staking Window (March 4th, 9:30AM PST). </p>
-            <p className="pt-0 md:pt-4"> The window will remain open for 10 days, rewarding early stakers with a bonus of up to 30%.</p>
-            <p className="pt-0 md:pt-4"> Once the Limited Staking Window closed, participants can claim rLP tokens and stake them in the Deep Farming Vault to earn yield. </p>
-            <p className="pt-0 md:pt-4"> The Delta token will launch on Uniswap and become tradable while the first liquidity rebasing will increase the minting price of rLP by ~150%.</p>
+            <p className="pt-0 md:pt-4">At the end of the Limited Staking Window, the website will update and no longer accept new contributions.</p>
+            <p className="pt-0 md:pt-4">We will begin an extended smart contract review period which will last 6 days. Delta has put security as its utmost priority and is constantly striving to build the most secure products in the decentralized finance space. Our successful Limited Staking Window allows us to sponsor one of the biggest bug bounties in crypto!</p>
+            <div className="mt-4">
+              <a href="https://medium.com/delta-financial/delta-lsw-what-happens-next-94c659dc63b7">[ Read More ]</a>
+            </div>
           </div>
         </div>
         <div className="mt-4 md:mt-2 pt-4 pl-2">
@@ -299,23 +298,6 @@ const Staking = ({ onWalletConnect, lswStats }) => {
       </div>
       <div className="m-auto text-xl mt-4 text-center font-wulkan">
         {!connectWalletVisible && <><div>Your Contribution: </div><div>{lswStats.data.accountContributedEth.toLocaleString()} ETH</div></>}
-      </div>
-    </DeltaSectionBlock>
-    <DeltaSectionBlock>
-      <div className="block md:grid md:grid-cols-2 md:gap-6 ">
-        <div className="md:border-0 md:border-gray-400 md:border-r md:pr-2">
-          <DeltaTitleH2>{t('contribute')}</DeltaTitleH2>
-          <div className="pb-2 mt-3">{t('earnWithDelta')}</div>
-          <div>
-            {!connectWalletVisible && renderContributeForm()}
-          </div>
-        </div>
-        <div className="mt-6 md:mt-0">
-          {!connectWalletVisible ? <>
-            <DeltaTitleH2>Your Bonus</DeltaTitleH2>
-            <div className="mt-4 md:mt-2"> <BonusProgressBar lswStats={lswStats} /></div>
-          </> : <ConnectWalletButton onWalletConnect={onWalletConnect} />}
-        </div>
       </div>
     </DeltaSectionBlock>
   </DeltaSection >
