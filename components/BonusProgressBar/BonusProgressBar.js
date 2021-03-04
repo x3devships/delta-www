@@ -21,14 +21,14 @@ const BonusProgressBar = ({ lswStats }) => {
   const renderReferral = () => {
     if (lswStats.data.refCode > 0) {
       return <>
-        <div className="text-xs font-bold text-greenText mt-1">You are also getting a bonus of 10% for being referred by</div>
+        <div className="text-xs font-bold text-greenText mt-1">This includes a bonus of 10% for being referred by</div>
         <div className="text-xs font-bold text-greenText">Referral ID: {lswStats.data.refCode}</div>
       </>
     }
 
     if (lswStats.data.refAddress !== ethers.constants.AddressZero) {
       return <>
-        <div className="text-xs font-bold text-greenText mt-1">You are also getting a bonus of 10% for being referred by</div>
+        <div className="text-xs font-bold text-greenText mt-1">This includes a bonus of 10% for being referred by</div>
         <div className="text-xs font-bold text-greenText">Referral Address: {lswStats.data.refAddress}</div>
       </>
     }
