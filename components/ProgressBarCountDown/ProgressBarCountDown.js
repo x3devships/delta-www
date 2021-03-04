@@ -10,7 +10,8 @@ const ProgressBarCountDown = () => {
         </div>
       </div>
       <div className="mt-8">
-        <div className="text-base font-thin mt-2">Limited Staking Window (CLOSED)</div>
+        <div className="text-2xl mt-2">What Happens Next?</div>
+        <div className="text-lg mt-1"><a target="_blank" rel="noopener noreferrer" href="https://medium.com/delta-financial/delta-lsw-what-happens-next-94c659dc63b7">Read Here &raquo;</a></div>
       </div>
     </div>
   );

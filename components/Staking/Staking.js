@@ -275,7 +275,7 @@ const Staking = ({ onWalletConnect, lswStats }) => {
     </div>;
   };
 
-  return <DeltaSection center title={t('limitedStaking')}>
+  return <DeltaSection center title="Limited Staking Window (CLOSED)">
     <DeltaPanel>
       <ProgressBarCountDown />
     </DeltaPanel>
@@ -287,7 +287,7 @@ const Staking = ({ onWalletConnect, lswStats }) => {
             <p className="pt-0 md:pt-4">At the end of the Limited Staking Window, the website will update and no longer accept new contributions.</p>
             <p className="pt-0 md:pt-4">We will begin an extended smart contract review period which will last 6 days. Delta has put security as its utmost priority and is constantly striving to build the most secure products in the decentralized finance space. Our successful Limited Staking Window allows us to sponsor one of the biggest bug bounties in crypto!</p>
             <div className="mt-4">
-              <a href="https://medium.com/delta-financial/delta-lsw-what-happens-next-94c659dc63b7">[ Read More ]</a>
+              <a target="_blank" rel="noopener noreferrer" href="https://medium.com/delta-financial/delta-lsw-what-happens-next-94c659dc63b7">[ Read More ]</a>
             </div>
           </div>
         </div>
