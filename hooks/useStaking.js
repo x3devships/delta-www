@@ -109,6 +109,43 @@ const useStaking = () => {
       const interval = setTimeout(update, REFRESH_RATE);
       return () => clearInterval(interval);
     }
+
+    // TODO: REMOVE when the mocks are no lonmger needed
+    setVaultStats({
+      delta: {
+        amountTotal: 123,
+        apy: 999
+      },
+      rLP: {
+        amountTotal: 654,
+        apy: 635
+      }
+    });
+    // TODO: REMOVE when the mocks are no lonmger needed
+    setWithdrawalContracts([
+      {
+        amount: 110,
+        fullVestingTimestamp: Date.now() * 1000,
+        immature: 100,
+        mature: 10,
+        percentVested: 0.1
+      },
+      {
+        amount: 220,
+        fullVestingTimestamp: (Date.now() * 1000) - 99999,
+        immature: 0.8 * 220,
+        mature: 0.2 * 220,
+        percentVested: 0.2
+      },
+      {
+        amount: 3568,
+        fullVestingTimestamp: (Date.now() * 1000) - 12323,
+        immature: 0.5 * 3568,
+        mature: 0.5 * 3568,
+        percentVested: 0.5
+      }
+    ]);
+
   }, [yam, web3, wallet]);
 
   return {
