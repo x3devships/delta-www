@@ -103,7 +103,6 @@ export default function Main() {
           <Hero onWalletConnect={onWalletConnect} />
           <Staking onWalletConnect={onWalletConnect} lswStats={lswStats} />
           <ReferralProgram onWalletConnect={onWalletConnect} lswStats={lswStats} />
-          <LimitedWindow />
           <Community />
           <ConnectionModal isModalOpen={isWalletConnectModalOpen} closeModal={closeWalletConnectModal} />
         </div>
