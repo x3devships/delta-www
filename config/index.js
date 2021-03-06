@@ -48,7 +48,7 @@ export const addressMap = {
   wbtcWeth: '0xbb2b8038a1640196fbe3e38816f3e67cba72d940',
 
   // Tokens
-  delta: '0x397B352DCdA5A4C141B801447173D88B2862a591',
+  delta: '0x6f08c0b805695C4ea1cfC4673c6CC317B124f833',
   rLP: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
   core: '0x62359ed7505efc61ff1d56fef82158ccaffa23d7',
   wCORE: '0x17b8c1a92b66b1cf3092c5d223cb3a129023b669',
