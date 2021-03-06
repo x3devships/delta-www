@@ -11,6 +11,7 @@ import { TokenInput } from '../Input';
 import { ProgressBarDiamonds } from '../ProgressBar';
 import { DeltaPanel } from '../Section'
 
+
 const RlpStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
@@ -20,7 +21,9 @@ const RlpStaking = () => {
 
     if (confirmed) {
       // TODO: add web3 call, be sure to use amountBN
-      // TODO: call the staking update method and user rlp balance
+      // TODO: - MAX call the staking update method and user rlp balance
+      globalHooks.staking.update();
+      globalHooks.rlpInfo.update();
     }
   };
 
@@ -47,7 +50,9 @@ const DeltaStaking = () => {
 
       if (confirmed) {
         // TODO: add web3 call, be sure to use amountBN
-        // TODO: call the staking update method and delta react hook update
+        // TODO: - MAX call the staking update method and delta react hook update
+        globalHooks.staking.update();
+        globalHooks.delta.update();
       }
     }
   };
@@ -104,9 +109,12 @@ const CreateWithdrawalContractContent = ({ token }) => {
 }
 
 const UnstakeDeltaDialogContent = () => {
+  const globalHooks = useContext(GlobalHooksContext);
   const onUnstake = async () => {
     // TODO: add web3 topup operation
     // TODO: call the staking update method and user's delta balance (delta update hook)
+    globalHooks.staking.update();
+    globalHooks.delta.update();
   };
 
   const claimDelta = 123;
@@ -139,6 +147,7 @@ const DeltaWithdrawal = ({ token }) => {
     if (confirmed) {
       // TODO: add web3 operation
       // TODO: call the staking update method to refresh the list of withdrawal contracts
+      globalHooks.staking.update();
     }
   };
 
@@ -183,7 +192,9 @@ const EthereumWithdrawal = ({ token }) => {
 
   const onClaim = () => {
     // TODO: add web3 claim
-    // TODO: call the staking update method and user eth balance
+    // TODO: - MAX call the staking update method and user eth balance
+    globalHooks.staking.update();
+    globalHooks.delta.update();
   };
 
   const getClaimableEth = () => {
@@ -203,6 +214,7 @@ const EthereumWithdrawal = ({ token }) => {
 };
 
 const RlpWithdrawalDialogContent = () => {
+  const globalHooks = useContext(GlobalHooksContext);
   const claimEth = 3.543;
   const claimDelta = 3245;
 
@@ -210,7 +222,9 @@ const RlpWithdrawalDialogContent = () => {
 
   const onUnstake = async () => {
     // TODO: add web3 topup operation
-    // TODO: call the staking update method and user rLP token balance
+    // TODO: - MAX call the staking update method and user rLP token balance
+    globalHooks.staking.update();
+    globalHooks.rlpInfo.update();
   };
 
   return <DeltaPanel>

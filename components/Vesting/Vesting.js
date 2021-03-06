@@ -71,6 +71,7 @@ const Vesting = () => {
   };
 
   const renderMyWallet = () => {
+    const globalHooks = useContext(GlobalHooksContext);
     const onStakeDialog = async () => {
 
       const onStake = async (amount, amountBN, valid) => {
@@ -81,7 +82,8 @@ const Vesting = () => {
 
           if (confirmed) {
             // TODO: add web3 call, be sure to use amountBN
-            // TODO: Update delta balance using delta hook update function
+            // TODO: - MAX Update delta balance using delta hook update function
+            globalHooks.delta.update();
           }
         }
       };
@@ -112,6 +114,7 @@ const Vesting = () => {
   };
 
   const renderRLPStats = () => {
+    const globalHooks = useContext(GlobalHooksContext);
     const onStake = async (amount, amountBN, valid) => {
       if (!valid) {
         await modalContext.showError('Error', 'Invalid input');
@@ -120,7 +123,9 @@ const Vesting = () => {
 
         if (confirmed) {
           // TODO: add web3 call
-          // TODO: call the staking update method and user rLP balance
+          // TODO: - MAX call the staking update method and user rLP balance
+          globalHooks.staking.update();
+          globalHooks.delta.update();
         }
       }
     };

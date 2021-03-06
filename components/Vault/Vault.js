@@ -13,6 +13,7 @@ import { DATA_UNAVAILABLE } from '../../config';
 
 // TODO: Add web3 integration
 const VaultInfoBox = ({ token, className = '' }) => {
+
   const globalHooks = useContext(GlobalHooksContext);
 
   return <div className={`bg-purpleGray flex flex-row border border-black md:max-h-full md:h-20 ${className}`}>

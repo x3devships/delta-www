@@ -40,7 +40,6 @@ const ConnectionModal = () => {
       setShowInstructions(true);
     }
   }, [type, wallet]);
-
   const renderContent = () => {
     if (connectingToMetaMask) {
       return <Spinner className="ml-2" label="Connecting..." />
@@ -79,11 +78,11 @@ const ConnectionModal = () => {
               <li>Close all apps that might use Walletconnect</li>
               <li>Update Metamask to the latest version</li>
             </> : <>
-                <li>Reload the page</li>
-                <li>Be sure to approve the connection</li>
-                <li>Make sure another wallet is not conflicting with the connection approval</li>
-                <li>Connect your wallet using Walletconnect</li>
-              </>}
+              <li>Reload the page</li>
+              <li>Be sure to approve the connection</li>
+              <li>Make sure another wallet is not conflicting with the connection approval</li>
+              <li>Connect your wallet using Walletconnect</li>
+            </>}
           </ul>
         </div>
       )}

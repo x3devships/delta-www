@@ -24,6 +24,7 @@ const useDelta = () => {
   });
 
   const update = async () => {
+    console.log("yam: ", yam);
     if (!yam || !wallet?.account) return;
 
     const totalsForWallet = await yam.contracts.delta.methods.totalsForWallet(wallet.account).call();

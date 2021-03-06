@@ -104,6 +104,7 @@ const useStaking = () => {
   };
 
   useEffect(() => {
+    update(); // NEED DELETE @midas
     if (TEMP_ENABLE_END_LSW_WEB3) {
       update();
       const interval = setTimeout(update, REFRESH_RATE);
