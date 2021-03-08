@@ -301,7 +301,7 @@ const Staking = ({ onWalletConnect, lswStats }) => {
           <div>Your Contribution: </div><div>{lswStats.data.accountContributedEth.toLocaleString()} ETH</div>
           <div className="mt-4">
             <div>Estimated rLP:</div>
-            <div>{lswStats.data.estimatedClaimableRlp.toLocaleString()} rLP</div>
+            <div>{lswStats.data.estimatedClaimableRlp.toLocaleString()}</div>
           </div>
         </>}
       </div>
