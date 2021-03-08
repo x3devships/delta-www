@@ -22,7 +22,8 @@ const initialState = {
   accountContributedEth: DATA_UNAVAILABLE,
   totalWETHEarmarkedForReferrers: DATA_UNAVAILABLE,
   referralBonusWETH: DATA_UNAVAILABLE,
-  liquidityCredits: DATA_UNAVAILABLE
+  liquidityCredits: DATA_UNAVAILABLE,
+  estimatedClaimableRlp: DATA_UNAVAILABLE
 };
 
 const useLSWStats = () => {
@@ -37,6 +38,7 @@ const useLSWStats = () => {
     const accountContributedEth = (await yam.contracts.LSW.methods.liquidityContributedInETHUnitsMapping(wallet.account).call()) / 1e18;
     const liquidityCredits = (await yam.contracts.LSW.methods.liquidityCreditsMapping(wallet.account).call()) / 1e18;
     const referralBonusWETH = (await yam.contracts.LSW.methods.referralBonusWETH(wallet.account).call()) / 1e18;
+    const estimatedClaimableRlp = liquidityCredits * 3.7015398583226107;
 
     const timeStart = parseInt(await yam.contracts.LSW.methods.liquidityGenerationStartTimestamp().call());
     const timeEnd = parseInt(await yam.contracts.LSW.methods.liquidityGenerationEndTimestamp().call());
@@ -94,7 +96,8 @@ const useLSWStats = () => {
       refAddress,
       totalEthContributed,
       accountContributedEth,
-      totalWETHEarmarkedForReferrers
+      totalWETHEarmarkedForReferrers,
+      estimatedClaimableRlp
     });
   };
 

@@ -296,8 +296,14 @@ const Staking = ({ onWalletConnect, lswStats }) => {
           <iframe title="contribution" src="https://duneanalytics.com/embeds/20836/42857/9ikucIvbRprjyWfCz8ISqI29yDJiDR3llCIour2q" width="100%" height="391" />
         </div>
       </div>
-      <div className="m-auto text-xl mt-4 text-center font-wulkan">
-        {!connectWalletVisible && <><div>Your Contribution: </div><div>{lswStats.data.accountContributedEth.toLocaleString()} ETH</div></>}
+      <div className="m-auto text-xl mt-6 text-center gt_america">
+        {!connectWalletVisible && <>
+          <div>Your Contribution: </div><div>{lswStats.data.accountContributedEth.toLocaleString()} ETH</div>
+          <div className="mt-4">
+            <div>Estimated rLP:</div>
+            <div>{lswStats.data.estimatedClaimableRlp.toLocaleString()} rLP</div>
+          </div>
+        </>}
       </div>
     </DeltaSectionBlock>
   </DeltaSection >
