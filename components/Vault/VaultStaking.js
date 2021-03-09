@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/router'
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
@@ -12,14 +12,11 @@ import { ProgressBarDiamonds } from '../ProgressBar';
 import { DeltaPanel } from '../Section'
 
 
-
-
 const RlpStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
 
   const onStake = async (amount, amountBN) => {
-    
     const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
 
     if (confirmed) {
@@ -69,53 +66,23 @@ const DeltaStaking = () => {
     <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
   </div >
 };
-const MintrLPTokensDialogContent = () => {
-  const [fromStakingRewards, setFromStakingRewards] = useState(false);
-  const globalHooks = useContext(GlobalHooksContext);
-  const modalContext = useContext(ModalContext);
 
-  
-  return <ul className="list-disc list-inside py-4 md:py-8">
-    <li className = "text-base">Deposit Ethereum to mint new rLP tokens</li>
-    <li className = "text-base">select stake automatically to immediately stake the new rLP in the Deep Farming Vault</li>
-    <TokenInput
-        className="mt-4"
-        token="wETH"
-        labelBottom = "estimated rLP minted:rLP   Gas cost = 0.03ETH"
-        transactionButtonNoBorders
-        transactionButtonUnder
-        buttonText = "MINT"
-        checkBoxText = "STAKE AUTOMATICALLY"
-        buttonTextLoading="Loading..."
-    />
-    
-
-
-  </ul>; 
-}
 const VaultDeposit = ({ token }) => {
   const [depositAction, setDepositAction] = useState(true);
-  const modalContext = useContext(ModalContext);
+
   const renderContent = () => {
     if (depositAction) {
       return token === "rLP" ? <RlpStaking /> : <DeltaStaking />;
     }
+
     return <>Not Available</>;
-  };
-  const onBuy = async () => {
-    await modalContext.showMessage('Mint rLP Tokens', <MintrLPTokensDialogContent />, false);
   };
 
   return <div>
     <DeltaPanel className="flex items-center text-center flex-wrap">
       <div className="flex border border-black p-1 flex-grow md:flex-none">
         <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setDepositAction(t => !t)} grayLook={!depositAction}>Stake</DeltaButton>
-        <DeltaButton className="flex-1 md:flex-grow-0" 
-          onClick={() => {
-            setDepositAction(t => !t);
-            token === "rLP" ? onBuy(): "";
-          }}
-          grayLook={depositAction}>Buy</DeltaButton>
+        <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setDepositAction(t => !t)} grayLook={depositAction}>Buy</DeltaButton>
       </div>
     </DeltaPanel>
     {renderContent()}

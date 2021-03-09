@@ -87,7 +87,7 @@ const RlpTokenVault = ({ className = '' }) => {
         </div>
       </div>
       <div className="w-full flex-grow hidden flex-col md:flex self-start">
-        <ProgressBarDiamonds value={30} maxValue={30}  className="flex flex-grow w-full" />
+        <ProgressBarDiamonds value={30} maxValue={30} className="flex flex-grow w-full" />
         <div className="flex flex-row mt-4">
           <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
         </div>
