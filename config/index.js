@@ -7,7 +7,7 @@ BigNumber.config({
 });
 
 // Temp flag, set to true to use the hardhat node and end_lsw operation.
-export const TEMP_ENABLE_END_LSW_WEB3 = false;
+export const TEMP_ENABLE_END_LSW_WEB3 = true;
 
 export const SUBTRACT_GAS_LIMIT = 100000;
 export const DEFAULT_CONFIRMATIONS = 1;
@@ -57,7 +57,9 @@ export const addressMap = {
   cBTC: '0x7b5982dcAB054C377517759d0D2a3a5D02615AB8',
   cDAI: '0x00a66189143279b6db9b77294688f47959f37642',
 
-  LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB'
+  // Periphery
+  LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB',
+  DeltaRouter: '0x012819E7Fa602C126B8159330221d8597A450998'
 };
 
 export const addressDecimalsMap = {};

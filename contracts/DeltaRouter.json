@@ -1,0 +1,303 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "DeltaRouter",
+  "sourceName": "contracts/v612/DELTA/Periphery/Delta_Router.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_deltaToken",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_deltaWethPair",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_deepFarmingVault",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_rebasingToken",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "WETH",
+      "outputs": [
+        {
+          "internalType": "contract IWETH",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_deltaAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_minLpOut",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "_autoStake",
+          "type": "bool"
+        }
+      ],
+      "name": "addLiquidityBothSides",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_minLpOut",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "_autoStake",
+          "type": "bool"
+        }
+      ],
+      "name": "addLiquidityETHOnly",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "deepFarmingVault",
+      "outputs": [
+        {
+          "internalType": "contract IDELTA_DEEP_FARMING_VAULT",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "deltaToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "deltaWethPair",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_deltaAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_ethAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "getLPTokenPerBothSideUnits",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "liquidity",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_ethAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "getLPTokenPerEthUnit",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "liquidity",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_ethAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "getOptimalDeltaAmountForEthAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "optimalDeltaAmount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_deltaAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "getOptimalEthAmountForDeltaAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "optimalEthAmount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rebasingToken",
+      "outputs": [
+        {
+          "internalType": "contract IREBASING_LIQUDIDITY_TOKEN",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "refreshApproval",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rescueEth",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "rescueTokens",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ]
+}
