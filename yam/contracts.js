@@ -12,6 +12,7 @@ import wCORE from '../contracts/wCORE.json';
 import LSW from '../contracts/LSW.json';
 import DELTA from '../contracts/DELTA.json';
 import RLP from '../contracts/rLP.json';
+import DeltaRouter from '../contracts/DeltaRouter.json';
 
 export class Contracts {
   constructor(web3) {
@@ -45,7 +46,7 @@ export class Contracts {
     this.wBtcWethPair = new web3.eth.Contract(UNIPairJson);
     this.ethUsdtPair = new web3.eth.Contract(UNIPairJson);
 
-    this.LSW = new web3.eth.Contract(LSW.abi);
+ 
 
     this._updateContractAddresses();
   }
@@ -72,5 +73,12 @@ export class Contracts {
     this.ethUsdtPair.options.address = addressMap.ethUsdt;
 
     this.LSW.options.address = addressMap.LSW;
+    //Routers
+    this.DeltaRouter.options.address = addressMap.DeltaRouter;
+    
+
+    // Periphery
+    this.LSW = new web3.eth.Contract(LSW.abi, addressMap.LSW);
+    this.DeltaRouter = new web3.eth.Contract(DeltaRouter.abi, addressMap.DeltaRouter);
   }
 }
