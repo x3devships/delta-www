@@ -18,6 +18,7 @@ const TokenInput = ({
   transactionButtonUnder,
   transactionButtonNoBorders,
   disableTransactionWhenInvalid,
+  checkBoxText,
   disabled = false }) => {
 
   const [amountText, setAmountText] = useState('');
@@ -142,7 +143,14 @@ const TokenInput = ({
       </div>
     </div>
     <div className={`mt-4 ${!transactionButtonUnder ? 'md:hidden' : ''}`}>
-      {renderTransactionButton()}
+      <div className = "md:flex">
+        {renderTransactionButton()}
+        <div className = {`py-4 bg-lightgray bg-gray-300 ml-2 ${!checkBoxText ? 'md:hidden' : ''}`}>
+          <Input className = "border ml-4 mr-2 border-solid border-black" type = "checkbox"/>
+          <label className = "px-4">{checkBoxText}</label>
+        </div>
+        
+      </div>
     </div>
   </div >;
 };
