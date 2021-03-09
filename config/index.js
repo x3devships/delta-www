@@ -57,7 +57,11 @@ export const addressMap = {
   cBTC: '0x7b5982dcAB054C377517759d0D2a3a5D02615AB8',
   cDAI: '0x00a66189143279b6db9b77294688f47959f37642',
 
-  LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB'
+  LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB' ,
+
+  //Routers
+  deltaRouter: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB'
+  
 };
 
 export const addressDecimalsMap = {};

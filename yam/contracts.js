@@ -45,7 +45,11 @@ export class Contracts {
     this.wBtcWethPair = new web3.eth.Contract(UNIPairJson);
     this.ethUsdtPair = new web3.eth.Contract(UNIPairJson);
 
+
     this.LSW = new web3.eth.Contract(LSW.abi);
+
+    //Routers
+    this.deltaRouter = new web3.eth.Contract(UNIPairJson);
 
     this._updateContractAddresses();
   }
@@ -72,5 +76,8 @@ export class Contracts {
     this.ethUsdtPair.options.address = addressMap.ethUsdt;
 
     this.LSW.options.address = addressMap.LSW;
+
+    //Routers
+    this.deltaRouter.options.address = addressMap.deltaRouter;
   }
 }
