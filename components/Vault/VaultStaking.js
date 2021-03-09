@@ -130,7 +130,7 @@ const VaultDeposit = ({ token }) => {
         grayLook={depositAction}>Buy</DeltaButton>
     }
 
-    return <a className="flex-1 md:flex-grow-0" target="_blank" href="https://twitter.com/" rel="noopener noreferrer">
+    return <a className="flex-1 md:flex-grow-0" target="_blank" href="https://app.uniswap.org/#/swap" rel="noopener noreferrer">
       <DeltaButton grayLook={depositAction}>Buy On Uniswap</DeltaButton>
     </a>;
   }
