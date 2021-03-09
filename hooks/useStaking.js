@@ -38,6 +38,64 @@ const useStaking = () => {
   const [withdrawalContracts, setWithdrawalContracts] = useState([]);
   const { decimals } = tokenMap[addressMap.delta];
 
+  // TODO: remove once contract are available
+  const setMockValues = async () => {
+    const block = await yam.web3.eth.getBlock("latest");
+    const now = block.timestamp;
+    const secondsInOneDay = 60 * 60 * 24;
+
+    setVaultStats({
+      delta: {
+        amountTotal: 123,
+        apy: 999
+      },
+      rLP: {
+        amountTotal: 654,
+        apy: 635
+      }
+    });
+
+    setRlpInfo({
+      amountStaked: 123,
+      claimableEth: 456,
+      claimableDelta: 567,
+      rewardMultiplier: 20
+    });
+
+    setDeltaInfo({
+      amountStaked: 123,
+      claimableEth: 456,
+      claimableDelta: 888,
+      rewardMultiplier: 8,
+      timeUntilDowngrade: now + secondsInOneDay
+    });
+
+    // TODO: remove mock data and use real contract
+    setWithdrawalContracts([
+      {
+        amount: 110,
+        fullVestingTimestamp: now + secondsInOneDay * 2,
+        immature: 100,
+        mature: 10,
+        percentVested: 0.1
+      },
+      {
+        amount: 220,
+        fullVestingTimestamp: now + secondsInOneDay * 6,
+        immature: 0.8 * 220,
+        mature: 0.2 * 220,
+        percentVested: 0.2
+      },
+      {
+        amount: 3568,
+        fullVestingTimestamp: now + secondsInOneDay * 8,
+        immature: 0.5 * 3568,
+        mature: 0.5 * 3568,
+        percentVested: 0.5
+      }
+    ]);
+  };
+
   const update = async () => {
     if (!web3) return;
 
@@ -54,7 +112,6 @@ const useStaking = () => {
       }
     });
 
-
     /**
      * This section requires a connected wallet
      */
@@ -62,90 +119,18 @@ const useStaking = () => {
 
     // TODO: Replace using DFV contract
     // const balance = (await yam.contracts.delta.methods.balanceOf(wallet.account).call()) / 10 ** decimals;
-    setRlpInfo({
-      amountStaked: 123,
-      claimableEth: 456,
-      claimableDelta: 567,
-      rewardMultiplier: 20
-    });
-
-    setDeltaInfo({
-      amountStaked: 123,
-      claimableEth: 456,
-      claimableDelta: 888,
-      rewardMultiplier: 8,
-      timeUntilDowngrade: Date.now() + 8888898
-    });
-
-    // TODO: remove mock data and use real contract
-    setWithdrawalContracts([
-      {
-        amount: 110,
-        fullVestingTimestamp: Date.now() * 1000,
-        immature: 100,
-        mature: 10,
-        percentVested: 0.1
-      },
-      {
-        amount: 220,
-        fullVestingTimestamp: (Date.now() * 1000) - 99999,
-        immature: 0.8 * 220,
-        mature: 0.2 * 220,
-        percentVested: 0.2
-      },
-      {
-        amount: 3568,
-        fullVestingTimestamp: (Date.now() * 1000) - 12323,
-        immature: 0.5 * 3568,
-        mature: 0.5 * 3568,
-        percentVested: 0.5
-      }
-    ]);
+    setMockValues();
   };
 
   useEffect(() => {
     update(); // NEED DELETE @midas
     if (TEMP_ENABLE_END_LSW_WEB3) {
       update();
-      const interval = setTimeout(update, REFRESH_RATE);
+      const interval = hooks.setWalletAwareInterval(wallet, update, REFRESH_RATE);
       return () => clearInterval(interval);
     }
 
-    // TODO: REMOVE when the mocks are no lonmger needed
-    setVaultStats({
-      delta: {
-        amountTotal: 123,
-        apy: 999
-      },
-      rLP: {
-        amountTotal: 654,
-        apy: 635
-      }
-    });
-    // TODO: REMOVE when the mocks are no lonmger needed
-    setWithdrawalContracts([
-      {
-        amount: 110,
-        fullVestingTimestamp: Date.now() * 1000,
-        immature: 100,
-        mature: 10,
-        percentVested: 0.1
-      },
-      {
-        amount: 220,
-        fullVestingTimestamp: (Date.now() * 1000) - 99999,
-        immature: 0.8 * 220,
-        mature: 0.2 * 220,
-        percentVested: 0.2
-      },
-      {
-        amount: 3568,
-        fullVestingTimestamp: (Date.now() * 1000) - 12323,
-        immature: 0.5 * 3568,
-        mature: 0.5 * 3568,
-        percentVested: 0.5
-      }
-    ]);
+    setMockValues();
 
   }, [yam, web3, wallet]);
 
