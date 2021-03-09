@@ -1,11 +1,23 @@
 {
+  "_format": "hh-sol-artifact-1",
   "contractName": "DELTAToken",
+  "sourceName": "contracts/v076/DELTAToken.sol",
   "abi": [
     {
       "inputs": [
         {
           "internalType": "address",
-          "name": "lswAddress",
+          "name": "_lswAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "rebasingLP",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "multisig",
           "type": "address"
         }
       ],
@@ -35,25 +47,6 @@
         }
       ],
       "name": "Approval",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "previousOwner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnershipTransferred",
       "type": "event"
     },
     {
@@ -96,78 +89,27 @@
     },
     {
       "inputs": [],
-      "name": "SECONDS_PER_EPOCH",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
+      "name": "activatePostFirstRebasingState",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
       "inputs": [
         {
-          "components": [
-            {
-              "internalType": "uint112",
-              "name": "amount",
-              "type": "uint112"
-            },
-            {
-              "internalType": "uint112",
-              "name": "fullVestingTimestamp",
-              "type": "uint112"
-            }
-          ],
-          "internalType": "struct DELTAToken.VestingTransaction",
-          "name": "_tx",
-          "type": "tuple"
+          "internalType": "uint256",
+          "name": "loopCount",
+          "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "_blockTimestamp",
+          "name": "percentOfLP",
           "type": "uint256"
         }
       ],
-      "name": "_getTransactionDetail",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "uint112",
-              "name": "amount",
-              "type": "uint112"
-            },
-            {
-              "internalType": "uint112",
-              "name": "fullVestingTimestamp",
-              "type": "uint112"
-            },
-            {
-              "internalType": "uint256",
-              "name": "percentVestedE4",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint112",
-              "name": "mature",
-              "type": "uint112"
-            },
-            {
-              "internalType": "uint112",
-              "name": "immature",
-              "type": "uint112"
-            }
-          ],
-          "internalType": "struct DELTAToken.VestingTransactionDetailed",
-          "name": "dtx",
-          "type": "tuple"
-        }
-      ],
-      "stateMutability": "pure",
+      "name": "allowLiquidityRebasing",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -240,64 +182,14 @@
     {
       "inputs": [
         {
-          "components": [
-            {
-              "internalType": "uint112",
-              "name": "amount",
-              "type": "uint112"
-            },
-            {
-              "internalType": "uint112",
-              "name": "fullVestingTimestamp",
-              "type": "uint112"
-            },
-            {
-              "internalType": "uint256",
-              "name": "percentVestedE4",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint112",
-              "name": "mature",
-              "type": "uint112"
-            },
-            {
-              "internalType": "uint112",
-              "name": "immature",
-              "type": "uint112"
-            }
-          ],
-          "internalType": "struct DELTAToken.VestingTransactionDetailed",
-          "name": "dtx",
-          "type": "tuple"
-        },
-        {
-          "internalType": "uint256",
-          "name": "matureAmountNeeded",
-          "type": "uint256"
+          "internalType": "address",
+          "name": "newAddress",
+          "type": "address"
         }
       ],
-      "name": "calculateMaturityCredits",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "uint256",
-              "name": "transactionCredit",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "outputDebit",
-              "type": "uint256"
-            }
-          ],
-          "internalType": "struct DELTAToken.MaturityInfo",
-          "name": "info",
-          "type": "tuple"
-        }
-      ],
-      "stateMutability": "view",
+      "name": "changeRLPAddress",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -339,12 +231,12 @@
     },
     {
       "inputs": [],
-      "name": "deploymentTimestamp",
+      "name": "distributor",
       "outputs": [
         {
-          "internalType": "uint256",
+          "internalType": "address",
           "name": "",
-          "type": "uint256"
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -365,7 +257,7 @@
               "type": "uint112"
             }
           ],
-          "internalType": "struct DELTAToken.VestingTransaction",
+          "internalType": "struct VestingTransaction",
           "name": "_tx",
           "type": "tuple"
         }
@@ -385,11 +277,6 @@
               "type": "uint112"
             },
             {
-              "internalType": "uint256",
-              "name": "percentVestedE4",
-              "type": "uint256"
-            },
-            {
               "internalType": "uint112",
               "name": "mature",
               "type": "uint112"
@@ -400,9 +287,22 @@
               "type": "uint112"
             }
           ],
-          "internalType": "struct DELTAToken.VestingTransactionDetailed",
+          "internalType": "struct VestingTransactionDetailed",
           "name": "dtx",
           "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "governance",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -434,6 +334,45 @@
     },
     {
       "inputs": [],
+      "name": "liquidityRebasingPermitted",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lpTokensInPair",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lswAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "name",
       "outputs": [
         {
@@ -447,7 +386,7 @@
     },
     {
       "inputs": [],
-      "name": "owner",
+      "name": "rebasingLPAddress",
       "outputs": [
         {
           "internalType": "address",
@@ -459,21 +398,27 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "printDebugInfo",
-      "outputs": [
+      "inputs": [
         {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
+          "internalType": "address",
+          "name": "_newBalanceCalculator",
+          "type": "address"
         }
       ],
-      "stateMutability": "view",
+      "name": "setBalanceCalculator",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "renounceOwnership",
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newDistributor",
+          "type": "address"
+        }
+      ],
+      "name": "setDistributor",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -535,12 +480,12 @@
     {
       "inputs": [
         {
-          "internalType": "contract IDELTATransferHandler",
+          "internalType": "address",
           "name": "_newHandler",
           "type": "address"
         }
       ],
-      "name": "setTokenTransferEventHandler",
+      "name": "setTokenTransferHandler",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -588,6 +533,32 @@
     },
     {
       "inputs": [],
+      "name": "tokenBalanceHandler",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "tokenTransferHandler",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "totalSupply",
       "outputs": [
         {
@@ -627,7 +598,7 @@
               "type": "uint256"
             }
           ],
-          "internalType": "struct DELTAToken.WalletTotals",
+          "internalType": "struct WalletTotals",
           "name": "totals",
           "type": "tuple"
         }
@@ -685,19 +656,6 @@
           "type": "bool"
         }
       ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -798,6 +756,19 @@
       "outputs": [
         {
           "internalType": "contract IWETH",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "wethAddress",
+      "outputs": [
+        {
+          "internalType": "address",
           "name": "",
           "type": "address"
         }

@@ -45,7 +45,9 @@ const useLSWStats = () => {
 
       const liquidityCreditsBN = new BigNumber(await yam.contracts.LSW.methods.liquidityCreditsMapping(account).call());
       const rlpPerCreditBN = new BigNumber(await yam.contracts.LSW.methods.rlpPerCredit().call());
-      const claimableRlpBN = liquidityCreditsBN.multipliedBy(rlpPerCreditBN).shiftedBy(-12);
+
+      const hasClaimed = await yam.contracts.LSW.methods.claimedLP(account).call();
+      const claimableRlpBN = !hasClaimed ? liquidityCreditsBN.multipliedBy(rlpPerCreditBN).shiftedBy(-12) : new BigNumber("0");
 
       const liquidityCredits = liquidityCreditsBN.toString() / 1e18;
       const claimableRlp = claimableRlpBN.toString() / 1e18;

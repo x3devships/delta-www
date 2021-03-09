@@ -7,7 +7,7 @@ import { hooks } from '../helpers';
 import useYam from './useYam';
 
 const REFRESH_RATE = 1 * 60 * 1000;
-const NUM_EPOCH = 14;
+const NUM_EPOCH = 7;
 
 const useDelta = () => {
   const yam = useYam();
@@ -24,7 +24,6 @@ const useDelta = () => {
   });
 
   const update = async () => {
-    console.log("yam: ", yam);
     if (!yam || !wallet?.account) return;
 
     const totalsForWallet = await yam.contracts.delta.methods.totalsForWallet(wallet.account).call();
@@ -47,7 +46,7 @@ const useDelta = () => {
         fullVestingTimestamp: vestingTransactionDetails.fullVestingTimestamp * 1000,
         immature: vestingTransactionDetails.immature / 1e18,
         mature: vestingTransactionDetails.mature / 1e18,
-        percentVested: vestingTransactionDetails.percentVestedE4 / 1e4,
+        percentVested: (vestingTransactionDetails.mature / 1e18) / (vestingTransactionDetails.amount / 1e18)
       });
     }
 
