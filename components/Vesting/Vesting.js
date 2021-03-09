@@ -14,6 +14,39 @@ import { ModalContext } from '../../contexts';
 
 const FULLY_VESTING_REFRESH_RATE = 1 * 60 * 1000;
 
+const VestingTransaction = ({ blockTimestamp, tx, index, opened, setCurrentOpened }) => {
+  tx.index = index;
+  const vestingTimeLeft = time.getTimeLeft(blockTimestamp, tx.fullVestingTimestamp);
+
+  return <div key={`tx-${index}`} className="text-left mt-4">
+    <DeltaSectionBox opened={opened} onOpen={(i) => setCurrentOpened(i)} index={index} title={`Transaction ${index + 1}`}>
+      <div className="mb-2">
+        <div>Time until fully matured:</div>
+        <div>{vestingTimeLeft.days} Day(s) {vestingTimeLeft.hours} Hour(s) {vestingTimeLeft.minutes} Minute(s)</div>
+      </div>
+      <VestingTransactionProgressBar transaction={tx} />
+      <div className="ml-1 mt-1">{formatting.getTokenAmount(tx.mature, 18, 4)} / {formatting.getTokenAmount(tx.amount, 18, 4)} mature</div>
+    </DeltaSectionBox>
+  </div>;
+};
+
+const VestingTransactions = () => {
+  const [currentOpened, setCurrentOpened] = useState(0);
+  const globalHooks = useContext(GlobalHooksContext);
+
+  return <>
+    {globalHooks.delta.data.vestingTransactions
+      .filter(tx => tx.amount !== 0)
+      .map((tx, index) => <VestingTransaction
+        key={`vesting-transaction-${index}`}
+        blockTimestamp={globalHooks.blockInfo.block.timestamp}
+        tx={tx}
+        index={index}
+        opened={index === currentOpened}
+        setCurrentOpened={setCurrentOpened} />)}
+  </>;
+};
+
 const Vesting = () => {
   const [fullyVestedAtInfo, setFullyVestedAtInfo] = useState(DATA_UNAVAILABLE);
   const [transactionDetailsVisible, setTransactionDetailsVisible] = useState(false);
@@ -23,9 +56,9 @@ const Vesting = () => {
   const globalHooks = useContext(GlobalHooksContext);
 
   useEffect(() => {
-    const update = () => {
+    const update = async () => {
       if (globalHooks.delta.data.vestingInProgress) {
-        const timeLeft = time.getTimeLeft(globalHooks.delta.data.fullyVestedAt);
+        const timeLeft = time.getTimeLeft(globalHooks.blockInfo.block.timestamp, globalHooks.delta.data.fullyVestedAt);
         setFullyVestedAtInfo(timeLeft);
       } else {
         setFullyVestedAtInfo(DATA_UNAVAILABLE);
@@ -42,32 +75,6 @@ const Vesting = () => {
 
   const onToggleTransactionDetails = () => {
     setTransactionDetailsVisible(transactionDetailsVisible => !transactionDetailsVisible);
-  };
-
-  const renderVestingTransactions = () => {
-    const [currentOpened, setCurrentOpened] = useState(0);
-
-    const renderTransaction = (tx, index, opened) => {
-      tx.index = index;
-      const vestingTimeLeft = time.getTimeLeft(tx.fullVestingTimestamp);
-
-      return <div key={`tx-${index}`} className="text-left mt-4">
-        <DeltaSectionBox opened={opened} onOpen={(i) => setCurrentOpened(i)} index={index} title={`Transaction ${index + 1}`}>
-          <div className="mb-2">
-            <div>Time until fully matured:</div>
-            <div>{vestingTimeLeft.days} Day(s) {vestingTimeLeft.hours} Hour(s) {vestingTimeLeft.minutes} Minute(s)</div>
-          </div>
-          <VestingTransactionProgressBar transaction={tx} />
-          <div className="ml-1 mt-1">{formatting.getTokenAmount(tx.mature, 18, 4)} / {formatting.getTokenAmount(tx.immature, 18, 4)} mature</div>
-        </DeltaSectionBox>
-      </div>;
-    };
-
-    return <>
-      {globalHooks.delta.data.vestingTransactions
-        .filter(tx => tx.amount !== 0)
-        .map((tx, index) => renderTransaction(tx, index, index === currentOpened))}
-    </>;
   };
 
   const renderMyWallet = () => {
@@ -210,7 +217,7 @@ const Vesting = () => {
         <DeltaButton hidePlus lassName="flex-1 md:flex-none" onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'See All Transactions ▼' : 'Hide All Transactions ▲'}</DeltaButton>
       </DeltaPanel>
       <DeltaPanel className={`${!transactionDetailsVisible ? 'hidden' : ''}`}>
-        {renderVestingTransactions()}
+        <VestingTransactions />
       </DeltaPanel>
     </DeltaPanel>
   </DeltaSection>

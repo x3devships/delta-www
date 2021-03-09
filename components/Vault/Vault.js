@@ -123,7 +123,7 @@ const TopUpDialogContent = () => {
 
   useEffect(() => {
     const update = () => {
-      setTimeleftUntilDowngrade(time.getTimeLeft(globalHooks.staking.deltaInfo.timeUntilDowngrade));
+      setTimeleftUntilDowngrade(time.getTimeLeft(globalHooks.blockInfo.block.timestamp, globalHooks.staking.deltaInfo.timeUntilDowngrade));
     };
 
     if (globalHooks.staking.deltaInfo.timeUntilDowngrade !== DATA_UNAVAILABLE) {
