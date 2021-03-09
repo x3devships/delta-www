@@ -40,46 +40,11 @@ export class Contracts {
 
     // Pairs
     this.genericUniswapPair = new web3.eth.Contract(UNIPairJson);
-    this.coreCbtcPair = new web3.eth.Contract(UNIPairJson);
-    this.coreWethPair = new web3.eth.Contract(UNIPairJson);
-    this.cDaiWcorePair = new web3.eth.Contract(UNIPairJson);
-    this.wBtcWethPair = new web3.eth.Contract(UNIPairJson);
-    this.ethUsdtPair = new web3.eth.Contract(UNIPairJson);
-
-
-
-
-  
-
-    this._updateContractAddresses();
-  }
-
-  _updateContractAddresses() {
-    // Tokens
-    this.wBTC.options.address = addressMap.wBTC;
-    this.wETH.options.address = addressMap.wETH;
-    this.core.options.address = addressMap.core;
-    if (TEMP_ENABLE_END_LSW_WEB3) {
-      this.delta.options.address = addressMap.delta;
-    }
-    this.rLP.options.address = addressMap.rLP;
-    this.cBTC.options.address = addressMap.cBTC;
-    this.cDAI.options.address = addressMap.cDAI;
-
-    // Pairs
-    this.uniswapFactory.options.address = addressMap.uniswapFactoryV2;
-    this.uniswapRouter.options.address = addressMap.uniswapRouter;
-    this.coreCbtcPair.options.address = addressMap.coreCbtc;
-    this.coreWethPair.options.address = addressMap.coreWeth;
-    this.cDaiWcorePair.options.address = addressMap.cDaiWcore;
-    this.wBtcWethPair.options.address = addressMap.wbtcWeth;
-    this.ethUsdtPair.options.address = addressMap.ethUsdt;
-
-    this.LSW.options.address = addressMap.LSW;
-
-    //Routers
-    this.DeltaRouter.options.address = addressMap.DeltaRouter;
-    
+    this.coreCbtcPair = new web3.eth.Contract(UNIPairJson, addressMap.coreCbtc);
+    this.coreWethPair = new web3.eth.Contract(UNIPairJson, addressMap.coreWeth);
+    this.cDaiWcorePair = new web3.eth.Contract(UNIPairJson, addressMap.cDaiWcore);
+    this.wBtcWethPair = new web3.eth.Contract(UNIPairJson, addressMap.wbtcWeth);
+    this.ethUsdtPair = new web3.eth.Contract(UNIPairJson, addressMap.ethUsdt);
 
     // Periphery
     this.LSW = new web3.eth.Contract(LSW.abi, addressMap.LSW);

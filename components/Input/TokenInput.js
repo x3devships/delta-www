@@ -5,6 +5,7 @@ import { addressMap, tokenMap } from '../../config';
 import { useTokenBalance } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
+import { DeltaCheckboxButton } from '.';
 
 const TokenInput = ({
   token,
@@ -13,12 +14,12 @@ const TokenInput = ({
   buttonTextLoading,
   labelBottom,
   labelBottomClassName = '',
+  checkboxButton,
   onOk,
   className,
   transactionButtonUnder,
   transactionButtonNoBorders,
   disableTransactionWhenInvalid,
-  checkBoxText,
   disabled = false }) => {
 
   const [amountText, setAmountText] = useState('');
@@ -26,13 +27,25 @@ const TokenInput = ({
   const [validAmount, setValidAmount] = useState(true);
   const { balance } = useTokenBalance(token);
   const modalContext = useContext(ModalContext);
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
 
-  const tokenAddress = addressMap[token];
-  const tokenInfo = tokenMap[tokenAddress];
-
-  if (!tokenInfo) {
-    throw new Error(`${token} doesn't exist within tokenMap`);
+  let tokenInfo = {
+    decimals: 16
   }
+
+  if (token !== 'ETH') {
+    const tokenAddress = addressMap[token];
+    tokenInfo = tokenMap[tokenAddress];
+
+    if (!tokenInfo) {
+      throw new Error(`${token} doesn't exist within tokenMap`);
+    }
+  }
+
+  const onCheckboxChanged = (event) => {
+    setCheckboxChecked(event.target.checked);
+    console.log(event.target.checked);
+  };
 
   const onBeforeOk = async () => {
     let amountBN;
@@ -49,7 +62,7 @@ const TokenInput = ({
     if (!valid) {
       await modalContext.showError('Invalid Amount', 'The specified token amount is invalid');
     } else {
-      onOk(amount, amountBN);
+      onOk(amount, amountBN, checkboxChecked);
     }
   };
 
@@ -126,7 +139,6 @@ const TokenInput = ({
       onClick={onBeforeOk}
     />;
   };
-  
 
   return <div className={className}>
     <div className="flex">
@@ -137,6 +149,9 @@ const TokenInput = ({
             {renderMaxButton()}
             <div className={`ml-1 hidden ${!transactionButtonUnder ? 'md:flex' : ''}`}>
               {renderTransactionButton()}
+              {checkboxButton && <div className="flex md:p-1 ml-1 md:border md:border-black flex-grow">
+                <DeltaCheckboxButton text={checkboxButton} onChange={onCheckboxChanged} />
+              </div>}
             </div>
           </div>
         </div>
@@ -144,15 +159,10 @@ const TokenInput = ({
       </div>
     </div>
     <div className={`mt-4 ${!transactionButtonUnder ? 'md:hidden' : ''}`}>
-      <div className = "md:flex">
-        {renderTransactionButton()}
-        <div className = {`py-4 bg-lightgray bg-gray-300 ml-2 ${!checkBoxText ? 'md:hidden' : ''}`}>
-          <Input className = "border ml-4 mr-2 border-solid border-black" type = "checkbox"/>
-          <label className = "px-4">{checkBoxText}</label>
-        </div>
-        
-      </div>
-      
+      {renderTransactionButton()}
+      {checkboxButton && <div className="block">
+        <DeltaCheckboxButton text={checkboxButton} onChange={onCheckboxChanged} />
+      </div>}
     </div>
   </div >;
 };

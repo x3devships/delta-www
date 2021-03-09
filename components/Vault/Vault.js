@@ -81,16 +81,6 @@ const RlpTokenVault = ({ className = '' }) => {
           <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
           <RlpStats />
         </div>
-        <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
-          <div className="text-xs flex mb-1">Reward Multiplier</div>
-          <ProgressBarDiamonds value={30} maxValue={30} className="flex w-full flex-grow" />
-        </div>
-      </div>
-      <div className="w-full flex-grow hidden flex-col md:flex self-start">
-        <ProgressBarDiamonds value={30} maxValue={30}  className="flex flex-grow w-full" />
-        <div className="flex flex-row mt-4">
-          <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
-        </div>
       </div>
     </DeltaPanel>
     <VaultStaking token={token} />

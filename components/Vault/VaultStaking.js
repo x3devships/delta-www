@@ -7,19 +7,17 @@ import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting } from '../../helpers';
 import DeltaButton from '../Button/DeltaButton';
 import TransactionButton from '../Button/TransactionButton';
-import { TokenInput } from '../Input';
+import { DeltaCheckboxButton, TokenInput } from '../Input';
 import { ProgressBarDiamonds } from '../ProgressBar';
 import { DeltaPanel } from '../Section'
-
-
-
+import { DATA_UNAVAILABLE } from '../../config';
 
 const RlpStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
 
   const onStake = async (amount, amountBN) => {
-    
+
     const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
 
     if (confirmed) {
@@ -69,53 +67,79 @@ const DeltaStaking = () => {
     <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
   </div >
 };
-const MintrLPTokensDialogContent = () => {
+
+const RlpMinting = () => {
   const [fromStakingRewards, setFromStakingRewards] = useState(false);
   const globalHooks = useContext(GlobalHooksContext);
-  const modalContext = useContext(ModalContext);
+  const [estimatedGas, setEstimatedGas] = useState(DATA_UNAVAILABLE);
+  const [estimatedMintedRlp, setEstimatedMintedRlp] = useState(DATA_UNAVAILABLE);
+  const [estimationLabel, setEstimationLabel] = useState('');
 
-  
-  return <ul className="list-disc list-inside py-4 md:py-8">
-    <li className = "text-base">Deposit Ethereum to mint new rLP tokens</li>
-    <li className = "text-base">select stake automatically to immediately stake the new rLP in the Deep Farming Vault</li>
+  useEffect(() => {
+    const text = `estimated rLP minted: ${formatting.getTokenAmount(estimatedMintedRlp, 0, 4)} ` +
+      `rLP ➔ Gas cost: ${formatting.getTokenAmount(estimatedGas, 0, 4)} ETH`;
+    setEstimationLabel(text);
+  }, [estimatedMintedRlp, estimatedGas]);
+
+  const onMint = async () => {
+
+  };
+
+  return <div>
+    <ul className="list-disc list-inside py-4 md:py-8">
+      <li>Deposit Ethereum to mint new rLP tokens</li>
+      <li>Select stake automatically to immediately stake the new rLP in the Deep Farming Vault</li>
+    </ul>
     <TokenInput
-        className="mt-4"
-        token="wETH"
-        labelBottom = "estimated rLP minted:rLP   Gas cost = 0.03ETH"
-        transactionButtonNoBorders
-        transactionButtonUnder
-        buttonText = "MINT"
-        checkBoxText = "STAKE AUTOMATICALLY"
-        buttonTextLoading="Loading..."
-    />
-    
+      className="mt-4"
+      token="ETH"
+      buttonText="Mint"
+      labelBottom={estimationLabel}
+      buttonTextLoading="Minting..."
+      checkboxButton="Stake"
+      onOk={onMint} />
+  </div>;
+};
 
-
-  </ul>; 
-}
 const VaultDeposit = ({ token }) => {
   const [depositAction, setDepositAction] = useState(true);
-  const modalContext = useContext(ModalContext);
+
   const renderContent = () => {
-    if (depositAction) {
-      return token === "rLP" ? <RlpStaking /> : <DeltaStaking />;
+    switch (token) {
+      case "rLP":
+        if (depositAction) {
+          return <RlpStaking />
+        }
+        return <RlpMinting />;
+      case "delta":
+        if (depositAction) {
+          return <DeltaStaking />;
+        }
+        break;
+      default:
+        break;
     }
-    return <>Not Available</>;
+
+    return <></>;
   };
-  const onBuy = async () => {
-    await modalContext.showMessage('Mint rLP Tokens', <MintrLPTokensDialogContent />, false);
-  };
+
+  const renderBuyButton = (token) => {
+    if (token === "rLP") {
+      return <DeltaButton className="flex-1 md:flex-grow-0"
+        onClick={() => setDepositAction(t => !t)}
+        grayLook={depositAction}>Buy</DeltaButton>
+    }
+
+    return <a className="flex-1 md:flex-grow-0" target="_blank" href="https://twitter.com/" rel="noopener noreferrer">
+      <DeltaButton grayLook={depositAction}>Buy On Uniswap</DeltaButton>
+    </a>;
+  }
 
   return <div>
     <DeltaPanel className="flex items-center text-center flex-wrap">
       <div className="flex border border-black p-1 flex-grow md:flex-none">
         <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setDepositAction(t => !t)} grayLook={!depositAction}>Stake</DeltaButton>
-        <DeltaButton className="flex-1 md:flex-grow-0" 
-          onClick={() => {
-            setDepositAction(t => !t);
-            token === "rLP" ? onBuy(): "";
-          }}
-          grayLook={depositAction}>Buy</DeltaButton>
+        {renderBuyButton(token)}
       </div>
     </DeltaPanel>
     {renderContent()}
