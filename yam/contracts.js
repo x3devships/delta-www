@@ -19,7 +19,7 @@ export class Contracts {
     this.web3 = web3;
   }
 
-  async initialize() {
+  async initialize(silentNonExistingContracts = false) {
     // Uniswap
     this.uniswapRouter = new this.web3.eth.Contract(UNIRouterJson, addressMap.uniswapRouter);
     this.uniswapFactory = new this.web3.eth.Contract(UNIFactJson, addressMap.uniswapFactoryV2);
@@ -29,13 +29,13 @@ export class Contracts {
 
     if (await this._isContractExists(addressMap.delta)) {
       this.delta = new this.web3.eth.Contract(DELTA.abi, addressMap.delta);
-    } else {
+    } else if (!silentNonExistingContracts) {
       console.error(`delta contract is not deployed at address ${addressMap.delta}`);
     }
 
     if (await this._isContractExists(addressMap.rLP)) {
       this.rLP = new this.web3.eth.Contract(RLP.abi, addressMap.rLP);
-    } else {
+    } else if (!silentNonExistingContracts) {
       console.error(`rLP contract is not deployed at address ${addressMap.rLP}`);
     }
 
@@ -57,10 +57,10 @@ export class Contracts {
 
     // Periphery
     this.LSW = new this.web3.eth.Contract(LSW.abi, addressMap.LSW);
-    if (await this._isContractExists(addressMap.DeltaRouter)) {
-      this.deltaRouter = new this.web3.eth.Contract(DeltaRouter.abi, addressMap.DeltaRouter);
-    } else {
-      console.error(`deltaRouter contract is not deployed at address ${addressMap.DeltaRouter}`);
+    if (await this._isContractExists(addressMap.deltaRouter)) {
+      this.deltaRouter = new this.web3.eth.Contract(DeltaRouter.abi, addressMap.deltaRouter);
+    } else if (!silentNonExistingContracts) {
+      console.error(`deltaRouter contract is not deployed at address ${addressMap.deltaRouter}`);
     }
   }
 

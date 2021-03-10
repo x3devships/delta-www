@@ -8,6 +8,6 @@ export default class Web3Client {
   }
 
   async initialize() {
-    return this.contracts.initialize();
+    return this.contracts.initialize(true);
   }
 }
