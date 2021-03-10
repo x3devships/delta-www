@@ -1,11 +1,16 @@
 import { ethers } from 'ethers';
 import { Button, HelperText, Input } from '@windmill/react-ui';
-import { useContext, useState } from 'react';
-import { addressMap, tokenMap } from '../../config';
+import { useContext, useEffect, useState } from 'react';
+import debounce from 'lodash.debounce';
+import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../../config';
 import { useTokenBalance } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 import { DeltaCheckboxButton } from '.';
+
+// The delay at which the onChange event is trigger when the input
+// value is changed.
+const ONCHANGE_NOTIFICATION_WAIT = 1000;
 
 const TokenInput = ({
   token,
@@ -16,6 +21,7 @@ const TokenInput = ({
   labelBottomClassName = '',
   checkboxButton,
   onOk,
+  onChange,
   className,
   transactionButtonUnder,
   transactionButtonNoBorders,
@@ -44,26 +50,50 @@ const TokenInput = ({
 
   const onCheckboxChanged = (event) => {
     setCheckboxChecked(event.target.checked);
-    console.log(event.target.checked);
   };
 
-  const onBeforeOk = async () => {
+  const getValues = () => {
     let amountBN;
 
     if (amount) {
       try {
         amountBN = ethers.utils.parseUnits(amount.toString(), tokenInfo.decimals);
-      } catch (e) {
-        throw new Error(`Error converting float number to bignumber, ${e.message}`);
+      } catch {
+        // ignored
       }
     }
 
-    const valid = validAmount && amount;
-    if (!valid) {
-      await modalContext.showError('Invalid Amount', 'The specified token amount is invalid');
-    } else {
-      onOk(amount, amountBN, checkboxChecked);
+    const valid = validAmount && amount && amountBN;
+    if (valid) {
+      return {
+        amount,
+        amountBN,
+        checkboxChecked
+      }
     }
+
+    return {
+      amount: DATA_UNAVAILABLE,
+      amountBN: DATA_UNAVAILABLE,
+      checkboxChecked
+    };
+  };
+
+  const onNotifyChange = () => {
+    const values = getValues();
+    console.log(values);
+    if (onChange) {
+      return onChange(values.amount, values.amountBN, values.checkboxChecked);
+    }
+  };
+
+  const onBeforeOk = async () => {
+    const values = getValues();
+    if (values.amount !== DATA_UNAVAILABLE && onOk) {
+      return onOk(values.amount, values.amountBN, values.checkboxChecked);
+    }
+
+    return modalContext.showError('Invalid Amount', 'The specified token amount is invalid');
   };
 
   const setValidatedAmount = (amount) => {
@@ -92,7 +122,14 @@ const TokenInput = ({
 
     const potentialAmount = parseFloat(e.target.value);
     setValidatedAmount(potentialAmount);
+
+    const debounceChangeNotification = debounce(() => onNotifyChange(), ONCHANGE_NOTIFICATION_WAIT);
+    debounceChangeNotification();
   };
+
+  useEffect(() => {
+    onNotifyChange();
+  }, [checkboxChecked]);
 
   const renderInput = () => {
     return <>

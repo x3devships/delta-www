@@ -5,7 +5,7 @@ import { useWallet } from 'use-wallet';
 import BigNumber from 'bignumber.js';
 import useYam from './useYam';
 import { DATA_UNAVAILABLE } from '../config';
-import { transactions } from '../helpers';
+import { formatting, transactions } from '../helpers';
 import { ModalContext } from '../contexts';
 
 const VALUE_REFRESH_INTERVAL = 30 * 1000;
@@ -26,6 +26,7 @@ const useRlpRouter = () => {
   const [gasEstimation, setGasEstimation] = useState(DATA_UNAVAILABLE);
   const [deltaAmount, setDeltaAmount] = useState(DATA_UNAVAILABLE);
   const [mode, setMode] = useState(DATA_UNAVAILABLE);
+  const [autoStake, setAutoStake] = useState(false);
 
   const addSlippage = (minAmount, perMileSlippage) => {
     minAmount = new BigNumber(minAmount);
@@ -35,7 +36,14 @@ const useRlpRouter = () => {
     return minAmount.minus(slippageAmount).toString();
   };
 
-  const mint = async (estimationOnly, stake) => {
+  const mint = async (estimationOnly) => {
+    if (ethAmount === DATA_UNAVAILABLE) {
+      return {
+        gasEstimation: DATA_UNAVAILABLE,
+        minLpAmount: DATA_UNAVAILABLE
+      };
+    }
+
     const ethValue = mode === MODE.BOTH_SIDES ? ethAmount * 2 : ethAmount;
     const ethValueBN = ethers.utils.parseUnits(ethValue.toString(), 18);
     const lpPerEthUnit = await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call();
@@ -45,9 +53,9 @@ const useRlpRouter = () => {
 
     if (mode === MODE.BOTH_SIDES) {
       const deltaValueBN = ethers.utils.parseUnits(deltaAmount.toString(), 18);
-      transaction = yam.contracts.deltaRouter.methods.addLiquidityBothSides(deltaValueBN.toString(), minLpAmount.toString());
+      transaction = yam.contracts.deltaRouter.methods.addLiquidityBothSides(deltaValueBN.toString(), minLpAmount.toString(), autoStake);
     } else {
-      transaction = yam.contracts.deltaRouter.methods.addLiquidityETHOnly(minLpAmount.toString());
+      transaction = yam.contracts.deltaRouter.methods.addLiquidityETHOnly(minLpAmount.toString(), autoStake);
     }
 
     const transactionParameters = {
@@ -64,11 +72,19 @@ const useRlpRouter = () => {
       };
     }
 
-    const successMessage = stake ?
+    const confirmationMessage = autoStake ?
+      `Are you sure you want to mint and automatically stake a minumum of ${formatting.getTokenAmount(minLpAmount, 18, 6)} rLP?` :
+      `Are you sure you want to mint a minumum of ${formatting.getTokenAmount(minLpAmount, 18, 6)} rLP?`
+
+    if (!await modalContext.showConfirm("Confirmation", confirmationMessage)) {
+      return Promise.reject();
+    }
+
+    const successMessage = autoStake ?
       'Your rLP tokens have been minted and staked. You can see them displayed on the vault page' :
       'Your rLP tokens have been minted and they are now available in your wallet';
 
-    const progressMessage = stake ?
+    const progressMessage = autoStake ?
       'Minting and staking your rLP tokens...' :
       'Minting your rLP tokens...';
 
@@ -119,7 +135,7 @@ const useRlpRouter = () => {
 
   useEffect(() => {
     update();
-  }, [deltaAmount, ethAmount]);
+  }, [deltaAmount, ethAmount, autoStake]);
 
   useEffect(() => {
     if (!yam?.contracts?.deltaRouter) {
@@ -137,6 +153,7 @@ const useRlpRouter = () => {
     setEthAmountOnly,
     setDeltaSide,
     setEthSide,
+    setAutoStake,
     estimatedRlpAmount,
     gasEstimation,
     mode,

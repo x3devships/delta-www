@@ -11,6 +11,7 @@ import { DeltaCheckboxButton, TokenInput } from '../Input';
 import { ProgressBarDiamonds } from '../ProgressBar';
 import { DeltaPanel } from '../Section'
 import { DATA_UNAVAILABLE } from '../../config';
+import { useRlpRouter } from '../../hooks';
 
 const RlpStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
@@ -69,20 +70,24 @@ const DeltaStaking = () => {
 };
 
 const RlpMinting = () => {
-  const [fromStakingRewards, setFromStakingRewards] = useState(false);
-  const globalHooks = useContext(GlobalHooksContext);
-  const [estimatedGas, setEstimatedGas] = useState(DATA_UNAVAILABLE);
-  const [estimatedMintedRlp, setEstimatedMintedRlp] = useState(DATA_UNAVAILABLE);
+  const router = useRlpRouter();
   const [estimationLabel, setEstimationLabel] = useState('');
 
   useEffect(() => {
-    const text = `estimated rLP minted: ${formatting.getTokenAmount(estimatedMintedRlp, 0, 4)} ` +
-      `rLP ➔ Gas cost: ${formatting.getTokenAmount(estimatedGas, 0, 4)} ETH`;
+    const text = `estimated rLP minted: ${formatting.getTokenAmount(router.estimatedRlpAmount, 0, 4)} ` +
+      `rLP ➔ Gas cost: ${formatting.getTokenAmount(router.gasEstimation, 0, 4)} ETH`;
     setEstimationLabel(text);
-  }, [estimatedMintedRlp, estimatedGas]);
+  }, [router.estimatedRlpAmount, router.gasEstimation]);
 
   const onMint = async () => {
 
+  };
+
+  const onChange = async (amount, amountBN, autoStake) => {
+    console.log(amount, amountBN, autoStake);
+    if (amount !== DATA_UNAVAILABLE) {
+      // console.log(amount, amountBN.toString(), autoStake);
+    }
   };
 
   return <div>
@@ -94,6 +99,7 @@ const RlpMinting = () => {
       className="mt-4"
       token="ETH"
       buttonText="Mint"
+      onChange={onChange}
       labelBottom={estimationLabel}
       buttonTextLoading="Minting..."
       checkboxButton="Stake"
