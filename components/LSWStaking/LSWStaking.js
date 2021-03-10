@@ -21,8 +21,8 @@ const LSWStaking = () => {
     const transaction = await yam.contracts.LSW.methods.claimOrStakeAndClaimLP(claimToWallet);
     const transactionTitle = stake ? 'Claiming and staking...' : 'Claiming...';
     const successMessage = stake ?
-      'Your rLP tokens have been claimed and staked. You can see them displayed on the main page' :
-      'Your rLP tokens have been claimed and there are now available in your wallet';
+      'Your rLP tokens have been claimed and staked. You can see them displayed on the vault page' :
+      'Your rLP tokens have been claimed and they are now available in your wallet';
 
     await transactions.executeTransaction(
       modalContext,

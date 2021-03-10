@@ -66,6 +66,8 @@ $ ./liveTest.sh tests_live/operations/delta/end_lsw.js  --local
 
 Once ran, it should display the delta token address. This address should be replaced in the one inside ```config/inodex.js``` ```addressMap.delta```
 
+Make sure the other address listen in the console are updated as well, if needed.
+
 In metamask, import account1 and connect to the local RPC localhost network. Chain id should be set to 1 and the other values left to default.
 
 ### Running without the hardhat node

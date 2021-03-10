@@ -14,6 +14,8 @@ const Debug = () => {
   };
 
   return <div className="bg-black p-1 text-green-400 text-xs">
+    Debug information
+    <hr />
     <ul className="m-2">
       <li> <span className="font-bold">Block # </span>{globalHooks.blockInfo.block.number}</li>
       <li> <span className="font-bold">Timestamp </span>{globalHooks.blockInfo.block.timestamp}</li>

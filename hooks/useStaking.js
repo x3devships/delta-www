@@ -3,7 +3,7 @@ import { useWallet } from 'use-wallet';
 import useYam from './useYam';
 import useWeb3 from './useWeb3';
 import { hooks } from '../helpers';
-import { addressMap, DATA_UNAVAILABLE, TEMP_ENABLE_END_LSW_WEB3, tokenMap } from '../config';
+import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../config';
 
 const REFRESH_RATE = 30 * 1000;
 
@@ -40,6 +40,8 @@ const useStaking = () => {
 
   // TODO: remove once contract are available
   const setMockValues = async () => {
+    if (!yam) return;
+
     const block = await yam.web3.eth.getBlock("latest");
     const now = block.timestamp;
     const secondsInOneDay = 60 * 60 * 24;
@@ -123,15 +125,9 @@ const useStaking = () => {
   };
 
   useEffect(() => {
-    update(); // NEED DELETE @midas
-    if (TEMP_ENABLE_END_LSW_WEB3) {
-      update();
-      const interval = hooks.setWalletAwareInterval(wallet, update, REFRESH_RATE);
-      return () => clearInterval(interval);
-    }
-
-    setMockValues();
-
+    update();
+    const interval = setInterval(update, REFRESH_RATE);
+    return () => clearInterval(interval);
   }, [yam, web3, wallet]);
 
   return {

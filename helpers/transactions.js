@@ -12,7 +12,7 @@ const executeTransaction = async (
   transactionLoadingMessage = 'Transaction in progress...') => {
 
   try {
-    const transactionGasEstimate = await transaction.estimateGas(transactionParameters, transactionParameters);
+    const transactionGasEstimate = await transaction.estimateGas(transactionParameters);
     const transactionMessage = modalContext.showControlledMessage(transactionTitle, <Spinner label={transactionLoadingMessage} />);
 
     await transaction.send({
