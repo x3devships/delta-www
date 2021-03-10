@@ -30,7 +30,7 @@ const VaultInfoBox = ({ token, className = '' }) => {
         Amount Staked
       </div>
       <div className="text-2xl self-center px-4 self-end flex flex-grow mt-0 md:mt-1">
-        {formatting.getTokenAmount(globalHooks.staking.vaultStats[token].amountTotal, 0, 2)}
+        {formatting.getTokenAmount(globalHooks.staking.vaultStats[token]?.amountTotal, 0, 2)}
       </div>
     </div>
     <div className="flex flex-col text-center py-1 md:py-0">
@@ -38,7 +38,7 @@ const VaultInfoBox = ({ token, className = '' }) => {
         Yearly ROI
       </div>
       <div className="text-2xl self-center px-4 mt-0 md:mt-1">
-        {formatting.getTokenAmount(globalHooks.staking.vaultStats[token].apy, 0, 2)}%
+        {formatting.getTokenAmount(globalHooks.staking.vaultStats[token]?.apy, 0, 2)}%
       </div>
     </div>
   </div>

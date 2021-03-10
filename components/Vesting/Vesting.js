@@ -11,6 +11,7 @@ import DeltaButton from '../Button/DeltaButton';
 import { TokenInput } from '../Input';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
+import { Spinner } from '../Spinner';
 
 const FULLY_VESTING_REFRESH_RATE = 1 * 60 * 1000;
 
@@ -149,7 +150,7 @@ const Vesting = () => {
 
   const renderChart = () => {
     if (globalHooks.lswStats.data.referralBonusWETH === DATA_UNAVAILABLE || globalHooks.lswStats.data.referralBonusWETH <= 0) {
-      return <></>;
+      return <div className="w-full text-center"><Spinner /></div>
     }
 
     return <div className="w-full">
@@ -214,7 +215,7 @@ const Vesting = () => {
         </div>
       </div>
       <DeltaPanel className="flex items-center text-center flex-wrap mt-4">
-        <DeltaButton hidePlus lassName="flex-1 md:flex-none" onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'See All Transactions ▼' : 'Hide All Transactions ▲'}</DeltaButton>
+        <DeltaButton hidePlus onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'See All Transactions ▼' : 'Hide All Transactions ▲'}</DeltaButton>
       </DeltaPanel>
       <DeltaPanel className={`${!transactionDetailsVisible ? 'hidden' : ''}`}>
         <VestingTransactions />

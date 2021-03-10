@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import moment from 'moment';
-import { DATA_UNAVAILABLE, TEMP_ENABLE_END_LSW_WEB3 } from '../config';
+import { DATA_UNAVAILABLE } from '../config';
 import { hooks } from '../helpers';
 import useYam from './useYam';
 
@@ -67,12 +67,13 @@ const useDelta = () => {
 
 
   useEffect(() => {
-    if (TEMP_ENABLE_END_LSW_WEB3) {
-      update();
-      const interval = hooks.setWalletAwareInterval(wallet, update, REFRESH_RATE);
-
-      return () => clearInterval(interval);
+    if (!yam?.contracts?.delta) {
+      return false;
     }
+
+    update();
+    const interval = hooks.setWalletAwareInterval(wallet, update, REFRESH_RATE);
+    return () => clearInterval(interval);
   }, [yam]);
 
   return {

@@ -6,4 +6,8 @@ export default class Web3Client {
     this.web3 = new Web3(apiUrl);
     this.contracts = new Contracts(this.web3, options);
   }
+
+  async initialize() {
+    return this.contracts.initialize();
+  }
 }

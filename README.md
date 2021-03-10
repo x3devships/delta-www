@@ -34,22 +34,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 
 ## Limited Staking Window
-Before deploying the website when the LSW is not ready to be ended, the LSW ending can be smulated 
-using the hardhat node and using core contract repository:
-
-Inside ```config/index.js``` there is a variable ```TEMP_ENABLE_END_LSW_WEB3``` that can be changed from true/false.
-This variable is temporary during the LSW and will be remove once the contracts are connected to the LSW and
-that it's ready to be ended.
-
-When set to false it bypasses the update of the values within the React hooks and make it possible to work on the website before the contract requirements are available.
-
-When set to true, the hooks are going to update using web3 calls to the contracts. Once live they will communicate with the real one, when working locally using hardhat node, this will use the one deployed locally in the mainnet fork.
+Before deploying the website when the LSW is not ready to be ended, the LSW ending can be smulated using the hardhat node and using core contract repository:
 
 ### Running with the hardhat node
-edit ```config/index.js``` and change ```TEMP_ENABLE_END_LSW_WEB3``` to true.
-
-This is make the hooks like useStaking and useDelta to update using web3.
-
 In the core contracts repository start the hardhat local node. 
 ```
 $ cd src
@@ -69,10 +56,3 @@ Once ran, it should display the delta token address. This address should be repl
 Make sure the other address listen in the console are updated as well, if needed.
 
 In metamask, import account1 and connect to the local RPC localhost network. Chain id should be set to 1 and the other values left to default.
-
-### Running without the hardhat node
-edit ```config/index.js``` and change ```TEMP_ENABLE_END_LSW_WEB3``` to false.
-
-When set to false this allows not updating the hooks that requires the LSW contracts and work on the website. The only limitation is
-that mock values has to be use and many value will be displayed as '--' because they could not bbe updated.
-

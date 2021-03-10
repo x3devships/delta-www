@@ -6,9 +6,6 @@ BigNumber.config({
   DECIMAL_PLACES: 80
 });
 
-// Temp flag, set to true to use the hardhat node and end_lsw operation.
-export const TEMP_ENABLE_END_LSW_WEB3 = false;
-
 export const SUBTRACT_GAS_LIMIT = 100000;
 export const DEFAULT_CONFIRMATIONS = 1;
 export const DEFAULT_GAS = '6000000';
@@ -48,8 +45,8 @@ export const addressMap = {
   wbtcWeth: '0xbb2b8038a1640196fbe3e38816f3e67cba72d940',
 
   // Tokens
-  delta: '0x7Daa249d5CAC91c94C4a6EfE14215140ad54390e',
-  rLP: '0x0fDf395d26647e3Df5eDca8d7A186e5f00AEd60f',
+  delta: '0x4326ccFdADCa7d417fd82A0536d86fd77913D472',
+  rLP: '0x012819E7Fa602C126B8159330221d8597A450998',
   core: '0x62359ed7505efc61ff1d56fef82158ccaffa23d7',
   wCORE: '0x17b8c1a92b66b1cf3092c5d223cb3a129023b669',
   wETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
@@ -59,7 +56,7 @@ export const addressMap = {
 
   // Periphery
   LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB',
-  DeltaRouter: '0x012819E7Fa602C126B8159330221d8597A450998'
+  DeltaRouter: '0xDe4cd518dcd9d9c9D0E44b211548CB9cA1253EB7'
 };
 
 export const addressDecimalsMap = {};

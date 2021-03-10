@@ -1,4 +1,4 @@
-import { addressMap, TEMP_ENABLE_END_LSW_WEB3 } from '../config';
+import { addressMap } from '../config';
 import ERC20Json from '../contracts/IERC20.json';
 import WETHJson from '../contracts/weth.json';
 import UNIFactJson from '../contracts/unifact2.json';
@@ -17,37 +17,64 @@ import DeltaRouter from '../contracts/DeltaRouter.json';
 export class Contracts {
   constructor(web3) {
     this.web3 = web3;
+  }
 
+  async initialize() {
     // Uniswap
-    this.uniswapRouter = new web3.eth.Contract(UNIRouterJson, addressMap.uniswapRouter);
-    this.uniswapFactory = new web3.eth.Contract(UNIFactJson, addressMap.uniswapFactoryV2);
+    this.uniswapRouter = new this.web3.eth.Contract(UNIRouterJson, addressMap.uniswapRouter);
+    this.uniswapFactory = new this.web3.eth.Contract(UNIFactJson, addressMap.uniswapFactoryV2);
 
     // Tokens
-    this.core = new web3.eth.Contract(CORE.abi, addressMap.core);
+    this.core = new this.web3.eth.Contract(CORE.abi, addressMap.core);
 
-    if (TEMP_ENABLE_END_LSW_WEB3) {
-      this.delta = new web3.eth.Contract(DELTA.abi, addressMap.delta);
+    if (await this._isContractExists(addressMap.delta)) {
+      this.delta = new this.web3.eth.Contract(DELTA.abi, addressMap.delta);
+    } else {
+      console.error(`delta contract is not deployed at address ${addressMap.delta}`);
     }
 
-    this.rLP = new web3.eth.Contract(RLP.abi, addressMap.rLP);
-    this.wCORE = new web3.eth.Contract(wCORE.abi);
-    this.cDAI = new web3.eth.Contract(cDAI.abi, addressMap.cDAI);
-    this.wBTC = new web3.eth.Contract(WBTC.abi, addressMap.wBTC);
-    this.wETH = new web3.eth.Contract(WETHJson, addressMap.wETH);
-    this.cBTC = new web3.eth.Contract(CBTC.abi, addressMap.cBTC);
-    this.erc20 = new web3.eth.Contract(ERC20Json.abi);
-    this.genericErc20 = new web3.eth.Contract(CORE.abi); // CORE ABI has decimals ERC20 doesn't...
+    if (await this._isContractExists(addressMap.rLP)) {
+      this.rLP = new this.web3.eth.Contract(RLP.abi, addressMap.rLP);
+    } else {
+      console.error(`rLP contract is not deployed at address ${addressMap.rLP}`);
+    }
+
+    this.wCORE = new this.web3.eth.Contract(wCORE.abi);
+    this.cDAI = new this.web3.eth.Contract(cDAI.abi, addressMap.cDAI);
+    this.wBTC = new this.web3.eth.Contract(WBTC.abi, addressMap.wBTC);
+    this.wETH = new this.web3.eth.Contract(WETHJson, addressMap.wETH);
+    this.cBTC = new this.web3.eth.Contract(CBTC.abi, addressMap.cBTC);
+    this.erc20 = new this.web3.eth.Contract(ERC20Json.abi);
+    this.genericErc20 = new this.web3.eth.Contract(CORE.abi); // CORE ABI has decimals ERC20 doesn't...
 
     // Pairs
-    this.genericUniswapPair = new web3.eth.Contract(UNIPairJson);
-    this.coreCbtcPair = new web3.eth.Contract(UNIPairJson, addressMap.coreCbtc);
-    this.coreWethPair = new web3.eth.Contract(UNIPairJson, addressMap.coreWeth);
-    this.cDaiWcorePair = new web3.eth.Contract(UNIPairJson, addressMap.cDaiWcore);
-    this.wBtcWethPair = new web3.eth.Contract(UNIPairJson, addressMap.wbtcWeth);
-    this.ethUsdtPair = new web3.eth.Contract(UNIPairJson, addressMap.ethUsdt);
+    this.genericUniswapPair = new this.web3.eth.Contract(UNIPairJson);
+    this.coreCbtcPair = new this.web3.eth.Contract(UNIPairJson, addressMap.coreCbtc);
+    this.coreWethPair = new this.web3.eth.Contract(UNIPairJson, addressMap.coreWeth);
+    this.cDaiWcorePair = new this.web3.eth.Contract(UNIPairJson, addressMap.cDaiWcore);
+    this.wBtcWethPair = new this.web3.eth.Contract(UNIPairJson, addressMap.wbtcWeth);
+    this.ethUsdtPair = new this.web3.eth.Contract(UNIPairJson, addressMap.ethUsdt);
 
     // Periphery
-    this.LSW = new web3.eth.Contract(LSW.abi, addressMap.LSW);
-    this.DeltaRouter = new web3.eth.Contract(DeltaRouter.abi, addressMap.DeltaRouter);
+    this.LSW = new this.web3.eth.Contract(LSW.abi, addressMap.LSW);
+    if (await this._isContractExists(addressMap.DeltaRouter)) {
+      this.deltaRouter = new this.web3.eth.Contract(DeltaRouter.abi, addressMap.DeltaRouter);
+    } else {
+      console.error(`deltaRouter contract is not deployed at address ${addressMap.DeltaRouter}`);
+    }
+  }
+
+  /**
+   * Checks if an address is a valid contract one. Used
+   * to validate that specified contract exists when developping
+   * locally with hardhat fork mainnet local node.
+   */
+  async _isContractExists(address) {
+    if (process.env.NODE_ENV !== 'production') {
+      const code = await this.web3.eth.getCode(address);
+      return code !== '0x';
+    }
+
+    return true;
   }
 }

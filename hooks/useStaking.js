@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import useYam from './useYam';
 import useWeb3 from './useWeb3';
-import { hooks } from '../helpers';
 import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../config';
 
 const REFRESH_RATE = 30 * 1000;

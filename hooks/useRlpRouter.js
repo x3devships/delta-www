@@ -122,6 +122,10 @@ const useRlpRouter = () => {
   }, [deltaAmount, ethAmount]);
 
   useEffect(() => {
+    if (!yam?.contracts?.deltaRouter) {
+      return false;
+    }
+
     update();
     const interval = setInterval(update, VALUE_REFRESH_INTERVAL);
     return () => clearInterval(interval);
