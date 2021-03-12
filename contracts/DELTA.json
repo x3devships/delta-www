@@ -79,9 +79,9 @@
       "name": "QTY_EPOCHS",
       "outputs": [
         {
-          "internalType": "uint8",
+          "internalType": "uint256",
           "name": "",
-          "type": "uint8"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -245,16 +245,40 @@
     {
       "inputs": [
         {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "gasTestTransfer",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "components": [
             {
-              "internalType": "uint112",
+              "internalType": "uint256",
               "name": "amount",
-              "type": "uint112"
+              "type": "uint256"
             },
             {
-              "internalType": "uint112",
+              "internalType": "uint256",
               "name": "fullVestingTimestamp",
-              "type": "uint112"
+              "type": "uint256"
             }
           ],
           "internalType": "struct VestingTransaction",
@@ -267,24 +291,24 @@
         {
           "components": [
             {
-              "internalType": "uint112",
+              "internalType": "uint256",
               "name": "amount",
-              "type": "uint112"
+              "type": "uint256"
             },
             {
-              "internalType": "uint112",
+              "internalType": "uint256",
               "name": "fullVestingTimestamp",
-              "type": "uint112"
+              "type": "uint256"
             },
             {
-              "internalType": "uint112",
+              "internalType": "uint256",
               "name": "mature",
-              "type": "uint112"
+              "type": "uint256"
             },
             {
-              "internalType": "uint112",
+              "internalType": "uint256",
               "name": "immature",
-              "type": "uint112"
+              "type": "uint256"
             }
           ],
           "internalType": "struct VestingTransactionDetailed",
@@ -683,24 +707,24 @@
       "name": "userInformation",
       "outputs": [
         {
-          "internalType": "uint8",
+          "internalType": "uint256",
           "name": "mostMatureTxIndex",
-          "type": "uint8"
+          "type": "uint256"
         },
         {
-          "internalType": "uint8",
+          "internalType": "uint256",
           "name": "lastInTxIndex",
-          "type": "uint8"
+          "type": "uint256"
         },
         {
-          "internalType": "uint112",
+          "internalType": "uint256",
           "name": "maturedBalance",
-          "type": "uint112"
+          "type": "uint256"
         },
         {
-          "internalType": "uint112",
+          "internalType": "uint256",
           "name": "maxBalance",
-          "type": "uint112"
+          "type": "uint256"
         },
         {
           "internalType": "bool",
@@ -737,14 +761,14 @@
       "name": "vestingTransactions",
       "outputs": [
         {
-          "internalType": "uint112",
+          "internalType": "uint256",
           "name": "amount",
-          "type": "uint112"
+          "type": "uint256"
         },
         {
-          "internalType": "uint112",
+          "internalType": "uint256",
           "name": "fullVestingTimestamp",
-          "type": "uint112"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
