@@ -79,16 +79,22 @@ const RlpMinting = () => {
     setEstimationLabel(text);
   }, [router.estimatedRlpAmount, router.gasEstimation]);
 
-  const onMint = async () => {
-
-  };
+  const onBuy = async (amount, amountBN, autoStake) => {
+    console.log("Buy is activated", amount, amountBN);
+    if (amount !== DATA_UNAVAILABLE) {
+        router.setAutoStake(autoStake);
+        await router.mint(true);
+    }
+};
 
   const onChange = async (amount, amountBN, autoStake) => {
     console.log(amount, amountBN, autoStake);
     if (amount !== DATA_UNAVAILABLE) {
-      // console.log(amount, amountBN.toString(), autoStake);
+        router.setAutoStake(autoStake);
+        await router.setEthAmountOnly(amount);
+        // console.log(amount, amountBN.toString(), autoStake);
     }
-  };
+};
 
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
@@ -98,12 +104,12 @@ const RlpMinting = () => {
     <TokenInput
       className="mt-4"
       token="ETH"
-      buttonText="Mint"
+      buttonText="Buy"
       onChange={onChange}
       labelBottom={estimationLabel}
-      buttonTextLoading="Minting..."
+      buttonTextLoading="Buying..."
       checkboxButton="Stake"
-      onOk={onMint} />
+      onOk={onBuy} />
   </div>;
 };
 
