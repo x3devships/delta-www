@@ -46,25 +46,32 @@ const useRlpRouter = () => {
 
     const ethValue = mode === MODE.BOTH_SIDES ? ethAmount * 2 : ethAmount;
     const ethValueBN = ethers.utils.parseUnits(ethValue.toString(), 18);
+    
+    console.log("Wallet Address: ", wallet.account, "EthValBN: ", ethValueBN.toString());
+
+    if (!yam?.contracts?.deltaRouter) {
+      return false;
+    }
+    
     const lpPerEthUnit = await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call();
     const minLpAmount = addSlippage(lpPerEthUnit.multipliedBy(ethValueBN), SLIPPAGE_PER_MILE);
-
+    
     let transaction;
-
+    
     if (mode === MODE.BOTH_SIDES) {
       const deltaValueBN = ethers.utils.parseUnits(deltaAmount.toString(), 18);
       transaction = yam.contracts.deltaRouter.methods.addLiquidityBothSides(deltaValueBN.toString(), minLpAmount.toString(), autoStake);
     } else {
       transaction = yam.contracts.deltaRouter.methods.addLiquidityETHOnly(minLpAmount.toString(), autoStake);
     }
-
+    
     const transactionParameters = {
       from: wallet.account,
       value: ethValueBN.toString()
     };
 
     if (estimationOnly) {
-      const gasEstimation = transaction.estimateGas(transactionParameters);
+      const gasEstimation = await transaction.estimateGas(transactionParameters);
 
       return {
         gasEstimation,
@@ -73,20 +80,20 @@ const useRlpRouter = () => {
     }
 
     const confirmationMessage = autoStake ?
-      `Are you sure you want to mint and automatically stake a minumum of ${formatting.getTokenAmount(minLpAmount, 18, 6)} rLP?` :
-      `Are you sure you want to mint a minumum of ${formatting.getTokenAmount(minLpAmount, 18, 6)} rLP?`
+      `Are you sure you want to buy and automatically stake a minumum of ${formatting.getTokenAmount(minLpAmount, 18, 6)} rLP?` :
+      `Are you sure you want to buy a minumum of ${formatting.getTokenAmount(minLpAmount, 18, 6)} rLP?`
 
     if (!await modalContext.showConfirm("Confirmation", confirmationMessage)) {
       return Promise.reject();
     }
 
     const successMessage = autoStake ?
-      'Your rLP tokens have been minted and staked. You can see them displayed on the vault page' :
-      'Your rLP tokens have been minted and they are now available in your wallet';
+      'Your rLP tokens have been bought and staked. You can see them displayed on the vault page' :
+      'Your rLP tokens have been bought and they are now available in your wallet';
 
     const progressMessage = autoStake ?
-      'Minting and staking your rLP tokens...' :
-      'Minting your rLP tokens...';
+      'Buying and staking your rLP tokens...' :
+      'Buying your rLP tokens...';
 
     return transactions.executeTransaction(
       modalContext,
@@ -94,7 +101,7 @@ const useRlpRouter = () => {
       transactionParameters,
       successMessage,
       "Success",
-      "Error while minting rLP",
+      "Error while buying rLP",
       "Transaction in progres...",
       progressMessage
     );
@@ -102,7 +109,9 @@ const useRlpRouter = () => {
 
   const update = async () => {
     if (!wallet) return;
+    console.log("Mint Return: ", await mint(true));
     const { minLpAmount, gasEstimation } = await mint(true);
+    console.log("Displaying Values: ", minLpAmount, gasEstimation);
     setEstimatedRlpAmount(minLpAmount.toString() / 1e18);
     setGasEstimation(gasEstimation);
   };
