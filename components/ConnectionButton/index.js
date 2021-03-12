@@ -1,1 +1,1 @@
-export { default as ConnectionButton } from "./ConnectionButton";
+export { default as ConnectionButton } from './ConnectionButton';
