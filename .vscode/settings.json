@@ -1,11 +1,12 @@
 {
-  "editor.formatOnSave": true,
-  "editor.formatOnType": true,
-  "editor.detectIndentation": false,
-  "editor.tabSize": 2,
-  "git.ignoreLimitWarning": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "javascript.preferences.quoteStyle": "single"
+    "editor.formatOnType": true,
+    "git.ignoreLimitWarning": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "javascript.preferences.quoteStyle": "single",
+    "editor.formatOnPaste": true,
+    "diffEditor.codeLens": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
