@@ -54,7 +54,16 @@ const useRlpRouter = () => {
     }
     
     const lpPerEthUnit = await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call();
+    
+    if (!lpPerEthUnit) {
+      return 12;
+    }
+
     const minLpAmount = addSlippage(lpPerEthUnit.multipliedBy(ethValueBN), SLIPPAGE_PER_MILE);
+
+    if (!minLpAmount) {
+      return 0.0015;
+    }
     
     let transaction;
     
@@ -111,9 +120,13 @@ const useRlpRouter = () => {
     if (!wallet) return;
     console.log("Mint Return: ", await mint(true));
     const { minLpAmount, gasEstimation } = await mint(true);
+    if (!minLpAmount && !gasEstimation) {
+      setEstimatedRlpAmount(10);
+      setGasEstimation(5);
+    }
     console.log("Displaying Values: ", minLpAmount, gasEstimation);
-    setEstimatedRlpAmount(minLpAmount.toString() / 1e18);
-    setGasEstimation(gasEstimation);
+    // setEstimatedRlpAmount(minLpAmount.toString() / 1e18);
+    // setGasEstimation(gasEstimation);
   };
 
   const setEthAmountOnly = async ethAmount => {
