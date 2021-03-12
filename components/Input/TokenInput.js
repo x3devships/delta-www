@@ -81,7 +81,6 @@ const TokenInput = ({
 
   const onNotifyChange = () => {
     const values = getValues();
-    console.log(values);
     if (onChange) {
       return onChange(values.amount, values.amountBN, values.checkboxChecked);
     }

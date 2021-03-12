@@ -88,7 +88,7 @@ const RlpMinting = () => {
 };
 
   const onChange = async (amount, amountBN, autoStake) => {
-    console.log(amount, amountBN, autoStake);
+    console.log("Changing:", amount, amountBN, autoStake);
     if (amount !== DATA_UNAVAILABLE) {
         router.setAutoStake(autoStake);
         await router.setEthAmountOnly(amount);
