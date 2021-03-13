@@ -50,7 +50,7 @@ const useRlpRouter = () => {
     console.log("Wallet Address: ", wallet.account, "EthValBN: ", ethValueBN.toString());
 
     if (!yam?.contracts?.deltaRouter) {
-      yam.contracts.deltaRouter = false; /* What do we put here? */
+      yam.contracts.deltaRouter = false; /* What do we put here? Let me know.*/
     }
     
     let lpPerEthUnit = await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call();
