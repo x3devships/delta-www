@@ -56,13 +56,21 @@ const useRlpRouter = () => {
 
     // TODO: Remove once the contracts are deployed
     if (!yam?.contracts?.deltaRouter) {
-      return false;
+      yam.contracts.deltaRouter = false; /* What do we put here? */
+    }
+    
+    let lpPerEthUnit = await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call();
+    
+    if (!lpPerEthUnit) {
+      lpPerEthUnit = 12;
     }
 
-    const lpPerEthUnit = new BigNumber(await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call());
-    const baseMinLpAmount = lpPerEthUnit.multipliedBy(ethValueBN);
-    const minLpAmount = addSlippage(baseMinLpAmount, SLIPPAGE_PER_MILE);
+    let minLpAmount = addSlippage(lpPerEthUnit.multipliedBy(ethValueBN), SLIPPAGE_PER_MILE);
 
+    if (!minLpAmount) {
+      minLpAmount = 0.0015;
+    }
+    
     let transaction;
 
     if (mode === MODE.BOTH_SIDES) {
@@ -122,10 +130,14 @@ const useRlpRouter = () => {
 
   const update = async () => {
     if (!wallet) return;
+
     console.log("Mint Return: ", await mint(true));
+
     const { minLpAmount, gasEstimation } = await mint(true);
+
     console.log("Displaying Values: ", minLpAmount, gasEstimation);
-    setEstimatedRlpAmount(minLpAmount.toString() / 1e18);
+
+    setEstimatedRlpAmount(minLpAmount?.toString() / 1e18);
     setGasEstimation(gasEstimation);
   };
 
