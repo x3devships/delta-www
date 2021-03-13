@@ -20,7 +20,7 @@ export class Contracts {
     this.web3 = web3;
   }
 
-  async initialize(noWarningWhenContractNotFound = false) {
+  async initialize() {
     // Uniswap
     this.uniswapRouter = new this.web3.eth.Contract(UNIRouterJson, addressMap.uniswapRouter);
     this.uniswapFactory = new this.web3.eth.Contract(UNIFactJson, addressMap.uniswapFactoryV2);
@@ -28,21 +28,8 @@ export class Contracts {
     // Tokens
     this.core = new this.web3.eth.Contract(CORE.abi, addressMap.core);
 
-    if (await this._isContractExists(addressMap.delta)) {
-      this.delta = new this.web3.eth.Contract(DELTA.abi, addressMap.delta);
-    } else if (!noWarningWhenContractNotFound) {
-      // Comment once mock is done
-      // this.delta = DeltaMock;
-      console.error(`delta contract is not deployed at address ${addressMap.delta}`);
-    }
-
-    if (await this._isContractExists(addressMap.rLP)) {
-      this.rLP = new this.web3.eth.Contract(RLP.abi, addressMap.rLP);
-    } else if (!noWarningWhenContractNotFound) {
-      // Comment once mock is done
-      // this.rLP = RlpMock;
-      console.error(`rLP contract is not deployed at address ${addressMap.rLP}`);
-    }
+    this.delta = await this._loadContractOrMock(DELTA.abi, addressMap.delta, DeltaMock);
+    this.rLP = await this._loadContractOrMock(RLP.abi, addressMap.rLP, RlpMock);
 
     this.wCORE = new this.web3.eth.Contract(wCORE.abi);
     this.cDAI = new this.web3.eth.Contract(cDAI.abi, addressMap.cDAI);
@@ -62,13 +49,23 @@ export class Contracts {
 
     // Periphery
     this.LSW = new this.web3.eth.Contract(LSW.abi, addressMap.LSW);
-    if (await this._isContractExists(addressMap.deltaRouter)) {
-      this.deltaRouter = new this.web3.eth.Contract(DeltaRouter.abi, addressMap.deltaRouter);
-    } else if (!noWarningWhenContractNotFound) {
-      // Comment once mock is done
-      // this.deltaRouter = RouterMock;
-      console.error(`deltaRouter contract is not deployed at address ${addressMap.deltaRouter}`);
+    this.deltaRouter = await this._loadContractOrMock(DeltaRouter.abi, addressMap.deltaRouter, RouterMock);
+  }
+
+  /**
+   * Load the contract at the given address if it exists
+   * otherwise, when not in production, load a mock.
+   */
+  async _loadContractOrMock(abi, address, mock) {
+    if (await this._isContractExists(address)) {
+      return new this.web3.eth.Contract(abi, address);
     }
+
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error(`Contract not deployed at address ${address}`);
+    }
+
+    return mock;
   }
 
   /**
