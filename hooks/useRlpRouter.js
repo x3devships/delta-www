@@ -1,11 +1,10 @@
 
 import { useContext, useEffect, useState } from 'react';
-import { ethers } from 'ethers';
 import { useWallet } from 'use-wallet';
 import BigNumber from 'bignumber.js';
 import useYam from './useYam';
 import { DATA_UNAVAILABLE } from '../config';
-import { formatting, transactions } from '../helpers';
+import { formatting, parsing, transactions } from '../helpers';
 import { ModalContext } from '../contexts';
 
 const VALUE_REFRESH_INTERVAL = 30 * 1000;
@@ -29,11 +28,12 @@ const useRlpRouter = () => {
   const [autoStake, setAutoStake] = useState(false);
 
   const addSlippage = (minAmount, perMileSlippage) => {
+    console.log('minAmount', minAmount.toString());
     minAmount = new BigNumber(minAmount);
     perMileSlippage = new BigNumber(perMileSlippage);
 
-    const slippageAmount = minAmount.mul(perMileSlippage).div(new BigNumber('1000'));
-    return minAmount.minus(slippageAmount).toString();
+    const slippageAmount = minAmount.multipliedBy(perMileSlippage).div(new BigNumber('1000'));
+    return minAmount.minus(slippageAmount);
   };
 
   const mint = async (estimationOnly) => {
@@ -45,10 +45,16 @@ const useRlpRouter = () => {
     }
 
     const ethValue = mode === MODE.BOTH_SIDES ? ethAmount * 2 : ethAmount;
-    const ethValueBN = ethers.utils.parseUnits(ethValue.toString(), 18);
-    
+
+    const ethValueBN = parsing.parseFloatToBigNumber(ethValue, 18);
+    // Invalid amount, return rejection.
+    if (!ethValueBN) {
+      return Promise.reject();
+    }
+
     console.log("Wallet Address: ", wallet.account, "EthValBN: ", ethValueBN.toString());
 
+    // TODO: Remove once the contracts are deployed
     if (!yam?.contracts?.deltaRouter) {
       yam.contracts.deltaRouter = false; /* What do we put here? */
     }
@@ -66,14 +72,20 @@ const useRlpRouter = () => {
     }
     
     let transaction;
-    
+
     if (mode === MODE.BOTH_SIDES) {
-      const deltaValueBN = ethers.utils.parseUnits(deltaAmount.toString(), 18);
+      const deltaValueBN = parsing.parseFloatToBigNumber(deltaAmount, 18);
+
+      // Not a value delta amount, we cannot continue.
+      if (!deltaValueBN) {
+        return Promise.reject();
+      }
+
       transaction = yam.contracts.deltaRouter.methods.addLiquidityBothSides(deltaValueBN.toString(), minLpAmount.toString(), autoStake);
     } else {
       transaction = yam.contracts.deltaRouter.methods.addLiquidityETHOnly(minLpAmount.toString(), autoStake);
     }
-    
+
     const transactionParameters = {
       from: wallet.account,
       value: ethValueBN.toString()
@@ -139,20 +151,24 @@ const useRlpRouter = () => {
     setMode(MODE.BOTH_SIDES);
     setDeltaAmount(deltaAmount);
 
-    const deltaAmountBN = ethers.utils.parseUnits(deltaAmount.toString(), 18);
-    const ethAmount = await yam.contracts.deltaRouter.methods.getOptimalEthAmountForDeltaAmount(deltaAmountBN.toString()).call();
-    setEthAmount(ethAmount.toString() / 1e18);
-    await update();
+    const deltaAmountBN = parsing.parseFloatToBigNumber(deltaAmount, 18);
+    if (deltaAmountBN) {
+      const ethAmount = await yam.contracts.deltaRouter.methods.getOptimalEthAmountForDeltaAmount(deltaAmountBN.toString()).call();
+      setEthAmount(ethAmount.toString() / 1e18);
+      await update();
+    }
   };
 
   const setEthSide = async ethAmount => {
     setMode(MODE.BOTH_SIDES);
     setEthAmount(ethAmount);
 
-    const ethAmountBN = ethers.utils.parseUnits(ethAmount.toString(), 18);
-    const deltaAmount = await yam.contracts.deltaRouter.methods.getOptimalDeltaAmountForEthAmount(ethAmountBN.toString()).call();
-    setDeltaAmount(deltaAmount.toString() / 1e18);
-    await update();
+    const ethAmountBN = parsing.parseFloatToBigNumber(ethAmount, 18);
+    if (ethAmountBN) {
+      const deltaAmount = await yam.contracts.deltaRouter.methods.getOptimalDeltaAmountForEthAmount(ethAmountBN.toString()).call();
+      setDeltaAmount(deltaAmount.toString() / 1e18);
+      await update();
+    }
   };
 
   useEffect(() => {

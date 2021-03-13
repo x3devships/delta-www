@@ -1,4 +1,3 @@
-import { ethers } from 'ethers';
 import { Button, HelperText, Input } from '@windmill/react-ui';
 import { useContext, useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
@@ -7,6 +6,7 @@ import { useTokenBalance } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 import { DeltaCheckboxButton } from '.';
+import { parsing } from '../../helpers';
 
 // The delay at which the onChange event is trigger when the input
 // value is changed.
@@ -56,11 +56,7 @@ const TokenInput = ({
     let amountBN;
 
     if (amount) {
-      try {
-        amountBN = ethers.utils.parseUnits(amount.toString(), tokenInfo.decimals);
-      } catch {
-        // ignored
-      }
+      amountBN = parsing.parseFloatToBigNumber(amount, tokenInfo.decimals);
     }
 
     const valid = validAmount && amount && amountBN;

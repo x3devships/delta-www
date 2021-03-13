@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js/bignumber';
+import BigNumber from 'bignumber.js';
 import { verifyAddressMap } from '../utils';
 
 BigNumber.config({
