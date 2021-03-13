@@ -13,6 +13,7 @@ import LSW from '../contracts/LSW.json';
 import DELTA from '../contracts/DELTA.json';
 import RLP from '../contracts/rLP.json';
 import DeltaRouter from '../contracts/DeltaRouter.json';
+import { DeltaMock, RouterMock, RlpMock } from './mocks';
 
 export class Contracts {
   constructor(web3) {
@@ -30,12 +31,16 @@ export class Contracts {
     if (await this._isContractExists(addressMap.delta)) {
       this.delta = new this.web3.eth.Contract(DELTA.abi, addressMap.delta);
     } else if (!noWarningWhenContractNotFound) {
+      // Comment once mock is done
+      // this.delta = DeltaMock;
       console.error(`delta contract is not deployed at address ${addressMap.delta}`);
     }
 
     if (await this._isContractExists(addressMap.rLP)) {
       this.rLP = new this.web3.eth.Contract(RLP.abi, addressMap.rLP);
     } else if (!noWarningWhenContractNotFound) {
+      // Comment once mock is done
+      // this.rLP = RlpMock;
       console.error(`rLP contract is not deployed at address ${addressMap.rLP}`);
     }
 
@@ -60,6 +65,8 @@ export class Contracts {
     if (await this._isContractExists(addressMap.deltaRouter)) {
       this.deltaRouter = new this.web3.eth.Contract(DeltaRouter.abi, addressMap.deltaRouter);
     } else if (!noWarningWhenContractNotFound) {
+      // Comment once mock is done
+      // this.deltaRouter = RouterMock;
       console.error(`deltaRouter contract is not deployed at address ${addressMap.deltaRouter}`);
     }
   }
