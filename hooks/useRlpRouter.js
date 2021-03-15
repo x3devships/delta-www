@@ -1,4 +1,3 @@
-
 import { useContext, useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import BigNumber from 'bignumber.js';
@@ -51,25 +50,10 @@ const useRlpRouter = () => {
     if (!ethValueBN) {
       return Promise.reject();
     }
-
-    console.log("Wallet Address: ", wallet.account, "EthValBN: ", ethValueBN.toString());
-
-    // TODO: Remove once the contracts are deployed
-    if (!yam?.contracts?.deltaRouter) {
-      yam.contracts.deltaRouter = false; /* What do we put here? */
-    }
     
-    let lpPerEthUnit = await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call();
-    
-    if (!lpPerEthUnit) {
-      lpPerEthUnit = 12;
-    }
+    const lpPerEthUnit = await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call();
 
-    let minLpAmount = addSlippage(lpPerEthUnit.multipliedBy(ethValueBN), SLIPPAGE_PER_MILE);
-
-    if (!minLpAmount) {
-      minLpAmount = 0.0015;
-    }
+    const minLpAmount = addSlippage(lpPerEthUnit.multipliedBy(ethValueBN), SLIPPAGE_PER_MILE);
     
     let transaction;
 
@@ -131,12 +115,8 @@ const useRlpRouter = () => {
   const update = async () => {
     if (!wallet) return;
 
-    console.log("Mint Return: ", await mint(true));
-
     const { minLpAmount, gasEstimation } = await mint(true);
-
-    console.log("Displaying Values: ", minLpAmount, gasEstimation);
-
+    
     setEstimatedRlpAmount(minLpAmount?.toString() / 1e18);
     setGasEstimation(gasEstimation);
   };
