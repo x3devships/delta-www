@@ -20,10 +20,10 @@ export default {
           const amount = 10;
           const fullVestingTimestamp = 999999;
           
-          return [
+          return (
             amount,
             fullVestingTimestamp
-          ]
+          )
         }
       }
     },
