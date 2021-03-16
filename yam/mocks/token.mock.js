@@ -3,15 +3,15 @@ import BigNumber from 'bignumber.js'
 export default {
   methods: {
     estimateGas: async () => {
-      return BigNumber('345');
+      return BigNumber('456');
     },
 
     call: async () => {
-      return BigNumber('678');
+      return BigNumber('789');
     },
 
     send: async () => {
-      console.log("Rlp Mock Received");
+      console.log("Token Mock Received");
     }
   }
 }
