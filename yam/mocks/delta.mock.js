@@ -17,12 +17,13 @@ export default {
     vestingTransactions: (accountAddress, i) => {
       return {
         call: async () => {
-          return {
-            fullVestingTimestamp,
+          const amount = 10;
+          const fullVestingTimestamp = 999999;
+          
+          return [
             amount,
-            immature,
-            mature
-          }
+            fullVestingTimestamp
+          ]
         }
       }
     },
