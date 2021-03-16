@@ -17,7 +17,12 @@ export default {
     vestingTransactions: (accountAddress, i) => {
       return {
         call: async () => {
-          return BigNumber('444');
+          return {
+            fullVestingTimestamp,
+            amount,
+            immature,
+            mature
+          }
         }
       }
     },

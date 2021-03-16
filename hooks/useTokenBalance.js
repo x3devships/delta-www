@@ -23,7 +23,7 @@ const useTokenBalance = (tokenName) => {
     }
 
     if (!(tokenName in yam.contracts)) {
-      tokenName = "HXB";
+      return;
     }
 
     const balance = (await yam.contracts[tokenName].methods.balanceOf(wallet.account).call()) / 10 ** decimals;

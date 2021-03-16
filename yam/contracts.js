@@ -13,7 +13,7 @@ import LSW from '../contracts/LSW.json';
 import DELTA from '../contracts/DELTA.json';
 import RLP from '../contracts/rLP.json';
 import DeltaRouter from '../contracts/DeltaRouter.json';
-import { DeltaMock, RouterMock, RlpMock } from './mocks';
+import { DeltaMock, RouterMock, RlpMock, TokenMock } from './mocks';
 
 export class Contracts {
   constructor(web3) {
@@ -30,7 +30,7 @@ export class Contracts {
 
     this.delta = await this._loadContractOrMock(DELTA.abi, addressMap.delta, DeltaMock);
     this.rLP = await this._loadContractOrMock(RLP.abi, addressMap.rLP, RlpMock);
-
+    
     this.wCORE = new this.web3.eth.Contract(wCORE.abi);
     this.cDAI = new this.web3.eth.Contract(cDAI.abi, addressMap.cDAI);
     this.wBTC = new this.web3.eth.Contract(WBTC.abi, addressMap.wBTC);
