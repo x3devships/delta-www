@@ -80,19 +80,18 @@ const RlpMinting = () => {
   }, [router.estimatedRlpAmount, router.gasEstimation]);
 
   const onBuy = async (amount, amountBN, autoStake) => {
-    console.log("Buy is activated", amount, amountBN);
+    console.log("onBuy: ", amount);
     if (amount !== DATA_UNAVAILABLE) {
         router.setAutoStake(autoStake);
         await router.mint(true);
     }
-};
+  };
 
   const onChange = async (amount, amountBN, autoStake) => {
-    console.log("Changing:", amount, amountBN, autoStake);
+    console.log("onChange: ", amount);
     if (amount !== DATA_UNAVAILABLE) {
         router.setAutoStake(autoStake);
         await router.setEthAmountOnly(amount);
-        // console.log(amount, amountBN.toString(), autoStake);
     }
 };
 
