@@ -41,9 +41,13 @@ export default {
         }
       }
     },
-        
-    send: async () => {
-      console.log("Router Mock Received");
-    }
+
+    balanceOf: (walletAddress) => {
+      return {
+        call: async () => {
+          return 25;
+        }
+      }
+    },
   }
 }

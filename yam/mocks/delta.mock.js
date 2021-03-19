@@ -41,12 +41,12 @@ export default {
       }
     },
 
-    estimateGas: async () => {
-      return BigNumber('123');
-    },
-
-    send: async () => {
-      console.log("Delta Mock Received");
+    balanceOf: (walletAddress) => {
+      return {
+        call: async () => {
+          return 15;
+        }
+      }
     }
   }
 }

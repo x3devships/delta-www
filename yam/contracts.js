@@ -13,7 +13,7 @@ import LSW from '../contracts/LSW.json';
 import DELTA from '../contracts/DELTA.json';
 import RLP from '../contracts/rLP.json';
 import DeltaRouter from '../contracts/DeltaRouter.json';
-import { DeltaMock, RouterMock, RlpMock, TokenMock } from './mocks';
+import { DeltaMock, RouterMock, RlpMock } from './mocks';
 
 export class Contracts {
   constructor(web3) {
