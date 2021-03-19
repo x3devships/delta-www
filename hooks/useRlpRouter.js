@@ -7,7 +7,7 @@ import { formatting, parsing, transactions } from '../helpers';
 import { ModalContext } from '../contexts';
 
 const VALUE_REFRESH_INTERVAL = 10 * 1000;
-const SLIPPAGE_PER_MILE = 10; // 1% slippage
+const SLIPPAGE_PER_MILE = 50; // 5% slippage
 
 const MODE = {
   ETH_ONLY: "eth-only",
@@ -50,13 +50,12 @@ const useRlpRouter = () => {
       return Promise.reject();
     }
 
-    const lpPerEthUnit = await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call();
+    let minLpAmount = new BigNumber(await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call());
     console.log(`ethValueBN: ${ethValueBN.toString()} ${ethValueBN.toString() / 1e18}`);
-    console.log(`lpPerEthUnit: ${lpPerEthUnit}, ${lpPerEthUnit / 1e18}`);
+    console.log(`minLpAmount: ${minLpAmount.toString()}, ${minLpAmount.toString() / 1e18}`);
 
-    const lpPer = new BigNumber(lpPerEthUnit);
-    let minLpAmount = lpPer.multipliedBy(ethValueBN).shiftedBy(-18);
     minLpAmount = addSlippage(minLpAmount, SLIPPAGE_PER_MILE);
+    console.log(`minLpAmount with slippage: ${minLpAmount.toString()}, ${minLpAmount.toString() / 1e18}`);
 
     let transaction;
 
