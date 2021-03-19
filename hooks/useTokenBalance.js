@@ -23,7 +23,6 @@ const useTokenBalance = (tokenName) => {
     }
 
     if (!(tokenName in yam.contracts)) {
-      console.log(tokenName);
       return;
     }
 
