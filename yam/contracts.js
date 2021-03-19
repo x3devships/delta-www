@@ -21,6 +21,8 @@ export class Contracts {
   }
 
   async initialize() {
+    this.usingMocks = false;
+
     // Uniswap
     this.uniswapRouter = new this.web3.eth.Contract(UNIRouterJson, addressMap.uniswapRouter);
     this.uniswapFactory = new this.web3.eth.Contract(UNIFactJson, addressMap.uniswapFactoryV2);
@@ -28,9 +30,9 @@ export class Contracts {
     // Tokens
     this.core = new this.web3.eth.Contract(CORE.abi, addressMap.core);
 
-    this.delta = await this._loadContractOrMock(DELTA.abi, addressMap.delta, DeltaMock);
-    this.rLP = await this._loadContractOrMock(RLP.abi, addressMap.rLP, RlpMock);
-    
+    this.delta = await this._loadContractOrMock('delta', DELTA.abi, addressMap.delta, DeltaMock);
+    this.rLP = await this._loadContractOrMock('rLP', RLP.abi, addressMap.rLP, RlpMock);
+
     this.wCORE = new this.web3.eth.Contract(wCORE.abi);
     this.cDAI = new this.web3.eth.Contract(cDAI.abi, addressMap.cDAI);
     this.wBTC = new this.web3.eth.Contract(WBTC.abi, addressMap.wBTC);
@@ -49,14 +51,14 @@ export class Contracts {
 
     // Periphery
     this.LSW = new this.web3.eth.Contract(LSW.abi, addressMap.LSW);
-    this.deltaRouter = await this._loadContractOrMock(DeltaRouter.abi, addressMap.deltaRouter, RouterMock);
+    this.deltaRouter = await this._loadContractOrMock('router', DeltaRouter.abi, addressMap.deltaRouter, RouterMock);
   }
 
   /**
    * Load the contract at the given address if it exists
    * otherwise, when not in production, load a mock.
    */
-  async _loadContractOrMock(abi, address, mock) {
+  async _loadContractOrMock(label, abi, address, mock) {
     if (await this._isContractExists(address)) {
       return new this.web3.eth.Contract(abi, address);
     }
@@ -65,6 +67,8 @@ export class Contracts {
       throw new Error(`Contract not deployed at address ${address}`);
     }
 
+    console.warn(`WARNING: Using mock for ${label} contract`);
+    this.usingMocks = true;
     return mock;
   }
 
