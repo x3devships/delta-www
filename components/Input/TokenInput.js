@@ -124,7 +124,7 @@ const TokenInput = ({
 
   useEffect(() => {
     onNotifyChange();
-  }, [checkboxChecked]);
+  }, [amount, balance, checkboxChecked]);
 
   const renderInput = () => {
     return <>
