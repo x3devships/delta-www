@@ -5,7 +5,7 @@ export default {
     getLPTokenPerEthUnit: (ethValueBN) => {
       return {
         call: async () => {
-          return BigNumber('123');
+          return BigNumber('123').toString();
         }
       }
     },
