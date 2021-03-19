@@ -31,7 +31,7 @@ const useRlpRouter = () => {
     perMileSlippage = new BigNumber(perMileSlippage);
 
     const slippageAmount = minAmount.multipliedBy(perMileSlippage).div(new BigNumber('1000'));
-    return minAmount.minus(slippageAmount);
+    return minAmount.minus(slippageAmount).toFixed(0);
   };
 
   const mint = async (estimationOnly) => {
@@ -49,12 +49,15 @@ const useRlpRouter = () => {
     if (!ethValueBN) {
       return Promise.reject();
     }
-    
-    const lpPerEthUnit = await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call();
-    const lpPer = new BigNumber(lpPerEthUnit);
 
-    const minLpAmount = addSlippage(lpPer.multipliedBy(ethValueBN), SLIPPAGE_PER_MILE);
-    
+    const lpPerEthUnit = await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call();
+    console.log(`ethValueBN: ${ethValueBN.toString()} ${ethValueBN.toString() / 1e18}`);
+    console.log(`lpPerEthUnit: ${lpPerEthUnit}, ${lpPerEthUnit / 1e18}`);
+
+    const lpPer = new BigNumber(lpPerEthUnit);
+    let minLpAmount = lpPer.multipliedBy(ethValueBN).shiftedBy(-18);
+    minLpAmount = addSlippage(minLpAmount, SLIPPAGE_PER_MILE);
+
     let transaction;
 
     if (mode === MODE.BOTH_SIDES) {
@@ -76,7 +79,7 @@ const useRlpRouter = () => {
     };
 
     if (estimationOnly) {
-      const gasEstimation = await transaction.estimateGas(transactionParameters);
+      const gasEstimation = new BigNumber(await transaction.estimateGas(transactionParameters));
 
       return {
         gasEstimation,
@@ -116,7 +119,7 @@ const useRlpRouter = () => {
     if (!wallet) return;
 
     const { minLpAmount, gasEstimation } = await mint(true);
-    
+
     setEstimatedRlpAmount(minLpAmount?.toString() / 1e18);
     setGasEstimation(gasEstimation);
   };

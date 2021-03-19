@@ -75,25 +75,25 @@ const RlpMinting = () => {
 
   useEffect(() => {
     const text = `estimated rLP minted: ${formatting.getTokenAmount(router.estimatedRlpAmount, 0, 4)} ` +
-      `rLP ➔ Gas cost: ${formatting.getTokenAmount(router.gasEstimation, 0, 4)} ETH`;
+      `rLP ➔ Gas cost: ${formatting.getTokenAmount(router.gasEstimation, 18, 4)} ETH`;
     setEstimationLabel(text);
   }, [router.estimatedRlpAmount, router.gasEstimation]);
 
   const onBuy = async (amount, amountBN, autoStake) => {
     console.log("onBuy: ", amount);
     if (amount !== DATA_UNAVAILABLE) {
-        router.setAutoStake(autoStake);
-        await router.mint(true);
+      router.setAutoStake(autoStake);
+      await router.mint(true);
     }
   };
 
   const onChange = async (amount, amountBN, autoStake) => {
     console.log("onChange: ", amount);
     if (amount !== DATA_UNAVAILABLE) {
-        router.setAutoStake(autoStake);
-        await router.setEthAmountOnly(amount);
+      router.setAutoStake(autoStake);
+      await router.setEthAmountOnly(amount);
     }
-};
+  };
 
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
