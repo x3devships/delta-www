@@ -4,7 +4,7 @@ import useYam from './useYam';
 import { hooks } from '../helpers';
 import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../config';
 
-const REFRESH_RATE = 30 * 1000;
+const REFRESH_RATE = 10 * 1000;
 
 const useTokenBalance = (tokenName) => {
   const yam = useYam();
@@ -17,14 +17,17 @@ const useTokenBalance = (tokenName) => {
     if (!yam || !wallet?.account) return;
 
     if (tokenName?.toUpperCase() === 'ETH') {
-      const balance = (await yam.web3.eth.getBalance(wallet.account)).toString() / 10 ** decimals
+      const balance = (await yam.web3.eth.getBalance(wallet.account)).toString() / 10 ** decimals;
       setBalance(balance);
       return;
     }
 
     if (!(tokenName in yam.contracts)) {
+      console.log(tokenName);
       return;
     }
+
+    console.log("Token Name: ", tokenName);
 
     const balance = (await yam.contracts[tokenName].methods.balanceOf(wallet.account).call()) / 10 ** decimals;
     setBalance(balance);

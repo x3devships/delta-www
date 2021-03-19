@@ -17,12 +17,13 @@ export default {
     vestingTransactions: (accountAddress, i) => {
       return {
         call: async () => {
-          return {
-            fullVestingTimestamp,
+          const amount = 10;
+          const fullVestingTimestamp = 999999;
+          
+          return (
             amount,
-            immature,
-            mature
-          }
+            fullVestingTimestamp
+          )
         }
       }
     },
@@ -40,12 +41,12 @@ export default {
       }
     },
 
-    estimateGas: async () => {
-      return BigNumber('123');
-    },
-
-    send: async () => {
-      console.log("Delta Mock Received");
+    balanceOf: (walletAddress) => {
+      return {
+        call: async () => {
+          return 15;
+        }
+      }
     }
   }
 }
