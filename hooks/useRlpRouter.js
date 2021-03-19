@@ -6,7 +6,7 @@ import { DATA_UNAVAILABLE } from '../config';
 import { formatting, parsing, transactions } from '../helpers';
 import { ModalContext } from '../contexts';
 
-const VALUE_REFRESH_INTERVAL = 30 * 1000;
+const VALUE_REFRESH_INTERVAL = 10 * 1000;
 const SLIPPAGE_PER_MILE = 10; // 1% slippage
 
 const MODE = {
@@ -27,7 +27,6 @@ const useRlpRouter = () => {
   const [autoStake, setAutoStake] = useState(false);
 
   const addSlippage = (minAmount, perMileSlippage) => {
-    console.log('minAmount', minAmount.toString());
     minAmount = new BigNumber(minAmount);
     perMileSlippage = new BigNumber(perMileSlippage);
 
@@ -53,8 +52,6 @@ const useRlpRouter = () => {
     
     const lpPerEthUnit = await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call();
     const lpPer = new BigNumber(lpPerEthUnit);
-    console.log("ethValueBN: ", ethValueBN);
-    console.log("lpPerEthUnit: ", lpPer);
 
     const minLpAmount = addSlippage(lpPer.multipliedBy(ethValueBN), SLIPPAGE_PER_MILE);
     

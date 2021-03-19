@@ -26,8 +26,6 @@ const useTokenBalance = (tokenName) => {
       return;
     }
 
-    console.log("Token Name: ", tokenName);
-
     const balance = (await yam.contracts[tokenName].methods.balanceOf(wallet.account).call()) / 10 ** decimals;
     setBalance(balance);
   }
