@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { DATA_UNAVAILABLE } from '../../config';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { useYam } from '../../hooks';
@@ -7,9 +7,6 @@ const Debug = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const yam = useYam();
 
-  useEffect(() => {
-    console.log(yam && yam.contracts.isUsingMocks);
-  }, [yam])
   const renderDate = () => {
     if (globalHooks.blockInfo.block.date !== DATA_UNAVAILABLE) {
       return globalHooks.blockInfo.block.date.utc().format();

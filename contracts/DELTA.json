@@ -7,17 +7,17 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_lswAddress",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
           "name": "rebasingLP",
           "type": "address"
         },
         {
           "internalType": "address",
           "name": "multisig",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "dfv",
           "type": "address"
         }
       ],
@@ -76,12 +76,12 @@
     },
     {
       "inputs": [],
-      "name": "QTY_EPOCHS",
+      "name": "_PAIR_ADDRESS",
       "outputs": [
         {
-          "internalType": "uint256",
+          "internalType": "address",
           "name": "",
-          "type": "uint256"
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -98,12 +98,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "loopCount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "percentOfLP",
+          "name": "numLoops",
           "type": "uint256"
         }
       ],
@@ -202,7 +197,7 @@
           "type": "uint8"
         }
       ],
-      "stateMutability": "view",
+      "stateMutability": "pure",
       "type": "function"
     },
     {
@@ -240,30 +235,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "recipient",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "gasTestTransfer",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -313,6 +284,47 @@
           ],
           "internalType": "struct VestingTransactionDetailed",
           "name": "dtx",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "getUserInfo",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "maturedBalance",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxBalance",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "mostMatureTxIndex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lastInTxIndex",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct UserInformationLite",
+          "name": "",
           "type": "tuple"
         }
       ],
@@ -384,19 +396,6 @@
     },
     {
       "inputs": [],
-      "name": "lswAddress",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "name",
       "outputs": [
         {
@@ -405,7 +404,7 @@
           "type": "string"
         }
       ],
-      "stateMutability": "view",
+      "stateMutability": "pure",
       "type": "function"
     },
     {
@@ -552,7 +551,7 @@
           "type": "string"
         }
       ],
-      "stateMutability": "view",
+      "stateMutability": "pure",
       "type": "function"
     },
     {
@@ -684,62 +683,56 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "uniswapDELTAxWETHPair",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "address",
-          "name": "",
+          "name": "user",
           "type": "address"
         }
       ],
       "name": "userInformation",
       "outputs": [
         {
-          "internalType": "uint256",
-          "name": "mostMatureTxIndex",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "lastInTxIndex",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "maturedBalance",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "maxBalance",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bool",
-          "name": "fullSenderWhitelisted",
-          "type": "bool"
-        },
-        {
-          "internalType": "bool",
-          "name": "immatureRecieverWhiteslited",
-          "type": "bool"
-        },
-        {
-          "internalType": "bool",
-          "name": "noVestingWhitelisted",
-          "type": "bool"
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "mostMatureTxIndex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lastInTxIndex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maturedBalance",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxBalance",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "fullSenderWhitelisted",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "immatureReceiverWhitelisted",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "noVestingWhitelisted",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct UserInformation",
+          "name": "",
+          "type": "tuple"
         }
       ],
       "stateMutability": "view",
@@ -769,32 +762,6 @@
           "internalType": "uint256",
           "name": "fullVestingTimestamp",
           "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "wETH",
-      "outputs": [
-        {
-          "internalType": "contract IWETH",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "wethAddress",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
         }
       ],
       "stateMutability": "view",

@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "DeltaRouter",
-  "sourceName": "contracts/v612/DELTA/Periphery/Delta_Router.sol",
+  "sourceName": "contracts/v076/Periphery/Delta_Router.sol",
   "abi": [
     {
       "inputs": [
@@ -30,23 +30,17 @@
       "type": "constructor"
     },
     {
-      "anonymous": false,
-      "inputs": [
+      "inputs": [],
+      "name": "DELTA_TOKEN",
+      "outputs": [
         {
-          "indexed": true,
-          "internalType": "address",
-          "name": "previousOwner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "newOwner",
+          "internalType": "contract IDELTA_TOKEN",
+          "name": "",
           "type": "address"
         }
       ],
-      "name": "OwnershipTransferred",
-      "type": "event"
+      "stateMutability": "view",
+      "type": "function"
     },
     {
       "inputs": [],
@@ -117,7 +111,7 @@
     },
     {
       "inputs": [],
-      "name": "deltaToken",
+      "name": "deltaGovernance",
       "outputs": [
         {
           "internalType": "address",
@@ -136,6 +130,26 @@
           "internalType": "address",
           "name": "",
           "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "disable",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "disabled",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -224,19 +238,6 @@
     },
     {
       "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "rebasingToken",
       "outputs": [
         {
@@ -257,13 +258,6 @@
     },
     {
       "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "rescueEth",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -278,19 +272,6 @@
         }
       ],
       "name": "rescueTokens",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
