@@ -90,7 +90,6 @@ const Vesting = () => {
 
           if (confirmed) {
             // TODO: add web3 call, be sure to use amountBN
-            // TODO: - MAX Update delta balance using delta hook update function
             globalHooks.delta.update();
           }
         }
@@ -105,7 +104,7 @@ const Vesting = () => {
           onOk={onStake} />
       </DeltaPanel >;
 
-      await modalContext.showMessage('Staking', content, false);
+      await modalContext.showMessage('Staking', content, 'Cancel');
     };
 
     return <div >
@@ -130,8 +129,7 @@ const Vesting = () => {
         const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP?`);
 
         if (confirmed) {
-          // TODO: add web3 call
-          // TODO: - MAX call the staking update method and user rLP balance
+          // TODO: add web3 call to stack the rLP in the vault
           globalHooks.staking.update();
           globalHooks.delta.update();
         }

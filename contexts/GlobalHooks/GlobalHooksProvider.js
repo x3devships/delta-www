@@ -7,9 +7,7 @@ const GlobalHooksProvider = ({ children }) => {
   const staking = useStaking();
   const rebasing = useRebasing();
   const blockInfo = useBlock();
-
-  // TODO: change to rlp
-  const rlpInfo = useTokenBalance('delta');
+  const rlpInfo = useTokenBalance('rLP');
 
   return (
     <GlobalHooksContext.Provider

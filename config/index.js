@@ -129,5 +129,4 @@ export const ethereumStats = {};
 ethereumStats.approximatedBlockPerDay = 6650;
 ethereumStats.approximatedBlockPerYear = ethereumStats.approximatedBlockPerDay * 365;
 
-// TODO: Enable back
-// verifyAddressMap(addressMap);
+verifyAddressMap(addressMap);

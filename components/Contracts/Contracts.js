@@ -36,7 +36,6 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
     const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having immature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');
     if (confirmed) {
       // TODO: add web3 call
-      // TODO: - MAX update staking hook with update
       globalHooks.staking.update();
     }
   };
