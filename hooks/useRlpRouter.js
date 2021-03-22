@@ -6,7 +6,7 @@ import { DATA_UNAVAILABLE } from '../config';
 import { formatting, parsing, transactions } from '../helpers';
 import { ModalContext } from '../contexts';
 
-const VALUE_REFRESH_INTERVAL = 100 * 1000;
+const VALUE_REFRESH_INTERVAL = 30 * 1000;
 const SLIPPAGE_PER_MILE = 50; // 5% slippage
 
 const MODE = {
@@ -163,8 +163,8 @@ const useRlpRouter = () => {
     }
 
     update();
-    const interval = setInterval(update, VALUE_REFRESH_INTERVAL);
-    return () => clearInterval(interval);
+    // const interval = setInterval(update, VALUE_REFRESH_INTERVAL);
+    // return () => clearInterval(interval);
   }, [yam, wallet]);
 
   return {
