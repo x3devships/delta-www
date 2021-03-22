@@ -69,23 +69,6 @@ const DeltaStats = () => {
   </div >
 };
 
-const RlpTokenVault = ({ className = '' }) => {
-  const token = 'rLP';
-
-  return <div className={`mt-4 md:mt-2 ${className}`}>
-    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
-    <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
-      <div className="flex w-full flex-grow flex-col md:flex-col">
-        <div>
-          <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
-          <RlpStats />
-        </div>
-      </div>
-    </DeltaPanel>
-    <VaultStaking token={token} />
-  </div>;
-};
-
 /**
  * Only for the delta token
  */
@@ -147,6 +130,26 @@ const TopUpDialogContent = () => {
     </div>
   </DeltaPanel>;
 }
+
+const RlpTokenVault = ({ className = '' }) => {
+  const token = 'rLP';
+
+  return <div className={`mt-4 md:mt-2 ${className}`}>
+    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
+    <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
+      <div className="flex w-full flex-grow flex-col md:flex-col">
+        <div>
+          <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
+          <RlpStats />
+        </div>
+      </div>
+      <div className="w-full flex-grow hidden flex-col md:flex self-start">
+        <ProgressBarDiamonds value={10} maxValue={10} className="flex flex-grow w-full hidden" />
+      </div>
+    </DeltaPanel>
+    <VaultStaking token={token} />
+  </div>;
+};
 
 const DeltaTokenVault = ({ className = '' }) => {
   const token = 'delta';
