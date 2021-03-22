@@ -149,7 +149,7 @@ const Vesting = () => {
   };
 
   const renderChart = () => {
-    if (globalHooks.lswStats.data.referralBonusWETH === DATA_UNAVAILABLE || globalHooks.lswStats.data.referralBonusWETH <= 0) {
+    if (globalHooks.lswStats.data.percentVested === DATA_UNAVAILABLE) {
       return <div className="w-full text-center"><Spinner /></div>
     }
 

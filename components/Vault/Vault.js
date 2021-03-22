@@ -11,7 +11,6 @@ import { formatting, time } from '../../helpers';
 import { TokenInput } from '../Input';
 import { DATA_UNAVAILABLE } from '../../config';
 
-// TODO: Add web3 integration
 const VaultInfoBox = ({ token, className = '' }) => {
 
   const globalHooks = useContext(GlobalHooksContext);
@@ -200,9 +199,13 @@ const Vault = () => {
         <div className="flex flex-col md:flex-row-reverse">
           <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12">
             <div className="border border-black py-2 bg-gray-200 mb-1">Up to 750 % APY*</div>
-            <div className="border border-black py-2 bg-gray-200">TVL: $145,223,123</div>
+            {/**
+             * TODO: Hidden for now as getting the TVL requires getting
+             * the information on a second market.
+             */}
+            <div className="border border-black py-2 bg-gray-200 hidden">TVL: $145,223,123</div>
           </DeltaPanel>
-          <DeltaPanel className="mt-4 pr-12">
+          <DeltaPanel className="mt-4 pr-12 text-lg">
             The Deep Farming Vault distributes<br />
             yield to staked rLP and Delta.
           </DeltaPanel>
