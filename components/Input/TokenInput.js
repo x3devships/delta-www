@@ -1,5 +1,5 @@
 import { Button, HelperText, Input } from '@windmill/react-ui';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
 import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../../config';
 import { useTokenBalance } from '../../hooks';
@@ -52,7 +52,7 @@ const TokenInput = ({
     setCheckboxChecked(event.target.checked);
   };
 
-  const getValues = () => {
+  const getValues = useCallback(() => {
     let amountBN;
 
     if (amount) {
@@ -73,23 +73,23 @@ const TokenInput = ({
       amountBN: DATA_UNAVAILABLE,
       checkboxChecked
     };
-  };
+  }, [amount]);
 
-  const onNotifyChange = () => {
+  const onNotifyChange = useCallback(debounce(() => {
     const values = getValues();
     if (onChange) {
       return onChange(values.amount, values.amountBN, values.checkboxChecked);
     }
-  };
+  }, ONCHANGE_NOTIFICATION_WAIT), [onChange, getValues]);
 
-  const onBeforeOk = async () => {
+  const onBeforeOk = useCallback(async () => {
     const values = getValues();
     if (values.amount !== DATA_UNAVAILABLE && onOk) {
       return onOk(values.amount, values.amountBN, values.checkboxChecked);
     }
 
     return modalContext.showError('Invalid Amount', 'The specified token amount is invalid');
-  };
+  }, [getValues]);
 
   const setValidatedAmount = (amount) => {
     if (amount > balance || amount < 0 || Number.isNaN(amount) || amount === 0) {
@@ -117,14 +117,12 @@ const TokenInput = ({
 
     const potentialAmount = parseFloat(e.target.value);
     setValidatedAmount(potentialAmount);
-
-    const debounceChangeNotification = debounce(() => onNotifyChange(), ONCHANGE_NOTIFICATION_WAIT);
-    debounceChangeNotification();
   };
 
   useEffect(() => {
     onNotifyChange();
-  }, [amount, balance, checkboxChecked]);
+    return onNotifyChange.cancel;
+  }, [amount]);
 
   const renderInput = () => {
     return <>

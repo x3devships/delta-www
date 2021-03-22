@@ -4,7 +4,7 @@ import useYam from './useYam';
 import { hooks } from '../helpers';
 import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../config';
 
-const REFRESH_RATE = 10 * 1000;
+const REFRESH_RATE = 30 * 1000;
 
 const useTokenBalance = (tokenName) => {
   const yam = useYam();
