@@ -5,7 +5,7 @@ import useYam from './useYam';
 import { DATA_UNAVAILABLE } from '../config';
 import { hooks } from '../helpers';
 
-const REFRESH_RATE = 10 * 1000;
+const REFRESH_RATE = 30 * 1000;
 
 const useBlock = () => {
   const yam = useYam();
