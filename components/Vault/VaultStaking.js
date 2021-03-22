@@ -83,7 +83,7 @@ const RlpMinting = () => {
     console.log("onBuy: ", amount);
     if (amount !== DATA_UNAVAILABLE) {
       router.setAutoStake(autoStake);
-      await router.mint(true);
+      await router.mint(false);
     }
   };
 
