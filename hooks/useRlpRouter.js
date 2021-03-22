@@ -117,7 +117,7 @@ const useRlpRouter = () => {
   const update = async () => {
     if (!wallet) return;
 
-    const { minLpAmount, gasEstimation } = await mint(true);
+    const { minLpAmount, gasEstimation } = await mint(false);
 
     setEstimatedRlpAmount(minLpAmount?.toString() / 1e18);
     setGasEstimation(gasEstimation);
