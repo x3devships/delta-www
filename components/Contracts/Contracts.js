@@ -62,6 +62,7 @@ const Contracts = () => {
 
   return <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Withdrawal Contracts">
     <DeltaPanel>
+      {globalHooks.staking.withdrawalContracts.length === 0 && <>You have no withdrawal contracts</>}
       {globalHooks.staking.withdrawalContracts.map((contract, index) => <WithdrawalContractItem opened={index === currentOpened} className="mt-4" index={index} key={`contract-${index}`} contract={contract} onOpen={onOpen} />)}
     </DeltaPanel>
   </DeltaSection>
