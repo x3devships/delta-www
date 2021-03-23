@@ -12,15 +12,17 @@ import wCORE from '../contracts/wCORE.json';
 import LSW from '../contracts/LSW.json';
 import DELTA from '../contracts/DELTA.json';
 import RLP from '../contracts/rLP.json';
+import DFV from '../contracts/DFV.json';
 import DeltaRouter from '../contracts/DeltaRouter.json';
-import { DeltaMock, RouterMock, RlpMock } from './mocks';
+import { DeltaMock, RouterMock, RlpMock, DfvMock } from './mocks';
 
 export class Contracts {
   constructor(web3) {
     this.web3 = web3;
   }
 
-  async initialize() {
+  async initialize(mocksEnabled = true) {
+    this.mocksEnabled = mocksEnabled;
     this.usingMocks = false;
 
     // Uniswap
@@ -32,6 +34,7 @@ export class Contracts {
 
     this.delta = await this._loadContractOrMock('delta', DELTA.abi, addressMap.delta, DeltaMock);
     this.rLP = await this._loadContractOrMock('rLP', RLP.abi, addressMap.rLP, RlpMock);
+    this.dfv = await this._loadContractOrMock('dfv', DFV.abi, addressMap.dfv, DfvMock);
 
     this.wCORE = new this.web3.eth.Contract(wCORE.abi);
     this.cDAI = new this.web3.eth.Contract(cDAI.abi, addressMap.cDAI);
@@ -59,17 +62,21 @@ export class Contracts {
    * otherwise, when not in production, load a mock.
    */
   async _loadContractOrMock(label, abi, address, mock) {
-    if (await this._isContractExists(address)) {
-      return new this.web3.eth.Contract(abi, address);
+    if (this.mocksEnabled) {
+      if (await this._isContractExists(address)) {
+        return new this.web3.eth.Contract(abi, address);
+      }
+
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error(`Contract not deployed at address ${address}`);
+      }
+
+      console.warn(`WARNING: Using mock for ${label} contract`);
+      this.usingMocks = true;
+      return mock;
     }
 
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error(`Contract not deployed at address ${address}`);
-    }
-
-    console.warn(`WARNING: Using mock for ${label} contract`);
-    this.usingMocks = true;
-    return mock;
+    return new this.web3.eth.Contract(abi, address);
   }
 
   /**

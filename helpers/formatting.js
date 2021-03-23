@@ -28,7 +28,7 @@ const getTokenAmount = (amount, decimals = 18, precision = 4, toLocaleString = t
     return DATA_UNAVAILABLE;
   }
 
-  return amount
+  return parseFloat(amount).toLocaleString();
 };
 
 export default {

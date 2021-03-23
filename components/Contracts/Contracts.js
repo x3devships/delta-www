@@ -36,7 +36,6 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
     const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having immature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');
     if (confirmed) {
       // TODO: add web3 call
-      // TODO: - MAX update staking hook with update
       globalHooks.staking.update();
     }
   };
@@ -63,6 +62,7 @@ const Contracts = () => {
 
   return <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Withdrawal Contracts">
     <DeltaPanel>
+      {globalHooks.staking.withdrawalContracts.length === 0 && <>You have no withdrawal contracts</>}
       {globalHooks.staking.withdrawalContracts.map((contract, index) => <WithdrawalContractItem opened={index === currentOpened} className="mt-4" index={index} key={`contract-${index}`} contract={contract} onOpen={onOpen} />)}
     </DeltaPanel>
   </DeltaSection>

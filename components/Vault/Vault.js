@@ -11,7 +11,6 @@ import { formatting, time } from '../../helpers';
 import { TokenInput } from '../Input';
 import { DATA_UNAVAILABLE } from '../../config';
 
-// TODO: Add web3 integration
 const VaultInfoBox = ({ token, className = '' }) => {
 
   const globalHooks = useContext(GlobalHooksContext);
@@ -68,23 +67,6 @@ const DeltaStats = () => {
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableDelta, 0, 4)} DELTA</li>
     </ul>
   </div >
-};
-
-const RlpTokenVault = ({ className = '' }) => {
-  const token = 'rLP';
-
-  return <div className={`mt-4 md:mt-2 ${className}`}>
-    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
-    <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
-      <div className="flex w-full flex-grow flex-col md:flex-col">
-        <div>
-          <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
-          <RlpStats />
-        </div>
-      </div>
-    </DeltaPanel>
-    <VaultStaking token={token} />
-  </div>;
 };
 
 /**
@@ -149,6 +131,26 @@ const TopUpDialogContent = () => {
   </DeltaPanel>;
 }
 
+const RlpTokenVault = ({ className = '' }) => {
+  const token = 'rLP';
+
+  return <div className={`mt-4 md:mt-2 ${className}`}>
+    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
+    <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
+      <div className="flex w-full flex-grow flex-col md:flex-col">
+        <div>
+          <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
+          <RlpStats />
+        </div>
+      </div>
+      <div className="w-full flex-grow hidden flex-col md:flex self-start">
+        <ProgressBarDiamonds value={10} maxValue={10} className="flex flex-grow w-full hidden" />
+      </div>
+    </DeltaPanel>
+    <VaultStaking token={token} />
+  </div>;
+};
+
 const DeltaTokenVault = ({ className = '' }) => {
   const token = 'delta';
   const modalContext = useContext(ModalContext);
@@ -200,9 +202,13 @@ const Vault = () => {
         <div className="flex flex-col md:flex-row-reverse">
           <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12">
             <div className="border border-black py-2 bg-gray-200 mb-1">Up to 750 % APY*</div>
-            <div className="border border-black py-2 bg-gray-200">TVL: $145,223,123</div>
+            {/**
+             * TODO: Hidden for now as getting the TVL requires getting
+             * the information on a second market.
+             */}
+            <div className="border border-black py-2 bg-gray-200 hidden">TVL: $145,223,123</div>
           </DeltaPanel>
-          <DeltaPanel className="mt-4 pr-12">
+          <DeltaPanel className="mt-4 pr-12 text-lg">
             The Deep Farming Vault distributes<br />
             yield to staked rLP and Delta.
           </DeltaPanel>

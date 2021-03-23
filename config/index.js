@@ -56,6 +56,7 @@ export const addressMap = {
 
   // Periphery
   LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB',
+  dfv: '0xd79aF73F6f28bD6C5164C919F1d6EC159aD6d15e',
   deltaRouter: '0x40C7d808596aFB57C0Fc0A14FE579b49C32a35Dc'
 };
 
@@ -128,5 +129,4 @@ export const ethereumStats = {};
 ethereumStats.approximatedBlockPerDay = 6650;
 ethereumStats.approximatedBlockPerYear = ethereumStats.approximatedBlockPerDay * 365;
 
-// TODO: Enable back
-// verifyAddressMap(addressMap);
+verifyAddressMap(addressMap);
