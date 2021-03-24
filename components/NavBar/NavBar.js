@@ -5,6 +5,10 @@ import { useRouter } from 'next/router'
 import { ModalContext } from '../../contexts';
 import logo from '../../public/HeaderLogo.svg';
 
+const shortenAddress = address => {
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
 const NavBar = () => {
   const wallet = useWallet();
   const modalContext = useContext(ModalContext);
@@ -30,7 +34,7 @@ const NavBar = () => {
   };
 
   const renderConnectWalletButton = () => {
-    return <>
+    return <div className="flex flex-col md:flex-row">
       <button
         type="button"
         onClick={() => {
@@ -40,11 +44,17 @@ const NavBar = () => {
             wallet.reset();
           }
         }}
-        className="uppercase text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-none text-small font-medium"
+        className="flex uppercase text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-none text-small font-medium"
       >
-        {wallet?.account ? <>{t('disconnect')}</> : <>{t('connectWallet')}</>}
+        {wallet?.account ? <>
+          {t('disconnect')}</> :
+          <>{t('connectWallet')}</>}
       </button>
-    </>
+      {wallet?.account &&
+        <a className="text-gray-300 md:flex px-3 md:self-center text-sm" href={`https://etherscan.io/address/${wallet.account}`} rel="noopener noreferrer" target="_blank">
+          {shortenAddress(wallet.account)}
+        </a>}
+    </div>
   };
 
   return (
