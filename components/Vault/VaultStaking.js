@@ -9,7 +9,7 @@ import DeltaButton from '../Button/DeltaButton';
 import TransactionButton from '../Button/TransactionButton';
 import { DeltaCheckboxButton, TokenInput } from '../Input';
 import { ProgressBarDiamonds } from '../ProgressBar';
-import { DFVInput } from '../CheckBox';
+import { CompoundBurnCheckbox } from '../CheckBox';
 import { DeltaPanel } from '../Section'
 import { DATA_UNAVAILABLE } from '../../config';
 import { useRlpRouter } from '../../hooks';
@@ -147,8 +147,8 @@ const VaultDeposit = ({ token }) => {
         <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setDepositAction(t => !t)} grayLook={!depositAction}>Stake</DeltaButton>
         {renderBuyButton(token)}
       </div>
-      <DFVInput
-        className="mt-4"
+      <CompoundBurnCheckbox
+        className="flex items-center text-center flex-wrap"
       />
     </DeltaPanel>
     {renderContent()}
