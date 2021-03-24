@@ -14,7 +14,9 @@ import DELTA from '../contracts/DELTA.json';
 import RLP from '../contracts/rLP.json';
 import DFV from '../contracts/DFV.json';
 import DeltaRouter from '../contracts/DeltaRouter.json';
-import { DeltaMock, RouterMock, RlpMock, DfvMock } from './mocks';
+import Withdrawal from '../contracts/Withdrawal.json';
+
+import { DeltaMock, RouterMock, RlpMock, DfvMock, WithdrawalMock } from './mocks';
 
 export class Contracts {
   constructor(web3) {
@@ -36,6 +38,10 @@ export class Contracts {
     this.rLP = await this._loadContractOrMock('rLP', RLP.abi, addressMap.rLP, RlpMock);
     this.dfv = await this._loadContractOrMock('dfv', DFV.abi, addressMap.dfv, DfvMock);
 
+    // This contract doesn't have a fixed address and
+    // getWithdrawalContract() must be used.
+    this._withdrawalContract = await this._loadContractOrMock('withdrawalContract', Withdrawal.abi, addressMap.dfv, WithdrawalMock);
+
     this.wCORE = new this.web3.eth.Contract(wCORE.abi);
     this.cDAI = new this.web3.eth.Contract(cDAI.abi, addressMap.cDAI);
     this.wBTC = new this.web3.eth.Contract(WBTC.abi, addressMap.wBTC);
@@ -55,6 +61,12 @@ export class Contracts {
     // Periphery
     this.LSW = new this.web3.eth.Contract(LSW.abi, addressMap.LSW);
     this.deltaRouter = await this._loadContractOrMock('router', DeltaRouter.abi, addressMap.deltaRouter, RouterMock);
+  }
+
+  getWithdrawalContract(address) {
+    this._withdrawalContract.address = address;
+    this._withdrawalContract._address = address;
+    return this._withdrawalContract;
   }
 
   /**
