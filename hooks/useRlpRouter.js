@@ -51,11 +51,8 @@ const useRlpRouter = () => {
     }
 
     let minLpAmount = new BigNumber(await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call());
-    console.log(`ethValueBN: ${ethValueBN.toString()} ${ethValueBN.toString() / 1e18}`);
-    console.log(`minLpAmount: ${minLpAmount.toString()}, ${minLpAmount.toString() / 1e18}`);
 
     minLpAmount = addSlippage(minLpAmount, SLIPPAGE_PER_MILE);
-    console.log(`minLpAmount with slippage: ${minLpAmount.toString()}, ${minLpAmount.toString() / 1e18}`);
 
     let transaction;
 

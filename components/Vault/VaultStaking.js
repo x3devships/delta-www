@@ -9,6 +9,7 @@ import DeltaButton from '../Button/DeltaButton';
 import TransactionButton from '../Button/TransactionButton';
 import { DeltaCheckboxButton, TokenInput } from '../Input';
 import { ProgressBarDiamonds } from '../ProgressBar';
+import { DFVInput } from '../CheckBox';
 import { DeltaPanel } from '../Section'
 import { DATA_UNAVAILABLE } from '../../config';
 import { useRlpRouter } from '../../hooks';
@@ -78,7 +79,6 @@ const RlpMinting = () => {
   }, [router.estimatedRlpAmount, router.gasEstimation]);
 
   const onBuy = async (amount, amountBN, autoStake) => {
-    console.log("onBuy: ", amount);
     if (amount !== DATA_UNAVAILABLE) {
       router.setAutoStake(autoStake);
       await router.mint(false);
@@ -86,7 +86,6 @@ const RlpMinting = () => {
   };
 
   const onChange = async (amount, amountBN, autoStake) => {
-    console.log("onChange: ", amount);
     if (amount !== DATA_UNAVAILABLE) {
       router.setAutoStake(autoStake);
       await router.setEthAmountOnly(amount);
@@ -128,8 +127,6 @@ const VaultDeposit = ({ token }) => {
       default:
         break;
     }
-
-    return <></>;
   };
 
   const renderBuyButton = (token) => {
@@ -150,6 +147,9 @@ const VaultDeposit = ({ token }) => {
         <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setDepositAction(t => !t)} grayLook={!depositAction}>Stake</DeltaButton>
         {renderBuyButton(token)}
       </div>
+      <DFVInput
+        className="mt-4"
+      />
     </DeltaPanel>
     {renderContent()}
   </div>;

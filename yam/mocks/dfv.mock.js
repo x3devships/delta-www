@@ -1,7 +1,7 @@
-import BigNumber from 'bignumber.js'
-
 export default {
   methods: {
-
+    setCompundBurn: async (checked) => {
+      return true;
+    }
   }
 }
