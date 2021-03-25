@@ -131,7 +131,7 @@ const Vesting = () => {
     const globalHooks = useContext(GlobalHooksContext);
     return <div>
       <ul className="list-disc list-inside py-4">
-        <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + (globalHooks.staking.rlp.toString() / 1e18), 0, 4)} rLP</li>
+        <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + (globalHooks.staking.info.rlp.toString() / 1e18), 0, 4)} rLP</li>
         <li>Unstaked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} rLP</li>
         <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlp, 18, 4)} rLP</li>
       </ul>
