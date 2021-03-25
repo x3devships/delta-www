@@ -1,8 +1,8 @@
 import { MainLayout } from '../components/Layout';
-import { Contracts } from '../components/Contracts';
+import { WithdrawalContracts } from '../components/WithdrawalContracts';
 
 export default function Main() {
   return <MainLayout>
-    <Contracts />
+    <WithdrawalContracts />
   </MainLayout>
 };
