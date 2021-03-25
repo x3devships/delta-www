@@ -11,3 +11,4 @@ export { default as useStaking } from './useStaking';
 export { default as useRebasing } from './useRebasing';
 export { default as useRlpRouter } from './useRlpRouter';
 export { default as useBlock } from './useBlock';
+export { default as useWithdrawal } from './useWithdrawal';

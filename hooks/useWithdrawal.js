@@ -6,7 +6,7 @@ import { DATA_UNAVAILABLE } from '../config';
 
 const REFRESH_RATE = 30 * 1000;
 
-const useStaking = () => {
+const useWithdrawal = () => {
   const yam = useYam();
   const web3 = useWeb3();
   const wallet = useWallet();
@@ -21,12 +21,18 @@ const useStaking = () => {
     const withdrawals = await Promise.all(withdrawalAddresses.map(async address => {
       const contract = yam.contracts.getWithdrawalContract(address);
 
+      const deltaTokenAddress = await contract.deltaTokenAddress().call();
       const principalAmount = await contract.PRINCIPLE_DELTA().call();
-      const vestingAmount = await contract.PRINCIPLE_DELTA().call();
+      const vestingAmount = await contract.VESTING_DELTA().call();
+      const secondsLeft = await contract.secondsLeftToMature().call();
+      const withdrawableAmount = await contract.withdrawableTokens().call();
+      const maturedVestingToken = await contract.maturedVestingTokens().call();
+      const percentMatured = await contract.percentMatured().call();
 
       // TODO: Returns the info to be returned for each withdrawal contracts.
       return {
-
+        withdrawableAmount,
+        secondsLeft
       }
     }));
 
@@ -44,4 +50,4 @@ const useStaking = () => {
   };
 };
 
-export default useStaking;
+export default useWithdrawal;

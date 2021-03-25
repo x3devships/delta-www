@@ -7,6 +7,8 @@ import DeltaButton from '../Button/DeltaButton';
 import { VestingTransactionProgressBar } from '../ProgressBar';
 import { DeltaPanel, DeltaSection, DeltaSectionBox } from '../Section';
 
+import { useWithdrawal } from '../../hooks';
+
 const FinalizeContractDialogContent = ({ contract }) => {
   return <DeltaPanel>
     <div className="my-4 border border-black p-2 bg-gray-200">
@@ -52,7 +54,7 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
   </DeltaSectionBox >;
 }
 
-const Contracts = () => {
+const WithdrawalContracts = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const [currentOpened, setCurrentOpened] = useState(0);
 
@@ -68,4 +70,4 @@ const Contracts = () => {
   </DeltaSection>
 };
 
-export default Contracts;
+export default WithdrawalContracts;
