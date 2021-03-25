@@ -2,28 +2,41 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
+import { useWallet } from 'use-wallet';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
-import { formatting } from '../../helpers';
+import { formatting, transactions } from '../../helpers';
 import DeltaButton from '../Button/DeltaButton';
 import TransactionButton from '../Button/TransactionButton';
 import { DeltaCheckboxButton, TokenInput } from '../Input';
 import { ProgressBarDiamonds } from '../ProgressBar';
-import { CompoundBurnCheckbox } from '../CheckBox';
+import { CompoundBurnCheckbox, DeltaCheckbox } from '../CheckBox';
 import { DeltaPanel } from '../Section'
 import { DATA_UNAVAILABLE } from '../../config';
-import { useRlpRouter } from '../../hooks';
+import { useRlpRouter, useYam } from '../../hooks';
 
 const RlpStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
+  const yam = useYam();
+  const wallet = useWallet();
 
   const onStake = async (amount, amountBN) => {
 
     const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
 
     if (confirmed) {
-      // TODO: add web3 call, be sure to use amountBN
+      const transaction = yam.contracts.dfv.methods.deposit(amountBN, 0);
+
+      await transactions.executeTransaction(
+        modalContext,
+        transaction,
+        { from: wallet.account },
+        "Successfully staked",
+        "Stake",
+        "Error while staking"
+      );
+
       globalHooks.staking.update();
       globalHooks.rlpInfo.update();
     }
@@ -31,9 +44,9 @@ const RlpStaking = () => {
 
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
-      {/* <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableEth, 0, 4)} ETH</li>
-<li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableDelta, 0, 4)} DELTA</li> */}
+      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 0, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 0, 4)} DELTA</li>
     </ul>
 
     <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
@@ -43,15 +56,28 @@ const RlpStaking = () => {
 const DeltaStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
+  const yam = useYam();
+  const wallet = useWallet();
+  const [burning, setBurning] = useState(true);
 
   const onStake = async (amount, amountBN, valid) => {
     if (!valid) {
       await modalContext.showError('Error', 'Invalid input');
     } else {
-      const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
+      const confirmed = await modalContext.showConfirm('Staking', burning ? `Are you sure you wanna stake ${amount} Delta with 50% burning ?` : `Are you sure you wanna stake ${amount} Delta ?`);
 
       if (confirmed) {
-        // TODO: add web3 call, be sure to use amountBN
+        const transaction = burning ? yam.contracts.dfv.methods.depositWithBurn(amountBN) : yam.contracts.dfv.methods.deposit(0, amountBN);
+
+        await transactions.executeTransaction(
+          modalContext,
+          transaction,
+          { from: wallet.account },
+          "Successfully staked",
+          "Stake",
+          "Error while staking"
+        );
+
         globalHooks.staking.update();
         globalHooks.delta.update();
       }
@@ -60,14 +86,17 @@ const DeltaStaking = () => {
 
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
-      {/* <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.amountStaked, 0, 4)} rLP</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableEth, 0, 4)} ETH</li>
-<li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableDelta, 0, 4)} DELTA</li> */}
+      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 0, 4)} DELTA</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 0, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 0, 4)} DELTA</li>
     </ul>
     <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
-    <CompoundBurnCheckbox
-      className="flex items-center text-center flex-wrap"
-    />
+    <div className="flex">
+      <DeltaCheckbox className="flex items-center text-center flex-wrap" label="Deposit Burn" onChange={() => setBurning(c => !c)} />
+      <CompoundBurnCheckbox
+        className="flex items-center text-center flex-wrap"
+      />
+    </div>
   </div >
 };
 
@@ -228,10 +257,10 @@ const DeltaWithdrawal = ({ token }) => {
 
   const getClaimableDelta = () => {
     if (token === 'delta') {
-      return globalHooks.staking.deltaInfo.claimableDelta;
+      return globalHooks.staking.info.farmedDelta;
     }
 
-    return globalHooks.staking.rlpInfo.claimableDelta;
+    return globalHooks.staking.info.farmedDelta;
   };
 
   return <div className="my-6">
@@ -247,7 +276,7 @@ const DeltaWithdrawal = ({ token }) => {
       <li>Claimable Delta: {formatting.getTokenAmount(getClaimableDelta(), 0, 4)} DELTA</li>
     </ul>
     <div className="flex p-1 flex-grow md:flex-none">
-      <TransactionButton className="flex-1 mr-2 md:flex-grow-0" text="Create Contract" onClick={onCreateContract} />
+      {/* <TransactionButton className="flex-1 mr-2 md:flex-grow-0" text="Create Contract" onClick={onCreateContract} /> */}
       <DeltaButton className="flex-1 md:flex-grow-0" onClick={seeWithdrawingContract}>Show All Contracts</DeltaButton>
     </div>
   </div>
@@ -255,19 +284,39 @@ const DeltaWithdrawal = ({ token }) => {
 
 const EthereumWithdrawal = ({ token }) => {
   const globalHooks = useContext(GlobalHooksContext);
+  const yam = useYam();
+  const wallet = useWallet();
+  const modalContext = useContext(ModalContext);
 
-  const onClaim = () => {
-    // TODO: add web3 claim
+  const onClaim = async () => {
+    if (globalHooks.staking.info.compoundBurn === DATA_UNAVAILABLE) {
+      return Promise.reject();
+    }
+
+    let transaction = yam.contracts.dfv.methods.deposit(0, 0);
+    if (globalHooks.staking.info.compoundBurn) {
+      transaction = yam.contracts.dfv.methods.depositWithBurn(0);
+    }
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully claimed",
+      "Claim",
+      "Error while claiming"
+    );
+
     globalHooks.staking.update();
     globalHooks.delta.update();
   };
 
   const getClaimableEth = () => {
     if (token === 'delta') {
-      return globalHooks.staking.deltaInfo.claimableEth;
+      return globalHooks.staking.info.farmedETH;
     }
 
-    return globalHooks.staking.rlpInfo.claimableEth;
+    return globalHooks.staking.info.farmedETH;
   };
 
   return <div className="my-6">
@@ -280,13 +329,27 @@ const EthereumWithdrawal = ({ token }) => {
 
 const RlpWithdrawalDialogContent = () => {
   const globalHooks = useContext(GlobalHooksContext);
-  const claimEth = 3.543;
-  const claimDelta = 3245;
+  const yam = useYam();
+  const wallet = useWallet();
+  const modalContext = useContext(ModalContext);
 
-  const confirmMessage = `This will automatically claim ${claimEth} ETH and start a Withdrawal contract for ${claimDelta} DELTA.`;
+  // const claimEth = 3.543;
+  // const claimDelta = 3245;
+
+  const confirmMessage = `This will automatically claim your farmed ETH and start a Withdrawal contract for your farmed DELTA.`;
 
   const onUnstake = async () => {
-    // TODO: add web3 topup operation
+    const transaction = yam.contracts.dfv.methods.withdrawRLP(globalHooks.staking.info.rlp);
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully unstaked",
+      "Unstake",
+      "Error while unstaking"
+    );
+
     globalHooks.staking.update();
     globalHooks.rlpInfo.update();
   };
@@ -295,7 +358,8 @@ const RlpWithdrawalDialogContent = () => {
     <TokenInput
       className="mt-4"
       token="rLP"
-      buttonText="UNSTAKE rLP AND FINALIZE WITHDRAWAL"
+      // buttonText="UNSTAKE rLP AND FINALIZE WITHDRAWAL"
+      buttonText="UNSTAKE rLP"
       transactionButtonUnder
       transactionButtonClassName="w-full md:8/12"
       transactionButtonNoBorders
@@ -308,6 +372,7 @@ const RlpWithdrawalDialogContent = () => {
 
 const RlpWithdrawal = () => {
   const modalContext = useContext(ModalContext);
+  const globalHooks = useContext(GlobalHooksContext);
 
   const onUnstakDialog = async () => {
     await modalContext.showMessage('You are about to unstake your rLP', <RlpWithdrawalDialogContent />, false);
@@ -315,7 +380,7 @@ const RlpWithdrawal = () => {
 
   return <div className="my-6">
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked rLP: {formatting.getTokenAmount('543.777', 0, 4)} rLP</li>
+      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
     </ul>
     <TransactionButton text="Unstake" textLoading="Unstaking..." onClick={onUnstakDialog} />
   </div>

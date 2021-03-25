@@ -77,7 +77,7 @@ const useStaking = () => {
 
   return {
     update,
-    ...info,
+    info,
     vaultStats
   };
 };

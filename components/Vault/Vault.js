@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
-import { useWallet } from 'use-wallet';
 import { DeltaPanel, DeltaSection } from '../Section';
 import { DeltaTitleH2 } from '../Title';
 import { ProgressBarDiamonds } from '../ProgressBar';
@@ -8,10 +7,9 @@ import { ModalContext } from '../../contexts';
 import VaultStaking from './VaultStaking';
 import DeltaButton from '../Button/DeltaButton';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
-import { formatting, time, transactions } from '../../helpers';
+import { formatting, time } from '../../helpers';
 import { TokenInput } from '../Input';
 import { DATA_UNAVAILABLE } from '../../config';
-import { useYam } from '../../hooks';
 
 const VaultInfoBox = ({ token, className = '' }) => {
 
@@ -51,9 +49,9 @@ const RlpStats = () => {
 
   return <div className="mt-4 md:mt-0">
     <ul className="list-disc list-inside py-4 md:py-8">
-      {/* <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableEth, 0, 4)} ETH</li>
-<li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableDelta, 0, 4)} DELTA</li> */}
+      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
     </ul>
   </div >
 };
@@ -64,9 +62,9 @@ const DeltaStats = () => {
 
   return <div className="mt-4 md:mt-0">
     <ul className="list-disc list-inside py-4 md:py-8">
-      {/* <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.amountStaked, 0, 4)} rLP</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableEth, 0, 4)} ETH</li>
-<li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableDelta, 0, 4)} DELTA</li> */}
+      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4)} rLP</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
     </ul>
   </div >
 };
@@ -112,7 +110,7 @@ const TopUpDialogContent = () => {
     <div className="my-4 text-base">A weekly deposit of 10% of your principle is necessary to maintain the multiplier. You can use Delta staking rewards or mature Delta from your wallet to top up the multiplier.</div>
     <div>Reward Multiplier</div>
     <div><ProgressBarDiamonds small value={globalHooks.staking.deltaInfo.rewardMultiplier} maxValue={10} /></div>
-    <div>Time until downgrade: {timeleftUntilDowngrade.days} day(s) {timeleftUntilDowngrade.hours} hour(s) {timeleftUntilDowngrade.minutes} minutes(s)</div>
+    {/* <div>Time until downgrade: {timeleftUntilDowngrade.days} day(s) {timeleftUntilDowngrade.hours} hour(s) {timeleftUntilDowngrade.minutes} minutes(s)</div> */}
     <div className="mt-4">
       <DeltaPanel className="flex flex-grow text-center">
         <div className="flex flex-row border border-black p-1 flex-grow">
@@ -133,60 +131,58 @@ const TopUpDialogContent = () => {
   </DeltaPanel>;
 }
 
-const Staking = () => {
+const RlpTokenVault = ({ className = '' }) => {
+  const token = 'rLP';
+
+  return <div className={`mt-4 md:mt-2 ${className}`}>
+    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
+    <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
+      <div className="flex w-full flex-grow flex-col md:flex-col">
+        <div>
+          {/* <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} /> */}
+          <RlpStats />
+        </div>
+      </div>
+      <div className="w-full flex-grow hidden flex-col md:flex self-start">
+        <ProgressBarDiamonds value={10} maxValue={10} className="flex flex-grow w-full hidden" />
+      </div>
+    </DeltaPanel>
+    <VaultStaking token={token} />
+  </div>;
+};
+
+const DeltaTokenVault = ({ className = '' }) => {
   const token = 'delta';
-  const yam = useYam();
-  const wallet = useWallet();
-  const modalContext = useContext(ModalContext);
   const globalHooks = useContext(GlobalHooksContext);
+  const modalContext = useContext(ModalContext);
   const rewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
 
   const onDepositToMultiplier = async () => {
     await modalContext.showMessage('Top Up Reward Multiplier', <TopUpDialogContent />, false);
   };
 
-  const claim = async () => {
-    if (globalHooks.staking.info.compoundBurn === DATA_UNAVAILABLE) {
-      return Promise.reject();
-    }
-
-    let transaction = yam.contracts.dfv.methods.deposit(0, 0);
-    if (globalHooks.staking.info.compoundBurn) {
-      transaction = yam.contracts.dfv.methods.depositWithBurn(0);
-    }
-
-    return transactions.executeTransaction(
-      modalContext,
-      transaction,
-      { from: wallet.account },
-      "Successfully claimed",
-      "Claim",
-      "Error while claiming"
-    );
-  };
-
-  return <div className="mt-4 md:mt-2">
+  return <div className={`mt-4 md:mt-2 ${className}`}>
     <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
     <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
       <div className="flex w-full flex-grow flex-col md:flex-col">
         <div>
-          <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
+          {/* <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} /> */}
           <DeltaStats />
         </div>
         <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
           <div className="text-xs flex mb-1">Reward Multiplier</div>
-          <ProgressBarDiamonds value={10} maxValue={10} className="flex w-full flex-grow" />
+          <ProgressBarDiamonds value={globalHooks.staking.info.booster} maxValue={10} className="flex w-full flex-grow" />
           <div className="text-xs text-gray-400 flex mt-1">{rewardMultiplierDescription}</div>
           <DeltaButton secondaryLook className="mt-4" onClick={onDepositToMultiplier}>Deposit to multipler</DeltaButton>
         </div>
       </div>
       <div className="w-full flex-grow hidden flex-col md:flex self-start">
-        <ProgressBarDiamonds value={10} maxValue={10} className="flex flex-grow w-full" />
+        <ProgressBarDiamonds value={globalHooks.staking.info.booster} maxValue={10} className="flex flex-grow w-full" />
         <div className="flex flex-row mt-4">
           <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
           <div className="text-xs flex text-gray-400">{rewardMultiplierDescription}</div>
         </div>
-        <DeltaButton secondaryLook className="mt-4" onClick={onDepositToMultiplier}>Deposit to multiplier</DeltaButton>
+        {/* <DeltaButton secondaryLook className="mt-4" onClick={onDepositToMultiplier}>Deposit to multiplier</DeltaButton> */}
       </div>
     </DeltaPanel>
     <VaultStaking token={token} />
@@ -205,13 +201,13 @@ const Vault = () => {
     <DeltaPanel className="md:mt-0">
       <div className="md:mt-0">
         <div className="flex flex-col md:flex-row-reverse">
-          <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12">
+          <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12 hidden">
             <div className="border border-black py-2 bg-gray-200 mb-1">Up to 750 % APY*</div>
             {/**
              * TODO: Hidden for now as getting the TVL requires getting
              * the information on a second market.
              */}
-            <div className="border border-black py-2 bg-gray-200 hidden">TVL: $145,223,123</div>
+            <div className="border border-black py-2 bg-gray-200">TVL: $145,223,123</div>
           </DeltaPanel>
           <DeltaPanel className="mt-4 pr-12 text-lg">
             The Deep Farming Vault distributes<br />
@@ -219,7 +215,8 @@ const Vault = () => {
           </DeltaPanel>
         </div>
         <DeltaButton className="my-4 md:mb-12 md:mt-4" onClick={seeWithdrawingContract}>See all withdrawal contracts</DeltaButton>
-        <Staking />
+        <RlpTokenVault />
+        <DeltaTokenVault className="mt-8 md:mt-12" />
       </div>
     </DeltaPanel>
   </DeltaSection>;
