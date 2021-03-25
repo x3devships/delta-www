@@ -2,6 +2,14 @@ import BigNumber from 'bignumber.js'
 
 export default {
   methods: {
+    getRLPTokenPerEthUnit: (ethValueBN) => {
+      return {
+        call: async () => {
+          return BigNumber('777').toString();
+        }
+      }
+    },
+
     getLPTokenPerEthUnit: (ethValueBN) => {
       return {
         call: async () => {
