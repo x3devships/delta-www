@@ -168,7 +168,7 @@
           "type": "uint256"
         }
       ],
-      "name": "getLPTokenPerBothSideUnits",
+      "name": "getRLPTokenPerBothSideUnits",
       "outputs": [
         {
           "internalType": "uint256",
@@ -187,7 +187,7 @@
           "type": "uint256"
         }
       ],
-      "name": "getLPTokenPerEthUnit",
+      "name": "getRLPTokenPerEthUnit",
       "outputs": [
         {
           "internalType": "uint256",

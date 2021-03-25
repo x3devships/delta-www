@@ -50,7 +50,7 @@ const useRlpRouter = () => {
       return Promise.reject();
     }
 
-    let minLpAmount = new BigNumber(await yam.contracts.deltaRouter.methods.getLPTokenPerEthUnit(ethValueBN.toString()).call());
+    let minLpAmount = new BigNumber(await yam.contracts.deltaRouter.methods.getRLPTokenPerEthUnit(ethValueBN.toString()).call());
 
     minLpAmount = addSlippage(minLpAmount, SLIPPAGE_PER_MILE);
 
