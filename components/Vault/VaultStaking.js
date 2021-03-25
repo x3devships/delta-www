@@ -210,22 +210,38 @@ const CreateWithdrawalContractContent = ({ token }) => {
 
 const UnstakeDeltaDialogContent = () => {
   const globalHooks = useContext(GlobalHooksContext);
+  const modalContext = useContext(ModalContext);
+  const yam = useYam();
+  const wallet = useWallet();
+
   const onUnstake = async () => {
-    // TODO: add web3 topup operation
+    const transaction = yam.contracts.dfv.methods.exit();
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully Unstaked",
+      "Unstaking",
+      "Error while unstaking"
+    );
+
+
     globalHooks.staking.update();
     globalHooks.delta.update();
   };
 
-  // TODO: Read from web3
-  const claimDelta = 123;
-  const claimEth = 432;
+  const claimDelta = globalHooks.staking.info.farmedDelta;
+  const claimEth = globalHooks.staking.info.farmedETH;
+  const { rlp } = globalHooks.staking.info;
+  const { totalDelta } = globalHooks.staking.info;
 
   return <DeltaPanel>
     <div className="mt-4">
       <TokenInput
         className="mt-4"
         token="delta"
-        labelBottom={`This will automatically claim ${claimEth} ETH and start a Withdrawal contract for ${claimDelta} Delta. And reduce your Reward Multiplier to 1x.`}
+        labelBottom={`This will automatically claim ${claimEth} ETH, ${claimDelta} DELTA, unstake ${rlp} rLP and create a withdrawal contract for ${totalDelta} DELTA. Are you sure?`}
         labelBottomClassName="mt-4"
         buttonText="UNSTAKE DELTA AND FINALIZE WITHDRAWAL"
         transactionButtonNoBorders
@@ -240,18 +256,36 @@ const DeltaWithdrawal = ({ token }) => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
   const router = useRouter()
+  const yam = useYam();
+  const wallet = useWallet();
 
-  const onCreateContract = async () => {
-    const confirmed = await modalContext.showConfirm('Delta Withdrawal Contract', <CreateWithdrawalContractContent token={token} />, 'create withdrawal contract');
-
-    if (confirmed) {
-      // TODO: add web3 operation
-      globalHooks.staking.update();
+  const onClaim = async () => {
+    if (globalHooks.staking.info.compoundBurn === DATA_UNAVAILABLE) {
+      return false;
     }
+
+    let transaction = yam.contracts.dfv.methods.deposit(0, 0);
+    if (globalHooks.staking.info.compoundBurn) {
+      transaction = yam.contracts.dfv.methods.depositWithBurn(0);
+    }
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully claimed",
+      "Claim",
+      "Error while claiming"
+    );
+
+    globalHooks.staking.update();
+    globalHooks.delta.update();
+
+    return Promise.resolve();
   };
 
   const onUnstakeDelta = async () => {
-    await modalContext.showMessage('You are about to unstake your Delta', <UnstakeDeltaDialogContent />, false);
+    return modalContext.showMessage('You are about to unstake your Delta', <UnstakeDeltaDialogContent />, false);
   };
 
   const seeWithdrawingContract = e => {
@@ -270,17 +304,17 @@ const DeltaWithdrawal = ({ token }) => {
   return <div className="my-6">
     {token === 'delta' && <>
       <ul className="list-disc list-inside py-4 md:py-8">
-        <li>Staked Delta: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.totalDelta, 18, 4)} DELTA</li>
+        <li>Staked Delta: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4)} DELTA</li>
       </ul>
       <div className="flex p-1 flex-grow md:flex-none">
-        {/* <TransactionButton className="flex-1" text="unstake underlying delta" onClick={onUnstakeDelta} /> */}
+        <TransactionButton className="flex-1" text="Unstake All" onClick={() => onUnstakeDelta(token)} />
       </div>
     </>}
     <ul className="list-disc list-inside py-4 md:py-8">
       <li>Claimable Delta: {formatting.getTokenAmount(getClaimableDelta(), 18, 4)} DELTA</li>
     </ul>
     <div className="flex p-1 flex-grow md:flex-none">
-      {/* <TransactionButton className="flex-1 mr-2 md:flex-grow-0" text="Create Contract" onClick={onCreateContract} /> */}
+      <TransactionButton className="flex-1 mr-2 md:flex-grow-0" text="Claim" onClick={onClaim} />
       <DeltaButton className="flex-1 md:flex-grow-0" onClick={seeWithdrawingContract}>Show All Contracts</DeltaButton>
     </div>
   </div>
@@ -313,6 +347,8 @@ const EthereumWithdrawal = ({ token }) => {
 
     globalHooks.staking.update();
     globalHooks.delta.update();
+
+    return Promise.resolve();
   };
 
   const getClaimableEth = () => {
