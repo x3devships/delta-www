@@ -49,6 +49,8 @@ const RlpStats = () => {
 
   return <div className="mt-4 md:mt-0">
     <ul className="list-disc list-inside py-4 md:py-8">
+      <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + (globalHooks.staking.info.rlp.toString() / 1e18), 0, 4)} rLP</li>
+      <li>Unstaked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} rLP</li>
       <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
@@ -62,7 +64,10 @@ const DeltaStats = () => {
 
   return <div className="mt-4 md:mt-0">
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4)} rLP</li>
+      <li>Total DELTA: {formatting.getTokenAmount(globalHooks.delta.data.total, 0, 4)} DELTA</li>
+      <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} DELTA</li>
+      <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA</li>
+      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4)} DELTA</li>
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
     </ul>

@@ -25,7 +25,7 @@ const executeTransaction = async (
 
   } catch (error) {
     const decodedError = errors.getTransactionError(error, 'An unexpected error occured');
-    console.log(decodedError);
+    console.log(error);
     await modalContext.showError(errorTitle, decodedError.message);
     return Promise.reject();
   }

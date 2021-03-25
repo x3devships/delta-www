@@ -43,13 +43,7 @@ const RlpStaking = () => {
   };
 
   return <div>
-    <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
-    </ul>
-
-    <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
+    <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={onStake} />
   </div >
 };
 
@@ -85,12 +79,7 @@ const DeltaStaking = () => {
   };
 
   return <div>
-    <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4)} DELTA</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
-    </ul>
-    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
+    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={onStake} />
     <div className="flex">
       <DeltaCheckbox className="flex items-center text-center flex-wrap" label="Deposit Burn" onChange={() => setBurning(c => !c)} />
       <CompoundBurnCheckbox
@@ -333,9 +322,6 @@ const RlpWithdrawalDialogContent = () => {
   const wallet = useWallet();
   const modalContext = useContext(ModalContext);
 
-  // const claimEth = 3.543;
-  // const claimDelta = 3245;
-
   const confirmMessage = `This will automatically claim your farmed ETH and start a Withdrawal contract for your farmed DELTA.`;
 
   const onUnstake = async () => {
@@ -366,7 +352,7 @@ const RlpWithdrawalDialogContent = () => {
       labelBottomClassName="mt-4"
       labelBottom={confirmMessage}
       buttonTextLoading="Unstaking..."
-      onOk={() => onUnstake()} />
+      onOk={onUnstake} />
   </DeltaPanel>;
 };
 
