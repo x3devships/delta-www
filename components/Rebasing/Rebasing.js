@@ -39,6 +39,7 @@ const Rebasing = () => {
     return () => clearInterval(interval);
   }, [globalHooks.rebasing.rebasingInfo.nextRebaseTimestamp, globalHooks.blockInfo.block.timestamp]);
 
+  return <></>;
   return <DeltaSection requiresConnectedWallet title="Rebasing is Soon">
     <DeltaPanel>
       <ProgressBarCountDown progress={70} />

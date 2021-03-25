@@ -45,8 +45,8 @@ const RlpStaking = () => {
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
       <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 0, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 0, 4)} DELTA</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
     </ul>
 
     <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
@@ -86,9 +86,9 @@ const DeltaStaking = () => {
 
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 0, 4)} DELTA</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 0, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 0, 4)} DELTA</li>
+      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4)} DELTA</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
+      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
     </ul>
     <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
     <div className="flex">
@@ -266,14 +266,14 @@ const DeltaWithdrawal = ({ token }) => {
   return <div className="my-6">
     {token === 'delta' && <>
       <ul className="list-disc list-inside py-4 md:py-8">
-        <li>Staked Delta: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.amountStaked, 0, 4)} DELTA</li>
+        <li>Staked Delta: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.totalDelta, 18, 4)} DELTA</li>
       </ul>
       <div className="flex p-1 flex-grow md:flex-none">
-        <TransactionButton className="flex-1" text="unstake underlying delta" onClick={onUnstakeDelta} />
+        {/* <TransactionButton className="flex-1" text="unstake underlying delta" onClick={onUnstakeDelta} /> */}
       </div>
     </>}
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Claimable Delta: {formatting.getTokenAmount(getClaimableDelta(), 0, 4)} DELTA</li>
+      <li>Claimable Delta: {formatting.getTokenAmount(getClaimableDelta(), 18, 4)} DELTA</li>
     </ul>
     <div className="flex p-1 flex-grow md:flex-none">
       {/* <TransactionButton className="flex-1 mr-2 md:flex-grow-0" text="Create Contract" onClick={onCreateContract} /> */}
@@ -321,7 +321,7 @@ const EthereumWithdrawal = ({ token }) => {
 
   return <div className="my-6">
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Claimable Ethereum: {formatting.getTokenAmount(getClaimableEth(), 0, 4)} ETH</li>
+      <li>Claimable Ethereum: {formatting.getTokenAmount(getClaimableEth(), 18, 4)} ETH</li>
     </ul>
     <TransactionButton text="Claim" textLoading="Claiming..." onClick={onClaim} />
   </div>
