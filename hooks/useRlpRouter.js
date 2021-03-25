@@ -101,7 +101,7 @@ const useRlpRouter = () => {
 
     return transactions.executeTransaction(
       modalContext,
-      transaction,
+      transactions,
       transactionParameters,
       successMessage,
       "Success",
