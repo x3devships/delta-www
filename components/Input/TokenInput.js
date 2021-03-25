@@ -85,7 +85,14 @@ const TokenInput = ({
   const onBeforeOk = useCallback(async () => {
     const values = getValues();
     if (values.amount !== DATA_UNAVAILABLE && onOk) {
-      return onOk(values.amount, values.amountBN, values.checkboxChecked);
+      const success = await onOk(values.amount, values.amountBN, values.checkboxChecked);
+      if (success) {
+        setAmountText('');
+        setValidAmount(true);
+        setAmount(false);
+      }
+
+      return success;
     }
 
     return modalContext.showError('Invalid Amount', 'The specified token amount is invalid');

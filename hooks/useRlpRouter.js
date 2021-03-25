@@ -34,7 +34,8 @@ const useRlpRouter = () => {
     return minAmount.minus(slippageAmount).toFixed(0);
   };
 
-  const mint = async (estimationOnly) => {
+  const mint = async (ethAmount, estimationOnly) => {
+    console.log(ethAmount);
     if (ethAmount === DATA_UNAVAILABLE) {
       return {
         gasEstimation: DATA_UNAVAILABLE,
@@ -114,7 +115,7 @@ const useRlpRouter = () => {
   const update = async () => {
     if (!wallet) return;
 
-    const { minLpAmount, gasEstimation } = await mint(true);
+    const { minLpAmount, gasEstimation } = await mint(ethAmount, true);
 
     setEstimatedRlpAmount(minLpAmount?.toString() / 1e18);
     setGasEstimation(gasEstimation);
@@ -123,7 +124,6 @@ const useRlpRouter = () => {
   const setEthAmountOnly = async ethAmount => {
     setMode(MODE.ETH_ONLY);
     setEthAmount(ethAmount);
-    await update();
   };
 
   const setDeltaSide = async deltaAmount => {
@@ -134,7 +134,6 @@ const useRlpRouter = () => {
     if (deltaAmountBN) {
       const ethAmount = await yam.contracts.deltaRouter.methods.getOptimalEthAmountForDeltaAmount(deltaAmountBN.toString()).call();
       setEthAmount(ethAmount.toString() / 1e18);
-      await update();
     }
   };
 
@@ -146,7 +145,6 @@ const useRlpRouter = () => {
     if (ethAmountBN) {
       const deltaAmount = await yam.contracts.deltaRouter.methods.getOptimalDeltaAmountForEthAmount(ethAmountBN.toString()).call();
       setDeltaAmount(deltaAmount.toString() / 1e18);
-      await update();
     }
   };
 
@@ -158,10 +156,6 @@ const useRlpRouter = () => {
     if (!yam?.contracts?.deltaRouter) {
       return false;
     }
-
-    update();
-    // const interval = setInterval(update, VALUE_REFRESH_INTERVAL);
-    // return () => clearInterval(interval);
   }, [yam, wallet]);
 
   return {

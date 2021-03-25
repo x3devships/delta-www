@@ -39,11 +39,18 @@ const RlpStaking = () => {
 
       globalHooks.staking.update();
       globalHooks.rlpInfo.update();
+
+      return true;
     }
   };
 
+  const allowanceRequiredFor = {
+    contract: 'dfv',
+    token: 'rLP'
+  };
+
   return <div>
-    <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={onStake} />
+    <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
   </div >
 };
 
@@ -74,12 +81,19 @@ const DeltaStaking = () => {
 
         globalHooks.staking.update();
         globalHooks.delta.update();
+
+        return true;
       }
     }
   };
 
+  const allowanceRequiredFor = {
+    contract: 'dfv',
+    token: 'rLP'
+  };
+
   return <div>
-    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={onStake} />
+    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
     <div className="flex">
       <DeltaCheckbox className="flex items-center text-center flex-wrap" label="Deposit Burn" onChange={() => setBurning(c => !c)} />
       <CompoundBurnCheckbox
@@ -102,7 +116,7 @@ const RlpMinting = () => {
   const onBuy = async (amount, amountBN, autoStake) => {
     if (amount !== DATA_UNAVAILABLE) {
       router.setAutoStake(autoStake);
-      await router.mint(false);
+      await router.mint(amount, false);
     }
   };
 
