@@ -11,10 +11,10 @@ const CompoundBurnCheckbox = ({
   const yam = useYam();
   const wallet = useWallet();
   const modalContext = useContext(ModalContext);
-  
+
   const onCheckboxChanged = async (event) => {
     const transaction = await yam.contracts.dfv.methods.setCompundBurn(event.target.checked);
-    
+
     return transactions.executeTransaction(
       modalContext,
       transaction,
@@ -28,7 +28,7 @@ const CompoundBurnCheckbox = ({
 
   return <div className={className}>
     <div>
-      <DeltaCheckbox text="DFV Check" onChange={onCheckboxChanged} />
+      <DeltaCheckbox label="Compound Burn" onChange={onCheckboxChanged} />
     </div>
   </div>
 };

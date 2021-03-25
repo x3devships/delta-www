@@ -31,9 +31,9 @@ const RlpStaking = () => {
 
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
+      {/* <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableEth, 0, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableDelta, 0, 4)} DELTA</li>
+<li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableDelta, 0, 4)} DELTA</li> */}
     </ul>
 
     <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
@@ -60,11 +60,14 @@ const DeltaStaking = () => {
 
   return <div>
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.amountStaked, 0, 4)} rLP</li>
+      {/* <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.amountStaked, 0, 4)} rLP</li>
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableEth, 0, 4)} ETH</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableDelta, 0, 4)} DELTA</li>
+<li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableDelta, 0, 4)} DELTA</li> */}
     </ul>
     <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={() => onStake()} />
+    <CompoundBurnCheckbox
+      className="flex items-center text-center flex-wrap"
+    />
   </div >
 };
 
@@ -147,9 +150,6 @@ const VaultDeposit = ({ token }) => {
         <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setDepositAction(t => !t)} grayLook={!depositAction}>Stake</DeltaButton>
         {renderBuyButton(token)}
       </div>
-      <CompoundBurnCheckbox
-        className="flex items-center text-center flex-wrap"
-      />
     </DeltaPanel>
     {renderContent()}
   </div>;

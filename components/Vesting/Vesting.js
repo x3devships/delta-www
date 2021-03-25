@@ -1,6 +1,7 @@
 import { VictoryPie, VictoryLabel, VictoryLegend } from 'victory';
 import { useContext, useEffect, useState } from 'react';
 import { Button } from '@windmill/react-ui';
+import { useRouter } from 'next/router'
 import { DeltaPanel, DeltaSection, DeltaSectionBox } from '../Section';
 import { DeltaTitleH3 } from '../Title';
 import { formatting, transactions, time } from '../../helpers';
@@ -55,6 +56,12 @@ const Vesting = () => {
 
   const chartWidth = 400;
   const globalHooks = useContext(GlobalHooksContext);
+  const router = useRouter()
+
+  const goToVaultPage = e => {
+    e.preventDefault();
+    router.push('/vaults');
+  };
 
   useEffect(() => {
     const update = async () => {
@@ -80,7 +87,7 @@ const Vesting = () => {
 
   const renderMyWallet = () => {
     const globalHooks = useContext(GlobalHooksContext);
-    const onStakeDialog = async () => {
+    /* const onStakeDialog = async () => {
 
       const onStake = async (amount, amountBN, valid) => {
         if (!valid) {
@@ -105,7 +112,7 @@ const Vesting = () => {
       </DeltaPanel >;
 
       await modalContext.showMessage('Staking', content, 'Cancel');
-    };
+    }; */
 
     return <div >
       <ul className="list-disc list-inside py-4">
@@ -114,7 +121,7 @@ const Vesting = () => {
         <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA</li>
       </ul>
       <DeltaPanel className="flex items-center text-center flex-wrap">
-        <DeltaButton className="flex-1 mr-4 md:flex-grow-0" labelBottom="Earn Yield" onClick={() => onStakeDialog()}>Stake in vault</DeltaButton>
+        <DeltaButton className="flex-1 mr-4 md:flex-grow-0" labelBottom="Earn Yield" onClick={goToVaultPage}>Stake in vault</DeltaButton>
         <DeltaButton className="flex-1 md:flex-grow-0" labelBottom="Earn Yield" onClick={() => { }}>Trade Delta</DeltaButton>
       </DeltaPanel>
     </div>
@@ -122,27 +129,16 @@ const Vesting = () => {
 
   const renderRLPStats = () => {
     const globalHooks = useContext(GlobalHooksContext);
-    const onStake = async (amount, amountBN, valid) => {
-      if (!valid) {
-        await modalContext.showError('Error', 'Invalid input');
-      } else {
-        const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP?`);
-
-        if (confirmed) {
-          // TODO: add web3 call to stack the rLP in the vault
-          globalHooks.staking.update();
-          globalHooks.delta.update();
-        }
-      }
-    };
-
     return <div>
       <ul className="list-disc list-inside py-4">
-        <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
+        <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + (globalHooks.staking.rlp.toString() / 1e18), 0, 4)} rLP</li>
         <li>Unstaked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} rLP</li>
-        <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
+        <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlp, 18, 4)} rLP</li>
       </ul>
-      <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={onStake} />
+
+      <DeltaPanel className="flex items-center text-center flex-wrap">
+        <DeltaButton className="flex-1 mr-4 md:flex-grow-0" labelBottom="Earn Yield" onClick={goToVaultPage}>Stake in vault</DeltaButton>
+      </DeltaPanel>
     </div >
   };
 

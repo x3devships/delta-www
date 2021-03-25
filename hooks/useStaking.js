@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import useYam from './useYam';
 import useWeb3 from './useWeb3';
-import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../config';
+import { DATA_UNAVAILABLE } from '../config';
 
 const REFRESH_RATE = 30 * 1000;
 
@@ -17,85 +17,20 @@ const useStaking = () => {
     apy: DATA_UNAVAILABLE
   });
 
-  // TODO: Enter the information about the user's rLP staking
-  const [rlpInfo, setRlpInfo] = useState({
-    amountStaked: DATA_UNAVAILABLE,
-    claimableEth: DATA_UNAVAILABLE,
-    claimableDelta: DATA_UNAVAILABLE,
-    rewardMultiplier: DATA_UNAVAILABLE
+  const [info, setInfo] = useState({
+    booster: DATA_UNAVAILABLE, // Current staking booster 1x-10x
+    farmedDelta: DATA_UNAVAILABLE, // Amount of farmed Delta
+    farmedETH: DATA_UNAVAILABLE, // Amount of farmed Eth
+    recycledDelta: DATA_UNAVAILABLE,
+    recycledETH: DATA_UNAVAILABLE,
+    deltaPermanent: DATA_UNAVAILABLE,  // Never withdrawable
+    deltaVesting: DATA_UNAVAILABLE, // Amount that needs to vest 12 months to be claimable 
+    deltaWithdrawable: DATA_UNAVAILABLE, // Amount that can be withdrawn right away (with 2 week vesting)
+    totalDelta: DATA_UNAVAILABLE, // Sum of them all (delta only no rlp)
+    rlp: DATA_UNAVAILABLE,  // amount of rlp this user has
+    lastBoosterDepositTimestamp: DATA_UNAVAILABLE, // timestamp of the last booster deposit
+    compoundBurn: DATA_UNAVAILABLE // A boolean that sets compounding effect, either burn maintaining multiplier or just adding. 
   });
-
-  // TODO: Enter the information about the user's Delta staking
-  const [deltaInfo, setDeltaInfo] = useState({
-    amountStaked: DATA_UNAVAILABLE,
-    claimableEth: DATA_UNAVAILABLE,
-    claimableDelta: DATA_UNAVAILABLE,
-    rewardMultiplier: DATA_UNAVAILABLE,
-    timeUntilDowngrade: DATA_UNAVAILABLE
-  });
-
-  const [withdrawalContracts, setWithdrawalContracts] = useState([]);
-  const { decimals } = tokenMap[addressMap.delta];
-
-  // TODO: remove once contract are available
-  const setMockValues = async () => {
-    if (!yam) return;
-
-    const block = await yam.web3.eth.getBlock("latest");
-    const now = block.timestamp;
-    const secondsInOneDay = 60 * 60 * 24;
-
-    setVaultStats({
-      delta: {
-        amountTotal: 123,
-        apy: 999
-      },
-      rLP: {
-        amountTotal: 654,
-        apy: 635
-      }
-    });
-
-    setRlpInfo({
-      amountStaked: 123,
-      claimableEth: 456,
-      claimableDelta: 567,
-      rewardMultiplier: 20
-    });
-
-    setDeltaInfo({
-      amountStaked: 123,
-      claimableEth: 456,
-      claimableDelta: 888,
-      rewardMultiplier: 8,
-      timeUntilDowngrade: now + secondsInOneDay
-    });
-
-    // TODO: remove mock data and use real contract
-    setWithdrawalContracts([
-      {
-        amount: 110,
-        fullVestingTimestamp: now + secondsInOneDay * 2,
-        immature: 100,
-        mature: 10,
-        percentVested: 0.1
-      },
-      {
-        amount: 220,
-        fullVestingTimestamp: now + secondsInOneDay * 6,
-        immature: 0.8 * 220,
-        mature: 0.2 * 220,
-        percentVested: 0.2
-      },
-      {
-        amount: 3568,
-        fullVestingTimestamp: now + secondsInOneDay * 8,
-        immature: 0.5 * 3568,
-        mature: 0.5 * 3568,
-        percentVested: 0.5
-      }
-    ]);
-  };
 
   const update = async () => {
     if (!web3) return;
@@ -113,14 +48,25 @@ const useStaking = () => {
       }
     });
 
-    /**
-     * This section requires a connected wallet
-     */
     if (!yam || !wallet?.account) return;
 
-    // TODO: Replace using DFV contract
-    // const balance = (await yam.contracts.delta.methods.balanceOf(wallet.account).call()) / 10 ** decimals;
-    setMockValues();
+    const userInfo = await yam.contracts.dfv.methods.userInfo(wallet.account).call();
+    const recycleInfo = await yam.contracts.dfv.methods.realFarmedOfPerson(wallet.account).call();
+
+    setInfo({
+      booster: recycleInfo.booster,
+      farmedDelta: recycleInfo.farmedDelta,
+      farmedETH: recycleInfo.farmedETH,
+      recycledDelta: recycleInfo.recycledDelta,
+      recycledETH: recycleInfo.recycledETH,
+      deltaPermanent: userInfo.deltaPermanent,  // Never withdrawable
+      deltaVesting: userInfo.deltaVesting, // Amount that needs to vest 12 months to be claimable 
+      deltaWithdrawable: userInfo.deltaWithdrawable, // Amount that can be withdrawn right away (with 2 week vesting)
+      totalDelta: userInfo.totalDelta, // Sum of them all (delta only no rlp)
+      rlp: userInfo.rlp,  // amount of rlp this user has
+      lastBoosterDepositTimestamp: userInfo.lastBoosterDepositTimestamp, // timestamp of the last booster deposit
+      compoundBurn: userInfo.compoundBurn // A boolean that sets compounding effect, either burn maintaining multiplier or just adding. 
+    });
   };
 
   useEffect(() => {
@@ -131,10 +77,8 @@ const useStaking = () => {
 
   return {
     update,
-    rlpInfo,
-    deltaInfo,
-    vaultStats,
-    withdrawalContracts
+    ...info,
+    vaultStats
   };
 };
 

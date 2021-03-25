@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
+import { useWallet } from 'use-wallet';
 import { DeltaPanel, DeltaSection } from '../Section';
 import { DeltaTitleH2 } from '../Title';
 import { ProgressBarDiamonds } from '../ProgressBar';
@@ -7,9 +8,10 @@ import { ModalContext } from '../../contexts';
 import VaultStaking from './VaultStaking';
 import DeltaButton from '../Button/DeltaButton';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
-import { formatting, time } from '../../helpers';
+import { formatting, time, transactions } from '../../helpers';
 import { TokenInput } from '../Input';
 import { DATA_UNAVAILABLE } from '../../config';
+import { useYam } from '../../hooks';
 
 const VaultInfoBox = ({ token, className = '' }) => {
 
@@ -49,9 +51,9 @@ const RlpStats = () => {
 
   return <div className="mt-4 md:mt-0">
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
+      {/* <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.amountStaked, 0, 4)} rLP</li>
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableEth, 0, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableDelta, 0, 4)} DELTA</li>
+<li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpInfo.claimableDelta, 0, 4)} DELTA</li> */}
     </ul>
   </div >
 };
@@ -62,9 +64,9 @@ const DeltaStats = () => {
 
   return <div className="mt-4 md:mt-0">
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.amountStaked, 0, 4)} rLP</li>
+      {/* <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.amountStaked, 0, 4)} rLP</li>
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableEth, 0, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableDelta, 0, 4)} DELTA</li>
+<li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.deltaInfo.claimableDelta, 0, 4)} DELTA</li> */}
     </ul>
   </div >
 };
@@ -131,36 +133,39 @@ const TopUpDialogContent = () => {
   </DeltaPanel>;
 }
 
-const RlpTokenVault = ({ className = '' }) => {
-  const token = 'rLP';
-
-  return <div className={`mt-4 md:mt-2 ${className}`}>
-    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
-    <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
-      <div className="flex w-full flex-grow flex-col md:flex-col">
-        <div>
-          <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
-          <RlpStats />
-        </div>
-      </div>
-      <div className="w-full flex-grow hidden flex-col md:flex self-start">
-        <ProgressBarDiamonds value={10} maxValue={10} className="flex flex-grow w-full hidden" />
-      </div>
-    </DeltaPanel>
-    <VaultStaking token={token} />
-  </div>;
-};
-
-const DeltaTokenVault = ({ className = '' }) => {
+const Staking = () => {
   const token = 'delta';
+  const yam = useYam();
+  const wallet = useWallet();
   const modalContext = useContext(ModalContext);
+  const globalHooks = useContext(GlobalHooksContext);
   const rewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
 
   const onDepositToMultiplier = async () => {
     await modalContext.showMessage('Top Up Reward Multiplier', <TopUpDialogContent />, false);
   };
 
-  return <div className={`mt-4 md:mt-2 ${className}`}>
+  const claim = async () => {
+    if (globalHooks.staking.info.compoundBurn === DATA_UNAVAILABLE) {
+      return Promise.reject();
+    }
+
+    let transaction = yam.contracts.dfv.methods.deposit(0, 0);
+    if (globalHooks.staking.info.compoundBurn) {
+      transaction = yam.contracts.dfv.methods.depositWithBurn(0);
+    }
+
+    return transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully claimed",
+      "Claim",
+      "Error while claiming"
+    );
+  };
+
+  return <div className="mt-4 md:mt-2">
     <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
     <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
       <div className="flex w-full flex-grow flex-col md:flex-col">
@@ -214,8 +219,7 @@ const Vault = () => {
           </DeltaPanel>
         </div>
         <DeltaButton className="my-4 md:mb-12 md:mt-4" onClick={seeWithdrawingContract}>See all withdrawal contracts</DeltaButton>
-        <RlpTokenVault />
-        <DeltaTokenVault className="mt-8 md:mt-12" />
+        <Staking />
       </div>
     </DeltaPanel>
   </DeltaSection>;
