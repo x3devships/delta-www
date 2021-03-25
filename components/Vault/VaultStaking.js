@@ -22,7 +22,6 @@ const RlpStaking = () => {
   const wallet = useWallet();
 
   const onStake = async (amount, amountBN) => {
-
     const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
 
     if (confirmed) {
@@ -332,59 +331,38 @@ const EthereumWithdrawal = ({ token }) => {
   </div>
 };
 
-const RlpWithdrawalDialogContent = () => {
-  const globalHooks = useContext(GlobalHooksContext);
-  const yam = useYam();
-  const wallet = useWallet();
-  const modalContext = useContext(ModalContext);
-
-  const confirmMessage = `This will automatically claim your farmed ETH and start a Withdrawal contract for your farmed DELTA.`;
-
-  const onUnstake = async () => {
-    const transaction = yam.contracts.dfv.methods.withdrawRLP(globalHooks.staking.info.rlp);
-
-    await transactions.executeTransaction(
-      modalContext,
-      transaction,
-      { from: wallet.account },
-      "Successfully unstaked",
-      "Unstake",
-      "Error while unstaking"
-    );
-
-    globalHooks.staking.update();
-    globalHooks.rlpInfo.update();
-  };
-
-  return <DeltaPanel>
-    <TokenInput
-      className="mt-4"
-      token="rLP"
-      // buttonText="UNSTAKE rLP AND FINALIZE WITHDRAWAL"
-      buttonText="UNSTAKE rLP"
-      transactionButtonUnder
-      transactionButtonClassName="w-full md:8/12"
-      transactionButtonNoBorders
-      labelBottomClassName="mt-4"
-      labelBottom={confirmMessage}
-      buttonTextLoading="Unstaking..."
-      onOk={onUnstake} />
-  </DeltaPanel>;
-};
-
 const RlpWithdrawal = () => {
   const modalContext = useContext(ModalContext);
   const globalHooks = useContext(GlobalHooksContext);
+  const yam = useYam();
+  const wallet = useWallet();
 
   const onUnstakDialog = async () => {
-    await modalContext.showMessage('You are about to unstake your rLP', <RlpWithdrawalDialogContent />, false);
+    const content = `This will withdraw ${formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP and automatically claim your farmed ETH and start a Withdrawal contract for your farmed DELTA.`;
+    const confirm = await modalContext.showConfirm('You are about to unstake your rLP', content);
+
+    if (confirm) {
+      const transaction = yam.contracts.dfv.methods.withdrawRLP(globalHooks.staking.info.rlp);
+
+      await transactions.executeTransaction(
+        modalContext,
+        transaction,
+        { from: wallet.account },
+        "Successfully unstaked",
+        "Unstake",
+        "Error while unstaking"
+      );
+
+      globalHooks.staking.update();
+      globalHooks.rlpInfo.update();
+    }
   };
 
   return <div className="my-6">
     <ul className="list-disc list-inside py-4 md:py-8">
       <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
     </ul>
-    <TransactionButton text="Unstake" textLoading="Unstaking..." onClick={onUnstakDialog} />
+    <TransactionButton text="Unstake" textLoading="Unstaking..." onClick={() => onUnstakDialog()} />
   </div>
 };
 
