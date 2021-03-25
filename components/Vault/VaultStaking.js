@@ -116,13 +116,15 @@ const RlpMinting = () => {
   const onBuy = async (amount, amountBN, autoStake) => {
     if (amount !== DATA_UNAVAILABLE) {
       router.setAutoStake(autoStake);
-      await router.mint(amount, false);
+      await router.mint(amount, autoStake, false);
     }
   };
 
   const onChange = async (amount, amountBN, autoStake) => {
+    console.log(autoStake);
+    router.setAutoStake(autoStake);
+
     if (amount !== DATA_UNAVAILABLE) {
-      router.setAutoStake(autoStake);
       await router.setEthAmountOnly(amount);
     }
   };

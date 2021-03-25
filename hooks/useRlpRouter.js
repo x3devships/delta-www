@@ -34,7 +34,7 @@ const useRlpRouter = () => {
     return minAmount.minus(slippageAmount).toFixed(0);
   };
 
-  const mint = async (ethAmount, estimationOnly) => {
+  const mint = async (ethAmount, autoStake, estimationOnly) => {
     console.log(ethAmount);
     if (ethAmount === DATA_UNAVAILABLE) {
       return {
@@ -89,11 +89,11 @@ const useRlpRouter = () => {
       `Are you sure you want to buy a minumum of ${formatting.getTokenAmount(minLpAmount, 18, 6)} rLP?`
 
     if (!await modalContext.showConfirm("Confirmation", confirmationMessage)) {
-      return Promise.reject();
+      return false;
     }
 
     const successMessage = autoStake ?
-      'Your rLP tokens have been bought and staked. You can see them displayed on the vault page' :
+      'Your rLP tokens have been bought and staked in the vault.' :
       'Your rLP tokens have been bought and they are now available in your wallet';
 
     const progressMessage = autoStake ?
@@ -115,7 +115,7 @@ const useRlpRouter = () => {
   const update = async () => {
     if (!wallet) return;
 
-    const { minLpAmount, gasEstimation } = await mint(ethAmount, true);
+    const { minLpAmount, gasEstimation } = await mint(ethAmount, autoStake, true);
 
     setEstimatedRlpAmount(minLpAmount?.toString() / 1e18);
     setGasEstimation(gasEstimation);

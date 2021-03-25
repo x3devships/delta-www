@@ -10,7 +10,7 @@ import { parsing } from '../../helpers';
 
 // The delay at which the onChange event is trigger when the input
 // value is changed.
-const ONCHANGE_NOTIFICATION_WAIT = 1000;
+const ONCHANGE_NOTIFICATION_WAIT = 200;
 
 const TokenInput = ({
   token,
@@ -73,7 +73,7 @@ const TokenInput = ({
       amountBN: DATA_UNAVAILABLE,
       checkboxChecked
     };
-  }, [amount]);
+  }, [amount, checkboxChecked]);
 
   const onNotifyChange = useCallback(debounce(() => {
     const values = getValues();
@@ -129,7 +129,7 @@ const TokenInput = ({
   useEffect(() => {
     onNotifyChange();
     return onNotifyChange.cancel;
-  }, [amount]);
+  }, [amount, checkboxChecked]);
 
   const renderInput = () => {
     return <>
