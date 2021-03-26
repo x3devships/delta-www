@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import { DeltaPanel, DeltaSection } from '../Section';
-import { DeltaTitleH2 } from '../Title';
+import { DeltaTitleH2, DeltaTitleH4 } from '../Title';
 import { ProgressBarDiamonds } from '../ProgressBar';
 import { ModalContext } from '../../contexts';
 import VaultStaking from './VaultStaking';
@@ -63,13 +63,16 @@ const DeltaStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
 
   return <div className="mt-4 md:mt-0">
-    <ul className="list-disc list-inside py-4 md:py-8">
+    <DeltaTitleH4>Your Wallet</DeltaTitleH4>
+    <ul className="list-disc list-inside">
       <li>Total DELTA: {formatting.getTokenAmount(globalHooks.delta.data.total, 0, 4)} DELTA</li>
       <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} DELTA</li>
       <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA</li>
     </ul>
+    <DeltaTitleH4 className="mt-4">Staking</DeltaTitleH4>
     <ul className="list-disc list-inside">
-      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4)} DELTA</li>
+      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.stakedDelta, 18, 4)} DELTA</li>
+      <li>Permanently Locked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaPermanent, 18, 4)} DELTA</li>
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
       <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
     </ul>
@@ -142,7 +145,7 @@ const RlpTokenVault = ({ className = '' }) => {
   const token = 'rLP';
 
   return <div className={`mt-4 md:mt-2 ${className}`}>
-    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
+    <DeltaTitleH2 lineunder>rLP Token</DeltaTitleH2>
     <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
       <div className="flex w-full flex-grow flex-col md:flex-col">
         <div>
@@ -169,7 +172,7 @@ const DeltaTokenVault = ({ className = '' }) => {
   };
 
   return <div className={`mt-4 md:mt-2 ${className}`}>
-    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
+    <DeltaTitleH2 lineunder>DELTA Token</DeltaTitleH2>
     <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
       <div className="flex w-full flex-grow flex-col md:flex-col">
         <div>

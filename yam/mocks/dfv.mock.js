@@ -14,6 +14,7 @@ export default {
             deltaVesting: BigNumber('222'),
             deltaWithdrawable: BigNumber('333'),
             totalDelta: BigNumber('444'),
+            stakedDelta: BigNumber('444'),
             rlp: BigNumber('555'),
             lastBoosterDepositTimestamp: 99999999,
             compoundBurn: true

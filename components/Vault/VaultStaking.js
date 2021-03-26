@@ -291,9 +291,9 @@ const DeltaWithdrawal = ({ token }) => {
     const claimDelta = formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4);
     const claimEth = formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4);
     const rlp = formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4);
-    const totalDelta = formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4);
+    const stakedDelta = formatting.getTokenAmount(globalHooks.staking.info.stakedDelta, 18, 4);
 
-    const message = `This will automatically claim ${claimEth} ETH, ${claimDelta} DELTA, unstake ${rlp} rLP and create a withdrawal contract for ${totalDelta} DELTA. Are you sure?`;
+    const message = `This will automatically claim ${claimEth} ETH, ${claimDelta} DELTA, unstake ${rlp} rLP and create a withdrawal contract for ${stakedDelta} DELTA. Are you sure?`;
 
     const confirm = await modalContext.showConfirm('You are about to unstake everything', message);
 
@@ -318,7 +318,7 @@ const DeltaWithdrawal = ({ token }) => {
   return <div className="my-6">
     {token === 'delta' && <>
       <ul className="list-disc list-inside py-4 md:py-8">
-        <li>Staked Delta: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4)} DELTA</li>
+        <li>Staked Delta: {formatting.getTokenAmount(globalHooks.staking.info.stakedDelta, 18, 4)} DELTA</li>
       </ul>
       <div className="flex p-1 flex-grow md:flex-none">
         <TransactionButton className="flex-1" text="Unstake All" onClick={() => onUnstakeDelta(token)} />

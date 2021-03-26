@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
+import BigNumber from 'bignumber.js';
 import useYam from './useYam';
 import useWeb3 from './useWeb3';
 import { DATA_UNAVAILABLE } from '../config';
@@ -28,7 +29,8 @@ const useStaking = () => {
     deltaPermanent: DATA_UNAVAILABLE,  // Never withdrawable
     deltaVesting: DATA_UNAVAILABLE, // Amount that needs to vest 12 months to be claimable 
     deltaWithdrawable: DATA_UNAVAILABLE, // Amount that can be withdrawn right away (with 2 week vesting)
-    totalDelta: DATA_UNAVAILABLE, // Sum of them all (delta only no rlp)
+    totalDelta: DATA_UNAVAILABLE, // Sum of them all (delta only no rlp),
+    stakedDelta: DATA_UNAVAILABLE, // deltaTotal - deltaPermanent
     rlp: DATA_UNAVAILABLE,  // amount of rlp this user has
     lastBoosterDepositTimestamp: DATA_UNAVAILABLE, // timestamp of the last booster deposit
     compoundBurn: DATA_UNAVAILABLE // A boolean that sets compounding effect, either burn maintaining multiplier or just adding. 
@@ -59,19 +61,31 @@ const useStaking = () => {
 
     setRlpPerLp(rlpPerLP);
 
+    const farmedDelta = new BigNumber(recycleInfo.farmedDelta);
+    const farmedETH = new BigNumber(recycleInfo.farmedETH);
+    const recycledDelta = new BigNumber(recycleInfo.recycledDelta);
+    const recycledETH = new BigNumber(recycleInfo.recycledETH);
+    const deltaPermanent = new BigNumber(userInfo.deltaPermanent);  // Never withdrawable
+    const deltaVesting = new BigNumber(userInfo.deltaVesting); // Amount that needs to vest 12 months to be claimable
+    const deltaWithdrawable = new BigNumber(userInfo.deltaWithdrawable); // Amount that can be withdrawn right away (with 2 week vesting)
+    const totalDelta = new BigNumber(userInfo.totalDelta); // Sum of them all (delta only no rlp)
+    const rlp = new BigNumber(userInfo.rlp);  // amount of rlp this user has
+    const lastBoosterDepositTimestamp = parseInt(userInfo.lastBoosterDepositTimestamp); // timestamp of the last booster deposit
+
     setInfo({
       booster: recycleInfo.booster,
-      farmedDelta: recycleInfo.farmedDelta,
-      farmedETH: recycleInfo.farmedETH,
-      recycledDelta: recycleInfo.recycledDelta,
-      recycledETH: recycleInfo.recycledETH,
-      deltaPermanent: userInfo.deltaPermanent,  // Never withdrawable
-      deltaVesting: userInfo.deltaVesting, // Amount that needs to vest 12 months to be claimable 
-      deltaWithdrawable: userInfo.deltaWithdrawable, // Amount that can be withdrawn right away (with 2 week vesting)
-      totalDelta: userInfo.totalDelta, // Sum of them all (delta only no rlp)
-      rlp: userInfo.rlp,  // amount of rlp this user has
-      lastBoosterDepositTimestamp: userInfo.lastBoosterDepositTimestamp, // timestamp of the last booster deposit
-      compoundBurn: userInfo.compoundBurn // A boolean that sets compounding effect, either burn maintaining multiplier or just adding. 
+      farmedDelta,
+      farmedETH,
+      recycledDelta,
+      recycledETH,
+      stakedDelta: totalDelta.minus(deltaPermanent),
+      deltaPermanent,
+      deltaVesting,
+      deltaWithdrawable,
+      totalDelta,
+      rlp,
+      lastBoosterDepositTimestamp,
+      compoundBurn: !!userInfo.compoundBurn // A boolean that sets compounding effect, either burn maintaining multiplier or just adding. 
     });
   };
 
