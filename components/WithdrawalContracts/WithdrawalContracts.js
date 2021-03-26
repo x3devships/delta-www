@@ -30,7 +30,8 @@ const FinalizeContractDialogContent = ({ contract }) => {
 };
 
 const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) => {
-  const globalHooks = useContext(GlobalHooksContext);
+  // const globalHooks = useContext(GlobalHooksContext);
+  const withdrawals = useWithdrawal();
   const modelContext = useContext(ModalContext);
   const vestingTimeLeft = contract.secondsLeftToMature;
 
@@ -38,7 +39,7 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
     const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having immature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');
     if (confirmed) {
       // TODO: add web3 call
-      globalHooks.staking.update();
+      await withdrawals.update();
     }
   };
 
