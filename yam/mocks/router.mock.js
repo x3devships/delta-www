@@ -64,6 +64,14 @@ export default {
           return 77;
         }
       }
-    }
+    },
+
+    rlpPerLP: () => {
+      return {
+        call: async () => {
+          return 12;
+        }
+      }
+    },
   }
 }

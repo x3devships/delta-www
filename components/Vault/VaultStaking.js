@@ -129,13 +129,14 @@ const DeltaStaking = () => {
   </div >
 };
 
-const RlpMinting = () => {
+const RlpMinting = async () => {
   const router = useRlpRouter();
   const [estimationLabel, setEstimationLabel] = useState('');
 
   useEffect(() => {
     const text = `estimated rLP minted: ${formatting.getTokenAmount(router.estimatedRlpAmount, 0, 4)} ` +
-      `rLP ➔ Gas cost: ${formatting.getTokenAmount(router.gasEstimation, 18, 4)} ETH`;
+      `rLP ➔ Gas cost: ${formatting.getTokenAmount(router.gasEstimation, 18, 4)} ETH` +
+      `1 LP = ${formatting.getTokenAmount(router.rlpPerLP, 0, 4)} `;
     setEstimationLabel(text);
   }, [router.estimatedRlpAmount, router.gasEstimation]);
 
@@ -147,7 +148,7 @@ const RlpMinting = () => {
   };
 
   const onChange = async (amount, amountBN, autoStake) => {
-    console.log(autoStake);
+    console.log(await router.getrlpPerLP());
     router.setAutoStake(autoStake);
 
     if (amount !== DATA_UNAVAILABLE) {
