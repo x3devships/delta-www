@@ -29,12 +29,22 @@ const FinalizeContractDialogContent = ({ contract }) => {
   </DeltaPanel>;
 };
 
-const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) => {
-  // const globalHooks = useContext(GlobalHooksContext);
-  const withdrawals = useWithdrawal();
+const WithdrawalContractItem = async ({ index, opened, contract, className, onOpen }) => {
+  const globalHooks = useContext(GlobalHooksContext);
   const modelContext = useContext(ModalContext);
   const vestingTimeLeft = contract.secondsLeftToMature;
+  const withdrawals = useWithdrawal();
 
+  const {
+    principalAmount,
+    vestingAmount,
+    secondsLeftToMature,
+    withdrawableAmount,
+    maturedVestingToken,
+    percentMatured } = await withdrawals.update();
+
+  const timer = time.getTimeLeft(globalHooks.blockInfo.block.timestamp, secondsLeftToMature);
+  
   const onFinalizeWithdrawal = async (contract) => {
     const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having immature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');
     if (confirmed) {
@@ -47,7 +57,7 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
     <div className="mt-4">Delta is continuously maturing in the  Withdrawal contract. The Vesting cycle to fully mature your rewards is one year. Finalizing the withdrawal will distribute your immatured Delta to the Deep Farming Vault. You will receive your matured Delta (minimum 5% of total Rewards)</div>
     <div className="mt-4 mb-2">
       <div>Time until fully matured:</div>
-      <div>{vestingTimeLeft.days} Day(s) {vestingTimeLeft.hours} Hour(s) {vestingTimeLeft.minutes} Minute(s)</div>
+      <div>{timer.days} Day(s) {timer.hours} Hour(s) {timer.minutes} Minute(s)</div>
     </div>
     <VestingTransactionProgressBar transaction={contract} />
     <div className="ml-1 mt-1">{formatting.getTokenAmount(contract.mature, 18, 4)} / {formatting.getTokenAmount(contract.immature, 18, 4)}  mature</div>
