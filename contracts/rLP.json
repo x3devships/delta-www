@@ -92,10 +92,10 @@
     },
     {
       "inputs": [],
-      "name": "WETH_ADDRESS",
+      "name": "WETH",
       "outputs": [
         {
-          "internalType": "address",
+          "internalType": "contract IWETH",
           "name": "",
           "type": "address"
         }
@@ -104,29 +104,29 @@
       "type": "function"
     },
     {
-      "inputs": [
+      "inputs": [],
+      "name": "_DAILY_PERCENTAGE_COST_INCREASE_TO_MINT_LP",
+      "outputs": [
         {
           "internalType": "uint256",
-          "name": "numberLoops",
+          "name": "",
           "type": "uint256"
         }
       ],
-      "name": "addVolume",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
-      "inputs": [
+      "inputs": [],
+      "name": "_dailyVolumeTargetETH",
+      "outputs": [
         {
           "internalType": "uint256",
-          "name": "numberLoops",
+          "name": "",
           "type": "uint256"
         }
       ],
-      "name": "addVolumeCallee",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -273,6 +273,24 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "getRemainingETHInVolumeTarget",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "remainingVolumeInETH",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "secondsSinceLastUpdate",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -298,110 +316,12 @@
     },
     {
       "inputs": [],
-      "name": "initialRebasingDone",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "initialRebasingLPTarget",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "intiialRebase",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "lpTokenReserves",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "lswAddress",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newContract",
-          "type": "address"
-        }
-      ],
-      "name": "migrate",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "migratedContract",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "name",
       "outputs": [
         {
           "internalType": "string",
           "name": "",
           "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "nextRebase",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -416,37 +336,7 @@
     },
     {
       "inputs": [],
-      "name": "onlyNewContract",
-      "outputs": [],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "openRebasing",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "token0",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "token1",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "thing",
-          "type": "string"
-        }
-      ],
-      "name": "printBalanaces",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -456,6 +346,37 @@
       "name": "rebase",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "borrowedDELTA",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "borrowedWETH",
+          "type": "uint256"
+        }
+      ],
+      "name": "reserveCaller",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rlpPerLP",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -472,8 +393,19 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "skimLPToNewContract",
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "ethWholeUnits",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "hourlyRebaseRightAway",
+          "type": "bool"
+        }
+      ],
+      "name": "setUpDailyVolumeTarget",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -489,6 +421,19 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "tokenCaller",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
