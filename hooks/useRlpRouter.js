@@ -56,7 +56,7 @@ const useRlpRouter = () => {
 
     minLpAmount = addSlippage(minLpAmount, SLIPPAGE_PER_MILE);
 
-    const rlpPer = await yam.contracts.deltaRouter.methods.rlpPerLP().call();
+    const rlpPerLP = await yam.contracts.deltaRouter.methods.rlpPerLP().call();
 
     let transaction;
 
@@ -84,7 +84,7 @@ const useRlpRouter = () => {
       return {
         gasEstimation,
         minLpAmount,
-        rlpPer
+        rlpPerLP
       };
     }
 
@@ -119,11 +119,11 @@ const useRlpRouter = () => {
   const update = async () => {
     if (!wallet) return;
 
-    const { minLpAmount, gasEstimation, rlpPer } = await mint(ethAmount, autoStake, true);
+    const { minLpAmount, gasEstimation, rlpPerLP } = await mint(ethAmount, autoStake, true);
 
     setEstimatedRlpAmount(minLpAmount?.toString() / 1e18);
     setGasEstimation(gasEstimation);
-    setrlpPerLP(rlpPer);
+    setrlpPerLP(rlpPerLP);
   };
 
   const setEthAmountOnly = async ethAmount => {
