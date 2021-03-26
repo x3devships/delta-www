@@ -58,13 +58,12 @@ const DeltaStaking = () => {
   const modalContext = useContext(ModalContext);
   const yam = useYam();
   const wallet = useWallet();
-  const [burning, setBurning] = useState(true);
 
-  const onStake = useCallback(async (amount, amountBN, valid) => {
+  const onStake = async (amount, amountBN, valid, burning) => {
     if (!valid) {
       await modalContext.showError('Error', 'Invalid input');
     } else {
-      const confirmed = await modalContext.showConfirm('Staking', burning ? `Are you sure you wanna stake ${amount} Delta with 50% burning ?` : `Are you sure you wanna stake ${amount} Delta ?`);
+      const confirmed = await modalContext.showConfirm('Staking', burning ? `Are you sure you wanna stake ${amount} Delta with 50% burning ?` : `Are you sure you wanna stake ${amount} Delta without burning ? This operation is going to reset your multiplier back to 1x.`);
 
       if (confirmed) {
         const transaction = burning ? yam.contracts.dfv.methods.depositWithBurn(amountBN) : yam.contracts.dfv.methods.deposit(0, amountBN);
@@ -84,7 +83,33 @@ const DeltaStaking = () => {
         return true;
       }
     }
-  }, [burning]);
+  };
+
+  const onCompoundDeposit = async () => {
+    const userInfo = await yam.contracts.dfv.methods.userInfo(wallet.account).call();
+    const compoundBurn = userInfo.compoundBurnn;
+
+    const message = compoundBurn ? 'This operation is going to use your rewards to make a new deposit, Continue?' : '';
+    const confirmed = await modalContext.showConfirm('Compound Staking',);
+
+    if (confirmed) {
+      const transaction = yam.contracts.dfv.methods.compound(wallet.account);
+
+      await transactions.executeTransaction(
+        modalContext,
+        transaction,
+        { from: wallet.account },
+        "Successfully compounded",
+        "Compound",
+        "Error while compounding"
+      );
+
+      globalHooks.staking.update();
+      globalHooks.delta.update();
+
+      return true;
+    }
+  };
 
   const allowanceRequiredFor = {
     contract: 'dfv',
@@ -92,10 +117,10 @@ const DeltaStaking = () => {
   };
 
   return <div>
-    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={async (amount, amountBN, valid) => onStake(amount, amountBN, valid)} allowanceRequiredFor={allowanceRequiredFor} />
-    <div className="flex flex-row mt-4">
-      <DeltaCheckbox className="flex items-center text-center flex-wrap" label="Deposit Burn" checked={burning} onChange={() => setBurning(c => !c)} />
-      <CompoundBurnCheckbox className="flex items-center text-center flex-wrap" />
+    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." checkboxButton="Burn Deposit" onOk={onStake} check allowanceRequiredFor={allowanceRequiredFor} />
+    <div className="block md:flex md:flex-row mt-4">
+      <DeltaButton className="block md:flex" onClick={onCompoundDeposit}>Compound Deposit</DeltaButton>
+      <CompoundBurnCheckbox className="block md:flex" />
     </div>
   </div >
 };
@@ -171,7 +196,7 @@ const VaultDeposit = ({ token }) => {
     }
 
     return <a className="flex-1 md:flex-grow-0" target="_blank" href="https://app.uniswap.org/#/swap" rel="noopener noreferrer">
-      <DeltaButton grayLook={depositAction}>Buy On Uniswap</DeltaButton>
+      <DeltaButton grayLook={depositAction}>Buy</DeltaButton>
     </a>;
   }
 

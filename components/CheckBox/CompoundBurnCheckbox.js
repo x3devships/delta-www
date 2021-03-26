@@ -4,6 +4,7 @@ import useYam from '../../hooks/useYam';
 import { transactions } from '../../helpers';
 import { ModalContext } from '../../contexts';
 import { DeltaCheckbox } from '.';
+import { DeltaCheckboxButton } from '../Input';
 
 const CompoundBurnCheckbox = ({
   className
@@ -15,7 +16,6 @@ const CompoundBurnCheckbox = ({
 
   const updateCheckedState = async () => {
     const userInfo = await yam.contracts.dfv.methods.userInfo(wallet.account).call();
-    console.log(userInfo.compoundBurn);
     setChecked(userInfo.compoundBurn);
   };
 
@@ -43,7 +43,7 @@ const CompoundBurnCheckbox = ({
 
   return <div className={className}>
     <div>
-      <DeltaCheckbox checked={checked} label="Compound Burn" onChange={onCheckboxChanged} />
+      <DeltaCheckboxButton checked={checked} text="Compound Burn" onChange={onCheckboxChanged} />
     </div>
   </div>
 };
