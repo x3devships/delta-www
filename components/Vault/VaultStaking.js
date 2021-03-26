@@ -140,15 +140,17 @@ const RlpMinting = async () => {
     setEstimationLabel(text);
   }, [router.estimatedRlpAmount, router.gasEstimation]);
 
-  const onBuy = async (amount, amountBN, autoStake) => {
+  const onBuy = async (amount, amountBN, valid, autoStake) => {
     if (amount !== DATA_UNAVAILABLE) {
       router.setAutoStake(autoStake);
       await router.mint(amount, autoStake, false);
+
+      return true;
     }
   };
 
-  const onChange = async (amount, amountBN, autoStake) => {
-    console.log(await router.getrlpPerLP());
+  const onChange = async (amount, amountBN, valid, autoStake) => {
+    console.log(autoStake);
     router.setAutoStake(autoStake);
 
     if (amount !== DATA_UNAVAILABLE) {
@@ -169,6 +171,7 @@ const RlpMinting = async () => {
       labelBottom={estimationLabel}
       buttonTextLoading="Buying..."
       checkboxButton="Stake"
+      checkboxButtonChecked={false}
       onOk={onBuy} />
   </div>;
 };
