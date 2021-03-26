@@ -40,7 +40,7 @@ Before deploying the website when the LSW is not ready to be ended, the LSW endi
 In the core contracts repository start the hardhat local node. 
 ```
 $ cd src
-$ npx hardhat node
+$ npx hardhat node --config hardhat.v076.config.js
 ```
 
 > When the hardhat node is started it should show a list of account and their associated private key which can be imported to metamask.
