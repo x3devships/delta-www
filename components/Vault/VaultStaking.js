@@ -135,7 +135,8 @@ const RlpMinting = () => {
 
   useEffect(() => {
     const text = `estimated rLP minted: ${formatting.getTokenAmount(router.estimatedRlpAmount, 0, 4)} ` +
-      `rLP ➔ Gas cost: ${formatting.getTokenAmount(router.gasEstimation, 18, 4)} ETH`;
+      `rLP ➔ Gas cost: ${formatting.getTokenAmount(router.gasEstimation, 18, 4)} ETH ` +
+      `1 LP = ${formatting.getTokenAmount(router.rlpPerLP, 0, 4)} `;
     setEstimationLabel(text);
   }, [router.estimatedRlpAmount, router.gasEstimation]);
 
@@ -143,13 +144,11 @@ const RlpMinting = () => {
     if (amount !== DATA_UNAVAILABLE) {
       router.setAutoStake(autoStake);
       await router.mint(amount, autoStake, false);
-
-      return true;
     }
+    return true;
   };
 
   const onChange = async (amount, amountBN, valid, autoStake) => {
-    console.log(autoStake);
     router.setAutoStake(autoStake);
 
     if (amount !== DATA_UNAVAILABLE) {

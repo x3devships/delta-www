@@ -18,6 +18,14 @@ export default {
       }
     },
 
+    rlpPerLP: () => {
+      return {
+        call: async () => {
+          return 12;
+        }
+      }
+    },
+
     estimateGas: async () => {
       return BigNumber('345');
     }
