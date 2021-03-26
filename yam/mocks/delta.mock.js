@@ -47,6 +47,14 @@ export default {
           return 15;
         }
       }
+    },
+
+    allowance: (walletAddress, contractAddress) => {
+      return {
+        call: async () => {
+          return 77;
+        }
+      }
     }
   }
 }
