@@ -17,6 +17,8 @@ const useStaking = () => {
     apy: DATA_UNAVAILABLE
   });
 
+  const [rlpPerLp, setRlpPerLp] = useState(DATA_UNAVAILABLE);
+
   const [info, setInfo] = useState({
     booster: DATA_UNAVAILABLE, // Current staking booster 1x-10x
     farmedDelta: DATA_UNAVAILABLE, // Amount of farmed Delta
@@ -53,6 +55,10 @@ const useStaking = () => {
     const userInfo = await yam.contracts.dfv.methods.userInfo(wallet.account).call();
     const recycleInfo = await yam.contracts.dfv.methods.realFarmedOfPerson(wallet.account).call();
 
+    const rlpPerLP = await yam.contracts.rLP.methods.rlpPerLP().call();
+
+    setRlpPerLp(rlpPerLP);
+
     setInfo({
       booster: recycleInfo.booster,
       farmedDelta: recycleInfo.farmedDelta,
@@ -78,7 +84,8 @@ const useStaking = () => {
   return {
     update,
     info,
-    vaultStats
+    vaultStats,
+    rlpPerLp
   };
 };
 

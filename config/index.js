@@ -37,7 +37,7 @@ export const addressMap = {
   uniswapRouter: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
 
   // Pairs
-  deltaWeth: '0x6765DA2630e858A6144CC77776263088862815bf',
+  deltaWeth: '0xBD520B1a2E97E747ec62888010443d417b892c8e',
   coreCbtc: '0x6fad7d44640c5cd0120deec0301e8cf850becb68',
   coreWeth: '0x32ce7e48debdccbfe0cd037cc89526e4382cb81b',
   cDaiWcore: '0x01AC08E821185b6d87E68c67F9dc79A8988688EB',
@@ -45,8 +45,8 @@ export const addressMap = {
   wbtcWeth: '0xbb2b8038a1640196fbe3e38816f3e67cba72d940',
 
   // Tokens
-  delta: '0x3b2B718AA8C04575f5B93efbBC292f5949B9eCb5',
-  rLP: '0xd79aF73F6f28bD6C5164C919F1d6EC159aD6d15e',
+  delta: '0x6B29A3f9a1E378A57410dC480c1b19F4f89dE848',
+  rLP: '0xE02C077bAAe03F1E3827a10088694a6939261D46',
   core: '0x62359ed7505efc61ff1d56fef82158ccaffa23d7',
   wCORE: '0x17b8c1a92b66b1cf3092c5d223cb3a129023b669',
   wETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
@@ -56,8 +56,8 @@ export const addressMap = {
 
   // Periphery
   LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB',
-  dfv: '0x89607dB649Aaefe775231745f2E70ee658bEda21',
-  deltaRouter: '0x0251142CE9A75bCfdd7db17037FF3Aa66Af7bC3b'
+  dfv: '0x98107C16bad83508d23f2933ecA63fe5283f43f5',
+  deltaRouter: '0x021AF35Df295dcFbe769e0E08F22DE7252a63c34'
 };
 
 export const addressDecimalsMap = {};

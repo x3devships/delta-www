@@ -20,7 +20,6 @@ const useRlpRouter = () => {
   const modalContext = useContext(ModalContext);
 
   const [estimatedRlpAmount, setEstimatedRlpAmount] = useState(DATA_UNAVAILABLE);
-  const [rlpPerLP, setrlpPerLP] = useState(DATA_UNAVAILABLE);
   const [ethAmount, setEthAmount] = useState(DATA_UNAVAILABLE);
   const [gasEstimation, setGasEstimation] = useState(DATA_UNAVAILABLE);
   const [deltaAmount, setDeltaAmount] = useState(DATA_UNAVAILABLE);
@@ -39,8 +38,7 @@ const useRlpRouter = () => {
     if (ethAmount === DATA_UNAVAILABLE) {
       return {
         gasEstimation: DATA_UNAVAILABLE,
-        minLpAmount: DATA_UNAVAILABLE,
-        rlpPerLP: DATA_UNAVAILABLE
+        minLpAmount: DATA_UNAVAILABLE
       };
     }
 
@@ -56,7 +54,7 @@ const useRlpRouter = () => {
 
     minLpAmount = addSlippage(minLpAmount, SLIPPAGE_PER_MILE);
 
-    const rlpPerLP = await yam.contracts.deltaRouter.methods.rlpPerLP().call();
+
 
     let transaction;
 
@@ -83,8 +81,7 @@ const useRlpRouter = () => {
 
       return {
         gasEstimation,
-        minLpAmount,
-        rlpPerLP
+        minLpAmount
       };
     }
 
@@ -119,11 +116,10 @@ const useRlpRouter = () => {
   const update = async () => {
     if (!wallet) return;
 
-    const { minLpAmount, gasEstimation, rlpPerLP } = await mint(ethAmount, autoStake, true);
+    const { minLpAmount, gasEstimation } = await mint(ethAmount, autoStake, true);
 
     setEstimatedRlpAmount(minLpAmount?.toString() / 1e18);
     setGasEstimation(gasEstimation);
-    setrlpPerLP(rlpPerLP);
   };
 
   const setEthAmountOnly = async ethAmount => {
@@ -170,7 +166,6 @@ const useRlpRouter = () => {
     setDeltaSide,
     setEthSide,
     setAutoStake,
-    rlpPerLP,
     estimatedRlpAmount,
     gasEstimation,
     mode,

@@ -40,7 +40,7 @@ export class Contracts {
 
     // This contract doesn't have a fixed address and
     // getWithdrawalContract() must be used.
-    this._withdrawalContract = await this._loadContractOrMock('withdrawalContract', Withdrawal.abi, addressMap.dfv, WithdrawalMock);
+    this._withdrawalContract = new this.web3.eth.Contract(Withdrawal.abi);
 
     this.wCORE = new this.web3.eth.Contract(wCORE.abi);
     this.cDAI = new this.web3.eth.Contract(cDAI.abi, addressMap.cDAI);

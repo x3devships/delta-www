@@ -135,8 +135,7 @@ const RlpMinting = () => {
 
   useEffect(() => {
     const text = `estimated rLP minted: ${formatting.getTokenAmount(router.estimatedRlpAmount, 0, 4)} ` +
-      `rLP ➔ Gas cost: ${formatting.getTokenAmount(router.gasEstimation, 18, 4)} ETH ` +
-      `1 LP = ${formatting.getTokenAmount(router.rlpPerLP, 0, 4)} `;
+      `rLP ➔ Gas cost: ${formatting.getTokenAmount(router.gasEstimation, 18, 4)} ETH `;
     setEstimationLabel(text);
   }, [router.estimatedRlpAmount, router.gasEstimation]);
 

@@ -16,23 +16,29 @@ const useWithdrawal = () => {
   const update = async () => {
     if (!yam || !wallet?.account) return;
 
-    const withdrawalAddresses = await yam.contracts.dfv.methods.withdrawalContracts(wallet.account).call();
+    const withdrawalAddresses = await yam.contracts.dfv.methods.allWithdrawalContractsOf(wallet.account).call();
 
+    console.log(withdrawalAddresses);
     const withdrawals = await Promise.all(withdrawalAddresses.map(async address => {
+      console.log(address);
       const contract = yam.contracts.getWithdrawalContract(address);
 
-      const deltaTokenAddress = await contract.deltaTokenAddress().call();
-      const principalAmount = await contract.PRINCIPLE_DELTA().call();
-      const vestingAmount = await contract.VESTING_DELTA().call();
-      const secondsLeft = await contract.secondsLeftToMature().call();
-      const withdrawableAmount = await contract.withdrawableTokens().call();
-      const maturedVestingToken = await contract.maturedVestingTokens().call();
-      const percentMatured = await contract.percentMatured().call();
+      const deltaTokenAddress = await contract.methods.deltaTokenAddress().call();
+      const principalAmount = await contract.methods.PRINCIPLE_DELTA().call();
+      const vestingAmount = await contract.methods.VESTING_DELTA().call();
+      const secondsLeftToMature = await contract.methods.secondsLeftToMature().call();
+      const withdrawableAmount = await contract.methods.withdrawableTokens().call();
+      const maturedVestingToken = await contract.methods.maturedVestingTokens().call();
+      const percentMatured = await contract.methods.percentMatured().call();
 
       // TODO: Returns the info to be returned for each withdrawal contracts.
       return {
         withdrawableAmount,
-        secondsLeft
+        principalAmount,
+        vestingAmount,
+        secondsLeftToMature,
+        percentMatured,
+        maturedVestingToken
       }
     }));
 
