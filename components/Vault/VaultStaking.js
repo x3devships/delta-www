@@ -132,6 +132,7 @@ const DeltaStaking = () => {
 const RlpMinting = () => {
   const router = useRlpRouter();
   const [estimationLabel, setEstimationLabel] = useState('');
+  const globalHooks = useContext(GlobalHooksContext);
 
   useEffect(() => {
     const text = `estimated rLP minted: ${formatting.getTokenAmount(router.estimatedRlpAmount, 0, 4)} ` +
@@ -159,6 +160,7 @@ const RlpMinting = () => {
     <ul className="list-disc list-inside py-4 md:py-8">
       <li>Deposit Ethereum to mint new rLP tokens</li>
       <li>Select stake automatically to immediately stake the new rLP in the Deep Farming Vault</li>
+      <li>1 LP = {formatting.getTokenAmount(globalHooks.staking.rlpPerLp)} rLP</li>
     </ul>
     <TokenInput
       className="mt-4"
