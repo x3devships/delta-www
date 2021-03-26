@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { render } from 'react-dom';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting, time } from '../../helpers';
@@ -8,6 +9,8 @@ import { VestingTransactionProgressBar } from '../ProgressBar';
 import { DeltaPanel, DeltaSection, DeltaSectionBox } from '../Section';
 
 import { useWithdrawal } from '../../hooks';
+import { DATA_UNAVAILABLE } from '../../config';
+import { Spinner } from '../Spinner';
 
 const FinalizeContractDialogContent = ({ contract }) => {
   return <DeltaPanel>
@@ -29,22 +32,12 @@ const FinalizeContractDialogContent = ({ contract }) => {
   </DeltaPanel>;
 };
 
-const WithdrawalContractItem = async ({ index, opened, contract, className, onOpen }) => {
+const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) => {
   const globalHooks = useContext(GlobalHooksContext);
   const modelContext = useContext(ModalContext);
-  const vestingTimeLeft = contract.secondsLeftToMature;
   const withdrawals = useWithdrawal();
+  const timer = time.getTimeLeft(globalHooks.blockInfo.block.timestamp, globalHooks.blockInfo.block.timestamp + contract.secondsLeftToMature);
 
-  const {
-    principalAmount,
-    vestingAmount,
-    secondsLeftToMature,
-    withdrawableAmount,
-    maturedVestingToken,
-    percentMatured } = await withdrawals.update();
-
-  const timer = time.getTimeLeft(globalHooks.blockInfo.block.timestamp, secondsLeftToMature);
-  
   const onFinalizeWithdrawal = async (contract) => {
     const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having immature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');
     if (confirmed) {
@@ -73,10 +66,22 @@ const WithdrawalContracts = () => {
     setCurrentOpened(index);
   };
 
+  const render = () => {
+    if (withdrawals.withdrawalContracts === DATA_UNAVAILABLE) {
+      return <Spinner />
+    }
+
+    if (withdrawals.withdrawalContracts.length === 0) {
+      return <>You have no withdrawal contracts</>;
+    }
+
+    return withdrawals.withdrawalContracts.map((contract, index) =>
+      <WithdrawalContractItem opened={index === currentOpened} className="mt-4" index={index} key={`contract-${index}`} contract={contract} onOpen={onOpen} />);
+  };
+
   return <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Withdrawal Contracts">
     <DeltaPanel>
-      {withdrawals.withdrawalContracts.length === 0 && <>You have no withdrawal contracts</>}
-      {withdrawals.withdrawalContracts.map((contract, index) => <WithdrawalContractItem opened={index === currentOpened} className="mt-4" index={index} key={`contract-${index}`} contract={contract} onOpen={onOpen} />)}
+      {render()}
     </DeltaPanel>
   </DeltaSection>
 };

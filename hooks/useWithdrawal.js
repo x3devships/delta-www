@@ -11,26 +11,23 @@ const useWithdrawal = () => {
   const web3 = useWeb3();
   const wallet = useWallet();
 
-  const [withdrawalContracts, setWithdrawalContracts] = useState([]);
+  const [withdrawalContracts, setWithdrawalContracts] = useState(DATA_UNAVAILABLE);
 
   const update = async () => {
     if (!yam || !wallet?.account) return;
 
     const withdrawalAddresses = await yam.contracts.dfv.methods.allWithdrawalContractsOf(wallet.account).call();
 
-    console.log(withdrawalAddresses);
     const withdrawals = await Promise.all(withdrawalAddresses.map(async address => {
-      console.log(address);
       const contract = yam.contracts.getWithdrawalContract(address);
 
       const principalAmount = await contract.methods.PRINCIPLE_DELTA().call();
       const vestingAmount = await contract.methods.VESTING_DELTA().call();
-      const secondsLeftToMature = await contract.methods.secondsLeftToMature().call();
+      const secondsLeftToMature = parseInt(await contract.methods.secondsLeftToMature().call());
       const withdrawableAmount = await contract.methods.withdrawableTokens().call();
       const maturedVestingToken = await contract.methods.maturedVestingTokens().call();
       const percentMatured = await contract.methods.percentMatured().call();
 
-      // TODO: Returns the info to be returned for each withdrawal contracts.
       return {
         principalAmount,
         vestingAmount,
