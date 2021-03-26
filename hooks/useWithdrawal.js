@@ -23,7 +23,6 @@ const useWithdrawal = () => {
       console.log(address);
       const contract = yam.contracts.getWithdrawalContract(address);
 
-      const deltaTokenAddress = await contract.methods.deltaTokenAddress().call();
       const principalAmount = await contract.methods.PRINCIPLE_DELTA().call();
       const vestingAmount = await contract.methods.VESTING_DELTA().call();
       const secondsLeftToMature = await contract.methods.secondsLeftToMature().call();
@@ -33,12 +32,12 @@ const useWithdrawal = () => {
 
       // TODO: Returns the info to be returned for each withdrawal contracts.
       return {
-        withdrawableAmount,
         principalAmount,
         vestingAmount,
         secondsLeftToMature,
-        percentMatured,
-        maturedVestingToken
+        withdrawableAmount,
+        maturedVestingToken,
+        percentMatured
       }
     }));
 
