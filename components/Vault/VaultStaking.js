@@ -238,50 +238,6 @@ const CreateWithdrawalContractContent = ({ token }) => {
   </DeltaPanel>;
 }
 
-const UnstakeDeltaDialogContent = () => {
-  const globalHooks = useContext(GlobalHooksContext);
-  const modalContext = useContext(ModalContext);
-  const yam = useYam();
-  const wallet = useWallet();
-
-  const onUnstake = async () => {
-    const transaction = yam.contracts.dfv.methods.exit();
-
-    await transactions.executeTransaction(
-      modalContext,
-      transaction,
-      { from: wallet.account },
-      "Successfully Unstaked",
-      "Unstaking",
-      "Error while unstaking"
-    );
-
-
-    globalHooks.staking.update();
-    globalHooks.delta.update();
-  };
-
-  const claimDelta = globalHooks.staking.info.farmedDelta;
-  const claimEth = globalHooks.staking.info.farmedETH;
-  const { rlp } = globalHooks.staking.info;
-  const { totalDelta } = globalHooks.staking.info;
-
-  return <DeltaPanel>
-    <div className="mt-4">
-      <TokenInput
-        className="mt-4"
-        token="delta"
-        labelBottom={`This will automatically claim ${claimEth} ETH, ${claimDelta} DELTA, unstake ${rlp} rLP and create a withdrawal contract for ${totalDelta} DELTA. Are you sure?`}
-        labelBottomClassName="mt-4"
-        buttonText="UNSTAKE DELTA AND FINALIZE WITHDRAWAL"
-        transactionButtonNoBorders
-        transactionButtonUnder
-        buttonTextLoading="Unstaking..."
-        onOk={onUnstake} />
-    </div>
-  </DeltaPanel>;
-}
-
 const DeltaWithdrawal = ({ token }) => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
@@ -314,8 +270,36 @@ const DeltaWithdrawal = ({ token }) => {
     return Promise.resolve();
   };
 
+  const onExit = async () => {
+    const transaction = yam.contracts.dfv.methods.exit();
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully Unstaked",
+      "Unstaking",
+      "Error while unstaking"
+    );
+
+
+    globalHooks.staking.update();
+    globalHooks.delta.update();
+  };
+
   const onUnstakeDelta = async () => {
-    return modalContext.showMessage('You are about to unstake your Delta', <UnstakeDeltaDialogContent />, false);
+    const claimDelta = formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4);
+    const claimEth = formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4);
+    const rlp = formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4);
+    const totalDelta = formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4);
+
+    const message = `This will automatically claim ${claimEth} ETH, ${claimDelta} DELTA, unstake ${rlp} rLP and create a withdrawal contract for ${totalDelta} DELTA. Are you sure?`;
+
+    const confirm = await modalContext.showConfirm('You are about to unstake everything', message);
+
+    if (confirm) {
+      await onExit();
+    }
   };
 
   const seeWithdrawingContract = e => {
