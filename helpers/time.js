@@ -1,9 +1,14 @@
+import moment from 'moment';
+
 const getTimeLeft = (blockTimestamp, endTimeInSeconds) => {
   if (!blockTimestamp) throw new TypeError('blockTimestamp must be specified');
   if (!endTimeInSeconds) throw new TypeError('endTimeInMillis must be specified');
 
   blockTimestamp = parseInt(blockTimestamp);
   endTimeInSeconds = parseInt(endTimeInSeconds);
+
+  const from = moment.utc(blockTimestamp * 1000);
+  const to = moment.utc(endTimeInSeconds * 1000);
 
   // get total seconds between the times
   let delta = Math.abs(endTimeInSeconds - blockTimestamp);
@@ -27,7 +32,8 @@ const getTimeLeft = (blockTimestamp, endTimeInSeconds) => {
     days,
     hours,
     minutes,
-    seconds
+    seconds,
+    toNow: from.to(to)
   }
 };
 

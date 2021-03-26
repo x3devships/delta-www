@@ -65,7 +65,7 @@
       "name": "deltaDistributor",
       "outputs": [
         {
-          "internalType": "contract IDELTA_DISTRIBUTOR",
+          "internalType": "contract IDeltaDistributor",
           "name": "distributor",
           "type": "address"
         }
@@ -117,7 +117,7 @@
           "type": "uint256"
         },
         {
-          "internalType": "contract IDELTA_TOKEN",
+          "internalType": "contract IDeltaToken",
           "name": "delta",
           "type": "address"
         }
@@ -169,6 +169,19 @@
     {
       "inputs": [],
       "name": "secondsLeftToMature",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "secondsLeftUntilPrincipleUnlocked",
       "outputs": [
         {
           "internalType": "uint256",

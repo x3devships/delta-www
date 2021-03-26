@@ -27,6 +27,8 @@ const useWithdrawal = () => {
       const withdrawableAmount = new BigNumber(await contract.methods.withdrawableTokens().call());
       const maturedVestingToken = new BigNumber(await contract.methods.maturedVestingTokens().call());
       const secondsLeftToMature = parseInt(await contract.methods.secondsLeftToMature().call());
+      const secondsLeftUntilPrincipleUnlocked = parseInt(await contract.methods.secondsLeftUntilPrincipleUnlocked().call());
+      const principleUnlocked = secondsLeftUntilPrincipleUnlocked === 0;
       const percentVested = (await contract.methods.percentMatured().call()) / 100;
       const principleWithdrawed = await contract.methods.principleWithdrawed().call();
 
@@ -38,6 +40,8 @@ const useWithdrawal = () => {
         maturedVestingToken,
         percentVested,
         principleWithdrawed,
+        secondsLeftUntilPrincipleUnlocked,
+        principleUnlocked,
         hasVestingAmount: vestingAmount.gt(0),
         methods: contract.methods
       }

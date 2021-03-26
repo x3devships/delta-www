@@ -87,10 +87,13 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
 
   const renderButtons = () => {
     if (!contract.principleWithdrawed) {
-      return <div className="flex flex-col md:flex-row mt-4">
-        <DeltaButton className="flex" onClick={() => onWithdrawPrinciple(contract)}>WITHDRAW PRINCIPLE</DeltaButton>
-        <DeltaButton className="flex ml-0 md:ml-4" onClick={() => onFinalizeWithdrawal(contract)}>FINALIZING WITHDRAWAL</DeltaButton>
-      </div>
+      const principleUnlockedCountdown = !contract.principleUnlocked ? time.getTimeLeft(globalHooks.blockInfo.block.timestamp, globalHooks.blockInfo.block.timestamp + contract.secondsLeftUntilPrincipleUnlocked) : '';
+      const labelBottom = `unlocked ${principleUnlockedCountdown.toNow}`;
+
+      return <>
+        <DeltaButton className="flex-1 mr-4 md:flex-grow-0" disabled={!contract.principleUnlocked} labelBottom={labelBottom} onClick={() => onWithdrawPrinciple(contract)}>WITHDRAW PRINCIPLE</DeltaButton>
+        <DeltaButton className="flex-1 md:flex-grow-0" labelBottom="&nbsp;" onClick={() => onFinalizeWithdrawal(contract)}>FINALIZING WITHDRAWAL</DeltaButton>
+      </>
     }
 
     return <>
@@ -106,9 +109,12 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
     </div>
     <VestingTransactionProgressBar transaction={contract} />
     {contract.hasVestingAmount && <div className="ml-1 mt-1">{formatting.getTokenAmount(contract.maturedVestingToken, 18, 4)} / {formatting.getTokenAmount(contract.vestingAmount, 18, 4)}  vesting DELTA</div>}
-    {!contract.principleWithdrawed && <div className="ml-1 mt-1">{formatting.getTokenAmount(contract.principalAmount, 18, 4)} withdrawal principle DELTA</div>}
-    {renderButtons()}
-  </DeltaSectionBox >;
+    {!contract.principleWithdrawed && <div className="ml-1 mt-1">{formatting.getTokenAmount(contract.principalAmount, 18, 4)} withdrawable principle DELTA</div>}
+
+    <DeltaPanel className="flex items-center text-center flex-wrap mt-4">
+      {renderButtons()}
+    </DeltaPanel>
+  </DeltaSectionBox>;
 }
 
 const WithdrawalContracts = () => {
