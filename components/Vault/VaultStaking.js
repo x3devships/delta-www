@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router'
 import { useWallet } from 'use-wallet';
 import { ModalContext } from '../../contexts';
@@ -60,7 +60,7 @@ const DeltaStaking = () => {
   const wallet = useWallet();
   const [burning, setBurning] = useState(true);
 
-  const onStake = async (amount, amountBN, valid) => {
+  const onStake = useCallback(async (amount, amountBN, valid) => {
     if (!valid) {
       await modalContext.showError('Error', 'Invalid input');
     } else {
@@ -84,7 +84,7 @@ const DeltaStaking = () => {
         return true;
       }
     }
-  };
+  }, [burning]);
 
   const allowanceRequiredFor = {
     contract: 'dfv',
@@ -92,12 +92,10 @@ const DeltaStaking = () => {
   };
 
   return <div>
-    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
-    <div className="flex">
-      <DeltaCheckbox className="flex items-center text-center flex-wrap" label="Deposit Burn" onChange={() => setBurning(c => !c)} />
-      <CompoundBurnCheckbox
-        className="flex items-center text-center flex-wrap"
-      />
+    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." onOk={async (amount, amountBN, valid) => onStake(amount, amountBN, valid)} allowanceRequiredFor={allowanceRequiredFor} />
+    <div className="flex flex-row mt-4">
+      <DeltaCheckbox className="flex items-center text-center flex-wrap" label="Deposit Burn" checked={burning} onChange={() => setBurning(c => !c)} />
+      <CompoundBurnCheckbox className="flex items-center text-center flex-wrap" />
     </div>
   </div >
 };

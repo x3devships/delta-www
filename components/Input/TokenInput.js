@@ -84,8 +84,11 @@ const TokenInput = ({
 
   const onBeforeOk = useCallback(async () => {
     const values = getValues();
-    if (values.amount !== DATA_UNAVAILABLE && onOk) {
-      const success = await onOk(values.amount, values.amountBN, values.checkboxChecked);
+
+    if (values.amount !== DATA_UNAVAILABLE) {
+      if (!onOk) return Promise.resolve();
+
+      const success = await onOk(values.amount, values.amountBN, true, values.checkboxChecked);
       if (success) {
         setAmountText('');
         setValidAmount(true);
