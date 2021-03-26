@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
+import BigNumber from 'bignumber.js';
 import useYam from './useYam';
 import { hooks } from '../helpers';
 import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../config';
@@ -10,6 +11,7 @@ const useTokenBalance = (tokenName) => {
   const yam = useYam();
   const wallet = useWallet();
   const [balance, setBalance] = useState(DATA_UNAVAILABLE);
+  const [balanceBN, setBalanceBN] = useState(DATA_UNAVAILABLE);
   const tokenAddress = addressMap[tokenName];
   const decimals = tokenMap[tokenAddress]?.decimals || 18;
 
@@ -26,8 +28,10 @@ const useTokenBalance = (tokenName) => {
       return;
     }
 
-    const balance = (await yam.contracts[tokenName].methods.balanceOf(wallet.account).call()) / 10 ** decimals;
+    const balanceBN = new BigNumber(await yam.contracts[tokenName].methods.balanceOf(wallet.account).call());
+    const balance = balanceBN.toString() / 10 ** decimals;
     setBalance(balance);
+    setBalanceBN(balanceBN);
   }
 
   useEffect(() => {
@@ -43,7 +47,8 @@ const useTokenBalance = (tokenName) => {
 
   return {
     update,
-    balance
+    balance,
+    balanceBN
   };
 };
 

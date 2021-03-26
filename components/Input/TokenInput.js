@@ -1,6 +1,7 @@
 import { Button, HelperText, Input } from '@windmill/react-ui';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
+import BigNumber from 'bignumber.js';
 import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../../config';
 import { useTokenBalance } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
@@ -32,7 +33,8 @@ const TokenInput = ({
   const [amountText, setAmountText] = useState('');
   const [amount, setAmount] = useState(false);
   const [validAmount, setValidAmount] = useState(true);
-  const { balance } = useTokenBalance(token);
+  const [maxBalance, setMaxBalance] = useState(false);
+  const { balance, balanceBN } = useTokenBalance(token);
   const modalContext = useContext(ModalContext);
   const [checkboxChecked, setCheckboxChecked] = useState(checkboxButtonChecked);
 
@@ -57,7 +59,7 @@ const TokenInput = ({
     let amountBN;
 
     if (amount) {
-      amountBN = parsing.parseFloatToBigNumber(amount, tokenInfo.decimals);
+      amountBN = maxBalance ? balanceBN : parsing.parseFloatToBigNumber(amount, tokenInfo.decimals);
     }
 
     const valid = validAmount && amount && amountBN;
@@ -102,8 +104,17 @@ const TokenInput = ({
     return modalContext.showError('Invalid Amount', 'The specified token amount is invalid');
   }, [getValues]);
 
+  const isFloatAmountGreaterThanMaxBalance = amount => {
+    if (amount === balance) {
+      return false;
+    }
+
+    const amountBN = parsing.parseFloatToBigNumber(amount, tokenInfo.decimals);
+    return amountBN.gt(balanceBN);
+  };
+
   const setValidatedAmount = (amount) => {
-    if (amount > balance || amount < 0 || Number.isNaN(amount) || amount === 0) {
+    if (Number.isNaN(amount) || amount === 0 || amount < 0 || isFloatAmountGreaterThanMaxBalance(amount)) {
       setValidAmount(false);
     } else if (amount > 0) {
       setValidAmount(true);
@@ -114,6 +125,7 @@ const TokenInput = ({
   const onMaxAmount = () => {
     setAmountText(balance);
     setValidatedAmount(balance);
+    setMaxBalance(true);
   };
 
   const onAmountChanged = e => {
@@ -128,6 +140,7 @@ const TokenInput = ({
 
     const potentialAmount = parseFloat(e.target.value);
     setValidatedAmount(potentialAmount);
+    setMaxBalance(false);
   };
 
   useEffect(() => {
