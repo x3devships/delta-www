@@ -11,6 +11,8 @@ const JoinButton = ({ logo, url, title }) => {
       <a
         href={url}
         title={title}
+        target="_blank"
+        rel="noopener noreferrer"
         className="bg-backgroundButton tracking-wide text-gray-800 hover:bg-gray-800 font-bold py-4 px-4 inline-flex items-center"
       >
         <img src={logo} alt="logo" className="mx-auto w-6 h-6 md:w-12 md:h-12 min-h-full min-w-full max-w-full max-h-full" />
