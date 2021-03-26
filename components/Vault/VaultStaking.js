@@ -63,7 +63,9 @@ const DeltaStaking = () => {
     if (!valid) {
       await modalContext.showError('Error', 'Invalid input');
     } else {
-      const confirmed = await modalContext.showConfirm('Staking', burning ? `Are you sure you wanna stake ${amount} Delta with 50% burning ?` : `Are you sure you wanna stake ${amount} Delta without burning ? This operation is going to reset your multiplier back to 1x.`);
+
+      const message = burning ? `You are about to stake ${amount} Delta in the Deep Farming Vault` : `You are about to stake ${amount} Delta in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${globalHooks.staking.info.booster}x to 1x. To prevent this please check the box Burn Deposit.`;
+      const confirmed = await modalContext.showConfirm('Staking', message);
 
       if (confirmed) {
         const transaction = burning ? yam.contracts.dfv.methods.depositWithBurn(amountBN) : yam.contracts.dfv.methods.deposit(0, amountBN);
@@ -87,10 +89,12 @@ const DeltaStaking = () => {
 
   const onCompoundDeposit = async () => {
     const userInfo = await yam.contracts.dfv.methods.userInfo(wallet.account).call();
-    const compoundBurn = userInfo.compoundBurnn;
+    const { compoundBurn } = userInfo;
 
-    const message = compoundBurn ? 'This operation is going to use your rewards to make a new deposit, Continue?' : '';
-    const confirmed = await modalContext.showConfirm('Compound Staking',);
+    const amount = formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4);
+    const message = compoundBurn ? `You are about to stake ${amount} Delta in the Deep Farming Vault` : `You are about to stake ${amount} Delta in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${globalHooks.staking.info.booster}x to 1x. To prevent this please check the box Burn Deposit.`;
+
+    const confirmed = await modalContext.showConfirm('Compound Staking', message);
 
     if (confirmed) {
       const transaction = yam.contracts.dfv.methods.compound(wallet.account);
@@ -117,9 +121,9 @@ const DeltaStaking = () => {
   };
 
   return <div>
-    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." checkboxButton="Burn Deposit" onOk={onStake} check allowanceRequiredFor={allowanceRequiredFor} />
+    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." checkboxButton="Burn Deposit" checkboxButtonChecked onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
     <div className="block md:flex md:flex-row mt-4">
-      <DeltaButton className="block md:flex" onClick={onCompoundDeposit}>Compound Deposit</DeltaButton>
+      <DeltaButton className="block md:flex" onClick={() => onCompoundDeposit()}>Compound Deposit</DeltaButton>
       <CompoundBurnCheckbox className="block md:flex" />
     </div>
   </div >

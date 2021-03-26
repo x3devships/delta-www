@@ -20,6 +20,7 @@ const TokenInput = ({
   labelBottom,
   labelBottomClassName = '',
   checkboxButton,
+  checkboxButtonChecked,
   onOk,
   onChange,
   className,
@@ -33,7 +34,7 @@ const TokenInput = ({
   const [validAmount, setValidAmount] = useState(true);
   const { balance } = useTokenBalance(token);
   const modalContext = useContext(ModalContext);
-  const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [checkboxChecked, setCheckboxChecked] = useState(checkboxButtonChecked);
 
   let tokenInfo = {
     decimals: 16
@@ -190,7 +191,7 @@ const TokenInput = ({
             <div className={`ml-1 hidden ${!transactionButtonUnder ? 'md:flex' : ''}`}>
               {renderTransactionButton()}
               {checkboxButton && <div className="flex md:p-1 ml-1 md:border md:border-black flex-grow">
-                <DeltaCheckboxButton text={checkboxButton} onChange={onCheckboxChanged} />
+                <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} />
               </div>}
             </div>
           </div>
@@ -201,7 +202,7 @@ const TokenInput = ({
     <div className={`mt-4 ${!transactionButtonUnder ? 'md:hidden' : ''}`}>
       {renderTransactionButton()}
       {checkboxButton && <div className="block">
-        <DeltaCheckboxButton text={checkboxButton} onChange={onCheckboxChanged} />
+        <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} />
       </div>}
     </div>
   </div >;
