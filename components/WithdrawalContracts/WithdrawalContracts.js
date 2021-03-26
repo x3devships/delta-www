@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
-import { render } from 'react-dom';
+import { useWallet } from 'use-wallet';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
-import { formatting, time } from '../../helpers';
+import { formatting, time, transactions } from '../../helpers';
 
 import DeltaButton from '../Button/DeltaButton';
 import { VestingTransactionProgressBar } from '../ProgressBar';
@@ -34,17 +34,69 @@ const FinalizeContractDialogContent = ({ contract }) => {
 
 const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) => {
   const globalHooks = useContext(GlobalHooksContext);
-  const modelContext = useContext(ModalContext);
+  const modalContext = useContext(ModalContext);
   const withdrawals = useWithdrawal();
+  const wallet = useWallet();
   const timer = time.getTimeLeft(globalHooks.blockInfo.block.timestamp, globalHooks.blockInfo.block.timestamp + contract.secondsLeftToMature);
 
   const onFinalizeWithdrawal = async (contract) => {
-    const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having immature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');
-    if (confirmed) {
-      // TODO: add web3 call
+    const finalize = async () => {
+      const transaction = await contract.methods.withdrawEverythingWithdrawable();
+
+      await transactions.executeTransaction(
+        modalContext,
+        transaction,
+        { from: wallet.account },
+        "Contract successfully finalized. Your DELTA tokens are available in your wallet.",
+        "Success",
+        "Error while finalizing",
+        "Finalizing...",
+        "Finalizing your contract..."
+      );
+
       await withdrawals.update();
+    };
+
+    if (contract.percentVested < 100) {
+      // const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having immature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');
+      const confirm = await modalContext.showConfirm('Finalize', 'Are you sure you want to finalize the contract while still having immatured Delta ?');
+      if (confirm) {
+        return finalize();
+      }
     }
+
+    return finalize();
   };
+
+  const onWithdrawPrinciple = async (contract) => {
+    const transaction = await contract.methods.withdrawPrinciple();
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Your principle has been withdrawn and the DELTA tokens are available in your wallet.",
+      "Success",
+      "Error while withdrawing",
+      "Withdrawing...",
+      "withdrawing your principle..."
+    );
+
+    await withdrawals.update();
+  };
+
+  const renderButtons = () => {
+    if (!contract.principleWithdrawed) {
+      return <div className="flex flex-col md:flex-row mt-4">
+        <DeltaButton className="flex" onClick={() => onWithdrawPrinciple(contract)}>WITHDRAW PRINCIPLE</DeltaButton>
+        <DeltaButton className="flex ml-0 md:ml-4" onClick={() => onFinalizeWithdrawal(contract)}>FINALIZING WITHDRAWAL</DeltaButton>
+      </div>
+    }
+
+    return <>
+      <DeltaButton className="mt-4" onClick={() => onFinalizeWithdrawal(contract)}>FINALIZING WITHDRAWAL</DeltaButton>
+    </>
+  }
 
   return <DeltaSectionBox showIndex opened={opened} className={className} index={index} indexFormatter={i => i + 1} title='Withdrawal Contract' onOpen={onOpen} >
     <div className="mt-4">Delta is continuously maturing in the  Withdrawal contract. The Vesting cycle to fully mature your rewards is one year. Finalizing the withdrawal will distribute your immatured Delta to the Deep Farming Vault. You will receive your matured Delta (minimum 5% of total Rewards)</div>
@@ -53,8 +105,9 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
       <div>{timer.days} Day(s) {timer.hours} Hour(s) {timer.minutes} Minute(s)</div>
     </div>
     <VestingTransactionProgressBar transaction={contract} />
-    <div className="ml-1 mt-1">{formatting.getTokenAmount(contract.mature, 18, 4)} / {formatting.getTokenAmount(contract.immature, 18, 4)}  mature</div>
-    <DeltaButton className="mt-4" onClick={() => onFinalizeWithdrawal(contract)}>FINALIZING WITHDRAWAL</DeltaButton>
+    {contract.hasVestingAmount && <div className="ml-1 mt-1">{formatting.getTokenAmount(contract.maturedVestingToken, 18, 4)} / {formatting.getTokenAmount(contract.vestingAmount, 18, 4)}  vesting DELTA</div>}
+    {!contract.principleWithdrawed && <div className="ml-1 mt-1">{formatting.getTokenAmount(contract.principalAmount, 18, 4)} withdrawal principle DELTA</div>}
+    {renderButtons()}
   </DeltaSectionBox >;
 }
 
