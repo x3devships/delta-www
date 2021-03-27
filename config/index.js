@@ -20,6 +20,7 @@ export const DATA_UNAVAILABLE = '--';
 // - Endpoint found from inspecting XHR request from metamask dev mode in google chrome.Could change in
 //   the futur and break: https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161
 export const WEB3_PROVIDER_URL = 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
+export const deltaUniswapUrl = "https://app.uniswap.org/#/swap";
 
 export const pairNames = {
   deltaWeth: 'deltaWeth',

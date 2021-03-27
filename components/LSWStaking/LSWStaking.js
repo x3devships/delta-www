@@ -50,8 +50,8 @@ const LSWStaking = () => {
         <li>rLP to be claimed: {formatting.getTokenAmount(globalHooks.lswStats.data.claimableRlp, 0, 6)} rLP</li>
       </ul>
       <DeltaPanel className="flex items-center text-center flex-wrap">
-        <TransactionButton className="flex-1 mr-2 md:mr-0 md:flex-grow-0" text="Claim &amp; Stake" textLoading="Staking..." onClick={() => onClaim(true)} />
-        <TransactionButton className="flex-1 ml-2 md:ml-4 md:flex-grow-0" text="Claim" textLoading="Claiming..." onClick={() => onClaim(false)} />
+        <TransactionButton className="flex-1 mr-2 md:mr-0 md:flex-grow-0" disabled={globalHooks.lswStats.data.claimableRlp <= 0} text={globalHooks.lswStats.data.claimableRlp > 0 ? 'Claim & Stake' : 'Nothing to claim'} textLoading="Staking..." onClick={() => onClaim(true)} />
+        {globalHooks.lswStats.data.claimableRlp > 0 && <TransactionButton className="flex-1 ml-2 md:ml-4 md:flex-grow-0" text="Claim" textLoading="Claiming..." onClick={() => onClaim(false)} />}
       </DeltaPanel>
     </DeltaPanel>
   </DeltaSection>

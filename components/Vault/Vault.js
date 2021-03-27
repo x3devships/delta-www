@@ -200,13 +200,6 @@ const DeltaTokenVault = ({ className = '' }) => {
 };
 
 const Vault = () => {
-  const router = useRouter()
-
-  const seeWithdrawingContract = e => {
-    e.preventDefault();
-    router.push('/contracts');
-  };
-
   return <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Farming Vault">
     <DeltaPanel className="md:mt-0">
       <div className="md:mt-0">
@@ -219,12 +212,11 @@ const Vault = () => {
              */}
             <div className="border border-black py-2 bg-gray-200">TVL: $145,223,123</div>
           </DeltaPanel>
-          <DeltaPanel className="mt-4 pr-12 text-lg">
+          <DeltaPanel className="my-4 pr-12 text-lg">
             The Deep Farming Vault distributes<br />
             yield to staked rLP and Delta.
           </DeltaPanel>
         </div>
-        <DeltaButton className="my-4 md:mb-12 md:mt-4" onClick={seeWithdrawingContract}>See all withdrawal contracts</DeltaButton>
         <RlpTokenVault />
         <DeltaTokenVault className="mt-8 md:mt-12" />
       </div>

@@ -103,11 +103,10 @@ const ReferralProgram = () => {
               <DeltaTitleH3>Your Referral Bonus</DeltaTitleH3>
 
               <ul className="list-disc list-inside py-4">
-                <li>ETH earned: {formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</li>
-                <li>Credit earned: {formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</li>
+                <li>ETH to be claimed: {formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</li>
               </ul>
               <DeltaPanel>
-                <TransactionButton text="Claim Bonus" textLoading="Claiming..." onClick={() => onClaim()} />
+                <TransactionButton disabled={globalHooks.lswStats.data.referralBonusWETH <= 0} text={globalHooks.lswStats.data.referralBonusWETH > 0 ? 'Claim Bonus' : 'Nothing to claim'} textLoading="Claiming..." onClick={() => onClaim()} />
               </DeltaPanel>
             </div>
           </DeltaPanel>

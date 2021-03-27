@@ -58,7 +58,7 @@ const useDelta = () => {
       total,
       mature,
       immature,
-      percentVested: mature / total,
+      percentVested: total > 0 ? mature / total : NaN,
       fullyVestedAt,
       vestingInProgress: fullyVestedAt > block.timestamp,
       vestingTransactions

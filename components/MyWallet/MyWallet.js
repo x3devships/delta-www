@@ -6,7 +6,7 @@ import { DeltaPanel, DeltaSection, DeltaSectionBox } from '../Section';
 import { DeltaTitleH3, DeltaTitleH4 } from '../Title';
 import { formatting, transactions, time } from '../../helpers';
 import { VestingTransactionProgressBar } from '../ProgressBar';
-import { DATA_UNAVAILABLE } from '../../config';
+import { DATA_UNAVAILABLE, deltaUniswapUrl } from '../../config';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import DeltaButton from '../Button/DeltaButton';
 import { TokenInput } from '../Input';
@@ -49,7 +49,7 @@ const VestingTransactions = () => {
   </>;
 };
 
-const Vesting = () => {
+const MyWallet = () => {
   const [fullyVestedAtInfo, setFullyVestedAtInfo] = useState(DATA_UNAVAILABLE);
   const [transactionDetailsVisible, setTransactionDetailsVisible] = useState(false);
   const modalContext = useContext(ModalContext);
@@ -93,8 +93,8 @@ const Vesting = () => {
         <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} DELTA</li>
         <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA</li>
       </ul>
-      <hr />
-      <ul className="list-disc list-inside mt-4">
+
+      <ul className="list-disc list-inside mt-2">
         <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + (globalHooks.staking.info.rlp.toString() / 1e18), 0, 4)} rLP</li>
         <li>Unstaked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} rLP</li>
         <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
@@ -103,8 +103,17 @@ const Vesting = () => {
   };
 
   const renderChart = () => {
-    if (globalHooks.lswStats.data.percentVested === DATA_UNAVAILABLE) {
-      return <div className="w-full text-center"><Spinner /></div>
+    if (globalHooks.delta.data.percentVested === DATA_UNAVAILABLE) {
+      return <div className="mt-4 w-full text-center"><Spinner /></div>
+    }
+
+    if (globalHooks.delta.data.total <= 0) {
+      return <div className="mt-4 w-full">
+        <div>You have no DELTA. They can be obtained on Uniswap Exchange.</div>
+        <a target="_blank" href={deltaUniswapUrl} rel="noopener noreferrer">
+          <DeltaButton className="mt-8">Buy Delta</DeltaButton>
+        </a>
+      </div>
     }
 
     return <div className="w-full">
@@ -170,9 +179,10 @@ const Vesting = () => {
           </DeltaPanel>
         </div>
       </div>
-      <DeltaPanel className="block md:flex items-center text-center flex-wrap mt-4">
-        <DeltaButton renderIcon={() => transactionDetailsVisible ? <span className="pl-2">▲</span> : <span className="pl-2">▼</span>} onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'Show Delta Vesting Schedules' : 'Hide Delta Vesting Schedules'}</DeltaButton>
-      </DeltaPanel>
+      {globalHooks.delta.data.vestingTransactions !== DATA_UNAVAILABLE && globalHooks.delta.data.vestingTransactions.length > 0 &&
+        <DeltaPanel className="block md:flex items-center text-center flex-wrap mt-4">
+          <DeltaButton renderIcon={() => transactionDetailsVisible ? <span className="pl-2">▲</span> : <span className="pl-2">▼</span>} onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'Show Delta Vesting Schedules' : 'Hide Delta Vesting Schedules'}</DeltaButton>
+        </DeltaPanel>}
       <DeltaPanel className={`${!transactionDetailsVisible ? 'hidden' : ''}`}>
         <VestingTransactions />
       </DeltaPanel>
@@ -181,4 +191,4 @@ const Vesting = () => {
 };
 
 
-export default Vesting;
+export default MyWallet;

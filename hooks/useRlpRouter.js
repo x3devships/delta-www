@@ -86,8 +86,8 @@ const useRlpRouter = () => {
     }
 
     const confirmationMessage = autoStake ?
-      `Are you sure you want to buy and automatically stake a minumum of ${formatting.getTokenAmount(minLpAmount, 18, 6)} rLP?` :
-      `Are you sure you want to buy a minumum of ${formatting.getTokenAmount(minLpAmount, 18, 6)} rLP?`
+      `You are using ${formatting.getTokenAmount(ethValueBN, 18, 6)} ETH to mint and automatically stake a minimum of ${formatting.getTokenAmount(minLpAmount, 18, 6)} rLP tokens` :
+      `You are using ${formatting.getTokenAmount(ethValueBN, 18, 6)} ETH to mint a minimum of ${formatting.getTokenAmount(minLpAmount, 18, 6)} rLP tokens`;
 
     if (!await modalContext.showConfirm("Confirmation", confirmationMessage)) {
       return false;

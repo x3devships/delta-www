@@ -12,7 +12,7 @@ import { DeltaCheckboxButton, TokenInput } from '../Input';
 import { ProgressBarDiamonds } from '../ProgressBar';
 import { CompoundBurnCheckbox, DeltaCheckbox } from '../CheckBox';
 import { DeltaPanel } from '../Section'
-import { DATA_UNAVAILABLE } from '../../config';
+import { DATA_UNAVAILABLE, deltaUniswapUrl } from '../../config';
 import { useRlpRouter, useYam } from '../../hooks';
 
 const RlpStaking = () => {
@@ -121,11 +121,15 @@ const DeltaStaking = () => {
   };
 
   return <div>
-    <TokenInput className="mt-4" token="delta" buttonText="Stake" buttonTextLoading="Staking..." checkboxButton="Burn Deposit" checkboxButtonChecked onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
-    <div className="block md:flex md:flex-row mt-4">
-      <DeltaButton className="block md:flex" onClick={() => onCompoundDeposit()}>Compound Deposit</DeltaButton>
-      <CompoundBurnCheckbox className="block md:flex" />
-    </div>
+    <TokenInput className="mt-4" token="delta" buttonText="Stake" labelBottomClassName="text-xs text-gray-400" labelBottom="Deposit DELTA and earn yield" buttonTextLoading="Staking..." checkboxButton="Burn Deposit" checkboxButtonChecked onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
+    {globalHooks.staking.info.farmedDelta > 0 &&
+      <>
+        <div className="block md:flex md:flex-row mt-4">
+          <DeltaButton className="block md:flex" onClick={() => onCompoundDeposit()}>Compound Deposit</DeltaButton>
+          <CompoundBurnCheckbox className="block md:flex" />
+        </div>
+        <div className="text-sm text-gray-400 flex mt-1">Compound your stake by depositing your current rewards</div>
+      </>}
   </div >
 };
 
@@ -165,10 +169,10 @@ const RlpMinting = () => {
     <TokenInput
       className="mt-4"
       token="ETH"
-      buttonText="Buy"
+      buttonText="MINT"
       onChange={onChange}
       labelBottom={estimationLabel}
-      buttonTextLoading="Buying..."
+      buttonTextLoading="MINTING..."
       checkboxButton="Stake"
       checkboxButtonChecked={false}
       onOk={onBuy} />
@@ -199,18 +203,18 @@ const VaultDeposit = ({ token }) => {
     if (token === "rLP") {
       return <DeltaButton className="flex-1 md:flex-grow-0"
         onClick={() => setDepositAction(t => !t)}
-        grayLook={depositAction}>Buy</DeltaButton>
+        grayLook={depositAction}>MINT rLP</DeltaButton>
     }
 
-    return <a className="flex-1 md:flex-grow-0" target="_blank" href="https://app.uniswap.org/#/swap" rel="noopener noreferrer">
-      <DeltaButton grayLook={depositAction}>Buy</DeltaButton>
+    return <a className="flex-1 md:flex-grow-0" target="_blank" href={deltaUniswapUrl} rel="noopener noreferrer">
+      <DeltaButton grayLook={depositAction}>BUY DELTA</DeltaButton>
     </a>;
   }
 
   return <div>
     <DeltaPanel className="flex items-center text-center flex-wrap">
       <div className="flex border border-black p-1 flex-grow md:flex-none">
-        <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setDepositAction(t => !t)} grayLook={!depositAction}>Stake</DeltaButton>
+        <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setDepositAction(t => !t)} grayLook={!depositAction}>{token === 'rLP' ? 'Stake rLP' : 'Stake Delta'}</DeltaButton>
         {renderBuyButton(token)}
       </div>
     </DeltaPanel>
