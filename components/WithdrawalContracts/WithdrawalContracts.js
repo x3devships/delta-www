@@ -86,19 +86,17 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
   };
 
   const renderButtons = () => {
-    if (!contract.principleWithdrawed) {
-      const principleUnlockedCountdown = !contract.principleUnlocked ? time.getTimeLeft(globalHooks.blockInfo.block.timestamp, globalHooks.blockInfo.block.timestamp + contract.secondsLeftUntilPrincipleUnlocked) : '';
-      const labelBottom = `unlocked ${principleUnlockedCountdown.toNow}`;
+    const principleUnlockedCountdown = !contract.principleUnlocked ? time.getTimeLeft(globalHooks.blockInfo.block.timestamp, globalHooks.blockInfo.block.timestamp + contract.secondsLeftUntilPrincipleUnlocked) : '';
+    const labelBottom = contract.secondsLeftUntilPrincipleUnlocked > 0 ? `unlocked ${principleUnlockedCountdown.toNow}` : '';
 
-      return <>
-        <DeltaButton className="flex-1 mr-4 md:flex-grow-0" disabled={!contract.principleUnlocked} labelBottom={labelBottom} onClick={() => onWithdrawPrinciple(contract)}>WITHDRAW PRINCIPLE</DeltaButton>
-        <DeltaButton className="flex-1 md:flex-grow-0" labelBottom="&nbsp;" onClick={() => onFinalizeWithdrawal(contract)}>FINALIZING WITHDRAWAL</DeltaButton>
-      </>
+    const children = [];
+    if (!contract.principleWithdrawed) {
+      children.push(<DeltaButton key="button-principle" className="flex-1 mr-4 md:flex-grow-0" disabled={!contract.principleUnlocked} labelBottom={labelBottom} onClick={() => onWithdrawPrinciple(contract)}>WITHDRAW PRINCIPLE</DeltaButton>);
     }
 
-    return <>
-      <DeltaButton className="mt-4" onClick={() => onFinalizeWithdrawal(contract)}>FINALIZING WITHDRAWAL</DeltaButton>
-    </>
+    children.push(<DeltaButton key="button-finalize" className="flex-1 md:flex-grow-0" disabled={!contract.principleUnlocked} labelBottom={labelBottom} onClick={() => onFinalizeWithdrawal(contract)}>FINALIZING WITHDRAWAL</DeltaButton>);
+
+    return children;
   }
 
   return <DeltaSectionBox showIndex opened={opened} className={className} index={index} indexFormatter={i => i + 1} title='Withdrawal Contract' onOpen={onOpen} >

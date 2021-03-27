@@ -25,7 +25,7 @@
     "@rehooks/local-storage": "^2.4.0",
     "@windmill/react-ui": "^0.5.0",
     "autoprefixer": "^10.1.0",
-    "bignumber.js": "^9.0.0",
+    "bignumber.js": "^9.0.1",
     "classnames": "^2.2.6",
     "ethereum-block-by-date": "^1.2.5",
     "ethers": "^5.0.31",

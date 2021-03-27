@@ -25,7 +25,7 @@ const RlpStaking = () => {
     const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
 
     if (confirmed) {
-      const transaction = yam.contracts.dfv.methods.deposit(amountBN, 0);
+      const transaction = yam.contracts.dfv.methods.deposit(amountBN.toString(), 0);
 
       await transactions.executeTransaction(
         modalContext,
@@ -68,7 +68,7 @@ const DeltaStaking = () => {
       const confirmed = await modalContext.showConfirm('Staking', message);
 
       if (confirmed) {
-        const transaction = burning ? yam.contracts.dfv.methods.depositWithBurn(amountBN) : yam.contracts.dfv.methods.deposit(0, amountBN);
+        const transaction = burning ? yam.contracts.dfv.methods.depositWithBurn(amountBN.toString()) : yam.contracts.dfv.methods.deposit(0, amountBN.toString());
 
         await transactions.executeTransaction(
           modalContext,
@@ -392,7 +392,7 @@ const RlpWithdrawal = () => {
     const confirm = await modalContext.showConfirm('You are about to unstake your rLP', content);
 
     if (confirm) {
-      const transaction = yam.contracts.dfv.methods.withdrawRLP(globalHooks.staking.info.rlp);
+      const transaction = yam.contracts.dfv.methods.withdrawRLP(globalHooks.staking.info.rlp.toString());
 
       await transactions.executeTransaction(
         modalContext,
