@@ -284,7 +284,7 @@ const Staking = ({ onWalletConnect, lswStats }) => {
         <div className="pt-0 md:pt-4">
           <DeltaTitleH2>{t('lswExplanationTitle')}</DeltaTitleH2>
           <div className="text-justify mt-4 md:mt-2 pr-0 md:pr-8 break-normal">
-            <p className="pt-0 md:pt-4">When the countdown hits ZERO, user's can refresh this site to find the CLAIM &amp; STAKE button for their rLP and their referral ETH.</p>
+            <p className="pt-0 md:pt-4">When the countdown hits ZERO, users can refresh this site to find the CLAIM &amp; STAKE button for their rLP and their referral ETH.</p>
             <p className="pt-0 md:pt-4">Roughly <strong>ONE HOUR LATER</strong> trading of DELTA will begin on Uniswap, with 1500 ETH provided to the pool alongside matching Delta tokens. Farming rewards will immediately begin to accumulate for those who staked.</p>
             {/* <div className="mt-4">
               <a target="_blank" rel="noopener noreferrer" href="https://medium.com/delta-financial/delta-lsw-what-happens-next-94c659dc63b7">[ Read More ]</a>
