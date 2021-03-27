@@ -21,7 +21,7 @@ const hero = ({ onWalletConnect }) => {
     <div className="pt-10 pb-20">
       <div className="px-3 lg:2/6 xl:w-3/4 mt-20 ">
         <div className="text-6xl font-semibold text-gray-900 leading-none font-wulkan">
-          {t('limitedStakingFirstPart')} <br /> Window is now closed!
+          {t('limitedStakingFirstPart')} <br /> Claims Begin Soon!
         </div>
         {connectWalletVisible && (
           <ConnectWalletButton onWalletConnect={onWalletConnect} />
