@@ -8,7 +8,9 @@ const Web3Provider = ({ children }) => {
 
   useEffect(() => {
     const web3 = new Web3Client(WEB3_PROVIDER_URL);
-    setWeb3(web3);
+    web3.initialize().then(() => {
+      setWeb3(web3);
+    });
   }, []);
 
   return <Web3Context.Provider value={{ web3 }}>{children}</Web3Context.Provider>;

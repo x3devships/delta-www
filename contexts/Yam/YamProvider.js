@@ -19,10 +19,11 @@ const YamProvider = ({ children }) => {
         accounts: [],
         ethereumNodeTimeout: 10000
       });
-      setYam(yam);
 
-      // Useful for testing using chrome devtools.
-      window.yam = yam;
+      yam.initialize().then(() => {
+        setYam(yam);
+        window.yam = yam;
+      });
     }
   }, [ethereum]);
 

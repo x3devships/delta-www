@@ -19,8 +19,8 @@ const useReferralRewardsChartData = () => {
     if (!web3 || !account) return;
 
     let currentData = data;
-
     const address = account;
+
     console.log('Updating useReferralRewardsChartData...');
 
     if (currentData.length === 0) {
@@ -36,6 +36,7 @@ const useReferralRewardsChartData = () => {
         }
       }
     }
+
     let lastBlockTimestamp = Date.now() - (3 * 24 * 60 * 60 * 1000);// LSW_STARTDATE_IN_MILLIS;
 
     if (currentData.length > 0) {
@@ -46,7 +47,7 @@ const useReferralRewardsChartData = () => {
     const dater = new EthDater(web3.web3);
 
     // Only fetch the missing new blocks
-    const newBlockInfo = await dater.getEvery('days', lastBlockTimestamp, Date.now());
+    const newBlockInfo = await dater.getEvery('hours', lastBlockTimestamp, Date.now());
 
     // Fetch the new information for these blocks
     const newChartData = await Promise.all(newBlockInfo.map(async blockInfo => {

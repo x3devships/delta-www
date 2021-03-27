@@ -22,4 +22,29 @@ npx hardhat node
 
 Your local node will now have a forked mainnet that has the LSW already ending, you can point metamask to this node and test the site on localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
+## Limited Staking Window
+Before deploying the website when the LSW is not ready to be ended, the LSW ending can be smulated using the hardhat node and using core contract repository:
+
+### Running with the hardhat node
+In the core contracts repository start the hardhat local node. 
+```
+$ cd src
+$ npx hardhat node --config hardhat.v076.config.js
+```
+
+> When the hardhat node is started it should show a list of account and their associated private key which can be imported to metamask.
+
+Once started, open another window in the core contract repo and run the operation on the local hardhat node that ends the LSW. This operation also transfer some DELTA to account1.
+```
+$ cd src
+$ ./liveTest.sh tests_live/operations/delta/end_lsw.js  --local
+```
+
+Once ran, it should display the delta token address. This address should be replaced in the one inside ```config/inodex.js``` ```addressMap.delta```
+
+Make sure the other address listen in the console are updated as well, if needed.
+
+In metamask, import account1 and connect to the local RPC localhost network. Chain id should be set to 1 and the other values left to default.

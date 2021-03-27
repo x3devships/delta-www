@@ -21,3 +21,58 @@
   font-style: normal;
   font-display: swap;
 }
+
+@layer base {
+  body {
+    @apply bg-white;
+  }
+}
+
+@layer utilities {
+  @variants responsive {
+    .min-max-wh-px45 {
+      min-width: 45px;
+      max-width: 45px;
+      min-height: 45px;
+      max-height: 45px;
+      width: 45px;
+      height: 45px;
+    }
+
+    .min-max-wh-px42 {
+      min-width: 42px;
+      max-width: 42px;
+      min-height: 42px;
+      max-height: 42px;
+      width: 42px;
+      height: 42px;
+    }
+
+    .min-max-wh-px32 {
+      min-width: 32px;
+      max-width: 32px;
+      min-height: 32px;
+      max-height: 32px;
+      width: 32px;
+      height: 32px;
+    }
+
+    .min-max-wh-px24 {
+      min-width: 24px;
+      max-width: 24px;
+      min-height: 24px;
+      max-height: 24px;
+      width: 24px;
+      height: 24px;
+    }
+
+    .min-max-wh-px16 {
+      min-width: 16px;
+      max-width: 16px;
+      min-height: 16px;
+      max-height: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

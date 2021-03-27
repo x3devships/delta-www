@@ -1,9 +1,9 @@
 import DeltaTitle from './DeltaTitle';
 
-const DeltaTitleH1 = ({ children, className }) => {
-  return <DeltaTitle className={`text-2xl md:text-4xl ${className}`}>
+const DeltaTitleH1 = ({ children, className, center }) => {
+  return <DeltaTitle center={center} className={`text-2xl md:text-4xl ${className || ''}`}>
     {children}
-  </DeltaTitle >;
+  </DeltaTitle>;
 }
 
-export default DeltaTitleH1
+export default DeltaTitleH1;

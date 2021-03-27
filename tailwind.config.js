@@ -2,7 +2,7 @@ const windmill = require('@windmill/react-ui/config');
 
 module.exports = windmill({
   purge: ['./pages/**/*.{js,jsx}', './components/**/*.{js,jsx}'],
-  darkMode: true,
+  darkMode: false,
   theme: {
     fontFamily: {
       wulkan: ['Wulkan Display'],
@@ -15,13 +15,16 @@ module.exports = windmill({
       current: 'currentColor',
       gradiantBlue: '#4315C7',
       gradiantPurple: '#CBC4E0',
-      gradiantGreen: '#4CA560',
-      gradiantLightGreen: '#DBF0E0',
+      gradientPink: '#DB77EB',
+      gradientPink2: '#DBC9D6',
+      gradiantGreen1: '#FBFCCD',
+      gradiantGreen2: '#85C78E',
       backgroundLightPurple: '#EDEAF4',
       backgroundPage: '#E5E5E5',
       backgroundButton: '#C7C7C7',
       greenText: '#4DA560',
-      backgroundWebsite: '#ebebeb'
+      diamondGreen: '#023E0F',
+      purpleGray: '#EDE9F5'
     }
   },
   variants: {

@@ -1,21 +1,20 @@
 import { Button } from '@windmill/react-ui';
+import { useContext } from 'react';
+import { ModalContext } from '../../contexts';
 import plus from '../../public/plus.svg';
 
-const ConnectWalletButton = ({ onWalletConnect }) => {
-  return <Button
-    onClick={() => onWalletConnect()}
-    className="p-4 mt-4 inline-block text-white uppercase flex ml-2"
-    style={{
-      marginRight: '1px',
-      borderRadius: '0px',
-      backgroundColor: 'black',
-      padding: '1rem',
-      marginTop: '1rem'
-    }}
-  >
-    <span>Connect Wallet</span>
-    <img alt="+" src={plus} className="m-auto pl-8" />
-  </Button>
+const ConnectWalletButton = ({ className }) => {
+  const modalContext = useContext(ModalContext);
+
+  return <div className={className}>
+    <Button
+      onClick={modalContext.showConnectWallet}
+      className="bg-black text-white rounded-none uppercase flex py-4"
+    >
+      <span>Connect Wallet</span>
+      <img alt="+" src={plus} className="m-auto pl-8" />
+    </Button>
+  </div>
 }
 
 export default ConnectWalletButton;

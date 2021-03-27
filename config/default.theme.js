@@ -85,7 +85,7 @@ export default {
   // ModalFooter
   modalFooter: {
     base:
-      'flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-50 dark:bg-gray-800'
+      'flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-whiteMore border-t border-gray-300 dark:bg-gray-800'
   },
   // ModalHeader
   modalHeader: {
@@ -139,16 +139,16 @@ export default {
   input: {
     base: 'block w-full text-sm focus:outline-none dark:text-gray-300 form-input leading-5',
     active:
-      'focus:border-purple-400 dark:border-gray-600 focus:shadow-outline-purple dark:focus:border-gray-600 dark:focus:shadow-outline-gray dark:bg-gray-700',
+      'focus:border-gray-400 dark:border-gray-600 dark:focus:border-gray-600  dark:bg-gray-700',
     disabled: 'cursor-not-allowed opacity-50 bg-gray-300 dark:bg-gray-800',
     valid:
-      'border-green-600 dark:bg-gray-700 focus:border-green-400 dark:focus:border-green-400 focus:shadow-outline-green dark:focus:shadow-outline-green',
+      'border-green-600 dark:bg-gray-700 focus:border-green-400 dark:focus:border-green-400',
     invalid:
-      'border-red-600 dark:bg-gray-700 focus:border-red-400 dark:focus:border-red-400 focus:shadow-outline-red dark:focus:shadow-outline-red',
+      'border-red-600 dark:bg-gray-700 focus:border-red-400 dark:focus:border-red-400',
     radio:
-      'text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray',
+      'text-gray-600 form-radio focus:border-gray-400 focus:outline-none ',
     checkbox:
-      'text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray'
+      'text-gray-600 form-checkbox focus:border-gray-400 focus:outline-none '
   },
   // HelperText
   helperText: {
@@ -167,7 +167,7 @@ export default {
   // Button
   button: {
     base:
-      'align-bottom bg-black inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none',
+      'align-bottom bg-transparent inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none',
     block: 'w-full',
     size: {
       larger: 'px-10 py-4',
@@ -193,7 +193,7 @@ export default {
     },
     primary: {
       base: 'text-white bg-black border border-transparent uppercase rounded-none',
-      active: 'active:bg-black hover:bg-black focus:shadow-outline-gray',
+      active: '',
       disabled: 'opacity-50 cursor-not-allowed'
     },
     outline: {

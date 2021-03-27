@@ -1,34 +1,14 @@
-import useTranslation from 'next-translate/useTranslation';
-import { useWallet } from 'use-wallet';
-import { useEffect, useState } from 'react';
-import { ConnectWalletButton } from '../Buttons';
-
-const hero = ({ onWalletConnect }) => {
-  const { t } = useTranslation('home');
-  const wallet = useWallet();
-  const [connectWalletVisible, setConnectWalletVisible] = useState(true);
-
-  useEffect(() => {
-    console.log(wallet.error);
-    if (!wallet.account) {
-      setConnectWalletVisible(true);
-    } else {
-      setConnectWalletVisible(false);
-    }
-  }, [wallet]);
-
+const Hero = () => {
   return (
-    <div className="pt-10 pb-20">
-      <div className="px-3 lg:2/6 xl:w-3/4 mt-20 ">
-        <div className="text-6xl font-semibold text-gray-900 leading-none font-wulkan">
-          {t('limitedStakingFirstPart')} <br /> Claims Begin Soon!
-        </div>
-        {connectWalletVisible && (
-          <ConnectWalletButton onWalletConnect={onWalletConnect} />
-        )}
+    <div className="pt-10 pb-10 mt-3 md:mt-20 text-gray-900 leading-none">
+      <div className="text-6xl font-wulkan">
+        Delta Has Launched!
+      </div>
+      <div className="mt-8 text-lg text-left w-full md:w-6/12">
+        The Limited Staking Window has successfully come to an end. Delta is now tradable on Uniswap, the rLP tokens are claimable and the Deep Farming Vault is producing yield! Make sure to claim and stake your rLP to earn yield from the Deep Farming Vault.
       </div>
     </div>
   );
 };
 
-export default hero;
+export default Hero;
