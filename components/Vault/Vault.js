@@ -5,6 +5,8 @@ import { ProgressBarDiamonds } from '../ProgressBar';
 import VaultStaking from './VaultStaking';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting } from '../../helpers';
+import DeltaButton from '../Button/DeltaButton';
+import { gitbookUrl } from '../../config';
 
 /* onst VaultInfoBox = ({ token, className = '' }) => {
 
@@ -208,6 +210,12 @@ const Vault = () => {
             yield to staked rLP and Delta.
           </DeltaPanel>
         </div>
+        <DeltaPanel className="my-4 mb-6 pr-12 text-lg">
+          More information about how to use the Deep Farming Vault <br />is available at the Document Portal.
+          <a target="_blank" href={gitbookUrl} rel="noopener noreferrer">
+            <DeltaButton className="mt-4">Delta Document Portal</DeltaButton>
+          </a>
+        </DeltaPanel>
         <RlpTokenVault />
         <DeltaTokenVault className="mt-8 md:mt-12" />
       </div>
