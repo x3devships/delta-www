@@ -123,7 +123,7 @@ const DeltaStaking = () => {
   };
 
   return <div>
-    <TokenInput className="mt-4" token="delta" buttonText="Stake" labelBottomClassName="text-xs text-gray-400" labelBottom="Deposit DELTA and earn yield" buttonTextLoading="Staking..." checkboxButton="Burn Deposit" checkboxButtonChecked onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
+    <TokenInput className="mt-4" token="delta-all" buttonText="Stake" labelBottomClassName="text-xs text-gray-400" labelBottom="Deposit DELTA and earn yield" buttonTextLoading="Staking..." checkboxButton="Burn Deposit" checkboxButtonChecked onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
     {globalHooks.staking.info.farmedDelta > 0 &&
       <>
         <div className="block md:flex md:flex-row mt-4">

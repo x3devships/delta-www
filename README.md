@@ -31,10 +31,6 @@ Your local node will now have a forked mainnet that has the LSW already ending, 
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-
-## Limited Staking Window
-Before deploying the website when the LSW is not ready to be ended, the LSW ending can be smulated using the hardhat node and using core contract repository:
-
 ### Running with the hardhat node
 In the core contracts repository start the hardhat local node. 
 ```
@@ -47,7 +43,7 @@ $ npx hardhat node --config hardhat.v076.config.js
 Once started, open another window in the core contract repo and run the operation on the local hardhat node that ends the LSW. This operation also transfer some DELTA to account1.
 ```
 $ cd src
-$ ./liveTest.sh tests_live/operations/delta/end_lsw.js  --local
+$ ./liveTest.sh tests_live/operations/setup_website_env.js  --local
 ```
 
 Once ran, it should display the delta token address. This address should be replaced in the one inside ```config/inodex.js``` ```addressMap.delta```

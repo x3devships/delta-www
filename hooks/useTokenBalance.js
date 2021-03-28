@@ -24,6 +24,16 @@ const useTokenBalance = (tokenName) => {
       return;
     }
 
+    // Use delta immmature + mature balance instead of just mature
+    if (tokenName === "delta-all") {
+      const totalsForWallet = await yam.contracts.delta.methods.totalsForWallet(wallet.account).call();
+      const balanceBN = new BigNumber(totalsForWallet.total);
+      const balance = balanceBN.toString() / 10 ** decimals;
+      setBalance(balance);
+      setBalanceBN(balanceBN);
+      return
+    }
+
     if (!(tokenName in yam.contracts)) {
       return;
     }

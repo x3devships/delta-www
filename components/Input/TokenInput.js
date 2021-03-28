@@ -1,6 +1,7 @@
 import { Button, HelperText, Input } from '@windmill/react-ui';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
+import BigNumber from 'bignumber.js';
 import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../../config';
 import { useTokenBalance } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
@@ -32,7 +33,6 @@ const TokenInput = ({
   const [amountText, setAmountText] = useState('');
   const [amount, setAmount] = useState(false);
   const [validAmount, setValidAmount] = useState(true);
-  const [maxBalance, setMaxBalance] = useState(false);
   const { balance, balanceBN } = useTokenBalance(token);
   const modalContext = useContext(ModalContext);
   const [checkboxChecked, setCheckboxChecked] = useState(checkboxButtonChecked);
@@ -41,7 +41,10 @@ const TokenInput = ({
     decimals: 16
   }
 
-  if (token !== 'ETH') {
+  // delta-all is delta but that will use the whole total balance. So it's
+  // not a real token, just handled this way tso that useTokenBalance can
+  // use delta's totalWallet instead of balanceOf in this case.
+  if (token !== 'ETH' && token !== "delta-all") {
     const tokenAddress = addressMap[token];
     tokenInfo = tokenMap[tokenAddress];
 
@@ -58,7 +61,7 @@ const TokenInput = ({
     let amountBN;
 
     if (amount) {
-      amountBN = maxBalance ? balanceBN : parsing.parseFloatToBigNumber(amount, tokenInfo.decimals);
+      amountBN = parsing.parseFloatToBigNumber(amount, tokenInfo.decimals);
     }
 
     const valid = validAmount && amount && amountBN;
@@ -123,9 +126,9 @@ const TokenInput = ({
   };
 
   const onMaxAmount = () => {
+    const balance = parseFloat(new BigNumber(balanceBN.shiftedBy(-18).toFixed(6, 1)).toString());
     setAmountText(balance);
     setValidatedAmount(balance);
-    setMaxBalance(true);
   };
 
   const onAmountChanged = e => {
@@ -140,7 +143,6 @@ const TokenInput = ({
 
     const potentialAmount = parseFloat(e.target.value);
     setValidatedAmount(potentialAmount);
-    setMaxBalance(false);
   };
 
   useEffect(() => {
