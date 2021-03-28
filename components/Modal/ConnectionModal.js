@@ -1,5 +1,4 @@
 /* eslint-disable react/no-danger */
-import useTranslation from 'next-translate/useTranslation';
 import { Modal, ModalHeader, ModalBody } from '@windmill/react-ui';
 import { useWallet } from 'use-wallet';
 import { useContext, useEffect, useState } from 'react';
@@ -12,7 +11,6 @@ import { Spinner } from '../Spinner';
 
 const ConnectionModal = () => {
   const wallet = useWallet();
-  const { t } = useTranslation('home');
   const modalContext = useContext(ModalContext);
 
   const { type, onOk } = modalContext;
@@ -58,7 +56,7 @@ const ConnectionModal = () => {
         >
           <div className="border-t border-b flex">
             <img src={metaMaskLogo} alt="metamask" className="m-auto pt-2 pb-2 pr-2" />
-            <div className="m-auto">{t('metaMask')}</div>
+            <div className="m-auto">MetaMask</div>
           </div>
         </button>
       </div>
@@ -91,7 +89,7 @@ const ConnectionModal = () => {
           <button type="button" onClick={() => wallet.connect('walletconnect')} className="bg-transparent text-black text-xl  border-t border-b border-gray-400">
             <div className="border-t border-b flex">
               <img src={walletConnectLogo} alt="walletConnect" className="m-auto border-b pb-2 pt-2 pr-2" style={{ width: '35px', height: '51px' }} />
-              <div className="m-auto">{t('walletConnect')}</div>
+              <div className="m-auto">WalletConnect</div>
             </div>
           </button>
         </div>
@@ -108,7 +106,7 @@ const ConnectionModal = () => {
         visibility: type === ModalType.ConnectWallet ? 'inherit' : 'hidden'
       }}
     >
-      <ModalHeader className="text-2xl font-semibold font-wulkan">{t('connectToDelta')}</ModalHeader>
+      <ModalHeader className="text-2xl font-semibold font-wulkan">Connect To Delta</ModalHeader>
       <ModalBody className="pt-8 m-auto text-base">
         {renderContent()}
       </ModalBody>

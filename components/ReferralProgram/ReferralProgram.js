@@ -2,14 +2,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
-import { useContext, useEffect, useState } from 'react';
-import useTranslation from 'next-translate/useTranslation';
+import { useContext } from 'react';
 import { useWallet } from 'use-wallet';
 import { VictoryChart, VictoryGroup, VictoryArea } from 'victory';
 import { DeltaPanel, DeltaSection } from '../Section';
-import { DeltaTitleH3, DeltaTitleH4 } from '../Title';
+import { DeltaTitleH3 } from '../Title';
 import { errors, formatting } from '../../helpers';
-import { ConnectWalletButton } from '../Buttons';
 import useReferralRewardsChartData from '../../hooks/useReferralRewardsChartData';
 import { DATA_UNAVAILABLE } from '../../config';
 import TransactionButton from '../Button/TransactionButton';
@@ -23,7 +21,6 @@ const ReferralProgram = () => {
   const wallet = useWallet();
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
-  const { t } = useTranslation('home');
   const chartData = useReferralRewardsChartData();
 
   const onClaim = async () => {

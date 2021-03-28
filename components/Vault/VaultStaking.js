@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useContext, useState, useEffect, useCallback } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { useWallet } from 'use-wallet';
 import { ModalContext } from '../../contexts';
@@ -8,12 +8,11 @@ import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting, transactions } from '../../helpers';
 import DeltaButton from '../Button/DeltaButton';
 import TransactionButton from '../Button/TransactionButton';
-import { DeltaCheckboxButton, TokenInput } from '../Input';
-import { ProgressBarDiamonds } from '../ProgressBar';
-import { CompoundBurnCheckbox, DeltaCheckbox } from '../CheckBox';
+import { CompoundBurnCheckbox } from '../CheckBox';
 import { DeltaPanel } from '../Section'
 import { DATA_UNAVAILABLE, deltaUniswapUrl } from '../../config';
 import { useRlpRouter, useYam } from '../../hooks';
+import { TokenInput } from '../Input';
 
 const RlpStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
@@ -21,6 +20,7 @@ const RlpStaking = () => {
   const yam = useYam();
   const wallet = useWallet();
 
+  // eslint-disable-next-line consistent-return
   const onStake = async (amount, amountBN) => {
     const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
 
@@ -59,6 +59,7 @@ const DeltaStaking = () => {
   const yam = useYam();
   const wallet = useWallet();
 
+  // eslint-disable-next-line consistent-return
   const onStake = async (amount, amountBN, valid, burning) => {
     if (!valid) {
       await modalContext.showError('Error', 'Invalid input');
@@ -87,6 +88,7 @@ const DeltaStaking = () => {
     }
   };
 
+  // eslint-disable-next-line consistent-return
   const onCompoundDeposit = async () => {
     const userInfo = await yam.contracts.dfv.methods.userInfo(wallet.account).call();
     const { compoundBurn } = userInfo;
@@ -182,6 +184,7 @@ const RlpMinting = () => {
 const VaultDeposit = ({ token }) => {
   const [depositAction, setDepositAction] = useState(true);
 
+  // eslint-disable-next-line consistent-return
   const renderContent = () => {
     switch (token) {
       case "rLP":
@@ -223,7 +226,7 @@ const VaultDeposit = ({ token }) => {
 };
 
 
-const CreateWithdrawalContractContent = ({ token }) => {
+/* const CreateWithdrawalContractContent = ({ token }) => {
   let message = 'This will automatically claim 3.543 ETH and start a Withdrawal contract for 3245 Delta.'
   if (token === 'delta') {
     message = `${message} And reduce your Reward Multiplier to 1x.`
@@ -241,6 +244,7 @@ const CreateWithdrawalContractContent = ({ token }) => {
     <div>Time until downgrade: 6 days 13 hours</div>
   </DeltaPanel>;
 }
+*/
 
 const DeltaWithdrawal = ({ token }) => {
   const globalHooks = useContext(GlobalHooksContext);

@@ -1,4 +1,3 @@
-import useTranslation from 'next-translate/useTranslation';
 import { useContext, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import { useRouter } from 'next/router'
@@ -12,7 +11,6 @@ const shortenAddress = address => {
 const NavBar = () => {
   const wallet = useWallet();
   const modalContext = useContext(ModalContext);
-  const { t } = useTranslation('home');
   const [menuVisible, setMenuVisible] = useState(false);
   const router = useRouter()
 
@@ -47,8 +45,8 @@ const NavBar = () => {
         className="flex uppercase text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-none text-small font-medium"
       >
         {wallet?.account ? <>
-          {t('disconnect')}</> :
-          <>{t('connectWallet')}</>}
+          Disconnect Wallet</> :
+          <>Connect Wallet</>}
       </button>
       {wallet?.account &&
         <a className="text-gray-300 md:flex px-3 md:self-center text-sm" href={`https://etherscan.io/address/${wallet.account}`} rel="noopener noreferrer" target="_blank">

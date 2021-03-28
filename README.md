@@ -9,6 +9,13 @@ npm run dev
 yarn dev
 ```
 
+## How to create a static build
+```bash
+yarn build && yarn export
+```
+
+The static version of the app in the `out` directory.
+
 ## Simulate ending the LSW
 Run a local node from the CORE-secret repo
 

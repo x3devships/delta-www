@@ -1,7 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
-import moment from 'moment';
 import { DATA_UNAVAILABLE } from '../config';
 import { hooks } from '../helpers';
 import useYam from './useYam';

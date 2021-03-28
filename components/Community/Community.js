@@ -1,4 +1,3 @@
-import useTranslation from 'next-translate/useTranslation';
 import github from '../../public/Github.svg';
 import telegram from '../../public/Telegram.svg';
 import twitter from '../../public/Twitter.svg';
@@ -22,12 +21,11 @@ const JoinButton = ({ logo, url, title }) => {
 };
 
 const Community = () => {
-  const { t } = useTranslation('home');
   return (
     <div className="flex items-center justify-center">
       <div className="container">
         <div className="p-5 md:p-8 mx-2 sm:p-5 text-center mt-4">
-          <DeltaTitleH1>{t('joinTheCommunity')}</DeltaTitleH1>
+          <DeltaTitleH1>Join The Community</DeltaTitleH1>
           <div className="flex flex-wrap mt-2 md:mt-4 justify-center">
             <JoinButton url="https://twitter.com/Delta_Token" title="Twitter" logo={twitter} />
             <JoinButton url="https://t.me/Delta_Financial" title="Telegram" logo={telegram} />

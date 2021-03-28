@@ -1,7 +1,6 @@
 import { Button, HelperText, Input } from '@windmill/react-ui';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
-import BigNumber from 'bignumber.js';
 import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../../config';
 import { useTokenBalance } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
@@ -83,6 +82,7 @@ const TokenInput = ({
     if (onChange) {
       return onChange(values.amount, values.amountBN, values.checkboxChecked);
     }
+    return Promise.resolve();
   }, ONCHANGE_NOTIFICATION_WAIT), [onChange, getValues]);
 
   const onBeforeOk = useCallback(async () => {
