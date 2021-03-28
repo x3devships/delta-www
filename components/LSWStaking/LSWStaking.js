@@ -39,10 +39,10 @@ const LSWStaking = () => {
     return Promise.resolve();
   };
 
-  return <DeltaSection title="Limited Staking Window is closed">
+  return <DeltaSection title="Delta is live!">
     <DeltaPanel className="mt-2 md:mt-4">
       <ProgressBarCountDown />
-      <div className="text-center mt-6 text-2xl">{Math.round(globalHooks.lswStats.data.totalEthContributed).toFixed(0).toLocaleString()} ETH contributed!</div>
+      <div className="text-center mt-6 text-2xl">You can now claim your tokens</div>
     </DeltaPanel>
     <DeltaPanel requiresConnectedWallet>
       <ul className="list-disc list-inside pt-6 pb-4 md:pb-6">
