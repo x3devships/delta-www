@@ -20,7 +20,7 @@ export const DATA_UNAVAILABLE = '--';
 // - Endpoint found from inspecting XHR request from metamask dev mode in google chrome.Could change in
 //   the futur and break: https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161
 export const WEB3_PROVIDER_URL = 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
-export const deltaUniswapUrl = "https://app.uniswap.org/#/swap";
+export const deltaUniswapUrl = "https://app.uniswap.org/#/swap?outputCurrency=0x9EA3b5b4EC044b70375236A281986106457b20EF";
 export const gitbookUrl = "https://docs.delta.financial";
 
 export const pairNames = {
@@ -39,7 +39,7 @@ export const addressMap = {
   uniswapRouter: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
 
   // Pairs
-  deltaWeth: '0x9d622A7ac0A5f8A927d4dE30CD7AfaDE2ca4EB66',
+  deltaWeth: '0x7d7e813082ef6c143277c71786e5be626ec77b20',
   coreCbtc: '0x6fad7d44640c5cd0120deec0301e8cf850becb68',
   coreWeth: '0x32ce7e48debdccbfe0cd037cc89526e4382cb81b',
   cDaiWcore: '0x01AC08E821185b6d87E68c67F9dc79A8988688EB',
@@ -47,8 +47,8 @@ export const addressMap = {
   wbtcWeth: '0xbb2b8038a1640196fbe3e38816f3e67cba72d940',
 
   // Tokens
-  delta: '0x86B612CDA49919e29360b117019c98af22B63d4d',
-  rLP: '0x919f342a3B42D5A1a763355120feDF611dff20E5',
+  delta: '0x9EA3b5b4EC044b70375236A281986106457b20EF',
+  rLP: '0xfcfC434ee5BfF924222e084a8876Eee74Ea7cfbA',
   core: '0x62359ed7505efc61ff1d56fef82158ccaffa23d7',
   wCORE: '0x17b8c1a92b66b1cf3092c5d223cb3a129023b669',
   wETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
@@ -58,8 +58,8 @@ export const addressMap = {
 
   // Periphery
   LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB',
-  dfv: '0xfE63f0D2da2cF617c2d829ecF1ab4F59360814cd',
-  deltaRouter: '0x251bbe8C7ABc2a1Ca8d0b25FC1149ABE6160A943'
+  dfv: '0x9fE9Bb6B66958f2271C4B0aD23F6E8DDA8C221BE',
+  deltaRouter: '0x7b3E8f6F30163d22203d0d86c608Ca1A056345Bc'
 };
 
 export const addressDecimalsMap = {};
