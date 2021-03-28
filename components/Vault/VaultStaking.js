@@ -315,14 +315,6 @@ const DeltaWithdrawal = ({ token }) => {
     router.push('/contracts');
   };
 
-  const getClaimableDelta = () => {
-    if (token === 'delta') {
-      return globalHooks.staking.info.farmedDelta;
-    }
-
-    return globalHooks.staking.info.farmedDelta;
-  };
-
   return <div className="my-6">
     {token === 'delta' && <>
       <ul className="list-disc list-inside py-4 md:py-8">
@@ -333,16 +325,16 @@ const DeltaWithdrawal = ({ token }) => {
       </div>
     </>}
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Claimable Delta: {formatting.getTokenAmount(getClaimableDelta(), 18, 4)} DELTA</li>
+      <li>Claimable Delta: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
     </ul>
     <div className="flex p-1 flex-grow md:flex-none">
-      <TransactionButton className="flex-1 mr-2 md:flex-grow-0" text="Claim" onClick={onClaim} />
+      <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={globalHooks.staking.info.farmedDelta <= 0} text={globalHooks.staking.info.farmedDelta > 0 ? 'Claim' : 'Nothing to claim'} onClick={onClaim} />
       <DeltaButton className="flex-1 md:flex-grow-0" onClick={seeWithdrawingContract}>Show All Contracts</DeltaButton>
     </div>
   </div>
 };
 
-const EthereumWithdrawal = ({ token }) => {
+const EthereumWithdrawal = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const yam = useYam();
   const wallet = useWallet();
@@ -373,19 +365,11 @@ const EthereumWithdrawal = ({ token }) => {
     return Promise.resolve();
   };
 
-  const getClaimableEth = () => {
-    if (token === 'delta') {
-      return globalHooks.staking.info.farmedETH;
-    }
-
-    return globalHooks.staking.info.farmedETH;
-  };
-
   return <div className="my-6">
     <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Claimable Ethereum: {formatting.getTokenAmount(getClaimableEth(), 18, 4)} ETH</li>
+      <li>Claimable Ethereum: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
     </ul>
-    <TransactionButton text="Claim" textLoading="Claiming..." onClick={onClaim} />
+    <TransactionButton disabled={globalHooks.staking.info.farmedETH <= 0} text={globalHooks.staking.info.farmedETH > 0 ? 'Claim' : 'Nothing to claim'} textLoading="Claiming..." onClick={onClaim} />
   </div>
 };
 
@@ -420,7 +404,7 @@ const RlpWithdrawal = () => {
     <ul className="list-disc list-inside py-4 md:py-8">
       <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
     </ul>
-    <TransactionButton text="Unstake" textLoading="Unstaking..." onClick={() => onUnstakDialog()} />
+    <TransactionButton disabled={globalHooks.staking.info.rlp <= 0} text={globalHooks.staking.info.rlp > 0 ? 'Unstake' : 'Nothing to unstake'} textLoading="Unstaking..." onClick={() => onUnstakDialog()} />
   </div>
 };
 

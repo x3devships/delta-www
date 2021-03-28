@@ -6,7 +6,7 @@ const DeltaPanel = ({ children, className, requiresConnectedWallet }) => {
 
   const renderContent = () => {
     if (requiresConnectedWallet && !wallet?.account) {
-      return <ConnectWalletButton />
+      return <ConnectWalletButton className="mt-4" />
     }
 
     return children;
