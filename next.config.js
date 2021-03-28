@@ -5,7 +5,9 @@ module.exports = withFonts(withImages({
   exportTrailingSlash: true,
   exportPathMap() {
     return {
-      '/': { page: '/' }
+      '/': { page: '/' },
+      '/vaults': { page: '/vaults' },
+      '/contracts': { page: '/contracts' },
     };
   }
 }));
