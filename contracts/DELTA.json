@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "DELTAToken",
-  "sourceName": "contracts/v076/DELTAToken.sol",
+  "sourceName": "contracts/v076/Token/DELTAToken.sol",
   "abi": [
     {
       "inputs": [
@@ -89,6 +89,13 @@
     },
     {
       "inputs": [],
+      "name": "acceptGovernance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "activatePostFirstRebasingState",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -97,12 +104,22 @@
     {
       "inputs": [
         {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
           "internalType": "uint256",
-          "name": "numLoops",
+          "name": "amount",
           "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "isAddition",
+          "type": "bool"
         }
       ],
-      "name": "allowLiquidityRebasing",
+      "name": "adjustBalanceOfNoVestingAccount",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -172,19 +189,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newAddress",
-          "type": "address"
-        }
-      ],
-      "name": "changeRLPAddress",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -409,6 +413,26 @@
     },
     {
       "inputs": [],
+      "name": "pendingGovernance",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "performLiquidityRebasing",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "rebasingLPAddress",
       "outputs": [
         {
@@ -496,6 +520,19 @@
         }
       ],
       "name": "setNoVestingWhitelist",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newGov",
+          "type": "address"
+        }
+      ],
+      "name": "setPendingGovernance",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

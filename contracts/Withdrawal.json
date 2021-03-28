@@ -75,12 +75,12 @@
     },
     {
       "inputs": [],
-      "name": "deltaTokenAddress",
+      "name": "emergency",
       "outputs": [
         {
-          "internalType": "address",
+          "internalType": "bool",
           "name": "",
-          "type": "address"
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -193,6 +193,19 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "isInEmergency",
+          "type": "bool"
+        }
+      ],
+      "name": "toggleEmergency",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "withdrawEverythingWithdrawable",
       "outputs": [],
@@ -202,6 +215,29 @@
     {
       "inputs": [],
       "name": "withdrawPrinciple",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "recipent",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdrawTokensWithPermissionFromOwner",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -218,6 +254,10 @@
       ],
       "stateMutability": "view",
       "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "DELTA_Deep_Farming_Vault",
-  "sourceName": "contracts/v076/Periphery/Vaults/DELTA_Deep_Farming_Vault.sol",
+  "sourceName": "contracts/v076/Upgradable/DELTA_Deep_Farming_Vault.sol",
   "abi": [
     {
       "inputs": [
@@ -18,6 +18,11 @@
         {
           "internalType": "address",
           "name": "rlp",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "delta",
           "type": "address"
         }
       ],
@@ -58,6 +63,19 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "DELTA",
+      "outputs": [
+        {
+          "internalType": "contract IDeltaToken",
+          "name": "",
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -215,32 +233,6 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "delta",
-      "outputs": [
-        {
-          "internalType": "contract IDELTA_TOKEN",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "deltaGovernance",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -364,42 +356,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "previousBooster",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "secondsSinceLastBoost",
-          "type": "uint256"
-        }
-      ],
-      "name": "howMuchOfFarmedPercentIsLegit",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "newBooster",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "claimable",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_interimAdmin",
-          "type": "address"
-        }
-      ],
+      "inputs": [],
       "name": "initialize",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -479,26 +436,6 @@
         }
       ],
       "name": "setCompundBurn",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_delta",
-          "type": "address"
-        }
-      ],
-      "name": "setDelta",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "startFarming",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -636,6 +573,10 @@
       ],
       "stateMutability": "view",
       "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
     }
   ]
 }

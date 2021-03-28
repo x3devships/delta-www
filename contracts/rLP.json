@@ -1,10 +1,15 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "DELTA_Rebasing_Liquidity_Token",
-  "sourceName": "contracts/v076/Periphery/DELTA_Rebasing_Liquidity_Token.sol",
+  "sourceName": "contracts/v076/Upgradable/DELTA_Rebasing_Liquidity_Token.sol",
   "abi": [
     {
       "inputs": [
+        {
+          "internalType": "address",
+          "name": "delta",
+          "type": "address"
+        },
         {
           "internalType": "address",
           "name": "_reserveVault",
@@ -63,6 +68,32 @@
       ],
       "name": "Transfer",
       "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "DELTA",
+      "outputs": [
+        {
+          "internalType": "contract IDeltaToken",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "DELTA_WETH_PAIR",
+      "outputs": [
+        {
+          "internalType": "contract IUniswapV2Pair",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
       "inputs": [],
@@ -235,38 +266,12 @@
     },
     {
       "inputs": [],
-      "name": "delta",
+      "name": "ethVolumeRemaining",
       "outputs": [
         {
-          "internalType": "contract IDELTA_TOKEN",
+          "internalType": "uint256",
           "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "deltaGovernance",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "deltaxWethPair",
-      "outputs": [
-        {
-          "internalType": "contract IUniswapV2Pair",
-          "name": "",
-          "type": "address"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -311,6 +316,13 @@
           "type": "bool"
         }
       ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "initialize",
+      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -383,7 +395,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_baseLPToken",
+          "name": "",
           "type": "address"
         }
       ],
@@ -426,13 +438,7 @@
     {
       "inputs": [],
       "name": "tokenCaller",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
+      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -506,6 +512,19 @@
       "inputs": [],
       "name": "wrap",
       "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "wrapWithReturn",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     }

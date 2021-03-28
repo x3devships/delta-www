@@ -12,17 +12,17 @@
         },
         {
           "internalType": "address",
-          "name": "_deltaWethPair",
+          "name": "_DELTA_WETH_UNISWAP_PAIR",
           "type": "address"
         },
         {
           "internalType": "address",
-          "name": "_deepFarmingVault",
+          "name": "_DEEP_FARMING_VAULT",
           "type": "address"
         },
         {
           "internalType": "address",
-          "name": "_rebasingToken",
+          "name": "_REBASING_TOKEN",
           "type": "address"
         }
       ],
@@ -31,10 +31,49 @@
     },
     {
       "inputs": [],
+      "name": "DEEP_FARMING_VAULT",
+      "outputs": [
+        {
+          "internalType": "contract IDeepFarmingVault",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "DELTA_TOKEN",
       "outputs": [
         {
-          "internalType": "contract IDELTA_TOKEN",
+          "internalType": "contract IDeltaToken",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "DELTA_WETH_UNISWAP_PAIR",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "REBASING_TOKEN",
+      "outputs": [
+        {
+          "internalType": "contract IRebasingLiquidityToken",
           "name": "",
           "type": "address"
         }
@@ -59,7 +98,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_deltaAmount",
+          "name": "_maxDeltaAmount",
           "type": "uint256"
         },
         {
@@ -98,33 +137,7 @@
     },
     {
       "inputs": [],
-      "name": "deepFarmingVault",
-      "outputs": [
-        {
-          "internalType": "contract IDELTA_DEEP_FARMING_VAULT",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "deltaGovernance",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "deltaWethPair",
       "outputs": [
         {
           "internalType": "address",
@@ -150,49 +163,6 @@
           "internalType": "bool",
           "name": "",
           "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_deltaAmount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_ethAmount",
-          "type": "uint256"
-        }
-      ],
-      "name": "getRLPTokenPerBothSideUnits",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "liquidity",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_ethAmount",
-          "type": "uint256"
-        }
-      ],
-      "name": "getRLPTokenPerEthUnit",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "liquidity",
-          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -237,13 +207,43 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "rebasingToken",
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_deltaAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_ethAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "getRLPTokenPerBothSideUnits",
       "outputs": [
         {
-          "internalType": "contract IREBASING_LIQUDIDITY_TOKEN",
-          "name": "",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "liquidity",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_ethAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "getRLPTokenPerEthUnit",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "liquidity",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
