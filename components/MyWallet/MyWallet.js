@@ -174,7 +174,9 @@ const MyWallet = () => {
             {renderMyWallet()}
             <DeltaPanel className="flex items-center text-center flex-wrap mt-4">
               <DeltaButton className="flex-1 mr-4 md:flex-grow-0" labelBottom="Earn Yield" onClick={goToVaultPage}>Stake in vault</DeltaButton>
-              <DeltaButton className="flex-1 md:flex-grow-0" labelBottom="Earn Yield" onClick={() => { }}>Trade Delta</DeltaButton>
+                <a target="_blank" href={deltaUniswapUrl} rel="noopener noreferrer">
+                  <DeltaButton className="flex-1 md:flex-grow-0" labelBottom="Earn Yield" >Trade Delta</DeltaButton>
+                </a>
             </DeltaPanel>
           </DeltaPanel>
         </div>
