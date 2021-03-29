@@ -6,6 +6,7 @@ import { useUserApprovalOfContract, useTokenBalance, useYam } from '../../hooks'
 import { DATA_UNAVAILABLE } from '../../config';
 import { ModalContext } from '../../contexts';
 import DeltaButton from './DeltaButton';
+import { Spinner } from '../Spinner';
 
 /**
  * A button that supports sending a transaction and keeping track of allowance/approval
@@ -62,6 +63,11 @@ const TransactionButton = ({
     try {
       const contract = yam.contracts[allowanceRequiredFor.contract]._address;
       const transaction = yam.contracts[allowanceRequiredFor.token].methods.approve(contract, ethers.constants.MaxUint256);
+      const transactionMessage = 'Transaction in Approving';
+
+      // Approving message
+      const approveTx = await modalContext.showControlledMessage("Approving", <Spinner label={transactionMessage} />);
+
       const gasEstimation = await transaction.estimateGas({
         from: wallet.account
       });
@@ -70,6 +76,8 @@ const TransactionButton = ({
         from: wallet.account,
         gasEstimation
       });
+
+      approveTx.close();
     } catch (error) {
       const transactionError = errors.getTransactionError(error);
       modalContext.showError('Error while approving', transactionError.message);
