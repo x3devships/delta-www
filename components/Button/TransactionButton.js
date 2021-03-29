@@ -20,6 +20,7 @@ const TransactionButton = ({
   textLoading,
   textApprove,
   textApproving,
+  approvingTx,
   secondaryLooks,
   className,
   ...props }) => {
@@ -27,6 +28,7 @@ const TransactionButton = ({
   textApprove = textApprove || 'Approve';
   textLoading = textLoading || 'Loading...';
   textApproving = textApproving || 'Approving...';
+  approvingTx = approvingTx || 'Approving Transaction...';
   allowanceRequiredFor = allowanceRequiredFor || {
     contract: undefined,
     token: undefined
@@ -63,10 +65,9 @@ const TransactionButton = ({
     try {
       const contract = yam.contracts[allowanceRequiredFor.contract]._address;
       const transaction = yam.contracts[allowanceRequiredFor.token].methods.approve(contract, ethers.constants.MaxUint256);
-      const transactionMessage = 'Transaction in Approving';
 
       // Approving message
-      const approveTx = await modalContext.showControlledMessage("Approving", <Spinner label={transactionMessage} />);
+      const approveTx = await modalContext.showControlledMessage("Approving", <Spinner label={textApproving} />);
 
       const gasEstimation = await transaction.estimateGas({
         from: wallet.account
