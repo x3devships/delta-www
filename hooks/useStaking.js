@@ -78,7 +78,7 @@ const useStaking = () => {
       farmedETH,
       recycledDelta,
       recycledETH,
-      stakedDelta: totalDelta.minus(deltaPermanent),
+      ableToWithdrawDelta: totalDelta.minus(deltaPermanent),
       deltaPermanent,
       deltaVesting,
       deltaWithdrawable,
