@@ -380,7 +380,7 @@ const RlpWithdrawal = () => {
   const wallet = useWallet();
 
   const onUnstakDialog = async () => {
-    const content = `This will withdraw ${formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP and automatically claim your farmed ETH and start a Withdrawal contract for your farmed DELTA.`;
+    const content = `This will withdraw ${formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP. And automatically claim your WETH and compound DELTA.`;
     const confirm = await modalContext.showConfirm('You are about to unstake your rLP', content);
 
     if (confirm) {
