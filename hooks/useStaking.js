@@ -61,7 +61,7 @@ const useStaking = () => {
 
     setRlpPerLp(rlpPerLP);
 
-    const farmedDelta = new BigNumber(userInfo.deltaVesting);
+    const farmedDelta = new BigNumber(recycleInfo.farmedDelta);
     const farmedETH = new BigNumber(recycleInfo.farmedETH);
     const recycledDelta = new BigNumber(recycleInfo.recycledDelta);
     const recycledETH = new BigNumber(recycleInfo.recycledETH);

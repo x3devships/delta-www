@@ -52,7 +52,7 @@ const RlpStats = () => {
       <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
       <DeltaTitleH4 className="mt-4">Rewards</DeltaTitleH4>
       <li>Compoundable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
-      <li>Compounded DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaVesting, 18, 4)} DELTA</li>
+      <li>Ready to compound DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaVesting, 18, 4)} DELTA</li>
       {isCmpBurn && <li>Permanently Locked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaPermanent, 18, 4)} DELTA</li>}
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
     </ul>
