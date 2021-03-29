@@ -456,8 +456,7 @@ const VaultStaking = ({ token, className = '' }) => {
 
   return <DeltaPanel className={`pt-2 border-t-2 mt-4 border-dashed border-black ${className}`}>
     <div className="flex uppercase" onClick={() => setDepositAction(t => !t)}>
-      <div className="flex flex-grow" />
-      <div className="flex self-end select-none cursor-pointer text-sm">
+      <div className="flex self-end select-none cursor-pointer text-sm mb-2">
         <div className={`${!depositAction ? 'text-gray-300' : 'text-black'}`}>Deposit</div>
         <div className="px-1">/</div>
         <div className={`${depositAction ? 'text-gray-300' : 'text-black'}`}>Withdraw</div>
