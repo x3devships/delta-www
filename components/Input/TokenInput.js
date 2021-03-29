@@ -38,7 +38,7 @@ const TokenInput = ({
   const [checkboxChecked, setCheckboxChecked] = useState(checkboxButtonChecked);
 
   let tokenInfo = {
-    decimals: 16
+    decimals: 18
   }
 
   // delta-all is delta but that will use the whole total balance. So it's
