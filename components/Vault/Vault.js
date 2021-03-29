@@ -43,14 +43,18 @@ import { gitbookUrl } from '../../config';
 // TODO: add web3 integration
 const RlpStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
+  const isCmpBurn = globalHooks.staking.info.compoundBurn;
 
   return <div className="mt-4 md:mt-0">
     <ul className="list-disc list-inside py-4 md:py-8">
       <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + (globalHooks.staking.info.rlp.toString() / 1e18), 0, 4)} rLP</li>
       <li>Unstaked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} rLP</li>
       <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
+      <DeltaTitleH4 className="mt-4">Rewards</DeltaTitleH4>
+      <li>Compoundable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
+      <li>Compounded DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaVesting, 18, 4)} DELTA</li>
+      {isCmpBurn && <li>Permanently Locked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaPermanent, 18, 4)} DELTA</li>}
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
     </ul>
   </div >
 };
@@ -58,6 +62,8 @@ const RlpStats = () => {
 // TODO: add web3 integration
 const DeltaStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
+  console.log(globalHooks);
+  const isCmpBurn = globalHooks.staking.info.compoundBurn;
 
   return <div className="mt-4 md:mt-0">
     <DeltaTitleH4>Your Wallet</DeltaTitleH4>
@@ -67,11 +73,15 @@ const DeltaStats = () => {
       <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA</li>
     </ul>
     <DeltaTitleH4 className="mt-4">Staking</DeltaTitleH4>
-    <ul className="list-disc list-inside">
-      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.stakedDelta, 18, 4)} DELTA</li>
-      <li>Permanently Locked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaPermanent, 18, 4)} DELTA</li>
+    <ul className="list-disc list-inside  pb-4 md:pb-8">
+      <li>Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4)} DELTA</li>
+      {!isCmpBurn && <li>Permanently Locked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaPermanent, 18, 4)} DELTA</li>}
+      <DeltaTitleH4 className="mt-4">Rewards</DeltaTitleH4>
+      <li>Ready to compound DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
+      <li>Compounded DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaVesting, 18, 4)} DELTA</li>
+      {isCmpBurn && <li>Permanently Locked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaPermanent, 18, 4)} DELTA</li>}
       <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
+
     </ul>
   </div >
 };
