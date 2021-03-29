@@ -62,7 +62,6 @@ const RlpStats = () => {
 // TODO: add web3 integration
 const DeltaStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
-  console.log(globalHooks);
   const isCmpBurn = globalHooks.staking.info.compoundBurn;
 
   return <div className="mt-4 md:mt-0">
