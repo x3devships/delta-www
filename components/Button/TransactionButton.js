@@ -66,14 +66,16 @@ const TransactionButton = ({
       const contract = yam.contracts[allowanceRequiredFor.contract]._address;
       const transaction = yam.contracts[allowanceRequiredFor.token].methods.approve(contract, ethers.constants.MaxUint256);
 
+      console.log(contract, transaction);
+
       // Approving message
-      const approveTx = modalContext.showControlledMessage("Approving", <Spinner label={approvingTx} />);
+      const approveTx = await modalContext.showControlledMessage("Approving", <Spinner label={approvingTx} />);
 
       const gasEstimation = await transaction.estimateGas({
         from: wallet.account
       });
 
-      transaction.send({
+      await transaction.send({
         from: wallet.account,
         gasEstimation
       });
