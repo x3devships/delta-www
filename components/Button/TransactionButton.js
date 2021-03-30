@@ -66,8 +66,6 @@ const TransactionButton = ({
       const contract = yam.contracts[allowanceRequiredFor.contract]._address;
       const transaction = yam.contracts[allowanceRequiredFor.token].methods.approve(contract, ethers.constants.MaxUint256);
 
-      console.log(contract, transaction);
-
       // Approving message
       const approveTx = await modalContext.showControlledMessage("Approving", <Spinner label={approvingTx} />);
 
