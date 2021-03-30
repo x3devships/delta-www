@@ -26,26 +26,44 @@ const CompoundBurnCheckbox = ({
     }
   }, [yam, globalHooks.staking.info.compoundBurn]);
 
+  // eslint-disable-next-line consistent-return
   const onCheckboxChanged = async (event) => {
+    const { checked } = event.target;
     const transaction = await yam.contracts.dfv.methods.setCompundBurn(event.target.checked);
+
+    const confirm = await modalContext.showConfirm("Compound Burning", `This action is going to ${checked ? 'enable' : 'disable'} automatic compound burning on your next compound deposit and requires to send an Ethereum transaction.`, checked ? 'Enable Compound Burning' : 'Disable Compound Burning');
+    if (!confirm) {
+      return Promise.resolve();
+    }
 
     await transactions.executeTransaction(
       modalContext,
       transaction,
       { from: wallet.account },
-      'Finished',
-      'Success',
+      checked ? "Compound Burning is now enabled" : "Compound Burning is now disabled",
+      'Compound Burning',
       'Error',
-      'Transaction'
+      "Transaction",
+      checked ? "Enabling compound burning..." : "Disabling compound burning..."
     );
 
     updateCheckedState();
   };
 
   return <div className={className}>
-    <div>
-      <DeltaCheckboxButton checked={checked} text="Compound Burn" onChange={onCheckboxChanged} />
+    <div className="flex items-center w-full">
+      <label htmlFor="toogleA" className="flex items-center cursor-pointer">
+        <div className="relative">
+          <input id="toogleA" type="checkbox" checked={checked} onChange={onCheckboxChanged} className="hidden" />
+          <div className="toggle__line w-10 h-4 bg-gray-400 shadow-inner" />
+          <div className="toggle__dot border border-gray-400 absolute w-6 h-6 bg-gray-200 shadow inset-y-0 left-0" />
+        </div>
+        <div className={`ml-3 ${checked ? 'text-black' : 'text-gray-400'} font-medium`}>
+          {checked ? 'Compound Burning Enabled' : 'Compound Burning Disabled'}
+        </div>
+      </label>
     </div>
+    {/* <DeltaCheckboxButton checked={checked} text="Compound Burn" onChange={onCheckboxChanged} /> */}
   </div>
 };
 

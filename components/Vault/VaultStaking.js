@@ -13,6 +13,7 @@ import { DeltaPanel } from '../Section'
 import { DATA_UNAVAILABLE, deltaUniswapUrl } from '../../config';
 import { useRlpRouter, useYam } from '../../hooks';
 import { TokenInput } from '../Input';
+import { DeltaTitleH4 } from '../Title';
 
 const RlpStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
@@ -94,7 +95,7 @@ const DeltaStaking = () => {
     const { compoundBurn } = userInfo;
 
     const amount = formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4);
-    const message = compoundBurn ? `You are about to stake ${amount} Delta in the Deep Farming Vault` : `You are about to stake ${amount} Delta in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${globalHooks.staking.info.booster}x to 1x. To prevent this please check the box Burn Deposit.`;
+    const message = compoundBurn ? `You are about to stake ${amount} Delta in the Deep Farming Vault` : `You are about to stake ${amount} Delta in the Deep Farming Vault without a "Compound Burn". This will reduce your Multiplier from ${globalHooks.staking.info.booster}x to 1x. To prevent this please check the "Compound Burn" box.`;
 
     const confirmed = await modalContext.showConfirm('Compound Staking', message);
 
@@ -122,16 +123,23 @@ const DeltaStaking = () => {
     token: 'rLP'
   };
 
+  const renderCompoundBurn = () => {
+    return <div className="mt-6">
+      <DeltaTitleH4>Compound Your Staking Rewards</DeltaTitleH4>
+      <div className="mt-4">
+        <CompoundBurnCheckbox className="flex mt-0 md:ml-1 md:block" />
+        <DeltaButton className="flex md:block mt-4" disabled={globalHooks.staking.info.farmedDelta <= 0} onClick={() => onCompoundDeposit()}>{globalHooks.staking.info.farmedDelta <= 0 ? 'Nothing To Compound' : 'Compound Deposit'}</DeltaButton>
+      </div>
+      <div className="text-sm text-gray-400 flex mt-1">Compound your stake by depositing your current rewards</div>
+    </div>
+  }
+
   return <div>
-    <TokenInput className="mt-4" token="delta-all" buttonText="Stake" labelBottomClassName="text-xs text-gray-400" labelBottom="Deposit DELTA and earn yield" buttonTextLoading="Staking..." checkboxButton="Burn Deposit" checkboxButtonChecked onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
-    {globalHooks.staking.info.farmedDelta > 0 &&
-      <>
-        <div className="block md:flex md:flex-row mt-4">
-          <DeltaButton className="block md:flex" onClick={() => onCompoundDeposit()}>Compound Deposit</DeltaButton>
-          <CompoundBurnCheckbox className="block md:flex" />
-        </div>
-        <div className="text-sm text-gray-400 flex mt-1">Compound your stake by depositing your current rewards</div>
-      </>}
+    <div className="mt-6">
+      <DeltaTitleH4>Deposit Delta From Your Wallet</DeltaTitleH4>
+      <TokenInput className="mt-4" token="delta-all" buttonText="Stake" labelBottomClassName="text-xs text-gray-400" labelBottom="Deposit DELTA and earn yield" buttonTextLoading="Staking..." checkboxButton="Burn Deposit" checkboxButtonChecked onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
+    </div>
+    {renderCompoundBurn()}
   </div >
 };
 
@@ -456,8 +464,7 @@ const VaultStaking = ({ token, className = '' }) => {
 
   return <DeltaPanel className={`pt-2 border-t-2 mt-4 border-dashed border-black ${className}`}>
     <div className="flex uppercase" onClick={() => setDepositAction(t => !t)}>
-      <div className="flex flex-grow" />
-      <div className="flex self-end select-none cursor-pointer text-sm">
+      <div className="flex self-end select-none cursor-pointer text-sm mb-2">
         <div className={`${!depositAction ? 'text-gray-300' : 'text-black'}`}>Deposit</div>
         <div className="px-1">/</div>
         <div className={`${depositAction ? 'text-gray-300' : 'text-black'}`}>Withdraw</div>
