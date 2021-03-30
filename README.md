@@ -9,7 +9,7 @@ npm run dev
 yarn dev
 ```
 
-## How to create a static build
+## How to create a static build 
 ```bash
 yarn build && yarn export
 ```
