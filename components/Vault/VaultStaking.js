@@ -303,7 +303,7 @@ const DeltaWithdrawal = ({ token }) => {
 
     const message = `This will automatically claim ${claimEth} ETH, ${claimDelta} DELTA and unstake ${rlp} rLP. Withdrawal contract will be created for ${stakedDelta} DELTA. Are you sure?`;
 
-    const confirm = await modalContext.showConfirm('You are about to unstake everything', message);
+    const confirm = await modalContext.showConfirm(`You are about to unstake everything, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`, message);
 
     if (confirm) {
       await onExit();
@@ -345,25 +345,30 @@ const EthereumWithdrawal = () => {
       return Promise.reject();
     }
 
-    let transaction = yam.contracts.dfv.methods.deposit(0, 0);
-    if (globalHooks.staking.info.compoundBurn) {
-      transaction = yam.contracts.dfv.methods.depositWithBurn(0);
-    }
+    const content = `This will withdraw ${formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH. You will get ${formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH in your wallet`;
+    const confirm = await modalContext.showConfirm('You are about to unstake your ETH', content);
+    
+    if (confirm) {
+      let transaction = yam.contracts.dfv.methods.deposit(0, 0);
+      if (globalHooks.staking.info.compoundBurn) {
+        transaction = yam.contracts.dfv.methods.depositWithBurn(0);
+      }
 
-    await transactions.executeTransaction(
-      modalContext,
-      transaction,
-      { from: wallet.account },
-      "Successfully claimed",
-      "Claim",
-      "Error while claiming"
-    );
+      await transactions.executeTransaction(
+        modalContext,
+        transaction,
+        { from: wallet.account },
+        "Successfully claimed",
+        "Claim",
+        "Error while claiming"
+      );
 
-    globalHooks.staking.update();
-    globalHooks.delta.update();
+      globalHooks.staking.update();
+      globalHooks.delta.update();
 
+    };
     return Promise.resolve();
-  };
+  }
 
   return <div className="my-6">
     <ul className="list-disc list-inside py-4 md:py-8">
@@ -380,7 +385,7 @@ const RlpWithdrawal = () => {
   const wallet = useWallet();
 
   const onUnstakDialog = async () => {
-    const content = `This will withdraw ${formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP. And automatically claim your WETH and compound DELTA.`;
+    const content = `This will withdraw ${formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP. And automatically claim your WETH and compound DELTA. You will get ${formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP in your wallet`;
     const confirm = await modalContext.showConfirm('You are about to unstake your rLP', content);
 
     if (confirm) {
