@@ -2,6 +2,7 @@ import { ReferralProgram } from '../components/ReferralProgram';
 import { MainLayout } from '../components/Layout';
 import { MyWallet } from '../components/MyWallet';
 import { LSWStaking } from '../components/LSWStaking';
+import { HeroIntro } from '../components/HeroIntro';
 
 const Hero = () => {
   return (
@@ -19,6 +20,7 @@ const Hero = () => {
 export default function Main() {
   return <MainLayout>
     <Hero />
+    <HeroIntro />
     <LSWStaking />
     <ReferralProgram />
     <MyWallet />
