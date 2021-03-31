@@ -7,6 +7,7 @@ import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting } from '../../helpers';
 import DeltaButton from '../Button/DeltaButton';
 import { gitbookUrl } from '../../config';
+import { useApy } from '../../hooks';
 
 /* onst VaultInfoBox = ({ token, className = '' }) => {
 
@@ -202,28 +203,28 @@ const DeltaTokenVault = ({ className = '' }) => {
 };
 
 const Vault = () => {
+  const apy = useApy();
+
   return <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Farming Vault">
     <DeltaPanel className="md:mt-0">
       <div className="md:mt-0">
         <div className="flex flex-col md:flex-row-reverse">
-          <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12 hidden">
-            <div className="border border-black py-2 bg-gray-200 mb-1">Up to 750 % APY*</div>
-            {/**
-             * TODO: Hidden for now as getting the TVL requires getting
-             * the information on a second market.
-             */}
-            <div className="border border-black py-2 bg-gray-200">TVL: $145,223,123</div>
+          <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12">
+            <div className="border border-black py-2 bg-gray-200 mb-1">{formatting.getFormattedFloat(apy.usdt_yearly_delta, 2)} % APY*</div>
+            <div className="mt-1 text-xs text-right">* Estimated yearly average returns when farming DELTA with a 1x booter</div>
           </DeltaPanel>
-          <DeltaPanel className="my-4 pr-12 text-lg">
+          <DeltaPanel className="my-4 text-lg">
             The Deep Farming Vault distributes<br />
             yield to staked rLP and Delta.
           </DeltaPanel>
         </div>
-        <DeltaPanel className="my-4 mb-6 pr-12 text-lg">
+        <DeltaPanel className="my-4 mb-6 text-lg block">
           More information about how to use the Deep Farming Vault <br />is available at the Document Portal.
-          <a target="_blank" href={gitbookUrl} rel="noopener noreferrer">
-            <DeltaButton className="mt-4">Delta Document Portal</DeltaButton>
-          </a>
+          <div className="block md:flex">
+            <a target="_blank" href={gitbookUrl} rel="noopener noreferrer">
+              <DeltaButton className="mt-4 block md:flex">Delta Document Portal</DeltaButton>
+            </a>
+          </div>
         </DeltaPanel>
         <RlpTokenVault />
         <DeltaTokenVault className="mt-8 md:mt-12" />
