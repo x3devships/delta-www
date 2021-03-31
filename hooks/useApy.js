@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { coreChartsApyUrl, DATA_UNAVAILABLE } from '../config';
 
-const REFRESH_RATE = 10 * 1000;
+const REFRESH_RATE = 60 * 60 * 1000;
 
 const useApy = () => {
   const [data, setData] = useState({
