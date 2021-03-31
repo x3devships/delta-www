@@ -14,6 +14,7 @@ const ApyDisplay = () => {
       <div className="text-center mt-2 md:mt-4 text-lg"> Daily Apy --- Delta: ${totalApy.apy.usdt_daily_delta}, LSW: ${totalApy.apy.usdt_daily_rlp_lsw}, Mint: ${totalApy.apy.usdt_daily_rlp_mint}, Uni: ${totalApy.apy.usdt_daily_rlp_uni} </div>
       <div className="text-center mt-2 md:mt-4 text-lg"> Weekly Apy --- Delta: ${totalApy.apy.usdt_weeklyy_delta}, LSW: ${totalApy.apy.usdt_weeklyy_rlp_lsw}, Mint: ${totalApy.apy.usdt_weeklyy_rlp_mint}, Uni: ${totalApy.apy.usdt_weeklyy_rlp_uni} </div>
       <div className="text-center mt-2 md:mt-4 text-lg"> Yearly Apy --- Delta: ${totalApy.apy.usdt_yearly_delta}, LSW: ${totalApy.apy.usdt_yearly_rlp_lsw}, Mint: ${totalApy.apy.usdt_yearly_rlp_mint}, Uni: ${totalApy.apy.usdt_yearly_rlp_uni} </div>
+      <div className="text-center mt-2 md:mt-4 text-lg"><a href = "https://corecharts.info/" style={{ textDecoration: "underline" }}>Provided by CoreCharts</a></div>
     </DeltaPanel>
   </DeltaSection>
 };
