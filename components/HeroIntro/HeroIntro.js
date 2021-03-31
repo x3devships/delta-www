@@ -41,22 +41,13 @@ const HeroIntro = () => {
     setAPY(apyResponse)
   }
 
-  const apyDisplay = (apyNumber, disclaimer) => {
+  const apyDisplay = (apyNumber) => {
     if (apyNumber === undefined) return;
 
-    apyNumber = apyNumber.toFixed(2)
-    const split = apyNumber.split(".");
-    const afterDot = split[1]
-    const beforeDot = split[0]
+    apyNumber = apyNumber.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
-    return <span className="justify-top flex">
-      <span className="text-2xl align-text-top">{beforeDot}</span>
-      <span className="flex flex-col ">
-        <span className="text-xs align-text-top mt-1">.{afterDot}%</span>
-        <span className="text-xs -mt-1 pl-1">{disclaimer}</span>
-      </span>
 
-    </span>
+    return apyNumber + "%*"
   }
 
   return <div className="w-full border-2 mt-4 border-black py-4 px-3 md:py-8 md:px-12 m-auto ">
@@ -70,15 +61,15 @@ const HeroIntro = () => {
         </div>
           <div className="w-1/2 flex flex-col md:flex-row md:justify-around">
             <div className="  flex flex-col font-thin">
-              DELTA
-              <span className="font-sans flex flex-col md:flex-row text-2xl">
-                {APY.error ? APY.error : apyDisplay(APY.eth.yearly.delta * 10, "(10x boosted)")}
+              DELTA APY
+              <span className="font-sans flex flex-col md:flex-row">
+                {APY.error ? APY.error : apyDisplay(APY.eth.yearly.delta * 10)}
               </span>
             </div>
             <div className=" flex flex-col pt-4 md:pt-0">
-              RLP
+              RLP APY
               <span className="font-sans flex flex-col md:flex-row">
-                {APY.error ? APY.error : apyDisplay(APY.eth.yearly.rlp_uni, "(Uniswap price)")}
+                {APY.error ? APY.error : apyDisplay(APY.eth.yearly.rlp_uni)}
               </span>
             </div>
           </div>

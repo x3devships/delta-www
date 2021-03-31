@@ -17,13 +17,24 @@ const Hero = () => {
   );
 };
 
+const DisclaimerFooter = () => <div className="bg-gray-100 font-sm text-gray-900">
+  <div className="bg-gray-100 py-4 m-auto" style={{maxWidth:'75ch'}}>
+      *APY calculations are based on current DELTA price taken from decentralized exchange prices.
+      RLP price used in APY calculations are based on RLP purchase costs from decentralized exchanges. 
+      APY of the Deep Farming Vault is not static but its based on vesting interruptions amongst other mechanisms. 
+      Deep Farming Vault yield constitutes about 90% DELTA and 10% ETH (in the form of WETH).
+  </div>
+</div>
+
 export default function Main() {
-  return <MainLayout>
+  return <>
+  <MainLayout>
     <Hero />
     <HeroIntro />
     <LSWStaking />
     <ReferralProgram />
     <MyWallet />
-    {/* <Rebasing /> */}
-  </MainLayout>;
+  </MainLayout>
+  <DisclaimerFooter />
+  </>;
 }
