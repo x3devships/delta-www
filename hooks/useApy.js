@@ -28,7 +28,8 @@ const useApy = () => {
     usdt_yearly_delta: DATA_UNAVAILABLE,
     usdt_yearly_rlp_lsw: DATA_UNAVAILABLE,
     usdt_yearly_rlp_mint: DATA_UNAVAILABLE,
-    usdt_yearly_rlp_uni: DATA_UNAVAILABLE
+    usdt_yearly_rlp_uni: DATA_UNAVAILABLE,
+    using_latest_hours: DATA_UNAVAILABLE
   });
 
   setInterval(async () => {
@@ -37,7 +38,7 @@ const useApy = () => {
       console.log("Successfully found the APY data.");
 
       const myData = await response.json();
-      
+
       console.log(myData);
 
       setApy({
@@ -65,6 +66,7 @@ const useApy = () => {
         usdt_yearly_rlp_lsw: myData.usdt.yearly.rlp_lsw,
         usdt_yearly_rlp_mint: myData.usdt.yearly.rlp_minE,
         usdt_yearly_rlp_uni: myData.usdt.yearly.rlp_uni,
+        using_latest_hours: myData.using_latest_hours
       });
     }
   }, APY_REFRESH_RATE);
