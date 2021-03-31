@@ -31,6 +31,15 @@ const getTokenAmount = (amount, decimals = 18, precision = 4, toLocaleString = t
   return parseFloat(amount).toLocaleString();
 };
 
+const getFormattedFloat = (value, precision = 3) => {
+  if (value === DATA_UNAVAILABLE || Number.isNaN(value)) {
+    return value;
+  }
+
+  return parseFloat(value).toFixed(precision).toLocaleString();
+}
+
 export default {
-  getTokenAmount
+  getTokenAmount,
+  getFormattedFloat
 };

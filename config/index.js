@@ -22,6 +22,7 @@ export const DATA_UNAVAILABLE = '--';
 export const WEB3_PROVIDER_URL = 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
 export const deltaUniswapUrl = "https://app.uniswap.org/#/swap?outputCurrency=0x9EA3b5b4EC044b70375236A281986106457b20EF";
 export const gitbookUrl = "https://docs.delta.financial";
+export const coreChartsApyUrl = 'https://corecharts.info/apy';
 
 export const pairNames = {
   deltaWeth: 'deltaWeth',
