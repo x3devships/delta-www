@@ -41,7 +41,7 @@ const HeroIntro = () => {
         </DeltaTitleH1>
       </div>
 
-      <DeltaPanel requiresConnectedWallet>
+      <DeltaPanel >
         <DeltaPanel className="flex items-center text-center flex-wrap mt-4">
           <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={goToVaultPage}>Go to vault</DeltaButton>
           <a className="flex-1 md:flex-grow-0" target="_blank" href={gitbookUrl} rel="noopener noreferrer">
