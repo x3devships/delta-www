@@ -171,7 +171,8 @@ const RlpMinting = () => {
   };
 
   return <div>
-    <ul className="list-disc list-inside py-4 md:py-8">
+    <div className="text-sm my-4 p-2 bg-green-100 border-l-4 border-green-600">Note: Creating new RLP supply can sometimes cost more than buying on a second hand market</div>
+    <ul className="list-disc list-inside py-4 md:py-4">
       <li>Deposit Ethereum to mint new rLP tokens</li>
       <li>Select stake automatically to immediately stake the new rLP in the Deep Farming Vault</li>
       <li>1 LP = {formatting.getTokenAmount(globalHooks.staking.rlpPerLp)} rLP</li>
@@ -355,7 +356,7 @@ const EthereumWithdrawal = () => {
 
     const content = `This will withdraw ${formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH. You will get ${formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH in your wallet`;
     const confirm = await modalContext.showConfirm('You are about to unstake your ETH', content);
-    
+
     if (confirm) {
       let transaction = yam.contracts.dfv.methods.deposit(0, 0);
       if (globalHooks.staking.info.compoundBurn) {
