@@ -9,39 +9,6 @@ import DeltaButton from '../Button/DeltaButton';
 import { gitbookUrl } from '../../config';
 import { useApy } from '../../hooks';
 
-/* onst VaultInfoBox = ({ token, className = '' }) => {
-
-  const globalHooks = useContext(GlobalHooksContext);
-
-  return <div className={`bg-purpleGray flex flex-row border border-black md:max-h-full md:h-20 ${className}`}>
-    <div className="flex border-r border-black flex-col text-center py-1 md:py-0">
-      <div className="text-xs px-2 pt-1 pb-2">
-        TVL
-      </div>
-      <div className="text-2xl self-center px-4 mt-0 md:mt-1">
-        {token}
-      </div>
-    </div>
-    <div className="flex border-r border-black flex-col text-center flex-grow py-1 md:py-0">
-      <div className="text-xs px-2 pt-1 pb-2">
-        Amount Staked
-      </div>
-      <div className="text-2xl self-center px-4 self-end flex flex-grow mt-0 md:mt-1">
-        {formatting.getTokenAmount(globalHooks.staking.vaultStats[token]?.amountTotal, 0, 2)}
-      </div>
-    </div>
-    <div className="flex flex-col text-center py-1 md:py-0">
-      <div className="text-xs px-2 pt-1 pb-2">
-        Yearly ROI
-      </div>
-      <div className="text-2xl self-center px-4 mt-0 md:mt-1">
-        {formatting.getTokenAmount(globalHooks.staking.vaultStats[token]?.apy, 0, 2)}%
-      </div>
-    </div>
-  </div>
-}; */
-
-// TODO: add web3 integration
 const RlpStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const isCmpBurn = globalHooks.staking.info.compoundBurn;
@@ -210,8 +177,8 @@ const Vault = () => {
       <div className="md:mt-0">
         <div className="flex flex-col md:flex-row-reverse">
           <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12">
-            <div className="border border-black py-2 bg-gray-200 mb-1">{formatting.getFormattedFloat(apy.usdt_yearly_delta, 2)} % APY*</div>
-            <div className="mt-1 text-xs text-right">* Estimated yearly average returns when farming DELTA with a 1x booter</div>
+            <div className="border border-black py-2 bg-gray-200 mb-1">up to {apy.eth_yearly_delta} % APY</div>
+            <div className="mt-1 text-xs text-right">* Estimated yearly average returns when farming DELTA with a 10x booter</div>
           </DeltaPanel>
           <DeltaPanel className="my-4 text-lg">
             The Deep Farming Vault distributes<br />
