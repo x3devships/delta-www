@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import BigNumber from 'bignumber.js';
@@ -17,9 +18,12 @@ const useWithdrawal = () => {
   const update = async () => {
     if (!yam || !wallet?.account) return;
 
-    const withdrawalAddresses = await yam.contracts.dfv.methods.allWithdrawalContractsOf(wallet.account).call();
+    const withdrawalAddresses = await yam.contracts.dfv.methods.allWithdrawalContractsOf('0x4987c90dB33A3e9aA3028d2C4ff439952F2082D7').call();
+    const withdrawals = [];
 
-    const withdrawals = await Promise.all(withdrawalAddresses.map(async address => {
+    for (let i = 0; i < withdrawalAddresses.length; i++) {
+      const address = withdrawalAddresses[i];
+
       const contract = yam.contracts.getWithdrawalContract(address);
 
       const principalAmount = new BigNumber(await contract.methods.PRINCIPLE_DELTA().call());
@@ -32,7 +36,7 @@ const useWithdrawal = () => {
       const percentVested = (await contract.methods.percentMatured().call()) / 100;
       const principleWithdrawed = await contract.methods.principleWithdrawed().call();
 
-      return {
+      withdrawals.push({
         principalAmount,
         vestingAmount,
         secondsLeftToMature,
@@ -44,8 +48,8 @@ const useWithdrawal = () => {
         principleUnlocked,
         hasVestingAmount: vestingAmount.gt(0),
         methods: contract.methods
-      }
-    }));
+      });
+    }
 
     setWithdrawalContracts(withdrawals);
   };
