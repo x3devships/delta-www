@@ -11,7 +11,7 @@ import TransactionButton from '../Button/TransactionButton';
 import { CompoundBurnCheckbox } from '../CheckBox';
 import { DeltaPanel } from '../Section'
 import { DATA_UNAVAILABLE, deltaUniswapUrl } from '../../config';
-import { useRlpRouter, useYam } from '../../hooks';
+import { useRlpRouter, useYam, useApy } from '../../hooks';
 import { TokenInput } from '../Input';
 
 const RlpStaking = () => {
