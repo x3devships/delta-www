@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react';
 import useYam from '../../hooks/useYam';
 import { transactions } from '../../helpers';
 import { ModalContext } from '../../contexts';
-import { DeltaCheckboxButton } from '../Input';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 
 const CompoundBurnCheckbox = ({
@@ -63,7 +62,6 @@ const CompoundBurnCheckbox = ({
         </div>
       </label>
     </div>
-    {/* <DeltaCheckboxButton checked={checked} text="Compound Burn" onChange={onCheckboxChanged} /> */}
   </div>
 };
 

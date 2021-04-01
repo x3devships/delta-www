@@ -3,6 +3,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { useWallet } from 'use-wallet';
+import BigNumber from 'bignumber.js';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting, transactions } from '../../helpers';
@@ -89,14 +90,29 @@ const DeltaStaking = () => {
     }
   };
 
+  const getCompoundDepositConfirmationMessage = async (account, compoundBurn, farmedDelta) => {
+    // Gas estimate to anticipate futur revert messages
+    const transaction = yam.contracts.dfv.methods.compound(account);
+    const potentialRevertMessage = await transactions.getRevertMessageFromTransaction(transaction);
+
+    if (potentialRevertMessage !== false) {
+      return potentialRevertMessage;
+    }
+
+    if (!compoundBurn) {
+      return `You are about to stake ${farmedDelta} DELTA in the Deep Farming Vault`;
+    }
+
+    return `You are about to stake ${farmedDelta} DELTA in the Deep Farming Vault with compound burning enabled. This is will burn 50% of it to increase your booster.`;
+  };
+
   // eslint-disable-next-line consistent-return
   const onCompoundDeposit = async () => {
     const userInfo = await yam.contracts.dfv.methods.userInfo(wallet.account).call();
     const { compoundBurn } = userInfo;
 
-    const amount = formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4);
-    const message = compoundBurn ? `You are about to stake ${amount} Delta in the Deep Farming Vault` : `You are about to stake ${amount} Delta in the Deep Farming Vault without a "Compound Burn". This will reduce your Multiplier from ${globalHooks.staking.info.booster}x to 1x. To prevent this please check the "Compound Burn" box.`;
-
+    const farmedDelta = formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4);
+    const message = await getCompoundDepositConfirmationMessage(wallet.account, compoundBurn, farmedDelta);
     const confirmed = await modalContext.showConfirm('Compound Staking', message);
 
     if (confirmed) {
@@ -120,19 +136,21 @@ const DeltaStaking = () => {
 
   const allowanceRequiredFor = {
     contract: 'dfv',
-    token: 'rLP'
+    token: 'delta'
   };
 
   const renderCompoundBurn = () => {
+    const hasFarmedDelta = BigNumber.isBigNumber(globalHooks.staking.info.farmedDelta) && globalHooks.staking.info.farmedDelta.gt(0);
+
     return <div className="mt-6">
       <DeltaTitleH4>Compound Your Staking Rewards</DeltaTitleH4>
       <div className="mt-4">
         <CompoundBurnCheckbox className="flex mt-0 md:ml-1 md:block" />
-        <DeltaButton className="flex md:block mt-4" disabled={globalHooks.staking.info.farmedDelta <= 0} onClick={() => onCompoundDeposit()}>{globalHooks.staking.info.farmedDelta <= 0 ? 'Nothing To Compound' : 'Compound Deposit'}</DeltaButton>
+        <DeltaButton className="flex md:block mt-4" disabled={!hasFarmedDelta} onClick={() => onCompoundDeposit()}>{!hasFarmedDelta ? 'Nothing To Compound' : 'Compound Deposit'}</DeltaButton>
       </div>
       <div className="text-sm text-gray-400 flex mt-1">Compound your stake by depositing your current rewards</div>
     </div>
-  }
+  };
 
   return <div>
     <div className="mt-6">
@@ -140,7 +158,7 @@ const DeltaStaking = () => {
       <TokenInput className="mt-4" token="delta-all" buttonText="Stake" labelBottomClassName="text-xs text-gray-400" labelBottom="Deposit DELTA and earn yield" buttonTextLoading="Staking..." checkboxButton="Burn Deposit" checkboxButtonChecked onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
     </div>
     {renderCompoundBurn()}
-  </div >
+  </div>;
 };
 
 const RlpMinting = () => {

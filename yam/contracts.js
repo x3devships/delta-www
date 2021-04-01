@@ -15,8 +15,7 @@ import RLP from '../contracts/rLP.json';
 import DFV from '../contracts/DFV.json';
 import DeltaRouter from '../contracts/DeltaRouter.json';
 import Withdrawal from '../contracts/Withdrawal.json';
-
-import { DeltaMock, RouterMock, RlpMock, DfvMock, WithdrawalMock } from './mocks';
+import Distributor from '../contracts/Distributor.json';
 
 export class Contracts {
   constructor(web3) {
@@ -34,12 +33,14 @@ export class Contracts {
     // Tokens
     this.core = new this.web3.eth.Contract(CORE.abi, addressMap.core);
 
-    this.delta = await this._loadContractOrMock('delta', DELTA.abi, addressMap.delta, DeltaMock);
-    this.rLP = await this._loadContractOrMock('rLP', RLP.abi, addressMap.rLP, RlpMock);
-    this.dfv = await this._loadContractOrMock('dfv', DFV.abi, addressMap.dfv, DfvMock);
+    this.delta = new this.web3.eth.Contract(DELTA.abi, addressMap.delta);
+    this.rLP = new this.web3.eth.Contract(RLP.abi, addressMap.rLP);
+    this.dfv = new this.web3.eth.Contract(DFV.abi, addressMap.dfv);
+    this.distributor = new this.web3.eth.Contract(Distributor.abi, addressMap.distributor);
 
     // This contract doesn't have a fixed address and
-    // getWithdrawalContract() must be used.
+    // getWithdrawalContract() must be used to dynamically get an instance
+    // with the right address.
     this._withdrawalContract = new this.web3.eth.Contract(Withdrawal.abi);
 
     this.wCORE = new this.web3.eth.Contract(wCORE.abi);
@@ -60,48 +61,12 @@ export class Contracts {
 
     // Periphery
     this.LSW = new this.web3.eth.Contract(LSW.abi, addressMap.LSW);
-    this.deltaRouter = await this._loadContractOrMock('router', DeltaRouter.abi, addressMap.deltaRouter, RouterMock);
+    this.deltaRouter = new this.web3.eth.Contract(DeltaRouter.abi, addressMap.deltaRouter);
   }
 
   getWithdrawalContract(address) {
     this._withdrawalContract.address = address;
     this._withdrawalContract._address = address;
     return this._withdrawalContract;
-  }
-
-  /**
-   * Load the contract at the given address if it exists
-   * otherwise, when not in production, load a mock.
-   */
-  async _loadContractOrMock(label, abi, address, mock) {
-    if (this.mocksEnabled) {
-      if (await this._isContractExists(address)) {
-        return new this.web3.eth.Contract(abi, address);
-      }
-
-      if (process.env.NODE_ENV === 'production') {
-        throw new Error(`Contract not deployed at address ${address}`);
-      }
-
-      console.warn(`WARNING: Using mock for ${label} contract`);
-      this.usingMocks = true;
-      return mock;
-    }
-
-    return new this.web3.eth.Contract(abi, address);
-  }
-
-  /**
-   * Checks if an address is a valid contract one. Used
-   * to validate that specified contract exists when developping
-   * locally with hardhat fork mainnet local node.
-   */
-  async _isContractExists(address) {
-    if (process.env.NODE_ENV !== 'production') {
-      const code = await this.web3.eth.getCode(address);
-      return code !== '0x';
-    }
-
-    return true;
   }
 }

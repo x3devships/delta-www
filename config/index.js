@@ -60,7 +60,8 @@ export const addressMap = {
   // Periphery
   LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB',
   dfv: '0x9fE9Bb6B66958f2271C4B0aD23F6E8DDA8C221BE',
-  deltaRouter: '0x7b3E8f6F30163d22203d0d86c608Ca1A056345Bc'
+  deltaRouter: '0x7b3E8f6F30163d22203d0d86c608Ca1A056345Bc',
+  distributor: '0xa4079d05467dc8b68F93dFF1eB024ab1196F7cB0'
 };
 
 export const addressDecimalsMap = {};

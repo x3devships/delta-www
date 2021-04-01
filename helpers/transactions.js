@@ -33,6 +33,18 @@ const executeTransaction = async (
   return Promise.resolve();
 };
 
+const getRevertMessageFromTransaction = async (transaction, transactionParameters = {}) => {
+  try {
+    await transaction.estimateGas(transactionParameters);
+  } catch (error) {
+    const decodedError = errors.getTransactionError(error, 'An unexpected error occured');
+    return Promise.resolve(decodedError.message);
+  }
+
+  return Promise.resolve(false);
+};
+
 export default {
-  executeTransaction
+  executeTransaction,
+  getRevertMessageFromTransaction
 };
