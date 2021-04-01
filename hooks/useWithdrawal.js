@@ -18,7 +18,7 @@ const useWithdrawal = () => {
   const update = async () => {
     if (!yam || !wallet?.account) return;
 
-    const withdrawalAddresses = await yam.contracts.dfv.methods.allWithdrawalContractsOf('0x4987c90dB33A3e9aA3028d2C4ff439952F2082D7').call();
+    const withdrawalAddresses = await yam.contracts.dfv.methods.allWithdrawalContractsOf(wallet.account).call();
     const withdrawals = [];
 
     for (let i = 0; i < withdrawalAddresses.length; i++) {
