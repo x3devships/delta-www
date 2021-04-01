@@ -178,7 +178,7 @@ const Vault = () => {
         <div className="flex flex-col md:flex-row-reverse">
           <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12">
             <div className="border border-black py-2 bg-gray-200 mb-1">up to {apy.eth_yearly_delta} % APY</div>
-            <div className="mt-1 text-xs text-right">* Estimated yearly average returns when farming DELTA with a 10x booter</div>
+            <div className="mt-1 text-xs text-right">* Estimated yearly average returns when farming DELTA with a 10x booster</div>
           </DeltaPanel>
           <DeltaPanel className="my-4 text-lg">
             The Deep Farming Vault distributes<br />
