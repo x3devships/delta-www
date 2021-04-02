@@ -13,3 +13,4 @@ export { default as useRlpRouter } from './useRlpRouter';
 export { default as useBlock } from './useBlock';
 export { default as useWithdrawal } from './useWithdrawal';
 export { default as useApy } from './useApy';
+export { default as useDistributor } from './useDistributor';

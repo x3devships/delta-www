@@ -1,13 +1,16 @@
 import { useContext } from 'react';
+import { useWallet } from 'use-wallet';
 import { DeltaPanel, DeltaSection } from '../Section';
 import { DeltaTitleH2, DeltaTitleH4 } from '../Title';
 import { ProgressBarDiamonds } from '../ProgressBar';
 import VaultStaking from './VaultStaking';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
-import { formatting } from '../../helpers';
+import { formatting, transactions } from '../../helpers';
 import DeltaButton from '../Button/DeltaButton';
 import { gitbookUrl } from '../../config';
-import { useApy } from '../../hooks';
+import { useApy, useDistributor, useYam } from '../../hooks';
+import TransactionButton from '../Button/TransactionButton';
+import { ModalContext } from '../../contexts';
 
 const RlpStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
@@ -169,34 +172,85 @@ const DeltaTokenVault = ({ className = '' }) => {
 };
 
 const Vault = () => {
+  const yam = useYam();
   const apy = useApy();
+  const wallet = useWallet();
+  const modalContext = useContext(ModalContext);
+  const distributor = useDistributor();
 
-  return <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Farming Vault">
-    <DeltaPanel className="md:mt-0">
-      <div className="md:mt-0">
-        <div className="flex flex-col md:flex-row-reverse">
-          <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12">
-            <div className="border border-black py-2 bg-gray-200 mb-1">up to {apy.eth_yearly_delta} % APY</div>
-            <div className="mt-1 text-xs text-right">* Estimated yearly average returns when farming DELTA with a 10x booster</div>
-          </DeltaPanel>
-          <DeltaPanel className="my-4 text-lg">
-            The Deep Farming Vault distributes<br />
+  const onDistribute = async () => {
+    const transaction = yam.contracts.distributor.methods.distribute();
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully distributed",
+      "Distributing...",
+      "Error while distributing"
+    );
+
+    distributor.update();
+  };
+
+  const onBurn = async () => {
+    const transaction = yam.contracts.distributor.methods.distributeAndBurn();
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully burned",
+      "Burning...",
+      "Error while burning"
+    );
+
+    distributor.update();
+  };
+
+  return <>
+    <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Farming Vault">
+      <DeltaPanel className="md:mt-0">
+        <div className="md:mt-0">
+          <div className="flex flex-col md:flex-row-reverse">
+            <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12">
+              <div className="border border-black py-2 bg-gray-200 mb-1">up to {apy.eth_yearly_delta} % APY</div>
+              <div className="mt-1 text-xs text-left md:text-right">* Estimated yearly average returns when farming DELTA with a 10x booster</div>
+            </DeltaPanel>
+            <DeltaPanel className="my-4 text-lg">
+              The Deep Farming Vault distributes<br />
             yield to staked rLP and Delta.
           </DeltaPanel>
-        </div>
-        <DeltaPanel className="my-4 mb-6 text-lg block">
-          More information about how to use the Deep Farming Vault <br />is available at the Document Portal.
-          <div className="block md:flex">
-            <a target="_blank" href={gitbookUrl} rel="noopener noreferrer">
-              <DeltaButton className="mt-4 block md:flex">Delta Document Portal</DeltaButton>
-            </a>
           </div>
-        </DeltaPanel>
-        <RlpTokenVault />
-        <DeltaTokenVault className="mt-8 md:mt-12" />
-      </div>
-    </DeltaPanel>
-  </DeltaSection>;
+          <DeltaPanel className="my-4 mb-6 text-lg block">
+            More information about how to use the Deep Farming Vault <br />is available at the Document Portal.
+          <div className="block md:flex">
+              <a target="_blank" href={gitbookUrl} rel="noopener noreferrer">
+                <DeltaButton className="mt-4 block md:flex">Delta Document Portal</DeltaButton>
+              </a>
+            </div>
+          </DeltaPanel>
+          <RlpTokenVault />
+          <DeltaTokenVault className="mt-8 md:mt-12" />
+        </div>
+      </DeltaPanel>
+    </DeltaSection>
+    <DeltaSection requiresConnectedWallet showConnectWalletButton title="Distribute Rewards">
+      <DeltaPanel className="md:mt-0">
+        <div className="py-2">
+          <DeltaTitleH4>Ready To Distribute</DeltaTitleH4>
+          {formatting.getTokenAmount(distributor.info.pendingToDistribute, 18, 4)} DELTA
+          <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={!distributor.info.hasDeltaToDistribute} text={distributor.info.hasDeltaToDistribute ? 'Distribute' : 'Nothing to distribute'} onClick={onDistribute} />
+
+        </div>
+        <div className="py-2">
+          <DeltaTitleH4>Ready To Burn</DeltaTitleH4>
+          {formatting.getTokenAmount(distributor.info.pendingBurn, 18, 4)} DELTA
+          <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={!distributor.info.hasDeltaToBurn} text={distributor.info.hasDeltaToBurn ? 'Burn' : 'Nothing to burn'} onClick={onBurn} />
+        </div>
+      </DeltaPanel>
+    </DeltaSection>
+  </>;
 };
 
 

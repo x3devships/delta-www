@@ -3,7 +3,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { useWallet } from 'use-wallet';
-import BigNumber from 'bignumber.js';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting, transactions } from '../../helpers';
@@ -140,13 +139,11 @@ const DeltaStaking = () => {
   };
 
   const renderCompoundBurn = () => {
-    const hasFarmedDelta = BigNumber.isBigNumber(globalHooks.staking.info.farmedDelta) && globalHooks.staking.info.farmedDelta.gt(0);
-
     return <div className="mt-6">
       <DeltaTitleH4>Compound Your Staking Rewards</DeltaTitleH4>
       <div className="mt-4">
         <CompoundBurnCheckbox className="flex mt-0 md:ml-1 md:block" />
-        <DeltaButton className="flex md:block mt-4" disabled={!hasFarmedDelta} onClick={() => onCompoundDeposit()}>{!hasFarmedDelta ? 'Nothing To Compound' : 'Compound Deposit'}</DeltaButton>
+        <DeltaButton className="flex md:block mt-4" disabled={!globalHooks.staking.info.hasFarmedDelta} onClick={() => onCompoundDeposit()}>{!globalHooks.staking.info.hasFarmedDelta ? 'Nothing To Compound' : 'Compound Deposit'}</DeltaButton>
       </div>
       <div className="text-sm text-gray-400 flex mt-1">Compound your stake by depositing your current rewards</div>
     </div>
@@ -337,11 +334,6 @@ const DeltaWithdrawal = ({ token }) => {
     }
   };
 
-  const seeWithdrawingContract = e => {
-    e.preventDefault();
-    router.push('/contracts');
-  };
-
   return <div className="my-6">
     {token === 'delta' && <>
       <ul className="list-disc list-inside py-4 md:py-8">
@@ -355,8 +347,7 @@ const DeltaWithdrawal = ({ token }) => {
       <li>Ready to Compound DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
     </ul>
     <div className="flex p-1 flex-grow md:flex-none">
-      <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={globalHooks.staking.info.farmedDelta <= 0} text={globalHooks.staking.info.farmedDelta > 0 ? 'Claim' : 'Nothing to claim'} onClick={onClaim} />
-      <DeltaButton className="flex-1 md:flex-grow-0" onClick={seeWithdrawingContract}>Show All Contracts</DeltaButton>
+      <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={!globalHooks.staking.info.hasFarmedDelta} text={globalHooks.staking.info.hasFarmedDelta ? 'Claim' : 'Nothing to claim'} onClick={onClaim} />
     </div>
   </div>
 };
@@ -401,7 +392,7 @@ const EthereumWithdrawal = () => {
     <ul className="list-disc list-inside py-4 md:py-8">
       <li>Claimable Ethereum: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
     </ul>
-    <TransactionButton disabled={globalHooks.staking.info.farmedETH <= 0} text={globalHooks.staking.info.farmedETH > 0 ? 'Claim' : 'Nothing to claim'} textLoading="Claiming..." onClick={onClaim} />
+    <TransactionButton disabled={!globalHooks.staking.info.hasFarmedETH} text={globalHooks.staking.info.hasFarmedETH ? 'Claim' : 'Nothing to claim'} textLoading="Claiming..." onClick={onClaim} />
   </div>
 };
 
@@ -436,7 +427,7 @@ const RlpWithdrawal = () => {
     <ul className="list-disc list-inside py-4 md:py-8">
       <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
     </ul>
-    <TransactionButton disabled={globalHooks.staking.info.rlp <= 0} text={globalHooks.staking.info.rlp > 0 ? 'Unstake' : 'Nothing to unstake'} textLoading="Unstaking..." onClick={() => onUnstakDialog()} />
+    <TransactionButton disabled={!globalHooks.staking.info.hasStakedRlp} text={globalHooks.staking.info.hasStakedRlp ? 'Unstake' : 'Nothing to unstake'} textLoading="Unstaking..." onClick={() => onUnstakDialog()} />
   </div>
 };
 

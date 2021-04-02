@@ -2,21 +2,13 @@ import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
 import BigNumber from 'bignumber.js';
 import useYam from './useYam';
-import useWeb3 from './useWeb3';
 import { DATA_UNAVAILABLE } from '../config';
 
 const REFRESH_RATE = 30 * 1000;
 
 const useStaking = () => {
   const yam = useYam();
-  const web3 = useWeb3();
   const wallet = useWallet();
-
-  // Here are the global vault's information, doesn't depend on connected wallet
-  const [vaultStats, setVaultStats] = useState({
-    amountTotal: DATA_UNAVAILABLE,
-    apy: DATA_UNAVAILABLE
-  });
 
   const [rlpPerLp, setRlpPerLp] = useState(DATA_UNAVAILABLE);
 
@@ -33,25 +25,13 @@ const useStaking = () => {
     stakedDelta: DATA_UNAVAILABLE, // deltaTotal - deltaPermanent
     rlp: DATA_UNAVAILABLE,  // amount of rlp this user has
     lastBoosterDepositTimestamp: DATA_UNAVAILABLE, // timestamp of the last booster deposit
-    compoundBurn: DATA_UNAVAILABLE // A boolean that sets compounding effect, either burn maintaining multiplier or just adding. 
+    compoundBurn: DATA_UNAVAILABLE, // A boolean that sets compounding effect, either burn maintaining multiplier or just adding.
+    hasFarmedDelta: false,
+    hasFarmedETH: false,
+    hasStakedRlp: false
   });
 
   const update = async () => {
-    if (!web3) return;
-
-    // TODO: Update global vault infos, doesn't require connected wallet
-    // Call web3 vault to get the infos.
-    setVaultStats({
-      delta: {
-        amountTotal: 123,
-        apy: 999
-      },
-      rLP: {
-        amountTotal: 654,
-        apy: 635
-      }
-    });
-
     if (!yam || !wallet?.account) return;
 
     const userInfo = await yam.contracts.dfv.methods.userInfo(wallet.account).call();
@@ -72,7 +52,14 @@ const useStaking = () => {
     const rlp = new BigNumber(userInfo.rlp);  // amount of rlp this user has
     const lastBoosterDepositTimestamp = parseInt(userInfo.lastBoosterDepositTimestamp); // timestamp of the last booster deposit
 
+    const hasFarmedDelta = farmedDelta.gt(0);
+    const hasFarmedETH = farmedETH.gt(0);
+    const hasStakedRlp = rlp.gt(0);
+
     setInfo({
+      hasFarmedDelta,
+      hasFarmedETH,
+      hasStakedRlp,
       booster: recycleInfo.booster,
       farmedDelta,
       farmedETH,
@@ -93,12 +80,11 @@ const useStaking = () => {
     update();
     const interval = setInterval(update, REFRESH_RATE);
     return () => clearInterval(interval);
-  }, [yam, web3, wallet]);
+  }, [yam, wallet]);
 
   return {
     update,
     info,
-    vaultStats,
     rlpPerLp
   };
 };
