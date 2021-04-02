@@ -17,8 +17,8 @@ const Hero = () => {
   );
 };
 
-const DisclaimerFooter = () => <div className="bg-gray-100 font-sm text-gray-900">
-  <div className="bg-gray-100 py-4 m-auto" style={{ maxWidth: '75ch' }}>
+const DisclaimerFooter = () => <div className="bg-gray-100 p-4 text-gray-900 text-sm">
+  <div className="m-auto text-justify" style={{ maxWidth: '75ch' }}>
     *APY calculations are based on current DELTA price taken from decentralized exchange prices.
     RLP prices used in APY calculations are based on the RLP costs from decentralized exchanges.
     APY of the Deep Farming Vault is not fixed, but variable based on vesting interruptions and other mechanisms.
