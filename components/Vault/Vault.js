@@ -208,6 +208,21 @@ const Vault = () => {
     distributor.update();
   };
 
+  const onClaim = async () => {
+    const transaction = yam.contracts.distributor.methods.claimCredit();
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully claimed",
+      "Claiming...",
+      "Error while claiming"
+    );
+
+    distributor.update();
+  };
+
   return <>
     <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Farming Vault">
       <DeltaPanel className="md:mt-0">
@@ -235,7 +250,16 @@ const Vault = () => {
         </div>
       </DeltaPanel>
     </DeltaSection>
-    <DeltaSection requiresConnectedWallet showConnectWalletButton title="Distribute Rewards">
+    <DeltaSection requiresConnectedWallet showConnectWalletButton title="Distributor">
+      <DeltaPanel className="md:mt-0">
+        <div className="py-2">
+          <DeltaTitleH4>Pending claimable DELTA credits</DeltaTitleH4>
+          <div className="my-4">{formatting.getTokenAmount(distributor.info.pendingCredits, 18, 4)} DELTA</div>
+          <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={!distributor.info.hasPendingCredits} text={distributor.info.hasPendingCredits ? 'Claim' : 'Nothing to be claimed'} onClick={onClaim} />
+        </div>
+      </DeltaPanel>
+    </DeltaSection>
+    {/* <DeltaSection requiresConnectedWallet showConnectWalletButton title="Distribute Rewards">
       <DeltaPanel className="md:mt-0">
         <div className="py-2">
           <DeltaTitleH4>Ready To Distribute</DeltaTitleH4>
@@ -249,7 +273,7 @@ const Vault = () => {
           <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={!distributor.info.hasDeltaToBurn} text={distributor.info.hasDeltaToBurn ? 'Burn' : 'Nothing to burn'} onClick={onBurn} />
         </div>
       </DeltaPanel>
-    </DeltaSection>
+      </DeltaSection> */}
   </>;
 };
 

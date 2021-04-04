@@ -14,7 +14,8 @@ const useDistributor = () => {
     isLiquidator: DATA_UNAVAILABLE,
     pendingCredits: DATA_UNAVAILABLE,
     hasDeltaToDistribute: false,
-    hasDeltaToBurn: false
+    hasDeltaToBurn: false,
+    hasPendingCredits: false
   });
 
   const update = async () => {
@@ -28,9 +29,11 @@ const useDistributor = () => {
     const balance = new BigNumber(await yam.contracts.delta.methods.balanceOf(addressMap.distributor).call());
     const pendingToDistribute = balance.minus(pendingTotal);
     const hasDeltaToDistribute = pendingToDistribute.gt(0);
+    const hasPendingCredits = pendingCredits.gt(0);
     const hasDeltaToBurn = pendingBurn.gt(0);
 
     setInfo({
+      hasPendingCredits,
       hasDeltaToBurn,
       hasDeltaToDistribute,
       isLiquidator,
