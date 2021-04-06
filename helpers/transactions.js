@@ -1,6 +1,8 @@
 import errors from './errors';
 import { Spinner } from '../components/Spinner';
 
+const GAS_ESTIMATION_RATIO = 1.25;
+
 const executeTransaction = async (
   modalContext,
   transaction,
@@ -13,11 +15,13 @@ const executeTransaction = async (
 
   try {
     const transactionGasEstimate = await transaction.estimateGas(transactionParameters);
+    const adjustedTransactionGasEstimate = Math.round(transactionGasEstimate * GAS_ESTIMATION_RATIO);
+
     const transactionMessage = modalContext.showControlledMessage(transactionTitle, <Spinner label={transactionLoadingMessage} />);
 
     await transaction.send({
       ...transactionParameters,
-      gas: transactionGasEstimate
+      gas: adjustedTransactionGasEstimate
     });
 
     transactionMessage.close();
