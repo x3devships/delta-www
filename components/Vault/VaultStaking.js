@@ -92,7 +92,7 @@ const DeltaStaking = () => {
   const getCompoundDepositConfirmationMessage = async (account, compoundBurn, farmedDelta) => {
     // Gas estimate to anticipate futur revert messages
     const transaction = yam.contracts.dfv.methods.compound(account);
-    const potentialRevertMessage = await transactions.getRevertMessageFromTransaction(transaction);
+    const potentialRevertMessage = await transactions.getRevertMessageFromTransaction(transaction, { from: wallet.account });
 
     if (potentialRevertMessage !== false) {
       return potentialRevertMessage;

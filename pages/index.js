@@ -3,6 +3,7 @@ import { MainLayout } from '../components/Layout';
 import { MyWallet } from '../components/MyWallet';
 import { LSWStaking } from '../components/LSWStaking';
 import { HeroIntro } from '../components/HeroIntro';
+import { APP_VERSION } from '../config';
 
 const Hero = () => {
   return (
@@ -23,6 +24,9 @@ const DisclaimerFooter = () => <div className="bg-gray-100 p-4 text-gray-900 tex
     RLP prices used in APY calculations are based on the RLP costs from decentralized exchanges.
     APY of the Deep Farming Vault is not fixed, but variable based on vesting interruptions and other mechanisms.
     Deep Farming Vault yield constitutes about 90% DELTA and 10% ETH (in the form of WETH).
+  </div>
+  <div className="text-right text-xs text-gray-500">
+    version {APP_VERSION}
   </div>
 </div>
 
