@@ -10,7 +10,7 @@ import DeltaButton from '../Button/DeltaButton';
 import TransactionButton from '../Button/TransactionButton';
 import { CompoundBurnCheckbox } from '../CheckBox';
 import { DeltaPanel } from '../Section'
-import { DATA_UNAVAILABLE, deltaUniswapUrl } from '../../config';
+import { DATA_UNAVAILABLE, deltaSushiswapUrl } from '../../config';
 import { useRlpRouter, useYam } from '../../hooks';
 import { TokenInput } from '../Input';
 import { DeltaTitleH4 } from '../Title';
@@ -233,7 +233,7 @@ const VaultDeposit = ({ token }) => {
         grayLook={depositAction}>MINT rLP</DeltaButton>
     }
 
-    return <a className="flex-1 md:flex-grow-0" target="_blank" href={deltaUniswapUrl} rel="noopener noreferrer">
+    return <a className="flex-1 md:flex-grow-0" target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">
       <DeltaButton grayLook={depositAction}>BUY DELTA</DeltaButton>
     </a>;
   }

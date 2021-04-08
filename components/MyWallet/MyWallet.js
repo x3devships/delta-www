@@ -6,7 +6,7 @@ import { DeltaPanel, DeltaSection, DeltaSectionBox } from '../Section';
 import { DeltaTitleH3, DeltaTitleH4 } from '../Title';
 import { formatting, transactions, time } from '../../helpers';
 import { VestingTransactionProgressBar } from '../ProgressBar';
-import { DATA_UNAVAILABLE, deltaUniswapUrl } from '../../config';
+import { DATA_UNAVAILABLE, deltaSushiswapUrl } from '../../config';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import DeltaButton from '../Button/DeltaButton';
 import { TokenInput } from '../Input';
@@ -110,7 +110,7 @@ const MyWallet = () => {
     if (globalHooks.delta.data.total <= 0) {
       return <div className="mt-4 w-full">
         <div>You have no DELTA. They can be obtained on Uniswap Exchange.</div>
-        <a target="_blank" href={deltaUniswapUrl} rel="noopener noreferrer">
+        <a target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">
           <DeltaButton className="mt-8">Buy Delta</DeltaButton>
         </a>
       </div>
@@ -174,9 +174,9 @@ const MyWallet = () => {
             {renderMyWallet()}
             <DeltaPanel className="flex items-center text-center flex-wrap mt-4">
               <DeltaButton className="flex-1 mr-4 md:flex-grow-0" labelBottom="Earn Yield" onClick={goToVaultPage}>Stake in vault</DeltaButton>
-                <a target="_blank" href={deltaUniswapUrl} rel="noopener noreferrer">
-                  <DeltaButton className="flex-1 md:flex-grow-0" labelBottom="Earn Yield" >Trade Delta</DeltaButton>
-                </a>
+              <a target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">
+                <DeltaButton className="flex-1 md:flex-grow-0" labelBottom="Earn Yield" >Trade Delta</DeltaButton>
+              </a>
             </DeltaPanel>
           </DeltaPanel>
         </div>
