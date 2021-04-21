@@ -67,29 +67,29 @@
 }
 
 .tooltip-container {
-  user-select: none;
+  user-select: none !important;
 
-  --tooltipBackground: #000000;
-  --tooltipBorder: #000000;
+  --tooltipBackground: #000000 !important;
+  --tooltipBorder: #000000 !important;
 
-  margin-top: 4px;
-  margin-left: 0px;
-  margin-bottom: 4px;
+  margin-top: 4px !important;
+  margin-left: 0px !important;
+  margin-bottom: 4px !important;
 
-  line-height: 16px;
-  min-width: 108px;
-  padding: 16px;
+  line-height: 16px !important;
+  min-width: 108px !important;
+  padding: 16px !important;
 
-  font-size: 11px;
-  max-width: 250px;
+  font-size: 11px !important;
+  max-width: 250px !important;
   border: none !important;
   border-radius: 0 !important;
 
   color: white !important;
   /* text-transform: uppercase; */
-  font-size: 11px;
-  font-family: "GT America";
-  letter-spacing: 0.4pt;
+  font-size: 11px !important;
+  font-family: "GT America" !important;
+  letter-spacing: 0.4pt !important;
 }
 
 .tooltip-trigger {
