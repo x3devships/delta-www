@@ -6,7 +6,7 @@ module.exports = withFonts(withImages({
   exportPathMap() {
     return {
       '/': { page: '/' },
-      '/vaults': { page: '/vaults' },
+      '/vault': { page: '/vault' },
       '/contracts': { page: '/contracts' },
     };
   }

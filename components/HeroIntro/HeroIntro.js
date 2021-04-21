@@ -13,7 +13,7 @@ const HeroIntro = () => {
 
   const goToVaultPage = e => {
     e.preventDefault();
-    router.push('/vaults');
+    router.push('/vault');
   };
 
   return <div className="w-full border-2 mt-4 border-black py-4 px-3 md:py-8 md:px-12 m-auto ">
@@ -38,7 +38,7 @@ const HeroIntro = () => {
               </div>
             </div>
           </div>
-        </DeltaTitleH1>
+        </DeltaTitleH1> 
       </div>
 
       <DeltaPanel >

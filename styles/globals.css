@@ -22,10 +22,110 @@
   font-display: swap;
 }
 
+@media (min-width: 768px) {
+  .md\:show-up {
+    display: initial;
+  }
+  .md\:show-dn {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .md\:show-up {
+    display: none;
+  }
+  .md\:show-dn {
+    display: initial;
+  }
+}
+
 .toggle__dot {
   top: -.25rem;
   left: -.25rem;
   transition: all 0.3s ease-in-out;
+}
+
+.tooltip-popup {
+  background-color: #999;
+  color: #fff;
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;  
+}
+
+.progress-infinity-content {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  font-family: 'GT America';
+  font-size: 36px;
+  color: #464647;
+}
+
+.tooltip-container {
+  user-select: none;
+
+  --tooltipBackground: #000000;
+  --tooltipBorder: #000000;
+
+  margin-top: 4px;
+  margin-left: 0px;
+  margin-bottom: 4px;
+
+  line-height: 16px;
+  min-width: 108px;
+  padding: 16px;
+
+  font-size: 11px;
+  max-width: 250px;
+  border: none !important;
+  border-radius: 0 !important;
+
+  color: white !important;
+  /* text-transform: uppercase; */
+  font-size: 11px;
+  font-family: "GT America";
+  letter-spacing: 0.4pt;
+}
+
+.tooltip-trigger {
+  display: flex;
+  margin-left: 4px;
+  align-items: center;
+  height: 24px;
+}
+
+.tooltip-circle {
+  user-select: 'none';
+  height: 16px;
+  width: 16px;
+  background-color: #000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.tooltip-question {
+  color: white;
+  text-align: center;
+  line-height: 16px;
+  font-size: 14px;
+  user-select: none;
+  cursor: default;
+}
+
+.flex-end {
+  align-self: flex-end;
+}
+
+.vertical-line {
+  border-left-width: 2px;
+  border-color: black;
+  border-style: dashed;
+  margin: 0 16px 0 16px;
 }
 
 input:checked ~ .toggle__dot {

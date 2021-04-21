@@ -60,7 +60,7 @@ const MyWallet = () => {
 
   const goToVaultPage = e => {
     e.preventDefault();
-    router.push('/vaults');
+    router.push('/vault');
   };
 
   useEffect(() => {

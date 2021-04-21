@@ -4,6 +4,7 @@ import useYam from '../../hooks/useYam';
 import { transactions } from '../../helpers';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
+import { Tooltip, Tips } from '../Tooltip'; 
 
 const CompoundBurnCheckbox = ({
   className
@@ -60,6 +61,7 @@ const CompoundBurnCheckbox = ({
         <div className={`ml-3 ${checked ? 'text-black' : 'text-gray-400'} font-medium`}>
           {checked ? 'Compound Burning Enabled' : 'Compound Burning Disabled'}
         </div>
+        <Tooltip inline tip={Tips.compoundBurnCheck}/>
       </label>
     </div>
   </div>

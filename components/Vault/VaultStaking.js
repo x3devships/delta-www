@@ -14,8 +14,30 @@ import { DATA_UNAVAILABLE, deltaSushiswapUrl } from '../../config';
 import { useRlpRouter, useYam } from '../../hooks';
 import { TokenInput } from '../Input';
 import { DeltaTitleH4 } from '../Title';
+import { Tips } from '../Tooltip';
 
-const RlpStaking = () => {
+const DeltaAndRlpDeposit = ({depositAction}) => {
+  switch( depositAction ) {
+    case true: case false: case 0:
+      return <DeltaDeposit />;
+    break;
+
+    case 1:
+      return <DeltaBuy />;
+    break;
+
+    case 2:
+      return <RlpDeposit />;
+    break;
+
+    case 3:
+      return <RlpMinting />;
+    break; 
+  }
+  return null;
+}
+
+const RlpDeposit = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
   const yam = useYam();
@@ -49,12 +71,13 @@ const RlpStaking = () => {
     token: 'rLP'
   };
 
-  return <div>
-    <TokenInput className="mt-4" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
-  </div >
+  return <div className="mt-4">
+    <DeltaTitleH4>Stake rLP From Your Wallet</DeltaTitleH4>
+    <TokenInput className="mt-0" token="rLP" buttonText="Stake" buttonTextLoading="Staking..." onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
+  </div>
 };
 
-const DeltaStaking = () => {
+const DeltaDeposit = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
   const yam = useYam();
@@ -139,23 +162,55 @@ const DeltaStaking = () => {
   };
 
   const renderCompoundBurn = () => {
+    const {hasFarmedDelta} = globalHooks.staking.info;
     return <div className="mt-6">
       <DeltaTitleH4>Compound Your Staking Rewards</DeltaTitleH4>
+      <CompoundBurnCheckbox className="flex mt-2 md:ml-1 d-none" />
       <div className="mt-4">
-        <CompoundBurnCheckbox className="flex mt-0 md:ml-1 md:block" />
-        <DeltaButton className="flex md:block mt-4" disabled={!globalHooks.staking.info.hasFarmedDelta} onClick={() => onCompoundDeposit()}>{!globalHooks.staking.info.hasFarmedDelta ? 'Nothing To Compound' : 'Compound Deposit'}</DeltaButton>
+        <DeltaButton className="flex md:block mt-4 md:w-max"
+                     disabled={!hasFarmedDelta}
+                     onClick={() => onCompoundDeposit()}>
+          {!hasFarmedDelta ? 'Nothing To Compound' : 'Compound Deposit'}
+        </DeltaButton>
       </div>
-      <div className="text-sm text-gray-400 flex mt-1">Compound your stake by depositing your current rewards</div>
+      <div className="flex" style={{justifyContent: 'space-between'}}>
+        <div className="text-sm text-gray-400 flex mt-1">
+          Compound your stake by depositing your current rewards
+        </div>
+      </div>
     </div>
   };
 
   return <div>
-    <div className="mt-6">
-      <DeltaTitleH4>Deposit Delta From Your Wallet</DeltaTitleH4>
-      <TokenInput className="mt-4" token="delta-all" buttonText="Stake" labelBottomClassName="text-xs text-gray-400" labelBottom="Deposit DELTA and earn yield" buttonTextLoading="Staking..." checkboxButton="Burn Deposit" checkboxButtonChecked onOk={onStake} allowanceRequiredFor={allowanceRequiredFor} />
+    <div className="mt-4">
+      <DeltaTitleH4>Stake DELTA From Your Wallet</DeltaTitleH4>
+      <TokenInput className="mt-0"
+                  token="delta-all"
+                  buttonText="Stake"
+                  labelBottomClassName="text-xs text-gray-400"
+                  labelBottom="Deposit DELTA and earn yield"
+                  buttonTextLoading="Staking..."
+                  checkboxButton="Burn Deposit"
+                  checkboxButtonTip={Tips.burnStakeDeposit}
+                  checkboxButtonChecked
+                  onOk={onStake}
+                  allowanceRequiredFor={allowanceRequiredFor} />
     </div>
     {renderCompoundBurn()}
   </div>;
+};
+
+const DeltaBuy = () => {
+  return (
+    <div>
+      <div className="mt-4">
+        <DeltaTitleH4>Buy DELTA on Sushi.com</DeltaTitleH4>
+        <a className="flex-1 md:flex-grow-0" target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">
+          <DeltaButton grayLook={!1}>Open exchange</DeltaButton>
+        </a>
+      </div>
+    </div>
+  ); // -
 };
 
 const RlpMinting = () => {
@@ -185,40 +240,79 @@ const RlpMinting = () => {
     }
   };
 
-  return <div>
-    <div className="text-sm my-4 p-2 bg-green-100 border-l-4 border-green-600">Note: Creating new RLP supply can sometimes cost more than buying on a second hand market</div>
-    <ul className="list-disc list-inside py-4 md:py-4">
-      <li>Deposit Ethereum to mint new rLP tokens</li>
-      <li>Select stake automatically to immediately stake the new rLP in the Deep Farming Vault</li>
-      <li>1 LP = {formatting.getTokenAmount(globalHooks.staking.rlpPerLp)} rLP</li>
-    </ul>
-    <TokenInput
-      className="mt-4"
-      token="ETH"
-      buttonText="MINT"
-      onChange={onChange}
-      labelBottom={estimationLabel}
-      buttonTextLoading="MINTING..."
-      checkboxButton="Stake"
-      checkboxButtonChecked={false}
-      onOk={onBuy} />
-  </div>;
+  return (
+  <div>
+    <div className="mt-4">
+      <DeltaTitleH4>Mint rLP tokens by depositing ETH</DeltaTitleH4>
+      <div className="text-sm my-4 p-2 bg-green-100 border-l-4 border-green-600">Note: Creating new RLP supply can sometimes cost more than buying on a second hand market</div>
+      <ul className="list-disc list-inside py-2">
+        <li>Deposit Ethereum to mint new rLP tokens</li>
+        <li>Select stake automatically to immediately stake the new rLP in the Deep Farming Vault</li>
+        <li>1 LP = {formatting.getTokenAmount(globalHooks.staking.rlpPerLp)} rLP</li>
+      </ul>
+      <TokenInput
+        className="mt-4"
+        token="ETH"
+        buttonText="MINT"
+        onChange={onChange}
+        labelBottom={estimationLabel}
+        buttonTextLoading="MINTING..."
+        checkboxButton="Stake"
+        checkboxButtonChecked={false}
+        onOk={onBuy} />
+    </div>
+  </div> );
 };
 
 const VaultDeposit = ({ token }) => {
   const [depositAction, setDepositAction] = useState(true);
+
+  // Nightdrive: New deposit component added.
+  if ( !token ) {
+    return <div>
+      <DeltaPanel className="flex items-center text-center flex-wrap">
+        <div className="flex border border-black p-1 flex-grow md:flex-none">
+          <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
+                       onClick={() => setDepositAction(t => 0)}
+                       grayLook={!depositAction || typeof depositAction === 'boolean'}>
+            Stake Delta
+          </DeltaButton>
+
+          <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
+                       onClick={() => setDepositAction(t => 1)}
+                       grayLook={depositAction === 1}>
+            Buy DELTA
+          </DeltaButton>
+
+          <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
+                       onClick={() => setDepositAction(t => 2)}
+                       grayLook={depositAction === 2}>
+            Stake rLP
+          </DeltaButton>
+
+          <DeltaButton className="flex-1 md:flex-grow-0"
+                       onClick={() => setDepositAction(t => 3)}
+                       grayLook={depositAction === 3}>
+            MINT rLP
+          </DeltaButton>
+
+        </div>
+      </DeltaPanel>
+      <DeltaAndRlpDeposit {...{depositAction}}/>
+    </div>;
+  }
 
   // eslint-disable-next-line consistent-return
   const renderContent = () => {
     switch (token) {
       case "rLP":
         if (depositAction) {
-          return <RlpStaking />
+          return <RlpDeposit />
         }
         return <RlpMinting />;
       case "delta":
         if (depositAction) {
-          return <DeltaStaking />;
+          return <DeltaDeposit />;
         }
         break;
       default:
@@ -241,7 +335,11 @@ const VaultDeposit = ({ token }) => {
   return <div>
     <DeltaPanel className="flex items-center text-center flex-wrap">
       <div className="flex border border-black p-1 flex-grow md:flex-none">
-        <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setDepositAction(t => !t)} grayLook={!depositAction}>{token === 'rLP' ? 'Stake rLP' : 'Stake Delta'}</DeltaButton>
+        <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
+                     onClick={() => setDepositAction(t => !t)}
+                     grayLook={!depositAction}>
+          {token === 'rLP' ? 'Stake rLP' : 'Stake Delta'}
+        </DeltaButton>
         {renderBuyButton(token)}
       </div>
     </DeltaPanel>
@@ -270,7 +368,7 @@ const VaultDeposit = ({ token }) => {
 }
 */
 
-const DeltaWithdrawal = ({ token }) => {
+const DeltaWithdrawal = ({}) => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
   const router = useRouter()
@@ -334,20 +432,32 @@ const DeltaWithdrawal = ({ token }) => {
     }
   };
 
-  return <div className="my-6">
-    {token === 'delta' && <>
-      <ul className="list-disc list-inside py-4 md:py-8">
-        <li>Staked Delta: {formatting.getTokenAmount(globalHooks.staking.info.ableToWithdrawDelta.minus(globalHooks.staking.info.farmedDelta), 18, 4)} DELTA</li>
+  const {
+    ableToWithdrawDelta,
+    farmedDelta,
+    hasFarmedDelta,
+  } = globalHooks.staking.info;
+  return <div className="my-4">
+    <>
+      <DeltaTitleH4>Withdraw DELTA from the Vault</DeltaTitleH4>
+      <ul className="list-disc list-inside py-2">
+        <li>Staked Delta: {formatting.getTokenAmount(ableToWithdrawDelta.minus(farmedDelta), 18, 4)} DELTA</li>
       </ul>
-      <div className="flex p-1 flex-grow md:flex-none">
-        <TransactionButton className="flex-1" text="Unstake All" onClick={() => onUnstakeDelta(token)} />
+      <div className="flex flex-grow md:flex-none">
+        <TransactionButton  className="flex-1"
+                            text="Unstake All"
+                            onClick={() => onUnstakeDelta()} />
       </div>
-    </>}
-    <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Ready to Compound DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
+    </>
+    <DeltaTitleH4 className="mt-4">Claim DELTA rewards from the Vault</DeltaTitleH4>
+    <ul className="list-disc list-inside py-2">
+      <li>Ready to Compound DELTA: {formatting.getTokenAmount(farmedDelta, 18, 4)} DELTA</li>
     </ul>
-    <div className="flex p-1 flex-grow md:flex-none">
-      <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={!globalHooks.staking.info.hasFarmedDelta} text={globalHooks.staking.info.hasFarmedDelta ? 'Claim' : 'Nothing to claim'} onClick={onClaim} />
+    <div className="flex flex-grow md:flex-none">
+      <TransactionButton className="flex-1 mr-2 md:flex-grow-0"
+                         style={{minWidth: '150px'}}
+                         disabled={!hasFarmedDelta}
+                         text={hasFarmedDelta ? 'Claim' : 'Nothing to claim'} onClick={onClaim} />
     </div>
   </div>
 };
@@ -388,11 +498,21 @@ const EthereumWithdrawal = () => {
     return Promise.resolve();
   }
 
-  return <div className="my-6">
-    <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Claimable Ethereum: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
+  const {
+    hasFarmedETH,
+    farmedETH
+  } = globalHooks.staking.info;
+
+  return <div className="my-4">
+    <DeltaTitleH4>Withdraw ETH Rewards from the Vault</DeltaTitleH4>
+    <ul className="list-disc list-inside py-2">
+      <li>Claimable Ethereum: {formatting.getTokenAmount(farmedETH, 18, 4)} ETH</li>
     </ul>
-    <TransactionButton disabled={!globalHooks.staking.info.hasFarmedETH} text={globalHooks.staking.info.hasFarmedETH ? 'Claim' : 'Nothing to claim'} textLoading="Claiming..." onClick={onClaim} />
+    <TransactionButton disabled={!hasFarmedETH}
+                       style={{minWidth: '150px'}}
+                       text={hasFarmedETH ? 'Claim' : 'Nothing to claim'}
+                       textLoading="Claiming..."
+                       onClick={onClaim} />
   </div>
 };
 
@@ -423,11 +543,19 @@ const RlpWithdrawal = () => {
     }
   };
 
-  return <div className="my-6">
-    <ul className="list-disc list-inside py-4 md:py-8">
+  const {
+    hasStakedRlp
+  } = globalHooks.staking.info;
+  return <div className="my-4">
+    <DeltaTitleH4>Withdraw Staked rLP from the Vault</DeltaTitleH4>
+    <ul className="list-disc list-inside py-2">
       <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
     </ul>
-    <TransactionButton disabled={!globalHooks.staking.info.hasStakedRlp} text={globalHooks.staking.info.hasStakedRlp ? 'Unstake' : 'Nothing to unstake'} textLoading="Unstaking..." onClick={() => onUnstakDialog()} />
+    <TransactionButton style={{minWidth: '150px'}}
+                       disabled={!hasStakedRlp}
+                       text={hasStakedRlp ? 'Unstake' : 'Nothing to unstake'}
+                       textLoading="Unstaking..."
+                       onClick={() => onUnstakDialog()} />
   </div>
 };
 
@@ -437,27 +565,37 @@ const VaultWithdraw = ({ token }) => {
   const renderContent = (selectTokenToWithdraw) => {
     switch (selectTokenToWithdraw) {
       case 'eth':
-        return <EthereumWithdrawal token={token} />
+        return <EthereumWithdrawal />
       case 'delta':
-        return <DeltaWithdrawal token={token} />
+        return <DeltaWithdrawal token={token || 'delta'} />
       case 'rlp':
         return <RlpWithdrawal />
       default:
-        return <></>;
+        return <>
+
+        </>;
     }
   };
 
   const renderButtons = () => {
     if (token === 'delta') {
       return <>
-        <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setTokenToWithdraw('eth')} grayLook={tokenToWithdraw !== 'eth'}>Ethereum</DeltaButton>
-        <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setTokenToWithdraw('delta')} grayLook={tokenToWithdraw !== 'delta'}>Delta</DeltaButton>
+        <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
+                     onClick={() => setTokenToWithdraw('eth')}
+                     grayLook={tokenToWithdraw !== 'eth'}>
+          Ethereum
+        </DeltaButton>
+        <DeltaButton className="flex-1 md:flex-grow-0"
+                     onClick={() => setTokenToWithdraw('delta')}
+                     grayLook={tokenToWithdraw !== 'delta'}>
+          Delta
+        </DeltaButton>
       </>;
     }
 
     return <>
-      <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setTokenToWithdraw('eth')} grayLook={tokenToWithdraw !== 'eth'}>Ethereum</DeltaButton>
       <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setTokenToWithdraw('delta')} grayLook={tokenToWithdraw !== 'delta'}>Delta</DeltaButton>
+      <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setTokenToWithdraw('eth')} grayLook={tokenToWithdraw !== 'eth'}>Ethereum</DeltaButton>
       <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setTokenToWithdraw('rlp')} grayLook={tokenToWithdraw !== 'rlp'}>rLP</DeltaButton>
     </>;
   };
@@ -474,21 +612,22 @@ const VaultWithdraw = ({ token }) => {
   </div>;
 };
 
-const VaultStaking = ({ token, className = '' }) => {
+const VaultStaking = ({ token, className = '', dashedBorder }) => {
   const [depositAction, setDepositAction] = useState(true);
-
-  return <DeltaPanel className={`pt-2 border-t-2 mt-4 border-dashed border-black ${className}`}>
-    <div className="flex uppercase" onClick={() => setDepositAction(t => !t)}>
-      <div className="flex self-end select-none cursor-pointer text-sm mb-2">
-        <div className={`${!depositAction ? 'text-gray-300' : 'text-black'}`}>Deposit</div>
-        <div className="px-1">/</div>
-        <div className={`${depositAction ? 'text-gray-300' : 'text-black'}`}>Withdraw</div>
+  const borderClass = dashedBorder ? 'border-t-2 border-dashed border-black' : '';
+  return (
+    <DeltaPanel className={`pt-2 mt-4 ${borderClass} ${className}`}>
+      <div className="flex uppercase" onClick={() => setDepositAction(t => !t)}>
+        <div className="flex self-end select-none cursor-pointer text-sm mb-2">
+          <div className={`${!depositAction ? 'text-gray-300' : 'text-black'}`}>Deposit</div>
+          <div className="px-1">/</div>
+          <div className={`${depositAction ? 'text-gray-300' : 'text-black'}`}>Withdraw</div>
+        </div>
       </div>
-    </div>
-    <div className="mt-4 md:mt-1">
-      {depositAction ? <VaultDeposit token={token} /> : <VaultWithdraw token={token} />}
-    </div>
-  </DeltaPanel>
+      <div className="mt-4 md:mt-1">
+        {depositAction ? <VaultDeposit token={token} /> : <VaultWithdraw token={token} />}
+      </div>
+    </DeltaPanel> );
 };
 
 export default VaultStaking;

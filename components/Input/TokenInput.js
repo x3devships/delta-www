@@ -151,6 +151,8 @@ const TokenInput = ({
   }, [amount, checkboxChecked]);
 
   const renderInput = () => {
+    let friendlyName = tokenInfo.friendlyName || token.toUpperCase();
+    if ( friendlyName === 'DELTA-ALL' ) friendlyName = 'DELTA';
     return <>
       <div className="bg-white flex border border-black">
         <div className="p-2">
@@ -164,16 +166,16 @@ const TokenInput = ({
             className="border-transparent text-xl border-b border-black flex-grow"
           />
         </div>
-        <div className="pr-3 text-sm self-end mb-3">{tokenInfo.friendlyName}</div>
+        <div className="pr-3 text-sm self-end mb-3">{friendlyName}</div>
       </div>
     </>;
   };
 
   const renderHelpers = () => {
-    return <>
+    return <div className='flex'>
       <HelperText className={`${validAmount ? 'hidden' : ''} text-sm block`} valid={false}>The amount is not valid</HelperText>
-      <HelperText className={`text-sm block ${labelBottomClassName}`}>{labelBottom}</HelperText>
-    </>;
+      <HelperText className={`text-sm block ${labelBottomClassName} ml-auto`}>{labelBottom}</HelperText>
+    </div>;
   };
 
   const renderMaxButton = () => {
@@ -203,22 +205,21 @@ const TokenInput = ({
           <div className="flex flex">
             {renderInput()}
             {renderMaxButton()}
-            <div className={`ml-1 hidden ${!transactionButtonUnder ? 'md:flex' : ''}`}>
+            <div className={`ml-1 hidden md:flex`}>
               {renderTransactionButton()}
-              {checkboxButton && <div className="flex md:p-1 ml-1 md:border md:border-black flex-grow">
+              {/* checkboxButton && <div className="flex md:p-1 ml-1 md:border md:border-black flex-grow">
                 <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} />
-              </div>}
+              </div> */}
             </div>
           </div>
         </div>
         {renderHelpers()}
+        <div className={`mt-0`}>
+          {checkboxButton && <div className="block">
+            <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} />
+          </div>}
+        </div>
       </div>
-    </div>
-    <div className={`mt-4 ${!transactionButtonUnder ? 'md:hidden' : ''}`}>
-      {renderTransactionButton()}
-      {checkboxButton && <div className="block">
-        <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} />
-      </div>}
     </div>
   </div >;
 };
