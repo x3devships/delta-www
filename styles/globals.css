@@ -66,6 +66,7 @@
   color: #464647;
 }
 
+/* All styles needs to be marked important to override built in classes here, ugly but true */ 
 .tooltip-container {
   user-select: none !important;
 
@@ -74,7 +75,7 @@
 
   margin-top: 4px !important;
   margin-left: 0px !important;
-  margin-bottom: 4px !important;
+  margin-bottom: 2px !important;
 
   line-height: 16px !important;
   min-width: 108px !important;
@@ -90,6 +91,18 @@
   font-size: 11px !important;
   font-family: "GT America" !important;
   letter-spacing: 0.4pt !important;
+
+  box-shadow: 0px 4px 9px 2px rgb(0 0 0 / 18%) !important;
+}
+
+/* Fixes minor tooltip issue with the pointer */ 
+.tooltip-container[data-popper-placement*='top'] .tooltip-arrow {
+  margin-bottom: calc( -1rem + 1px ) !important;
+}
+
+/* Fixes minor tooltip issue with the pointer */ 
+.tooltip-container[data-popper-placement*='bottom'] .tooltip-arrow {
+  margin-top: calc( -0.4rem + 1px ) !important;
 }
 
 .tooltip-trigger {
@@ -112,6 +125,7 @@
   color: white;
   text-align: center;
   line-height: 16px;
+  font-family: "GT America";
   font-size: 14px;
   user-select: none;
   cursor: default;
