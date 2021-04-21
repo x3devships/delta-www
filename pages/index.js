@@ -12,7 +12,7 @@ const Hero = () => {
         Delta Has Launched!
       </div>
       <div className="mt-8 text-lg text-left w-full md:w-6/12">
-        The Limited Staking Window has successfully come to an end. Delta is now tradable on Sushiswap, the rLP tokens are claimable and the Deep Farming Vault is producing yield! Make sure to claim and stake your rLP to earn yield from the Deep Farming Vault.
+        The Limited Staking Window has successfully come to an end. Delta is now tradable on SushiSwap, the rLP tokens are claimable and the Deep Farming Vault is producing yield! Make sure to claim and stake your rLP to earn yield from the Deep Farming Vault.
       </div>
     </div>
   );
