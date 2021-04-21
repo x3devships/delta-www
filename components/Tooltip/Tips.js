@@ -1,6 +1,6 @@
 const Tips = {
   rLPToken: (<span>
-    rLP is is the token of the rebasing liquidity pool that serves as part of the deep farming vault. They are minted by locking up ETH and serves as liquidity for the CoreDEX options trading system. rLP staking wallets received a 30x reward multiplier for staking.
+    rLP is is the token of the rebasing liquidity pool that serves as part of the deep farming vault. They are minted by locking up ETH and serves as liquidity for the CoreDEX options trading system. Staked rLP will gain a 200x reward multiplier.
   </span>),
   deltaToken: null, /* (<span>
     The DELTA token is a deflationary token used for liqudity and fees to faciliate options trading.<br />
@@ -8,7 +8,7 @@ const Tips = {
   </span>), */
   pendingDelta: null,
   compoundBurnCheck: (<span>
-    When Compound burn is enabld 50% of the compounded delta will be locked permanently in the Vault in return you can increase the DELTA reward multiplier or keep it stable.
+    When Compound burn is enabled, 50% of the compounded delta will be locked permanently in the Vault. In return for this DELTA reward multiplier increases or is kept stable.
   </span>),
   permaLock: <span>The permanently locked DELTA has been staked to maintain DELTA reward multiplier at the expense of locking it forever in the vault. It will keep yielding rewards.</span>,
   deltaCompounded: null,
