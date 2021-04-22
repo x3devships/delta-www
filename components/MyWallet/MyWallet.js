@@ -60,7 +60,7 @@ const MyWallet = () => {
 
   const goToVaultPage = e => {
     e.preventDefault();
-    router.push('/vaults');
+    router.push('/vault');
   };
 
   useEffect(() => {
@@ -109,7 +109,7 @@ const MyWallet = () => {
 
     if (globalHooks.delta.data.total <= 0) {
       return <div className="mt-4 w-full">
-        <div>You have no DELTA. They can be obtained on Uniswap Exchange.</div>
+        <div>You have no DELTA. They can be obtained on SushiSwap Exchange.</div>
         <a target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">
           <DeltaButton className="mt-8">Buy Delta</DeltaButton>
         </a>

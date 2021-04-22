@@ -26,7 +26,7 @@ const NavBar = () => {
     }
     return <>
       <a href="/" className={getStyle('/')}>Home</a>
-      <a href="/vaults" className={getStyle('/vaults')}>Vaults</a>
+      <a href="/vault" className={getStyle('/vault')}>Vault</a>
       <a href="/contracts" className={getStyle('/contracts')}>Withdrawal Contracts</a>
     </>;
   };

@@ -4,6 +4,7 @@ import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { useYam } from '../../hooks';
 
 const Debug = () => {
+  return null;
   const globalHooks = useContext(GlobalHooksContext);
   const yam = useYam();
 

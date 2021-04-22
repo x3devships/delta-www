@@ -5,7 +5,7 @@ import { WalletProvider, YamProvider, Web3Provider, SettingsProvider, GlobalHook
 import theme from '../config/default.theme';
 
 import '../styles/globals.css';
-
+import 'react-popper-tooltip/dist/styles.css';
 
 import { ModalContainer } from '../components/Modal';
 
