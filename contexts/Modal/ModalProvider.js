@@ -5,6 +5,7 @@ export const ModalType = Object.freeze({
   Message: 'message',
   Error: 'error',
   Confirm: 'confirm',
+  ConfirmWithBreakdown: 'confirm-with-breakdown',
   ConnectWallet: 'connect-wallet'
 });
 
@@ -61,6 +62,16 @@ const ModalProvider = ({ children }) => {
     return _showModal(ModalType.Confirm, { title, content, okContent, cancelContent });
   };
 
+  const showConfirmWithBreakdown = async (title, message, breakdown, okContent = 'Ok', cancelContent = 'Cancel') => {
+    return _showModal(ModalType.ConfirmWithBreakdown, {
+      title,
+      message,
+      breakdown,
+      okContent,
+      cancelContent
+    });
+  };
+
   const closeModal = () => {
     setModal();
   };
@@ -72,6 +83,7 @@ const ModalProvider = ({ children }) => {
         showMessage,
         showError,
         showConfirm,
+        showConfirmWithBreakdown,
         showControlledMessage,
         showConnectWallet,
         closeModal

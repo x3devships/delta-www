@@ -21,6 +21,7 @@ const TokenInput = ({
   labelBottom,
   labelBottomClassName = '',
   checkboxButton,
+  checkboxButtonTip,
   checkboxButtonChecked,
   onOk,
   onChange,
@@ -188,7 +189,7 @@ const TokenInput = ({
 
   const renderTransactionButton = () => {
     return <TransactionButton
-      className={`flex ${!transactionButtonNoBorders ? 'md:p-1 md:border md:border-black' : ''} flex-grow ${transactionButtonUnder ? 'md:block text-right' : ''}`}
+      className={`flex ${!transactionButtonNoBorders ? 'p-1 border border-black' : ''} flex-grow ${transactionButtonUnder ? 'md:block text-right' : ''}`}
       allowanceRequiredFor={allowanceRequiredFor}
       text={buttonText}
       textLoading={buttonTextLoading}
@@ -205,7 +206,7 @@ const TokenInput = ({
           <div className="flex flex">
             {renderInput()}
             {renderMaxButton()}
-            <div className={`ml-1 hidden md:flex`}>
+            <div className={`ml-1 md:flex`}>
               {renderTransactionButton()}
               {/* checkboxButton && <div className="flex md:p-1 ml-1 md:border md:border-black flex-grow">
                 <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} />
@@ -216,7 +217,7 @@ const TokenInput = ({
         {renderHelpers()}
         <div className={`mt-0`}>
           {checkboxButton && <div className="block">
-            <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} />
+            <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} tip={checkboxButtonTip} />
           </div>}
         </div>
       </div>
