@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js/bignumber';
+import BigNumber from 'bignumber.js';
 import { verifyAddressMap } from '../utils';
 
 BigNumber.config({
@@ -6,9 +6,7 @@ BigNumber.config({
   DECIMAL_PLACES: 80
 });
 
-// Temp flag, set to true to use the hardhat node and end_lsw operation.
-export const TEMP_ENABLE_END_LSW_WEB3 = false;
-
+export const APP_VERSION = '0.1.5';
 export const SUBTRACT_GAS_LIMIT = 100000;
 export const DEFAULT_CONFIRMATIONS = 1;
 export const DEFAULT_GAS = '6000000';
@@ -23,6 +21,10 @@ export const DATA_UNAVAILABLE = '--';
 // - Endpoint found from inspecting XHR request from metamask dev mode in google chrome.Could change in
 //   the futur and break: https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161
 export const WEB3_PROVIDER_URL = 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
+export const deltaUniswapUrl = "https://app.uniswap.org/#/swap?outputCurrency=0x9EA3b5b4EC044b70375236A281986106457b20EF";
+export const deltaSushiswapUrl = "https://exchange.sushi.com/#/swap?outputCurrency=0x9ea3b5b4ec044b70375236a281986106457b20ef";
+export const gitbookUrl = "https://docs.delta.financial";
+export const coreChartsApyUrl = 'https://corecharts.info/apy';
 
 export const pairNames = {
   deltaWeth: 'deltaWeth',
@@ -40,7 +42,7 @@ export const addressMap = {
   uniswapRouter: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
 
   // Pairs
-  deltaWeth: '0x169f31b4452aF181Ca8d802cE18b62FCAd8B1b9b',
+  deltaWeth: '0x7d7e813082ef6c143277c71786e5be626ec77b20',
   coreCbtc: '0x6fad7d44640c5cd0120deec0301e8cf850becb68',
   coreWeth: '0x32ce7e48debdccbfe0cd037cc89526e4382cb81b',
   cDaiWcore: '0x01AC08E821185b6d87E68c67F9dc79A8988688EB',
@@ -48,8 +50,8 @@ export const addressMap = {
   wbtcWeth: '0xbb2b8038a1640196fbe3e38816f3e67cba72d940',
 
   // Tokens
-  delta: '0x397B352DCdA5A4C141B801447173D88B2862a591',
-  rLP: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
+  delta: '0x9EA3b5b4EC044b70375236A281986106457b20EF',
+  rLP: '0xfcfC434ee5BfF924222e084a8876Eee74Ea7cfbA',
   core: '0x62359ed7505efc61ff1d56fef82158ccaffa23d7',
   wCORE: '0x17b8c1a92b66b1cf3092c5d223cb3a129023b669',
   wETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
@@ -57,7 +59,11 @@ export const addressMap = {
   cBTC: '0x7b5982dcAB054C377517759d0D2a3a5D02615AB8',
   cDAI: '0x00a66189143279b6db9b77294688f47959f37642',
 
-  LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB'
+  // Periphery
+  LSW: '0xdaFCE5670d3F67da9A3A44FE6bc36992e5E2beaB',
+  dfv: '0x9fE9Bb6B66958f2271C4B0aD23F6E8DDA8C221BE',
+  deltaRouter: '0x7b3E8f6F30163d22203d0d86c608Ca1A056345Bc',
+  distributor: '0xF249C5B422758D91d8f05E1Cc5FC85CF4B667461'
 };
 
 export const addressDecimalsMap = {};
@@ -129,5 +135,4 @@ export const ethereumStats = {};
 ethereumStats.approximatedBlockPerDay = 6650;
 ethereumStats.approximatedBlockPerYear = ethereumStats.approximatedBlockPerDay * 365;
 
-// TODO: Enable back
-// verifyAddressMap(addressMap);
+verifyAddressMap(addressMap);

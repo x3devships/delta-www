@@ -1,8 +1,10 @@
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
-import { Header } from '../Header';
+import { Community } from '../Community';
+import { Debug } from '../Debug';
+import { NavBar } from '../NavBar';
 
-const MainLayout = ({ children, onWalletConnect }) => {
+const MainLayout = ({ children }) => {
   return <>
     <NextSeo
       title="DELTA Financial"
@@ -70,12 +72,19 @@ const MainLayout = ({ children, onWalletConnect }) => {
         crossOrigin=""
       />
     </Head>
+    <NavBar />
     <div className="w-full flex justify-center flex-col">
-      <Header onWalletConnect={onWalletConnect} />
       <div className="w-full flex flex-col max-w-6xl self-center p-2 md:p-6">
         {children}
+        <Community />
       </div>
     </div>
+
+    {process.env.NODE_ENV !== 'production' && <>
+      <div className="fixed bottom-0 left-0">
+        <Debug />
+      </div>
+    </>}
   </>;
 };
 

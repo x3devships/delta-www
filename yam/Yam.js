@@ -18,4 +18,8 @@ export class Yam {
     this.web3 = new Web3(realProvider);
     this.contracts = new Contracts(this.web3, options);
   }
+
+  async initialize() {
+    return this.contracts.initialize();
+  }
 }

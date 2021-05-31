@@ -10,7 +10,8 @@ const initialState = {
   accountContributedEth: DATA_UNAVAILABLE,
   totalWETHEarmarkedForReferrers: DATA_UNAVAILABLE,
   referralBonusWETH: DATA_UNAVAILABLE,
-  liquidityCredits: DATA_UNAVAILABLE
+  liquidityCredits: DATA_UNAVAILABLE,
+  estimatedClaimableRlp: DATA_UNAVAILABLE
 };
 
 const useLSWStats = () => {
@@ -40,12 +41,19 @@ const useLSWStats = () => {
       const { account } = wallet;
 
       const accountContributedEth = (await yam.contracts.LSW.methods.liquidityContributedInETHUnitsMapping(account).call()) / 1e18;
-      const referralBonusWETH = (await yam.contracts.LSW.methods.referralBonusWETH(account).call()) / 1e18;
-      const totalWETHEarmarkedForReferrers = (await yam.contracts.LSW.methods.totalWETHEarmarkedForReferrers().call()) / 1e18;
+      const hasClaimeEth = await yam.contracts.LSW.methods.referralBonusWETHClaimed(account).call();
 
+      let referralBonusWETH = new BigNumber("0");
+      if (!hasClaimeEth) {
+        referralBonusWETH = (await yam.contracts.LSW.methods.referralBonusWETH(account).call()) / 1e18;
+      }
+
+      const totalWETHEarmarkedForReferrers = (await yam.contracts.LSW.methods.totalWETHEarmarkedForReferrers().call()) / 1e18;
       const liquidityCreditsBN = new BigNumber(await yam.contracts.LSW.methods.liquidityCreditsMapping(account).call());
       const rlpPerCreditBN = new BigNumber(await yam.contracts.LSW.methods.rlpPerCredit().call());
-      const claimableRlpBN = liquidityCreditsBN.multipliedBy(rlpPerCreditBN).shiftedBy(-12);
+
+      const hasClaimedRlp = await yam.contracts.LSW.methods.claimedLP(account).call();
+      const claimableRlpBN = !hasClaimedRlp ? liquidityCreditsBN.multipliedBy(rlpPerCreditBN).shiftedBy(-12) : new BigNumber("0");
 
       const liquidityCredits = liquidityCreditsBN.toString() / 1e18;
       const claimableRlp = claimableRlpBN.toString() / 1e18;

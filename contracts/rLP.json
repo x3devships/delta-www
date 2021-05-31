@@ -1,17 +1,18 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "DELTA_Rebasing_Liquidity_Token",
+  "sourceName": "contracts/v076/Upgradable/DELTA_Rebasing_Liquidity_Token.sol",
   "abi": [
     {
       "inputs": [
         {
           "internalType": "address",
-          "name": "_deltaRouterAddress",
+          "name": "delta",
           "type": "address"
         },
         {
           "internalType": "address",
-          "name": "_deltaTokenAddress",
+          "name": "_reserveVault",
           "type": "address"
         }
       ],
@@ -49,25 +50,6 @@
         {
           "indexed": true,
           "internalType": "address",
-          "name": "previousOwner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnershipTransferred",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
           "name": "from",
           "type": "address"
         },
@@ -89,12 +71,90 @@
     },
     {
       "inputs": [],
-      "name": "LGE",
+      "name": "DELTA",
+      "outputs": [
+        {
+          "internalType": "contract IDeltaToken",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "DELTA_WETH_PAIR",
+      "outputs": [
+        {
+          "internalType": "contract IUniswapV2Pair",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "LSW",
       "outputs": [
         {
           "internalType": "address",
           "name": "",
           "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "RESERVE_VAULT",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "WETH",
+      "outputs": [
+        {
+          "internalType": "contract IWETH",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "_DAILY_PERCENTAGE_COST_INCREASE_TO_MINT_LP",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "_dailyVolumeTargetETH",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -169,32 +229,6 @@
     },
     {
       "inputs": [],
-      "name": "baseLPToken",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "baseTokenSupply",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "decimals",
       "outputs": [
         {
@@ -232,12 +266,12 @@
     },
     {
       "inputs": [],
-      "name": "deltaRouterAddress",
+      "name": "ethVolumeRemaining",
       "outputs": [
         {
-          "internalType": "address",
+          "internalType": "uint256",
           "name": "",
-          "type": "address"
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -245,12 +279,17 @@
     },
     {
       "inputs": [],
-      "name": "deltaTokenAddress",
+      "name": "getRemainingETHInVolumeTarget",
       "outputs": [
         {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "remainingVolumeInETH",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "secondsSinceLastUpdate",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -282,41 +321,9 @@
     },
     {
       "inputs": [],
-      "name": "initialRebasingsLeft",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newContract",
-          "type": "address"
-        }
-      ],
-      "name": "migrate",
+      "name": "initialize",
       "outputs": [],
       "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "migratedContract",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -334,20 +341,7 @@
     },
     {
       "inputs": [],
-      "name": "nextPositiveLPRebase",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "onlyNewContract",
+      "name": "onlyLSW",
       "outputs": [],
       "stateMutability": "view",
       "type": "function"
@@ -361,27 +355,7 @@
     },
     {
       "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "rebase",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "renounceOwnership",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -389,8 +363,39 @@
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "borrowedDELTA",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "borrowedWETH",
+          "type": "uint256"
+        }
+      ],
+      "name": "reserveCaller",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rlpPerLP",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "address",
-          "name": "_baseLPToken",
+          "name": "",
           "type": "address"
         }
       ],
@@ -402,26 +407,17 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_lsw",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "ethWholeUnits",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "hourlyRebaseRightAway",
+          "type": "bool"
         }
       ],
-      "name": "setLSWAddress",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "setupRebase",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "skimLPToNewContract",
+      "name": "setUpDailyVolumeTarget",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -437,6 +433,13 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "tokenCaller",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -506,32 +509,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "wETHAddress",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "wrap",
       "outputs": [],
@@ -539,15 +516,15 @@
       "type": "function"
     },
     {
-      "inputs": [
+      "inputs": [],
+      "name": "wrapWithReturn",
+      "outputs": [
         {
-          "internalType": "address",
-          "name": "person",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
-      "name": "wrapAtomic",
-      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     }

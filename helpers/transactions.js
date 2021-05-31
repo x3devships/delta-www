@@ -1,6 +1,8 @@
 import errors from './errors';
 import { Spinner } from '../components/Spinner';
 
+const GAS_ESTIMATION_RATIO = 1.25;
+
 const executeTransaction = async (
   modalContext,
   transaction,
@@ -12,12 +14,14 @@ const executeTransaction = async (
   transactionLoadingMessage = 'Transaction in progress...') => {
 
   try {
-    const transactionGasEstimate = await transaction.estimateGas(transactionParameters, transactionParameters);
+    const transactionGasEstimate = await transaction.estimateGas(transactionParameters);
+    const adjustedTransactionGasEstimate = Math.round(transactionGasEstimate * GAS_ESTIMATION_RATIO);
+
     const transactionMessage = modalContext.showControlledMessage(transactionTitle, <Spinner label={transactionLoadingMessage} />);
 
     await transaction.send({
       ...transactionParameters,
-      gas: transactionGasEstimate
+      gas: adjustedTransactionGasEstimate
     });
 
     transactionMessage.close();
@@ -25,7 +29,7 @@ const executeTransaction = async (
 
   } catch (error) {
     const decodedError = errors.getTransactionError(error, 'An unexpected error occured');
-    console.log(decodedError);
+    console.log(error);
     await modalContext.showError(errorTitle, decodedError.message);
     return Promise.reject();
   }
@@ -33,6 +37,18 @@ const executeTransaction = async (
   return Promise.resolve();
 };
 
+const getRevertMessageFromTransaction = async (transaction, transactionParameters = {}) => {
+  try {
+    await transaction.estimateGas(transactionParameters);
+  } catch (error) {
+    const decodedError = errors.getTransactionError(error, 'An unexpected error occured');
+    return Promise.resolve(decodedError.message);
+  }
+
+  return Promise.resolve(false);
+};
+
 export default {
-  executeTransaction
+  executeTransaction,
+  getRevertMessageFromTransaction
 };

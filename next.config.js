@@ -1,5 +1,13 @@
 const withFonts = require('next-fonts');
 const withImages = require('next-images');
-const nextTranslate = require('next-translate');
 
-module.exports = withFonts(withImages(nextTranslate()));
+module.exports = withFonts(withImages({
+  trailingSlash: true,
+  exportPathMap() {
+    return {
+      '/': { page: '/' },
+      '/vault': { page: '/vault' },
+      '/contracts': { page: '/contracts' },
+    };
+  }
+}));

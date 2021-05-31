@@ -1,193 +1,297 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
+import { useWallet } from 'use-wallet';
 import { DeltaPanel, DeltaSection } from '../Section';
-import { DeltaTitleH2 } from '../Title';
+import { DeltaTitleH2, DeltaTitleH4 } from '../Title';
 import { ProgressBarDiamonds } from '../ProgressBar';
-import { ModalContext } from '../../contexts';
 import VaultStaking from './VaultStaking';
-import DeltaButton from '../Button/DeltaButton';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
-import { formatting } from '../../helpers';
-import { TokenInput } from '../Input';
+import { formatting, transactions } from '../../helpers';
+import DeltaButton from '../Button/DeltaButton';
+import { gitbookUrl } from '../../config';
+import { useApy, useDistributor, useYam } from '../../hooks';
+import TransactionButton from '../Button/TransactionButton';
+import { ModalContext } from '../../contexts';
+import { Tooltip, Tips } from '../Tooltip';
+ 
+const RlpBalances = () => {
+  const globalHooks = useContext(GlobalHooksContext);
+  return (
+    <div className="mt-4 md:mt-0">
+      <DeltaTitleH4 className="flex" tip={Tips.rLPToken}>rLP Token</DeltaTitleH4>
+      <ul className="list-disc list-inside py-1" style={{height: '90px'}} >
+        <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + (globalHooks.staking.info.rlp.toString() / 1e18), 0, 4)} rLP</li>
+      </ul>
+    </div>
+  );
+};
 
-// TODO: Add web3 integration
-const VaultInfoBox = ({ className = '' }) => {
-  return <div className={`bg-purpleGray flex flex-row border border-black md:max-h-full md:h-20 ${className}`}>
-    <div className="flex border-r border-black flex-col text-center py-1 md:py-0">
-      <div className="text-xs px-2 pt-1 pb-2">
-        TVL
-      </div>
-      <div className="text-2xl self-center px-4 mt-0 md:mt-1">
-        rLP
-      </div>
-    </div>
-    <div className="flex border-r border-black flex-col text-center flex-grow py-1 md:py-0">
-      <div className="text-xs px-2 pt-1 pb-2">
-        Amount Staked
-      </div>
-      <div className="text-2xl self-center px-4 self-end flex flex-grow mt-0 md:mt-1">
-        12,001
-      </div>
-    </div>
-    <div className="flex flex-col text-center py-1 md:py-0">
-      <div className="text-xs px-2 pt-1 pb-2">
-        Yearly ROI
-      </div>
-      <div className="text-2xl self-center px-4 mt-0 md:mt-1">
-        500%
-      </div>
-    </div>
+const DeltaStats = () => {
+  const globalHooks = useContext(GlobalHooksContext);
+  const isCmpBurn = globalHooks.staking.info.compoundBurn;
+
+  return <div className="mt-4 md:mt-0">
+    <DeltaTitleH4 className='flex' tip={Tips.deltaToken}>DELTA Token</DeltaTitleH4>
+    <ul className="list-disc list-inside py-1" style={{height: '90px'}}> 
+      <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA<Tooltip inline tip={Tips.immature}/></li>
+      <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} DELTA<Tooltip inline tip={Tips.mature}/></li>
+      <li>Total DELTA: {formatting.getTokenAmount(globalHooks.delta.data.total, 0, 4)} DELTA</li>
+    </ul>
+  </div >
+};
+
+const DeltaStakingStats = () => {
+  const globalHooks = useContext(GlobalHooksContext);
+  const {
+    deltaPermanent,
+    deltaVesting,
+    compoundBurn: isCmpBurn
+  } = globalHooks.staking.info;
+  return <div className="mt-4 md:mt-0">
+    <DeltaTitleH4 className='flex' tip={Tips.deltaToken}>DELTA Staking</DeltaTitleH4>
+    <ul className="list-disc list-inside py-1" style={{height: '90px'}}> 
+      <li>Compounded DELTA: {formatting.getTokenAmount(deltaVesting, 18, 4)} DELTA</li>
+      <li>Permanently Locked DELTA: {formatting.getTokenAmount(deltaPermanent, 18, 4)} DELTA <Tooltip inline tip={Tips.permaLock}/></li>
+      <li>Total Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4)} DELTA</li>
+    </ul>
   </div>
 };
 
-// TODO: add web3 integration
-const RlpStats = () => {
+const RewardsPanel = () => {
   const globalHooks = useContext(GlobalHooksContext);
-
+  const {
+    compoundBurn: isCmpBurn
+  } = globalHooks.staking.info;
+  const {
+    farmedDelta,
+    farmedETH
+  } = globalHooks.staking.info;
   return <div className="mt-4 md:mt-0">
-    <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
+    <DeltaTitleH4 className='flex mt-4' tip={Tips.rewards}>DELTA and ETH Rewards</DeltaTitleH4>
+    <ul className="list-disc list-inside pb-4 md:pb-8">
+      <li>Ready to compound DELTA: {formatting.getTokenAmount(farmedDelta, 18, 4)} DELTA</li>
+      <li>Claimable ETH: {formatting.getTokenAmount(farmedETH, 18, 4)} ETH</li>
     </ul>
-  </div >
+  </div>
 };
 
-// TODO: add web3 integration
-const DeltaStats = () => {
+const RlpStakingStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
-
+  const {
+    rlp
+  } = globalHooks.staking.info;
+  const {
+    balance
+  } = globalHooks.rlpInfo;
   return <div className="mt-4 md:mt-0">
-    <ul className="list-disc list-inside py-4 md:py-8">
-      <li>Staked rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + globalHooks.staking.rlpStaked, 0, 4)} rLP</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.rlpInfo.balance, 0, 4)} ETH</li>
-      <li>Claimable DELTA: {formatting.getTokenAmount(globalHooks.staking.rlpStaked, 0, 4)} DELTA</li>
+    <DeltaTitleH4 className='flex' tip={Tips.deltaToken}>rLP Staking</DeltaTitleH4>
+    <ul className="list-disc list-inside py-1" style={{height: '90px'}}>
+      <li>Unstaked rLP: {formatting.getTokenAmount(balance, 0, 4)} rLP</li>
+      <li>Staked rLP: {formatting.getTokenAmount(rlp, 18, 4)} rLP</li>
     </ul>
-  </div >
+  </div>
 };
 
-const RlpTokenVault = ({ className = '' }) => {
-  const token = 'rLP';
+const DeltaStaking = () => {
+  const globalHooks = useContext(GlobalHooksContext);
+  const isCmpBurn = globalHooks.staking.info.compoundBurn;
 
-  return <div className={`mt-4 md:mt-2 ${className}`}>
-    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
-    <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
-      <div className="flex w-full flex-grow flex-col md:flex-col">
-        <div>
-          <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
-          <RlpStats />
-        </div>
-        <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
-          <div className="text-xs flex mb-1">Reward Multiplier</div>
-          <ProgressBarDiamonds minMultiplier={1} maxMultiplier={30} className="flex w-full flex-grow" />
-        </div>
-      </div>
-      <div className="w-full flex-grow hidden flex-col md:flex self-start">
-        <ProgressBarDiamonds minMultiplier={1} maxMultiplier={30} className="flex flex-grow w-full" />
-        <div className="flex flex-row mt-4">
-          <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
-        </div>
-      </div>
-    </DeltaPanel>
-    <VaultStaking token={token} />
-  </div>;
-};
-
-const TopUpDialogContent = () => {
-  const [toggle, setToggle] = useState(false);
-
-  /**
- * stakingRewards = true means it uses Delta Staking Rewards
- * otherwize the mature delta from wallet 
- */
-  const onTopUp = async (stakingRewards) => {
-    // TODO: add web3 topup operation
-  };
-
-  // TODO: Once the Progress Diamong is dynamic, support setting a value, update using the current
-  // reward multiplier from the contract.
-
-  return <DeltaPanel>
-    <div className="my-4 text-base">A weekly deposit of 10% of your principle is necessary to maintain the multiplier. You can use Delta staking rewards or mature Delta from your wallet to top up the multiplier.</div>
-    <div>Reward Multiplier</div>
-    <div><ProgressBarDiamonds small minMultiplier={1} maxMultiplier={10} /></div>
-    <div>Time until downgrade: 6 days 13 hours</div>
-    <div className="mt-4">
-      <DeltaPanel className="flex flex-grow text-center">
-        <div className="flex flex-row border border-black p-1 flex-grow">
-          <DeltaButton className="flex mr-2 flex-1" onClick={() => setToggle(t => !t)} grayLook={toggle}>Delta staking rewards</DeltaButton>
-          <DeltaButton className="flex flex-1" onClick={() => setToggle(t => !t)} grayLook={!toggle}>Mature delta from wallet</DeltaButton>
-        </div>
-      </DeltaPanel>
-      <TokenInput
-        className="mt-4"
-        token="delta"
-        buttonText="top up"
-        transactionButtonNoBorders
-        transactionButtonUnder
-        buttonTextLoading="Loading..."
-        onOk={() => onTopUp(toggle)} />
+  return (
+    <div className="mt-4 md:mt-0">
+      <DeltaTitleH2 className='mt-4 flex' tip={Tips.deltaRewards}>DELTA Rewards</DeltaTitleH2>
+      <ul className="list-disc list-inside py-4" style={{height: '90px'}}> 
+        <li>Ready to compound DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
+        <li>Compounded DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaVesting, 18, 4)} DELTA</li>
+        <li>Permanently Locked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaPermanent, 18, 4)} DELTA</li>
+        <li>Claimable ETH: {formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH</li>
+      </ul>
     </div>
-  </DeltaPanel>;
-}
+  );
+};
 
-const DeltaTokenVault = ({ className = '' }) => {
-  const token = 'delta';
-  const modalContext = useContext(ModalContext);
-  const rewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
-  const [showAllWithdrawalContracts, setShowAllWithdrawalContracts] = useState(false);
+const DeltaMultiplier = () => {
+  const globalHooks = useContext(GlobalHooksContext);
+  const deltaRewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
+  return (
+    <div className="flex w-full flex-col flex-grow mt-0">
+      <DeltaTitleH4 className="mt-0">DELTA Reward Multiplier<Tooltip inline tip={Tips.deltaRewardMultiplier}/></DeltaTitleH4>
+      <ProgressBarDiamonds value={globalHooks.staking.info.booster} maxValue={10} className="flex w-full flex-grow mt-2" />
+      <div className="text-xs text-gray-400 flex mt-1">{deltaRewardMultiplierDescription}</div>
+    </div>
+  );
+};
 
-  const onDepositToMultiplier = async () => {
-    await modalContext.showMessage('Top Up Reward Multiplier', <TopUpDialogContent />, false);
-  };
+const RlpMultiplier = () => {
+  const rLPRewardMultiplierDescription = 'rLP has a estimated 200x multiplier that doesn\'t require any upkeep';
+  return (
+    <div className="w-full flex-grow flex-col md:flex mt-0 self-start">
+      <DeltaTitleH4 className="mt-0">rLP Reward Multiplier<Tooltip inline tip={Tips.rLPRewardMultiplier}/></DeltaTitleH4>
+      <ProgressBarDiamonds noUpkeepNeeded={true} className="flex flex-grow w-full mt-2" />
+      <div className="text-xs text-gray-400 flex mt-1">{rLPRewardMultiplierDescription}</div>
+    </div>
+  );
+};
 
+const VerticalLayout = ({children}) => (
+  <div className="w-full flex-grow flex-col md:flex self-start">
+    {children}
+  </div>
+);
+
+const VaultPanel = ({ className = '' }) => {
+  const globalHooks = useContext(GlobalHooksContext);
   return <div className={`mt-4 md:mt-2 ${className}`}>
-    <DeltaTitleH2 lineunder>{token} Token</DeltaTitleH2>
-    <DeltaPanel className="mt-4 flex flex-col-reverse md:flex-row">
-      <div className="flex w-full flex-grow flex-col md:flex-col">
+    <DeltaTitleH2 lineunder>Balances</DeltaTitleH2>
+    <DeltaPanel className="mt-4 flex flex-col md:flex-row">  
+      <VerticalLayout>
         <div>
-          <VaultInfoBox className="flex flex-stretch mr-0 md:mr-24" token={token} />
           <DeltaStats />
-          <DeltaButton className="mt-4" onClick={() => setShowAllWithdrawalContracts(true)}>See all withdrawal contracts</DeltaButton>
         </div>
-        <div className="flex w-full flex-col flex-grow mt-4 md:hidden">
-          <div className="text-xs flex mb-1">Reward Multiplier</div>
-          <ProgressBarDiamonds minMultiplier={1} maxMultiplier={10} className="flex w-full flex-grow" />
-          <div className="text-xs text-gray-400 flex mt-1">{rewardMultiplierDescription}</div>
-          <DeltaButton secondaryLook className="mt-4" onClick={onDepositToMultiplier}>Deposit to multipler</DeltaButton>
+
+        <div>
+          <DeltaStakingStats />
         </div>
-      </div>
-      <div className="w-full flex-grow hidden flex-col md:flex self-start">
-        <ProgressBarDiamonds minMultiplier={1} maxMultiplier={10} className="flex flex-grow w-full" />
-        <div className="flex flex-row mt-4">
-          <div className="text-xs flex flex-grow w-full">Reward Multiplier</div>
-          <div className="text-xs flex text-gray-400">{rewardMultiplierDescription}</div>
+
+        <DeltaMultiplier />
+
+      </VerticalLayout>
+
+      <div className="vertical-line md:show-up" />
+
+      <VerticalLayout>
+        <div>
+          <RlpBalances />
         </div>
-        <DeltaButton secondaryLook className="mt-4" onClick={onDepositToMultiplier}>Deposit to multiplier</DeltaButton>
-      </div>
+
+        <div>
+          <RlpStakingStats />
+        </div>
+
+        <RlpMultiplier />
+
+      </VerticalLayout>
+
     </DeltaPanel>
-    <VaultStaking showAllWithdrawalContracts={showAllWithdrawalContracts} token={token} />
+
+    <DeltaPanel className='mt-4'>
+      <DeltaTitleH2 lineunder>Rewards</DeltaTitleH2>
+      <RewardsPanel /> 
+    </DeltaPanel>
+
+    <DeltaPanel className='mt-4'>
+      <DeltaTitleH2 lineunder>Vault actions</DeltaTitleH2>
+      <VaultStaking /> 
+    </DeltaPanel>
+
+
   </div>;
 };
 
 const Vault = () => {
-  return <DeltaSection requiresConnectedWallet title="Delta Farming Vault">
-    <DeltaPanel className="md:mt-0">
-      <div className="md:mt-0">
-        <div className="flex flex-col md:flex-row-reverse">
-          <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12">
-            <div className="border border-black py-2 bg-gray-200 mb-1">Up to 750 % APY*</div>
-            <div className="border border-black py-2 bg-gray-200">TVL: $145,223,123</div>
+  const yam = useYam();
+  const apy = useApy();
+  const wallet = useWallet();
+  const modalContext = useContext(ModalContext);
+  const distributor = useDistributor();
+
+  const onDistribute = async () => {
+    const transaction = yam.contracts.distributor.methods.distribute();
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully distributed",
+      "Distributing...",
+      "Error while distributing"
+    );
+
+    distributor.update();
+  };
+
+  const onBurn = async () => {
+    const transaction = yam.contracts.distributor.methods.distributeAndBurn();
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully burned",
+      "Burning...",
+      "Error while burning"
+    );
+
+    distributor.update();
+  };
+
+  const onClaim = async () => {
+    const transaction = yam.contracts.distributor.methods.claimCredit();
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully claimed",
+      "Claiming...",
+      "Error while claiming"
+    );
+
+    distributor.update();
+  };
+
+  return <>
+    <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Farming Vault">
+      <DeltaPanel className="md:mt-0">
+        <div className="md:mt-0">
+          <div className="flex flex-col md:flex-row-reverse">
+            <DeltaPanel className="w-full mt-4 mb-4 text-2xl text-semibold text-center w-full pr-0 md:pr-12">
+              <div className="border border-black py-2 bg-gray-200 mb-1">up to {apy.eth_yearly_delta} % APY</div>
+              <div className="mt-1 text-xs text-left md:text-right">* Estimated yearly average returns when farming DELTA with a 10x booster</div>
+            </DeltaPanel>
+            <DeltaPanel className="my-4 text-lg">
+              The Deep Farming Vault distributes<br />
+              yield to staked rLP and Delta.
+            </DeltaPanel>
+          </div>
+
+          <DeltaPanel className="my-4 mb-6 text-lg block">
+            More information about how to use the Deep Farming Vault <br />is available at the Document Portal.
+            <div className="block md:flex">
+              <a target="_blank" href={gitbookUrl} rel="noopener noreferrer">
+                <DeltaButton className="mt-4 block md:flex">Delta Document Portal</DeltaButton>
+              </a>
+            </div>
           </DeltaPanel>
-          <DeltaPanel className="mt-4 pr-12">
-            The Deep Farming Vault distributes<br />
-            yield to staked rLP and Delta.
-          </DeltaPanel>
+
+          <VaultPanel />
         </div>
-        <RlpTokenVault />
-        <DeltaTokenVault className="mt-8 md:mt-12" />
-      </div>
-    </DeltaPanel>
-  </DeltaSection>;
+      </DeltaPanel>
+    </DeltaSection>
+
+    <DeltaSection requiresConnectedWallet showConnectWalletButton title="Distributor">
+      <DeltaPanel className="md:mt-0">
+        <div className="py-2">
+          <DeltaTitleH4 className="flex" tip={Tips.pendingDelta}>Pending claimable DELTA credits</DeltaTitleH4>
+          <div className="my-4">{formatting.getTokenAmount(distributor.info.pendingCredits, 18, 4)} DELTA</div>
+          <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={!distributor.info.hasPendingCredits} text={distributor.info.hasPendingCredits ? 'Claim' : 'Nothing to be claimed'} onClick={onClaim} />
+        </div>
+      </DeltaPanel>
+    </DeltaSection>
+    {/* <DeltaSection requiresConnectedWallet showConnectWalletButton title="Distribute Rewards">
+      <DeltaPanel className="md:mt-0">
+        <div className="py-2">
+          <DeltaTitleH4>Ready To Distribute</DeltaTitleH4>
+          {formatting.getTokenAmount(distributor.info.pendingToDistribute, 18, 4)} DELTA
+          <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={!distributor.info.hasDeltaToDistribute} text={distributor.info.hasDeltaToDistribute ? 'Distribute' : 'Nothing to distribute'} onClick={onDistribute} />
+
+        </div>
+        <div className="py-2">
+          <DeltaTitleH4>Ready To Burn</DeltaTitleH4>
+          {formatting.getTokenAmount(distributor.info.pendingBurn, 18, 4)} DELTA
+          <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={!distributor.info.hasDeltaToBurn} text={distributor.info.hasDeltaToBurn ? 'Burn' : 'Nothing to burn'} onClick={onBurn} />
+        </div>
+      </DeltaPanel>
+      </DeltaSection> */}
+  </>;
 };
 
 

@@ -5,7 +5,7 @@ import { WalletProvider, YamProvider, Web3Provider, SettingsProvider, GlobalHook
 import theme from '../config/default.theme';
 
 import '../styles/globals.css';
-
+import 'react-popper-tooltip/dist/styles.css';
 
 import { ModalContainer } from '../components/Modal';
 
@@ -13,7 +13,8 @@ function App({ Component, pageProps }) {
   return (
     <Windmill theme={theme}>
       <Providers {...pageProps}>
-        <Component {...pageProps} /> <ModalContainer />
+        <Component {...pageProps} />
+        <ModalContainer />
       </Providers>
     </Windmill>
   );

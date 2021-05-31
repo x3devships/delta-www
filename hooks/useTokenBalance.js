@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useWallet } from 'use-wallet';
+import BigNumber from 'bignumber.js';
 import useYam from './useYam';
 import { hooks } from '../helpers';
 import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../config';
@@ -10,6 +11,7 @@ const useTokenBalance = (tokenName) => {
   const yam = useYam();
   const wallet = useWallet();
   const [balance, setBalance] = useState(DATA_UNAVAILABLE);
+  const [balanceBN, setBalanceBN] = useState(DATA_UNAVAILABLE);
   const tokenAddress = addressMap[tokenName];
   const decimals = tokenMap[tokenAddress]?.decimals || 18;
 
@@ -17,17 +19,29 @@ const useTokenBalance = (tokenName) => {
     if (!yam || !wallet?.account) return;
 
     if (tokenName?.toUpperCase() === 'ETH') {
-      const balance = (await yam.web3.eth.getBalance(wallet.account)).toString() / 10 ** decimals
+      const balance = (await yam.web3.eth.getBalance(wallet.account)).toString() / 10 ** decimals;
       setBalance(balance);
       return;
+    }
+
+    // Use delta immmature + mature balance instead of just mature
+    if (tokenName === "delta-all") {
+      const totalsForWallet = await yam.contracts.delta.methods.totalsForWallet(wallet.account).call();
+      const balanceBN = new BigNumber(totalsForWallet.total);
+      const balance = balanceBN.toString() / 10 ** decimals;
+      setBalance(balance);
+      setBalanceBN(balanceBN);
+      return
     }
 
     if (!(tokenName in yam.contracts)) {
       return;
     }
 
-    const balance = (await yam.contracts[tokenName].methods.balanceOf(wallet.account).call()) / 10 ** decimals;
+    const balanceBN = new BigNumber(await yam.contracts[tokenName].methods.balanceOf(wallet.account).call());
+    const balance = balanceBN.toString() / 10 ** decimals;
     setBalance(balance);
+    setBalanceBN(balanceBN);
   }
 
   useEffect(() => {
@@ -43,7 +57,8 @@ const useTokenBalance = (tokenName) => {
 
   return {
     update,
-    balance
+    balance,
+    balanceBN
   };
 };
 

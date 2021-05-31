@@ -5,7 +5,7 @@ import { DATA_UNAVAILABLE } from '../config';
 import { hooks } from '../helpers';
 import useYam from './useYam';
 
-const REFRESH_RATE = 10 * 1000;
+const REFRESH_RATE = 30 * 1000;
 
 const useUserApprovalOfContract = (contract, token) => {
   const yam = useYam();

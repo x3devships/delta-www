@@ -1,9 +1,17 @@
-import { ethers } from 'ethers';
 import { Button, HelperText, Input } from '@windmill/react-ui';
-import { useState } from 'react';
-import { addressMap, tokenMap } from '../../config';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import debounce from 'lodash.debounce';
+import BigNumber from 'bignumber.js';
+import { addressMap, DATA_UNAVAILABLE, tokenMap } from '../../config';
 import { useTokenBalance } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
+import { ModalContext } from '../../contexts';
+import { DeltaCheckboxButton } from '.';
+import { parsing } from '../../helpers';
+
+// The delay at which the onChange event is trigger when the input
+// value is changed.
+const ONCHANGE_NOTIFICATION_WAIT = 200;
 
 const TokenInput = ({
   token,
@@ -12,40 +20,105 @@ const TokenInput = ({
   buttonTextLoading,
   labelBottom,
   labelBottomClassName = '',
+  checkboxButton,
+  checkboxButtonTip,
+  checkboxButtonChecked,
   onOk,
+  onChange,
   className,
   transactionButtonUnder,
   transactionButtonNoBorders,
+  disableTransactionWhenInvalid,
   disabled = false }) => {
 
   const [amountText, setAmountText] = useState('');
   const [amount, setAmount] = useState(false);
   const [validAmount, setValidAmount] = useState(true);
-  const { balance } = useTokenBalance(token);
+  const { balance, balanceBN } = useTokenBalance(token);
+  const modalContext = useContext(ModalContext);
+  const [checkboxChecked, setCheckboxChecked] = useState(checkboxButtonChecked);
 
-  const tokenAddress = addressMap[token];
-  const tokenInfo = tokenMap[tokenAddress];
-
-  if (!tokenInfo) {
-    throw new Error(`${token} doesn't exist within tokenMap`);
+  let tokenInfo = {
+    decimals: 18
   }
 
-  const onBeforeOk = () => {
+  // delta-all is delta but that will use the whole total balance. So it's
+  // not a real token, just handled this way tso that useTokenBalance can
+  // use delta's totalWallet instead of balanceOf in this case.
+  if (token !== 'ETH' && token !== "delta-all") {
+    const tokenAddress = addressMap[token];
+    tokenInfo = tokenMap[tokenAddress];
+
+    if (!tokenInfo) {
+      throw new Error(`${token} doesn't exist within tokenMap`);
+    }
+  }
+
+  const onCheckboxChanged = (event) => {
+    setCheckboxChecked(event.target.checked);
+  };
+
+  const getValues = useCallback(() => {
     let amountBN;
 
     if (amount) {
-      try {
-        amountBN = ethers.utils.parseUnits(amount.toString(), tokenInfo.decimals);
-      } catch (e) {
-        throw new Error(`Error converting float number to bignumber, ${e.message}`);
+      amountBN = parsing.parseFloatToBigNumber(amount, tokenInfo.decimals);
+    }
+
+    const valid = validAmount && amount && amountBN;
+    if (valid) {
+      return {
+        amount,
+        amountBN,
+        checkboxChecked
       }
     }
 
-    onOk(amount, amountBN, validAmount && amount);
+    return {
+      amount: DATA_UNAVAILABLE,
+      amountBN: DATA_UNAVAILABLE,
+      checkboxChecked
+    };
+  }, [amount, checkboxChecked]);
+
+  const onNotifyChange = useCallback(debounce(() => {
+    const values = getValues();
+    if (onChange) {
+      return onChange(values.amount, values.amountBN, values.checkboxChecked);
+    }
+    return Promise.resolve();
+  }, ONCHANGE_NOTIFICATION_WAIT), [onChange, getValues]);
+
+  const onBeforeOk = useCallback(async () => {
+    const values = getValues();
+
+    if (values.amount !== DATA_UNAVAILABLE) {
+      if (!onOk) return Promise.resolve();
+
+      const success = await onOk(values.amount, values.amountBN, true, values.checkboxChecked);
+      if (success) {
+        setAmountText('');
+        setValidAmount(true);
+        setAmount(false);
+      }
+
+      return success;
+    }
+
+    return modalContext.showError('Invalid Amount', 'The specified token amount is invalid');
+  }, [getValues]);
+
+  const isFloatAmountGreaterThanMaxBalance = amount => {
+    if (amount === balance) {
+      return false;
+    }
+
+    const amountBN = parsing.parseFloatToBigNumber(amount, tokenInfo.decimals);
+    return amountBN.gt(balanceBN);
   };
 
   const setValidatedAmount = (amount) => {
-    if (amount > balance || amount < 0 || Number.isNaN(amount) || amount === 0) {
+    if (Number.isNaN(amount) || amount === 0 || amount < 0 || isFloatAmountGreaterThanMaxBalance(amount)) {
       setValidAmount(false);
     } else if (amount > 0) {
       setValidAmount(true);
@@ -54,6 +127,7 @@ const TokenInput = ({
   };
 
   const onMaxAmount = () => {
+    const balance = parseFloat(new BigNumber(balanceBN.shiftedBy(-18).toFixed(6, 1)).toString());
     setAmountText(balance);
     setValidatedAmount(balance);
   };
@@ -72,7 +146,14 @@ const TokenInput = ({
     setValidatedAmount(potentialAmount);
   };
 
+  useEffect(() => {
+    onNotifyChange();
+    return onNotifyChange.cancel;
+  }, [amount, checkboxChecked]);
+
   const renderInput = () => {
+    let friendlyName = tokenInfo.friendlyName || token.toUpperCase();
+    if ( friendlyName === 'DELTA-ALL' ) friendlyName = 'DELTA';
     return <>
       <div className="bg-white flex border border-black">
         <div className="p-2">
@@ -86,16 +167,16 @@ const TokenInput = ({
             className="border-transparent text-xl border-b border-black flex-grow"
           />
         </div>
-        <div className="pr-3 text-sm self-end mb-3">{tokenInfo.friendlyName}</div>
+        <div className="pr-3 text-sm self-end mb-3">{friendlyName}</div>
       </div>
     </>;
   };
 
   const renderHelpers = () => {
-    return <>
+    return <div className='flex'>
       <HelperText className={`${validAmount ? 'hidden' : ''} text-sm block`} valid={false}>The amount is not valid</HelperText>
-      <HelperText className={`text-sm block ${labelBottomClassName}`}>{labelBottom}</HelperText>
-    </>;
+      <HelperText className={`text-sm block ${labelBottomClassName} ml-auto`}>{labelBottom}</HelperText>
+    </div>;
   };
 
   const renderMaxButton = () => {
@@ -108,12 +189,12 @@ const TokenInput = ({
 
   const renderTransactionButton = () => {
     return <TransactionButton
-      className={`flex ${!transactionButtonNoBorders ? 'md:p-1 md:border md:border-black' : ''} flex-grow`}
+      className={`flex ${!transactionButtonNoBorders ? 'p-1 border border-black' : ''} flex-grow ${transactionButtonUnder ? 'md:block text-right' : ''}`}
       allowanceRequiredFor={allowanceRequiredFor}
       text={buttonText}
       textLoading={buttonTextLoading}
       secondaryLooks
-      disabled={disabled}
+      disabled={disabled || (disableTransactionWhenInvalid && !(validAmount && amount))}
       onClick={onBeforeOk}
     />;
   };
@@ -125,16 +206,21 @@ const TokenInput = ({
           <div className="flex flex">
             {renderInput()}
             {renderMaxButton()}
-            <div className={`ml-1 hidden ${!transactionButtonUnder ? 'md:flex' : ''}`}>
+            <div className={`ml-1 md:flex`}>
               {renderTransactionButton()}
+              {/* checkboxButton && <div className="flex md:p-1 ml-1 md:border md:border-black flex-grow">
+                <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} />
+              </div> */}
             </div>
           </div>
         </div>
         {renderHelpers()}
+        <div className={`mt-0`}>
+          {checkboxButton && <div className="block">
+            <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} tip={checkboxButtonTip} />
+          </div>}
+        </div>
       </div>
-    </div>
-    <div className={`mt-4 ${!transactionButtonUnder ? 'md:hidden' : ''}`}>
-      {renderTransactionButton()}
     </div>
   </div >;
 };

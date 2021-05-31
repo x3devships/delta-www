@@ -3,7 +3,9 @@ import plus from '../../public/plus.svg';
 import plusGray from '../../public/plus-gray.svg';
 import plusBlack from '../../public/plus-black.svg';
 
-const DeltaButton = ({ children, className = '', labelBottom, secondaryLook, grayLook, ...props }) => {
+const DeltaButton = ({ children, className = '', labelBottom, renderIcon, secondaryLook, grayLook, ...props }) => {
+  renderIcon = renderIcon || ((secondaryLook) => <img alt="+" src={secondaryLook ? plusBlack : (grayLook ? plusGray : plus)} className="m-auto ml-0 md:ml-4" />);
+
   if (secondaryLook) {
     return <div className={className}>
       <div className="border border-black w-full md:w-max text-black p-0.5">
@@ -14,7 +16,7 @@ const DeltaButton = ({ children, className = '', labelBottom, secondaryLook, gra
           <div className="text-left flex-grow">
             {children}
           </div>
-          <img alt="+" src={plusBlack} className="m-auto ml-0 md:ml-4" />
+          {renderIcon(secondaryLook)}
         </Button>
       </div>
       <HelperText className={`${!labelBottom ? 'hidden' : ''} text-sm text-left text-gray-400 block mt-0.5`}>{labelBottom}</HelperText>
@@ -29,7 +31,7 @@ const DeltaButton = ({ children, className = '', labelBottom, secondaryLook, gra
       <div className="text-left flex-grow">
         {children}
       </div>
-      <img alt="+" src={grayLook ? plusGray : plus} className="m-auto ml-0 md:ml-4" />
+      {renderIcon(secondaryLook)}
     </Button>
     <HelperText className={`${!labelBottom ? 'hidden' : ''} text-sm text-left text-gray-400 block mt-0.5`}>{labelBottom}</HelperText>
   </div>

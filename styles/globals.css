@@ -22,6 +22,178 @@
   font-display: swap;
 }
 
+@media (min-width: 768px) {
+  .md\:show-up {
+    display: initial;
+  }
+  .md\:show-dn {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .md\:show-up {
+    display: none;
+  }
+  .md\:show-dn {
+    display: initial;
+  }
+}
+
+.toggle__dot {
+  top: -.25rem;
+  left: -.25rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.tooltip-popup {
+  background-color: #999;
+  color: #fff;
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;  
+}
+
+.progress-infinity-content {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  font-family: 'GT America';
+  font-size: 36px;
+  color: #464647;
+}
+
+/* All styles needs to be marked important to override built in classes here, ugly but true */ 
+.tooltip-container {
+  user-select: none !important;
+
+  --tooltipBackground: #000000 !important;
+  --tooltipBorder: #000000 !important;
+
+  margin-top: 4px !important;
+  margin-left: 0px !important;
+  margin-bottom: 2px !important;
+
+  line-height: 16px !important;
+  min-width: 108px !important;
+  padding: 16px !important;
+
+  font-size: 11px !important;
+  max-width: 250px !important;
+  border: none !important;
+  border-radius: 0 !important;
+
+  color: white !important;
+  /* text-transform: uppercase; */
+  font-size: 11px !important;
+  font-family: "GT America" !important;
+  letter-spacing: 0.4pt !important;
+
+  box-shadow: 0px 4px 9px 2px rgb(0 0 0 / 18%) !important;
+}
+
+/* Fixes minor tooltip issue with the pointer */ 
+.tooltip-container[data-popper-placement*='top'] .tooltip-arrow {
+  margin-bottom: calc( -1rem + 1px ) !important;
+}
+
+/* Fixes minor tooltip issue with the pointer */ 
+.tooltip-container[data-popper-placement*='bottom'] .tooltip-arrow {
+  margin-top: calc( -0.4rem + 1px ) !important;
+}
+
+.tooltip-trigger {
+  display: flex;
+  margin-left: 4px;
+  align-items: center;
+  height: 24px;
+}
+
+.tooltip-circle {
+  user-select: 'none';
+  height: 16px;
+  width: 16px;
+  background-color: #000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.tooltip-question {
+  color: white;
+  text-align: center;
+  line-height: 16px;
+  font-family: "GT America";
+  font-size: 14px;
+  user-select: none;
+  cursor: default;
+}
+
+.receipt__list {
+  margin: 1rem 0 1rem;
+}
+
+.receipt__list-row {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.receipt__item {
+  background-color: #fff;
+  z-index: 2;
+  padding: 0 0.15rem 0 0;
+  color: #1f1f1f;
+}
+
+.receipt__cost {
+  margin: 0;
+  padding: 0 0 0 0.15rem;
+  background-color: #fff;
+  z-index: 2;
+  color: #1f1f1f;
+}
+
+.receipt__list-row:after {
+  content: '';
+  display: block;
+  border-bottom: 1px dotted rgba(0,0,0,0.15);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: -0.25rem;
+  z-index: 1;
+}
+
+/* ND: needed to add this in order to overwrite style on modal ok button */
+@media (min-width: 640px) {
+  .modal-ok-button {
+    min-width: 120px;
+  }
+  .modal-cancel-button {
+    min-width: 120px;
+    margin-left: 8px !important;
+  }
+}
+
+.flex-end {
+  align-self: flex-end;
+}
+
+.vertical-line {
+  border-left-width: 2px;
+  border-color: black;
+  border-style: dashed;
+  margin: 0 16px 0 16px;
+}
+
+input:checked ~ .toggle__dot {
+  transform: translateX(100%);
+  background-color: black;
+}
+
 @layer base {
   body {
     @apply bg-white;

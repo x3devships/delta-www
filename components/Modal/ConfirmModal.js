@@ -13,16 +13,17 @@ const ConfirmModal = () => {
       isOpen={type === ModalType.Confirm}
       onClose={onClose}
       style={{
-        visibility: type === ModalType.Confirm ? 'inherit' : 'hidden'
+        visibility: type === ModalType.Confirm ? 'inherit' : 'hidden',
+        borderRadius: '4px'
       }}
     >
       <ModalHeader className="text-2xl font-semibold font-wulkan">{title}</ModalHeader>
       <ModalBody>{content}</ModalBody>
-      <ModalFooter>
-        <Button className="w-full sm:w-auto text-white rounded-none py-4" onClick={onOk}>
+      <ModalFooter className="sm:p-2">
+        <Button className="modal-ok-button w-full sm:w-auto text-white rounded-none py-4" onClick={onOk}>
           {okContent}
         </Button>
-        <Button className="w-full sm:w-auto text-white rounded-none py-4" onClick={onClose}>
+        <Button className="modal-cancel-button w-full sm:w-auto text-white rounded-none py-4" onClick={onClose}>
           {cancelContent}
         </Button>
       </ModalFooter>
