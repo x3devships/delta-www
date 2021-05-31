@@ -10,6 +10,7 @@ const Tips = {
   compoundBurnCheck: (<span>
     When Compound burn is enabled, 50% of the compounded delta will be locked permanently in the Vault. In return for this DELTA reward multiplier increases or is kept stable.
   </span>),
+  burnStakeDeposit: <span>When burn deposit is enabled the deposit to the deep farming vault will be locked and cannot be withdrawn. The burned amount will still be staked and yield rewards.</span>,
   permaLock: <span>The permanently locked DELTA has been staked to maintain DELTA reward multiplier at the expense of locking it forever in the vault. It will keep yielding rewards.</span>,
   deltaCompounded: null,
   immature: (<span>Amount of DELTA which is locked by vesting period. When withdrawing before vesting period is over you will forfeit the immature DELTA.</span>),

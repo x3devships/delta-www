@@ -13,7 +13,8 @@ function App({ Component, pageProps }) {
   return (
     <Windmill theme={theme}>
       <Providers {...pageProps}>
-        <Component {...pageProps} /> <ModalContainer />
+        <Component {...pageProps} />
+        <ModalContainer />
       </Providers>
     </Windmill>
   );
