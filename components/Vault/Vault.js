@@ -12,6 +12,7 @@ import { useApy, useDistributor, useYam } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 import { Tooltip, Tips } from '../Tooltip';
+import BigNumber from 'bignumber.js';
  
 const RlpBalances = () => {
   const globalHooks = useContext(GlobalHooksContext);
@@ -44,14 +45,21 @@ const DeltaStakingStats = () => {
   const {
     deltaPermanent,
     deltaVesting,
-    compoundBurn: isCmpBurn
+    compoundBurn: isCmpBurn,
+    totalDelta
   } = globalHooks.staking.info;
+
+  const normalDeltaStaked = BigNumber.isBigNumber(totalDelta) ?
+    totalDelta.minus(BigNumber.isBigNumber(deltaVesting) ? deltaVesting : 0)
+              .minus(BigNumber.isBigNumber(deltaPermanent) ? deltaPermanent : 0) : '--';
+
   return <div className="mt-4 md:mt-0">
     <DeltaTitleH4 className='flex' tip={Tips.deltaToken}>DELTA Staking</DeltaTitleH4>
-    <ul className="list-disc list-inside py-1" style={{height: '90px'}}> 
+    <ul className="list-disc list-inside py-1" style={{height: '114px'}}> 
+      <li>Staked Mature DELTA: {formatting.getTokenAmount(normalDeltaStaked, 18, 4)} DELTA</li>
       <li>Compounded DELTA: {formatting.getTokenAmount(deltaVesting, 18, 4)} DELTA</li>
       <li>Permanently Locked DELTA: {formatting.getTokenAmount(deltaPermanent, 18, 4)} DELTA <Tooltip inline tip={Tips.permaLock}/></li>
-      <li>Total Staked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.totalDelta, 18, 4)} DELTA</li>
+      <li>Total Staked DELTA: {formatting.getTokenAmount(totalDelta, 18, 4)} DELTA</li>
     </ul>
   </div>
 };
@@ -69,7 +77,7 @@ const RewardsPanel = () => {
     <DeltaTitleH4 className='flex mt-4' tip={Tips.rewards}>DELTA and ETH Rewards</DeltaTitleH4>
     <ul className="list-disc list-inside pb-4 md:pb-8">
       <li>Ready to compound DELTA: {formatting.getTokenAmount(farmedDelta, 18, 4)} DELTA</li>
-      <li>Claimable ETH: {formatting.getTokenAmount(farmedETH, 18, 4)} ETH</li>
+      <li>Claimable ETH: {formatting.getTokenAmountAsStrWithMinPrecision(farmedETH, 18, 4)} ETH</li>
     </ul>
   </div>
 };
@@ -84,7 +92,7 @@ const RlpStakingStats = () => {
   } = globalHooks.rlpInfo;
   return <div className="mt-4 md:mt-0">
     <DeltaTitleH4 className='flex' tip={Tips.deltaToken}>rLP Staking</DeltaTitleH4>
-    <ul className="list-disc list-inside py-1" style={{height: '90px'}}>
+    <ul className="list-disc list-inside py-1" style={{height: '114px'}}>
       <li>Unstaked rLP: {formatting.getTokenAmount(balance, 0, 4)} rLP</li>
       <li>Staked rLP: {formatting.getTokenAmount(rlp, 18, 4)} rLP</li>
     </ul>
