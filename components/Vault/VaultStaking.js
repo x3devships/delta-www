@@ -15,6 +15,7 @@ import { useRlpRouter, useYam } from '../../hooks';
 import { TokenInput } from '../Input';
 import { DeltaTitleH4 } from '../Title';
 import { Tips } from '../Tooltip';
+import BigNumber from 'bignumber.js';
 
 const DeltaAndRlpDeposit = ({depositAction}) => {
   switch( depositAction ) {
@@ -45,25 +46,33 @@ const RlpDeposit = () => {
 
   // eslint-disable-next-line consistent-return
   const onStake = async (amount, amountBN) => {
-    const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
+    // const booster = globalHooks.staking.info.booster;
+    const title = `Staking`; //, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
+    const message = `Are you sure you wanna stake ${amount} rLP ?`;
+    const breakdown = [
+      [ 'RLP TO STAKE', amount, 'rLP'],
+    ];
+    const confirmed = await modalContext.showConfirmWithBreakdown(title, message, breakdown);
+    // const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
 
-    if (confirmed) {
-      const transaction = yam.contracts.dfv.methods.deposit(amountBN.toString(), 0);
-
-      await transactions.executeTransaction(
-        modalContext,
-        transaction,
-        { from: wallet.account },
-        "Successfully staked",
-        "Stake",
-        "Error while staking"
-      );
-
-      globalHooks.staking.update();
-      globalHooks.rlpInfo.update();
-
-      return true;
+    if (!confirmed) {
+      return false;
     }
+    const transaction = yam.contracts.dfv.methods.deposit(amountBN.toString(), 0);
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully staked",
+      "Stake",
+      "Error while staking"
+    );
+
+    globalHooks.staking.update();
+    globalHooks.rlpInfo.update();
+
+    return true;
   };
 
   const allowanceRequiredFor = {
@@ -89,11 +98,43 @@ const DeltaDeposit = () => {
       await modalContext.showError('Error', 'Invalid input');
     } else {
 
-      const message = burning ? `You are about to stake ${amount} DELTA in the Deep Farming Vault. ${(amount / 2).toLocaleString()} DELTA will be locked permanently in the DFV.` : `You are about to stake ${amount} Delta in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${globalHooks.staking.info.booster}x to 1x. To prevent this please check the box Burn Deposit.`;
-      const confirmed = await modalContext.showConfirm('Staking', message);
+      // const message = burning ?
+      //  `You are about to stake ${amount} DELTA in the Deep Farming Vault. ${(amount / 2).toLocaleString()} DELTA will be locked permanently in the DFV.` :
+      //  `You are about to stake ${amount} Delta in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${globalHooks.staking.info.booster}x to 1x. To prevent this please check the box Burn Deposit.`;
+      // const confirmed = await modalContext.showConfirm('Staking', message);
+
+      // const claimDelta = formatting.getTokenAmount(farmedDelta, 18, 4);
+      // const claimEth = formatting.getTokenAmountAsStrWithMinPrecision(farmedETH, 18, 4);
+      // const _rlp = formatting.getTokenAmount(rlp, 18, 4);
+      const booster = globalHooks.staking.info.booster;
+      const title = `Staking`; //, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
+      const amountLock = (amount / 2).toLocaleString();
+      const message = burning ?
+        `You are about to stake ${amount} DELTA in the Deep Farming Vault. ${amountLock} DELTA will be locked permanently in the Deep Farming Vault.` :
+        `You are about to stake ${amount} Delta in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${booster}x to 1x. To prevent this please check the box Burn Deposit.`;
+      const breakdown = [
+        [ 'DELTA TO DEPOSIT', amount, 'DELTA'],
+        // [ 'BURN/LOCKED IN VAULT', amountLock, 'DELTA' ],
+      ];
+      if ( burning ) {
+        breakdown.push( [ 'DEPOSIT BURN (50%)', amountLock, 'DELTA' ] );
+      } else {
+        breakdown.push( (i) => 
+          <div key={i} className="receipt__list-row">
+            <dt className="receipt__item"><del>DEPOSIT BURN</del> (0%)</dt>
+            <dd className="receipt__cost">0 DELTA</dd>
+          </div> );
+        // [ 'DEPOSIT BURN (0%)', 0, 'DELTA' ] );
+      }
+      const confirmed = await modalContext.showConfirmWithBreakdown(title, message, breakdown);
+      if (!confirmed) {
+        return Promise.resolve();
+      }
 
       if (confirmed) {
-        const transaction = burning ? yam.contracts.dfv.methods.depositWithBurn(amountBN.toString()) : yam.contracts.dfv.methods.deposit(0, amountBN.toString());
+        const transaction = burning ?
+          yam.contracts.dfv.methods.depositWithBurn(amountBN.toString()) :
+          yam.contracts.dfv.methods.deposit(0, amountBN.toString());
 
         await transactions.executeTransaction(
           modalContext,
@@ -375,8 +416,31 @@ const DeltaWithdrawal = ({}) => {
   const yam = useYam();
   const wallet = useWallet();
 
-  const onClaim = async () => {
+  // Note all rewards are claimed...
+  const onClaimDelta = async () => {
+    const {
+      farmedDelta,
+      farmedETH,
+    } = globalHooks.staking.info;
+
+    const claimDelta = formatting.getTokenAmount(farmedDelta, 18, 4);
+    // const claimEth = formatting.getTokenAmount(farmedETH, 18, 4);
+    const claimEth = formatting.getTokenAmountAsStrWithMinPrecision(farmedETH, 18, 4);
+
+    const title = `You are about to claim your DELTA (and ETH rewards)`; //, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
+    const message = `NOTE: To save you some gas fees your ETH rewards will also be claimed in the same operation.`;
+    const breakdown = [
+      [ 'CLAIM ETHEREUM REWARDS', claimEth, 'WETH'],
+      [ 'CLAIM DELTA REWARDS', claimDelta, 'DELTA' ],
+    ];
+    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown );
+
+    if (!confirm) {
+      return Promise.resolve();
+    }
+
     if (globalHooks.staking.info.compoundBurn === DATA_UNAVAILABLE) {
+      console.error('Cannot claim - stopped, data unavailable.');
       return false;
     }
 
@@ -389,7 +453,7 @@ const DeltaWithdrawal = ({}) => {
       modalContext,
       transaction,
       { from: wallet.account },
-      "Successfully claimed",
+      "Successfully claimed rewards",
       "Claim",
       "Error while claiming"
     );
@@ -400,35 +464,47 @@ const DeltaWithdrawal = ({}) => {
     return Promise.resolve();
   };
 
-  const onExit = async () => {
+  const executeUnstakeAndClaimAll = async () => {
     const transaction = yam.contracts.dfv.methods.exit();
 
     await transactions.executeTransaction(
       modalContext,
       transaction,
       { from: wallet.account },
-      "Successfully Unstaked",
-      "Unstaking",
-      "Error while unstaking"
+      "Successfully Unstaked and claimed",
+      "Unstaking & Claimed ALL",
+      "Error while Unstaking & Claiming ALL"
     );
-
 
     globalHooks.staking.update();
     globalHooks.delta.update();
   };
 
-  const onUnstakeDelta = async () => {
-    const claimDelta = formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4);
-    const claimEth = formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4);
-    const rlp = formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4);
-    const stakedDelta = formatting.getTokenAmount(globalHooks.staking.info.ableToWithdrawDelta, 18, 4);
+  const onUnstakeAndClaimAll = async () => {
+    const {
+      farmedDelta,
+      farmedETH,
+      rlp,
+      ableToWithdrawDelta,
+    } = globalHooks.staking.info;
 
-    const message = `This will automatically claim ${claimEth} ETH, ${claimDelta} DELTA and unstake ${rlp} rLP. Withdrawal contract will be created for ${stakedDelta} DELTA. Are you sure?`;
+    const claimDelta = formatting.getTokenAmount(farmedDelta, 18, 4);
+    const claimEth = formatting.getTokenAmount(farmedETH, 18, 4);
+    const rlpF = formatting.getTokenAmount(rlp, 18, 4);
+    const stakedDelta = formatting.getTokenAmount(ableToWithdrawDelta, 18, 4);
 
-    const confirm = await modalContext.showConfirm(`You are about to unstake everything, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`, message);
+    const title = `You are about to claim all rewards and unstake all staked DELTA and rLP`; //, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
+    const message = `NOTE: This action will automatically withdraw your Ethereum and DELTA rewards in addition to unstake your staked DELTA and rLP. Also, pay attention that withdrawing DELTA rewards will initiate the one year vesting period.`;
+    const breakdown = [
+      [ 'CLAIM ETHEREUM REWARDS', claimEth, 'WETH'],
+      [ 'CLAIM DELTA REWARDS', claimDelta, 'DELTA' ],
+      [ 'UNSTAKE STAKED rLP', rlpF, 'rLP' ],
+      [ 'UNSTAKE STAKED DELTA', stakedDelta, 'DELTA' ]
+    ];
+    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown );
 
     if (confirm) {
-      await onExit();
+      await executeUnstakeAndClaimAll();
     }
   };
 
@@ -445,8 +521,8 @@ const DeltaWithdrawal = ({}) => {
       </ul>
       <div className="flex flex-grow md:flex-none">
         <TransactionButton  className="flex-1"
-                            text="Unstake All"
-                            onClick={() => onUnstakeDelta()} />
+                            text="Unstake & Claim ALL"
+                            onClick={() => onUnstakeAndClaimAll()} />
       </div>
     </>
     <DeltaTitleH4 className="mt-4">Claim DELTA rewards from the Vault</DeltaTitleH4>
@@ -457,7 +533,7 @@ const DeltaWithdrawal = ({}) => {
       <TransactionButton className="flex-1 mr-2 md:flex-grow-0"
                          style={{minWidth: '150px'}}
                          disabled={!hasFarmedDelta}
-                         text={hasFarmedDelta ? 'Claim' : 'Nothing to claim'} onClick={onClaim} />
+                         text={hasFarmedDelta ? 'Claim rewards' : 'Nothing to claim'} onClick={onClaimDelta} />
     </div>
   </div>
 };
@@ -468,13 +544,26 @@ const EthereumWithdrawal = () => {
   const wallet = useWallet();
   const modalContext = useContext(ModalContext);
 
-  const onClaim = async () => {
+  const onClaimEth = async () => {
     if (globalHooks.staking.info.compoundBurn === DATA_UNAVAILABLE) {
       return Promise.reject();
     }
 
-    const content = `This will withdraw ${formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH. You will get ${formatting.getTokenAmount(globalHooks.staking.info.farmedETH, 18, 4)} ETH in your wallet`;
-    const confirm = await modalContext.showConfirm('You are about to unstake your ETH', content);
+    const {
+      farmedDelta,
+      farmedETH,
+    } = globalHooks.staking.info;
+
+    const claimDelta = formatting.getTokenAmount(farmedDelta, 18, 4);
+    // const claimEth = formatting.getTokenAmount(farmedETH, 18, 4);
+    const claimEth = formatting.getTokenAmountAsStrWithMinPrecision(farmedETH, 18, 4);
+    const title = `You are about to claim your ETH (and DELTA rewards)`; //, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
+    const message = `NOTE: To saving you some gas fees DELTA rewards are also claimed in the same operation. `;
+    const breakdown = [
+      [ 'CLAIM ETHEREUM REWARDS', claimEth, 'WETH'],
+      [ 'CLAIM DELTA REWARDS', claimDelta, 'DELTA' ],
+    ];
+    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown );
 
     if (confirm) {
       let transaction = yam.contracts.dfv.methods.deposit(0, 0);
@@ -503,16 +592,18 @@ const EthereumWithdrawal = () => {
     farmedETH
   } = globalHooks.staking.info;
 
+  //const amountWethRewards = formatting.getTokenAmount(farmedETH, 18, 4);
+  const amountWethRewards = formatting.getTokenAmountAsStrWithMinPrecision(farmedETH, 18, 4);
   return <div className="my-4">
-    <DeltaTitleH4>Withdraw ETH Rewards from the Vault</DeltaTitleH4>
+    <DeltaTitleH4>Withdraw Ethereum Rewards from the Vault</DeltaTitleH4>
     <ul className="list-disc list-inside py-2">
-      <li>Claimable Ethereum: {formatting.getTokenAmount(farmedETH, 18, 4)} ETH</li>
+      <li>Claimable Ethereum: {amountWethRewards} WETH</li>
     </ul>
     <TransactionButton disabled={!hasFarmedETH}
                        style={{minWidth: '150px'}}
-                       text={hasFarmedETH ? 'Claim' : 'Nothing to claim'}
+                       text={hasFarmedETH ? 'Claim WETH' : 'Nothing to claim'}
                        textLoading="Claiming..."
-                       onClick={onClaim} />
+                       onClick={onClaimEth} />
   </div>
 };
 
@@ -522,25 +613,48 @@ const RlpWithdrawal = () => {
   const yam = useYam();
   const wallet = useWallet();
 
-  const onUnstakDialog = async () => {
-    const content = `This will withdraw ${formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP. And automatically claim your WETH and compound DELTA. You will get ${formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP in your wallet`;
-    const confirm = await modalContext.showConfirm('You are about to unstake your rLP', content);
+  const onUnstakerLPDialog = async () => {
 
-    if (confirm) {
-      const transaction = yam.contracts.dfv.methods.withdrawRLP(globalHooks.staking.info.rlp.toString());
+    // ND: old message:
+    // const content = `This will withdraw ${formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP. And automatically claim your WETH and compound DELTA. You will get ${formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP in your wallet`;
+    // const confirm = await modalContext.showConfirm('You are about to unstake your rLP', content);
 
-      await transactions.executeTransaction(
-        modalContext,
-        transaction,
-        { from: wallet.account },
-        "Successfully unstaked",
-        "Unstake",
-        "Error while unstaking"
-      );
+    // ND: New message:
+    const {
+      rlp,
+      farmedDelta,
+      farmedETH,
+    } = globalHooks.staking.info;
 
-      globalHooks.staking.update();
-      globalHooks.rlpInfo.update();
+    const claimDelta = formatting.getTokenAmount(farmedDelta, 18, 4);
+    const claimEth = formatting.getTokenAmountAsStrWithMinPrecision(farmedETH, 18, 4);
+    const _rlp = formatting.getTokenAmount(rlp, 18, 4);
+
+    const title = `You are about to unstake your rLP`;
+    const message = `NOTE: Besides unstaking rLP this operation will also automatically claim your WETH rewards and compound DELTA. Please consider if you want to enable compound burn on the compounded delta rewards. We do this to save you additional gas fees.`;
+    const breakdown = [
+      [ 'RLP TRANSFERED TO YOUR WALLET', _rlp, 'RLP' ],
+      [ 'CLAIM ETHEREUM REWARDS', claimEth, 'WETH' ],
+      // [ 'CLAIM DELTA REWARDS', claimDelta, 'DELTA' ],
+    ];
+    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown );
+
+    if (!confirm) {
+      return;
     }
+    const transaction = yam.contracts.dfv.methods.withdrawRLP(globalHooks.staking.info.rlp.toString());
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully unstaked rLP",
+      "Unstake",
+      "Error while unstaking rLP"
+    );
+
+    globalHooks.staking.update();
+    globalHooks.rlpInfo.update();
   };
 
   const {
@@ -553,14 +667,14 @@ const RlpWithdrawal = () => {
     </ul>
     <TransactionButton style={{minWidth: '150px'}}
                        disabled={!hasStakedRlp}
-                       text={hasStakedRlp ? 'Unstake' : 'Nothing to unstake'}
+                       text={hasStakedRlp ? 'Unstake rLP' : 'Nothing to unstake'}
                        textLoading="Unstaking..."
-                       onClick={() => onUnstakDialog()} />
+                       onClick={() => onUnstakerLPDialog()} />
   </div>
 };
 
 const VaultWithdraw = ({ token }) => {
-  const [tokenToWithdraw, setTokenToWithdraw] = useState('eth');
+  const [tokenToWithdraw, setTokenToWithdraw] = useState('delta');
 
   const renderContent = (selectTokenToWithdraw) => {
     switch (selectTokenToWithdraw) {
@@ -619,9 +733,9 @@ const VaultStaking = ({ token, className = '', dashedBorder }) => {
     <DeltaPanel className={`pt-2 mt-4 ${borderClass} ${className}`}>
       <div className="flex uppercase" onClick={() => setDepositAction(t => !t)}>
         <div className="flex self-end select-none cursor-pointer text-sm mb-2">
-          <div className={`${!depositAction ? 'text-gray-300' : 'text-black'}`}>Deposit</div>
+          <div className={`${!depositAction ? 'text-gray-300' : 'text-black'}`}>{!depositAction ? <>Deposit</> : <u>Deposit</u>}</div>
           <div className="px-1">/</div>
-          <div className={`${depositAction ? 'text-gray-300' : 'text-black'}`}>Withdraw</div>
+          <div className={`${depositAction ? 'text-gray-300' : 'text-black'}`}>{depositAction ? <>Withdraw</> : <u>Withdraw</u>}</div>
         </div>
       </div>
       <div className="mt-4 md:mt-1">
