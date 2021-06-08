@@ -8,6 +8,7 @@ module.exports = withFonts(withImages({
       '/': { page: '/' },
       '/vault': { page: '/vault' },
       '/contracts': { page: '/contracts' },
+      '/faq': { page: '/faq' },
     };
   }
 }));
