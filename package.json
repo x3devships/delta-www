@@ -50,6 +50,7 @@
     "react-moment": "^1.1.1",
     "react-popper-tooltip": "^4.2.0",
     "react-use-localstorage": "^3.5.3",
+    "sharp": "0.28",
     "styled-components": "^5.2.0",
     "tailwindcss": "^2.0.2",
     "use-wallet": "^0.8.0",
