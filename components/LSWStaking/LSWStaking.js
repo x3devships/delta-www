@@ -39,7 +39,7 @@ const LSWStaking = () => {
     return Promise.resolve();
   };
 
-  return <DeltaSection title="Delta is live!">
+  return <DeltaSection title="DELTA is live!">
     <DeltaPanel className="mt-2 md:mt-4">
       <ProgressBarCountDown />
       <div className="text-center mt-6 text-2xl">You can now claim your tokens</div>

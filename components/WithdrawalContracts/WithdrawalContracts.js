@@ -26,7 +26,7 @@ const FinalizeContractDialogContent = ({ contract }) => {
       </div>
     </div>
     <div className="mt-4">
-      Your {formatting.getTokenAmount(contract.immature, 18, 4)} immature Delta will be distributed back to the Deep Farming Vault.
+      Your {formatting.getTokenAmount(contract.immature, 18, 4)} immature DELTA will be distributed back to the Deep Farming Vault.
     </div>
     <div className="mt-2">This process cannot be undone.</div>
   </DeltaPanel>;
@@ -58,8 +58,7 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
     };
 
     if (contract.percentVested < 100) {
-      // const confirmed = await modelContext.showConfirm('You are finalizing your Withdrawal while having immature Delta Rewards.', <FinalizeContractDialogContent contract={contract} />, 'Finalize Withdrawal');
-      const confirm = await modalContext.showConfirm('Finalize', 'Are you sure you want to finalize the contract while still having immatured Delta ?');
+      const confirm = await modalContext.showConfirm('Finalize', 'Are you sure you want to finalize the contract while still having immatured DELTA ?');
       if (confirm) {
         return finalize();
       }
@@ -100,7 +99,7 @@ const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) 
   }
 
   return <DeltaSectionBox showIndex opened={opened} className={className} index={index} indexFormatter={i => i + 1} title='Withdrawal Contract' onOpen={onOpen} >
-    <div className="mt-4">Delta is continuously maturing in the  Withdrawal contract. The Vesting cycle to fully mature your rewards is one year. Finalizing the withdrawal will distribute your immatured Delta to the Deep Farming Vault. You will receive your matured Delta (minimum 5% of total Rewards)</div>
+    <div className="mt-4">DELTA is continuously maturing in the  Withdrawal contract. The Vesting cycle to fully mature your rewards is one year. Finalizing the withdrawal will distribute your immatured DELTA to the Deep Farming Vault. You will receive your matured DELTA (minimum 5% of total Rewards)</div>
     <div className="mt-4 mb-2">
       <div>Time until fully matured:</div>
       <div>{timer.days} Day(s) {timer.hours} Hour(s) {timer.minutes} Minute(s)</div>
@@ -136,7 +135,7 @@ const WithdrawalContracts = () => {
       <WithdrawalContractItem opened={index === currentOpened} className="mt-4" index={index} key={`contract-${index}`} contract={contract} onOpen={onOpen} />);
   };
 
-  return <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Withdrawal Contracts">
+  return <DeltaSection requiresConnectedWallet showConnectWalletButton title="DELTA Withdrawal Contracts">
     <DeltaPanel>
       {render()}
     </DeltaPanel>

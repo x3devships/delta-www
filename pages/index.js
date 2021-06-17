@@ -9,10 +9,10 @@ const Hero = () => {
   return (
     <div className="pt-10 pb-10 mt-3 md:mt-20 text-gray-900 leading-none">
       <div className="text-6xl font-wulkan">
-        Delta Has Launched!
+        DELTA Has Launched!
       </div>
       <div className="mt-8 text-lg text-left w-full md:w-6/12">
-        The Limited Staking Window has successfully come to an end. Delta is now tradable on SushiSwap, the rLP tokens are claimable and the Deep Farming Vault is producing yield! Make sure to claim and stake your rLP to earn yield from the Deep Farming Vault.
+        The Limited Staking Window has successfully come to an end. DELTA is now tradable on SushiSwap, the rLP tokens are claimable and the Deep Farming Vault is producing yield! Make sure to claim and stake your rLP to earn yield from the Deep Farming Vault.
       </div>
     </div>
   );
@@ -21,7 +21,7 @@ const Hero = () => {
 const DisclaimerFooter = () => <div className="bg-gray-100 p-4 text-gray-900 text-sm">
   <div className="m-auto text-justify" style={{ maxWidth: '75ch' }}>
     *APY calculations are based on current DELTA price taken from decentralized exchange prices.
-    RLP prices used in APY calculations are based on the RLP costs from decentralized exchanges.
+    rLP prices used in APY calculations are based on the rLP costs from decentralized exchanges.
     APY of the Deep Farming Vault is not fixed, but variable based on vesting interruptions and other mechanisms.
     Deep Farming Vault yield constitutes about 90% DELTA and 10% ETH (in the form of WETH).
   </div>

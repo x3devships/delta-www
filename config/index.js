@@ -6,7 +6,7 @@ BigNumber.config({
   DECIMAL_PLACES: 80
 });
 
-export const APP_VERSION = '0.1.6';
+export const APP_VERSION = '0.1.7';
 export const SUBTRACT_GAS_LIMIT = 100000;
 export const DEFAULT_CONFIRMATIONS = 1;
 export const DEFAULT_GAS = '6000000';

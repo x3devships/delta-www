@@ -33,12 +33,12 @@ const HeroIntro = () => {
                 <span className="font-gt_america flex">up to {apy.eth_yearly_delta} %*</span>
               </div>
               <div className=" flex flex-col pt-4 md:pt-0">
-                RLP APY
+                rLP APY
                 <span className="font-gt_america flex">{apy.eth_yearly_rlp_uni} %*</span>
               </div>
             </div>
           </div>
-        </DeltaTitleH1> 
+        </DeltaTitleH1>
       </div>
 
       <DeltaPanel >

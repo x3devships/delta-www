@@ -111,7 +111,7 @@ const MyWallet = () => {
       return <div className="mt-4 w-full">
         <div>You have no DELTA. They can be obtained on SushiSwap Exchange.</div>
         <a target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">
-          <DeltaButton className="mt-8">Buy Delta</DeltaButton>
+          <DeltaButton className="mt-8">Buy DELTA</DeltaButton>
         </a>
       </div>
     }
@@ -161,12 +161,12 @@ const MyWallet = () => {
     </div>
   };
 
-  return <DeltaSection requiresConnectedWallet title="Delta Vesting Schedule">
+  return <DeltaSection requiresConnectedWallet title="DELTA Vesting Schedule">
     <DeltaPanel className="md:mt-0">
       <div className="md:mt-0">
         <div className="flex flex-col-reverse md:flex-row-reverse">
           <DeltaPanel className="w-full mt-4">
-            <DeltaTitleH3>Total Delta</DeltaTitleH3>
+            <DeltaTitleH3>Total DELTA</DeltaTitleH3>
             {renderChart()}
           </DeltaPanel>
           <DeltaPanel className="mt-4">
@@ -175,7 +175,7 @@ const MyWallet = () => {
             <DeltaPanel className="flex items-center text-center flex-wrap mt-4">
               <DeltaButton className="flex-1 mr-4 md:flex-grow-0" labelBottom="Earn Yield" onClick={goToVaultPage}>Stake in vault</DeltaButton>
               <a target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">
-                <DeltaButton className="flex-1 md:flex-grow-0" labelBottom="Earn Yield" >Trade Delta</DeltaButton>
+                <DeltaButton className="flex-1 md:flex-grow-0" labelBottom="Earn Yield" >Trade DELTA</DeltaButton>
               </a>
             </DeltaPanel>
           </DeltaPanel>
@@ -183,7 +183,7 @@ const MyWallet = () => {
       </div>
       {globalHooks.delta.data.vestingTransactions !== DATA_UNAVAILABLE && globalHooks.delta.data.vestingTransactions.length > 0 &&
         <DeltaPanel className="block md:flex items-center text-center flex-wrap mt-4">
-          <DeltaButton renderIcon={() => transactionDetailsVisible ? <span className="pl-2">▲</span> : <span className="pl-2">▼</span>} onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'Show Delta Vesting Schedules' : 'Hide Delta Vesting Schedules'}</DeltaButton>
+          <DeltaButton renderIcon={() => transactionDetailsVisible ? <span className="pl-2">▲</span> : <span className="pl-2">▼</span>} onClick={onToggleTransactionDetails}>{!transactionDetailsVisible ? 'Show DELTA Vesting Schedules' : 'Hide DELTA Vesting Schedules'}</DeltaButton>
         </DeltaPanel>}
       <DeltaPanel className={`${!transactionDetailsVisible ? 'hidden' : ''}`}>
         <VestingTransactions />

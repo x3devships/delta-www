@@ -46,7 +46,7 @@ $ cd src
 $ ./liveTest.sh tests_live/operations/setup_website_env.js  --local
 ```
 
-Once ran, it should display the delta token address. This address should be replaced in the one inside ```config/inodex.js``` ```addressMap.delta```
+Once ran, it should display the DELTA token address. This address should be replaced in the one inside ```config/inodex.js``` ```addressMap.delta```
 
 Make sure the other address listen in the console are updated as well, if needed.
 

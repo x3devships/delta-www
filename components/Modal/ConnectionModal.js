@@ -64,7 +64,7 @@ const ConnectionModal = () => {
         <div className="m-auto text-center justify-center">
           <div className="py-4 text-lg font-bold">
             Connection to MetaMask failed
-           </div>
+          </div>
           <div className="py-4 text-justify">
             If you're experiencing issues when connecting your wallet, try the following troubleshooting tips.
           </div>
@@ -106,7 +106,7 @@ const ConnectionModal = () => {
         visibility: type === ModalType.ConnectWallet ? 'inherit' : 'hidden'
       }}
     >
-      <ModalHeader className="text-2xl font-semibold font-wulkan">Connect To Delta</ModalHeader>
+      <ModalHeader className="text-2xl font-semibold font-wulkan">Connect To DELTA</ModalHeader>
       <ModalBody className="pt-8 m-auto text-base">
         {renderContent()}
       </ModalBody>

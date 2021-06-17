@@ -3,6 +3,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { useWallet } from 'use-wallet';
+import BigNumber from 'bignumber.js';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting, transactions } from '../../helpers';
@@ -15,25 +16,24 @@ import { useRlpRouter, useYam } from '../../hooks';
 import { TokenInput } from '../Input';
 import { DeltaTitleH4 } from '../Title';
 import { Tips } from '../Tooltip';
-import BigNumber from 'bignumber.js';
 
-const DeltaAndRlpDeposit = ({depositAction}) => {
-  switch( depositAction ) {
+const DeltaAndRlpDeposit = ({ depositAction }) => {
+  switch (depositAction) {
     case true: case false: case 0:
       return <DeltaDeposit />;
-    break;
+      break;
 
     case 1:
       return <DeltaBuy />;
-    break;
+      break;
 
     case 2:
       return <RlpDeposit />;
-    break;
+      break;
 
     case 3:
       return <RlpMinting />;
-    break; 
+      break;
   }
   return null;
 }
@@ -47,10 +47,10 @@ const RlpDeposit = () => {
   // eslint-disable-next-line consistent-return
   const onStake = async (amount, amountBN) => {
     // const booster = globalHooks.staking.info.booster;
-    const title = `Staking`; //, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
+    const title = `Staking`; // , you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
     const message = `Are you sure you wanna stake ${amount} rLP ?`;
     const breakdown = [
-      [ 'RLP TO STAKE', amount, 'rLP'],
+      ['RLP TO STAKE', amount, 'rLP'],
     ];
     const confirmed = await modalContext.showConfirmWithBreakdown(title, message, breakdown);
     // const confirmed = await modalContext.showConfirm('Staking', `Are you sure you wanna stake ${amount} rLP ?`);
@@ -100,30 +100,30 @@ const DeltaDeposit = () => {
 
       // const message = burning ?
       //  `You are about to stake ${amount} DELTA in the Deep Farming Vault. ${(amount / 2).toLocaleString()} DELTA will be locked permanently in the DFV.` :
-      //  `You are about to stake ${amount} Delta in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${globalHooks.staking.info.booster}x to 1x. To prevent this please check the box Burn Deposit.`;
+      //  `You are about to stake ${amount} DELTA in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${globalHooks.staking.info.booster}x to 1x. To prevent this please check the box Burn Deposit.`;
       // const confirmed = await modalContext.showConfirm('Staking', message);
 
       // const claimDelta = formatting.getTokenAmount(farmedDelta, 18, 4);
       // const claimEth = formatting.getTokenAmountAsStrWithMinPrecision(farmedETH, 18, 4);
       // const _rlp = formatting.getTokenAmount(rlp, 18, 4);
-      const booster = globalHooks.staking.info.booster;
-      const title = `Staking`; //, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
+      const { booster } = globalHooks.staking.info;
+      const title = `Staking`; // , you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
       const amountLock = (amount / 2).toLocaleString();
       const message = burning ?
         `You are about to stake ${amount} DELTA in the Deep Farming Vault. ${amountLock} DELTA will be locked permanently in the Deep Farming Vault.` :
-        `You are about to stake ${amount} Delta in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${booster}x to 1x. To prevent this please check the box Burn Deposit.`;
+        `You are about to stake ${amount} DELTA in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${booster}x to 1x. To prevent this please check the box Burn Deposit.`;
       const breakdown = [
-        [ 'DELTA TO DEPOSIT', amount, 'DELTA'],
+        ['DELTA TO DEPOSIT', amount, 'DELTA'],
         // [ 'BURN/LOCKED IN VAULT', amountLock, 'DELTA' ],
       ];
-      if ( burning ) {
-        breakdown.push( [ 'DEPOSIT BURN (50%)', amountLock, 'DELTA' ] );
+      if (burning) {
+        breakdown.push(['DEPOSIT BURN (50%)', amountLock, 'DELTA']);
       } else {
-        breakdown.push( (i) => 
+        breakdown.push((i) =>
           <div key={i} className="receipt__list-row">
             <dt className="receipt__item"><del>DEPOSIT BURN</del> (0%)</dt>
             <dd className="receipt__cost">0 DELTA</dd>
-          </div> );
+          </div>);
         // [ 'DEPOSIT BURN (0%)', 0, 'DELTA' ] );
       }
       const confirmed = await modalContext.showConfirmWithBreakdown(title, message, breakdown);
@@ -203,18 +203,18 @@ const DeltaDeposit = () => {
   };
 
   const renderCompoundBurn = () => {
-    const {hasFarmedDelta} = globalHooks.staking.info;
+    const { hasFarmedDelta } = globalHooks.staking.info;
     return <div className="mt-6">
       <DeltaTitleH4>Compound Your Staking Rewards</DeltaTitleH4>
       <CompoundBurnCheckbox className="flex mt-2 md:ml-1 d-none" />
       <div className="mt-4">
         <DeltaButton className="flex md:block mt-4 md:w-max"
-                     disabled={!hasFarmedDelta}
-                     onClick={() => onCompoundDeposit()}>
+          disabled={!hasFarmedDelta}
+          onClick={() => onCompoundDeposit()}>
           {!hasFarmedDelta ? 'Nothing To Compound' : 'Compound Deposit'}
         </DeltaButton>
       </div>
-      <div className="flex" style={{justifyContent: 'space-between'}}>
+      <div className="flex" style={{ justifyContent: 'space-between' }}>
         <div className="text-sm text-gray-400 flex mt-1">
           Compound your stake by depositing your current rewards
         </div>
@@ -226,16 +226,16 @@ const DeltaDeposit = () => {
     <div className="mt-4">
       <DeltaTitleH4>Stake DELTA From Your Wallet</DeltaTitleH4>
       <TokenInput className="mt-0"
-                  token="delta-all"
-                  buttonText="Stake"
-                  labelBottomClassName="text-xs text-gray-400"
-                  labelBottom="Deposit DELTA and earn yield"
-                  buttonTextLoading="Staking..."
-                  checkboxButton="Burn Deposit"
-                  checkboxButtonTip={Tips.burnStakeDeposit}
-                  checkboxButtonChecked
-                  onOk={onStake}
-                  allowanceRequiredFor={allowanceRequiredFor} />
+        token="delta-all"
+        buttonText="Stake"
+        labelBottomClassName="text-xs text-gray-400"
+        labelBottom="Deposit DELTA and earn yield"
+        buttonTextLoading="Staking..."
+        checkboxButton="Burn Deposit"
+        checkboxButtonTip={Tips.burnStakeDeposit}
+        checkboxButtonChecked
+        onOk={onStake}
+        allowanceRequiredFor={allowanceRequiredFor} />
     </div>
     {renderCompoundBurn()}
   </div>;
@@ -282,64 +282,63 @@ const RlpMinting = () => {
   };
 
   return (
-  <div>
-    <div className="mt-4">
-      <DeltaTitleH4>Mint rLP tokens by depositing ETH</DeltaTitleH4>
-      <div className="text-sm my-4 p-2 bg-green-100 border-l-4 border-green-600">Note: Creating new RLP supply can sometimes cost more than buying on a second hand market</div>
-      <ul className="list-disc list-inside py-2">
-        <li>Deposit Ethereum to mint new rLP tokens</li>
-        <li>Select stake automatically to immediately stake the new rLP in the Deep Farming Vault</li>
-        <li>1 LP = {formatting.getTokenAmount(globalHooks.staking.rlpPerLp)} rLP</li>
-      </ul>
-      <TokenInput
-        className="mt-4"
-        token="ETH"
-        buttonText="MINT"
-        onChange={onChange}
-        labelBottom={estimationLabel}
-        buttonTextLoading="MINTING..."
-        checkboxButton="Stake"
-        checkboxButtonChecked={false}
-        onOk={onBuy} />
-    </div>
-  </div> );
+    <div>
+      <div className="mt-4">
+        <DeltaTitleH4>Mint rLP tokens by depositing ETH</DeltaTitleH4>
+        <div className="text-sm my-4 p-2 bg-green-100 border-l-4 border-green-600">Note: Creating new RLP supply can sometimes cost more than buying on a second hand market</div>
+        <ul className="list-disc list-inside py-2">
+          <li>Deposit Ethereum to mint new rLP tokens</li>
+          <li>Select stake automatically to immediately stake the new rLP in the Deep Farming Vault</li>
+          <li>1 LP = {formatting.getTokenAmount(globalHooks.staking.rlpPerLp)} rLP</li>
+        </ul>
+        <TokenInput
+          className="mt-4"
+          token="ETH"
+          buttonText="MINT"
+          onChange={onChange}
+          labelBottom={estimationLabel}
+          buttonTextLoading="MINTING..."
+          checkboxButton="Stake"
+          checkboxButtonChecked={false}
+          onOk={onBuy} />
+      </div>
+    </div>);
 };
 
 const VaultDeposit = ({ token }) => {
   const [depositAction, setDepositAction] = useState(true);
 
-  // Nightdrive: New deposit component added.
-  if ( !token ) {
+  if (!token) {
     return <div>
       <DeltaPanel className="flex items-center text-center flex-wrap">
         <div className="flex border border-black p-1 flex-grow md:flex-none">
           <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
-                       onClick={() => setDepositAction(t => 0)}
-                       grayLook={!depositAction || typeof depositAction === 'boolean'}>
-            Stake Delta
+            onClick={() => setDepositAction(t => 0)}
+            grayLook={!depositAction || typeof depositAction === 'boolean'}>
+            Stake DELTA
           </DeltaButton>
 
           <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
-                       onClick={() => setDepositAction(t => 1)}
-                       grayLook={depositAction === 1}>
+            onClick={() => setDepositAction(t => 1)}
+            grayLook={depositAction === 1}>
             Buy DELTA
           </DeltaButton>
 
           <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
-                       onClick={() => setDepositAction(t => 2)}
-                       grayLook={depositAction === 2}>
+            onClick={() => setDepositAction(t => 2)}
+            grayLook={depositAction === 2}>
             Stake rLP
           </DeltaButton>
 
           <DeltaButton className="flex-1 md:flex-grow-0"
-                       onClick={() => setDepositAction(t => 3)}
-                       grayLook={depositAction === 3}>
+            onClick={() => setDepositAction(t => 3)}
+            grayLook={depositAction === 3}>
             MINT rLP
           </DeltaButton>
 
         </div>
       </DeltaPanel>
-      <DeltaAndRlpDeposit {...{depositAction}}/>
+      <DeltaAndRlpDeposit {...{ depositAction }} />
     </div>;
   }
 
@@ -377,9 +376,9 @@ const VaultDeposit = ({ token }) => {
     <DeltaPanel className="flex items-center text-center flex-wrap">
       <div className="flex border border-black p-1 flex-grow md:flex-none">
         <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
-                     onClick={() => setDepositAction(t => !t)}
-                     grayLook={!depositAction}>
-          {token === 'rLP' ? 'Stake rLP' : 'Stake Delta'}
+          onClick={() => setDepositAction(t => !t)}
+          grayLook={!depositAction}>
+          {token === 'rLP' ? 'Stake rLP' : 'Stake DELTA'}
         </DeltaButton>
         {renderBuyButton(token)}
       </div>
@@ -388,31 +387,9 @@ const VaultDeposit = ({ token }) => {
   </div>;
 };
 
-
-/* const CreateWithdrawalContractContent = ({ token }) => {
-  let message = 'This will automatically claim 3.543 ETH and start a Withdrawal contract for 3245 Delta.'
-  if (token === 'delta') {
-    message = `${message} And reduce your Reward Multiplier to 1x.`
-  }
-
-  // TODO: Read from web3
-  const claimDelta = 123;
-  const claimEth = 432;
-
-  return <DeltaPanel>
-    <div className="my-4 text-base">{message}</div>
-    <div className="my-4 text-base">Current Reward Multiplier:</div>
-    <div>Reward Multiplier</div>
-    <div><ProgressBarDiamonds small value={10} maxValue={10} /></div>
-    <div>Time until downgrade: 6 days 13 hours</div>
-  </DeltaPanel>;
-}
-*/
-
-const DeltaWithdrawal = ({}) => {
+const DeltaWithdrawal = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
-  const router = useRouter()
   const yam = useYam();
   const wallet = useWallet();
 
@@ -424,16 +401,15 @@ const DeltaWithdrawal = ({}) => {
     } = globalHooks.staking.info;
 
     const claimDelta = formatting.getTokenAmount(farmedDelta, 18, 4);
-    // const claimEth = formatting.getTokenAmount(farmedETH, 18, 4);
     const claimEth = formatting.getTokenAmountAsStrWithMinPrecision(farmedETH, 18, 4);
 
-    const title = `You are about to claim your DELTA (and ETH rewards)`; //, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
+    const title = `You are about to claim your DELTA (and ETH rewards)`; // , you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
     const message = `NOTE: To save you some gas fees your ETH rewards will also be claimed in the same operation.`;
     const breakdown = [
-      [ 'CLAIM ETHEREUM REWARDS', claimEth, 'WETH'],
-      [ 'CLAIM DELTA REWARDS', claimDelta, 'DELTA' ],
+      ['CLAIM ETHEREUM REWARDS', claimEth, 'WETH'],
+      ['CLAIM DELTA REWARDS', claimDelta, 'DELTA'],
     ];
-    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown );
+    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown);
 
     if (!confirm) {
       return Promise.resolve();
@@ -493,15 +469,15 @@ const DeltaWithdrawal = ({}) => {
     const rlpF = formatting.getTokenAmount(rlp, 18, 4);
     const stakedDelta = formatting.getTokenAmount(ableToWithdrawDelta, 18, 4);
 
-    const title = `You are about to claim all rewards and unstake all staked DELTA and rLP`; //, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
+    const title = `You are about to claim all rewards and unstake all staked DELTA and rLP`; // , you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
     const message = `NOTE: This action will automatically withdraw your Ethereum and DELTA rewards in addition to unstake your staked DELTA and rLP. Also, pay attention that withdrawing DELTA rewards will initiate the one year vesting period.`;
     const breakdown = [
-      [ 'CLAIM ETHEREUM REWARDS', claimEth, 'WETH'],
-      [ 'CLAIM DELTA REWARDS', claimDelta, 'DELTA' ],
-      [ 'UNSTAKE STAKED rLP', rlpF, 'rLP' ],
-      [ 'UNSTAKE STAKED DELTA', stakedDelta, 'DELTA' ]
+      ['CLAIM ETHEREUM REWARDS', claimEth, 'WETH'],
+      ['CLAIM DELTA REWARDS', claimDelta, 'DELTA'],
+      ['UNSTAKE STAKED rLP', rlpF, 'rLP'],
+      ['UNSTAKE STAKED DELTA', stakedDelta, 'DELTA']
     ];
-    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown );
+    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown);
 
     if (confirm) {
       await executeUnstakeAndClaimAll();
@@ -517,12 +493,12 @@ const DeltaWithdrawal = ({}) => {
     <>
       <DeltaTitleH4>Withdraw DELTA from the Vault</DeltaTitleH4>
       <ul className="list-disc list-inside py-2">
-        <li>Staked Delta: {formatting.getTokenAmount(ableToWithdrawDelta.minus(farmedDelta), 18, 4)} DELTA</li>
+        <li>Staked DELTA: {formatting.getTokenAmount(ableToWithdrawDelta.minus(farmedDelta), 18, 4)} DELTA</li>
       </ul>
       <div className="flex flex-grow md:flex-none">
-        <TransactionButton  className="flex-1"
-                            text="Unstake & Claim ALL"
-                            onClick={() => onUnstakeAndClaimAll()} />
+        <TransactionButton className="flex-1"
+          text="Unstake & Claim ALL"
+          onClick={() => onUnstakeAndClaimAll()} />
       </div>
     </>
     <DeltaTitleH4 className="mt-4">Claim DELTA rewards from the Vault</DeltaTitleH4>
@@ -531,9 +507,9 @@ const DeltaWithdrawal = ({}) => {
     </ul>
     <div className="flex flex-grow md:flex-none">
       <TransactionButton className="flex-1 mr-2 md:flex-grow-0"
-                         style={{minWidth: '150px'}}
-                         disabled={!hasFarmedDelta}
-                         text={hasFarmedDelta ? 'Claim rewards' : 'Nothing to claim'} onClick={onClaimDelta} />
+        style={{ minWidth: '150px' }}
+        disabled={!hasFarmedDelta}
+        text={hasFarmedDelta ? 'Claim rewards' : 'Nothing to claim'} onClick={onClaimDelta} />
     </div>
   </div>
 };
@@ -557,13 +533,13 @@ const EthereumWithdrawal = () => {
     const claimDelta = formatting.getTokenAmount(farmedDelta, 18, 4);
     // const claimEth = formatting.getTokenAmount(farmedETH, 18, 4);
     const claimEth = formatting.getTokenAmountAsStrWithMinPrecision(farmedETH, 18, 4);
-    const title = `You are about to claim your ETH (and DELTA rewards)`; //, you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
+    const title = `You are about to claim your ETH (and DELTA rewards)`; // , you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
     const message = `NOTE: To saving you some gas fees DELTA rewards are also claimed in the same operation. `;
     const breakdown = [
-      [ 'CLAIM ETHEREUM REWARDS', claimEth, 'WETH'],
-      [ 'CLAIM DELTA REWARDS', claimDelta, 'DELTA' ],
+      ['CLAIM ETHEREUM REWARDS', claimEth, 'WETH'],
+      ['CLAIM DELTA REWARDS', claimDelta, 'DELTA'],
     ];
-    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown );
+    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown);
 
     if (confirm) {
       let transaction = yam.contracts.dfv.methods.deposit(0, 0);
@@ -592,7 +568,7 @@ const EthereumWithdrawal = () => {
     farmedETH
   } = globalHooks.staking.info;
 
-  //const amountWethRewards = formatting.getTokenAmount(farmedETH, 18, 4);
+  // const amountWethRewards = formatting.getTokenAmount(farmedETH, 18, 4);
   const amountWethRewards = formatting.getTokenAmountAsStrWithMinPrecision(farmedETH, 18, 4);
   return <div className="my-4">
     <DeltaTitleH4>Withdraw Ethereum Rewards from the Vault</DeltaTitleH4>
@@ -600,10 +576,10 @@ const EthereumWithdrawal = () => {
       <li>Claimable Ethereum: {amountWethRewards} WETH</li>
     </ul>
     <TransactionButton disabled={!hasFarmedETH}
-                       style={{minWidth: '150px'}}
-                       text={hasFarmedETH ? 'Claim WETH' : 'Nothing to claim'}
-                       textLoading="Claiming..."
-                       onClick={onClaimEth} />
+      style={{ minWidth: '150px' }}
+      text={hasFarmedETH ? 'Claim WETH' : 'Nothing to claim'}
+      textLoading="Claiming..."
+      onClick={onClaimEth} />
   </div>
 };
 
@@ -631,13 +607,13 @@ const RlpWithdrawal = () => {
     const _rlp = formatting.getTokenAmount(rlp, 18, 4);
 
     const title = `You are about to unstake your rLP`;
-    const message = `NOTE: Besides unstaking rLP this operation will also automatically claim your WETH rewards and compound DELTA. Please consider if you want to enable compound burn on the compounded delta rewards. We do this to save you additional gas fees.`;
+    const message = `NOTE: Besides unstaking rLP this operation will also automatically claim your WETH rewards and compound DELTA. Please consider if you want to enable compound burn on the compounded DELTA rewards. We do this to save you additional gas fees.`;
     const breakdown = [
-      [ 'RLP TRANSFERED TO YOUR WALLET', _rlp, 'RLP' ],
-      [ 'CLAIM ETHEREUM REWARDS', claimEth, 'WETH' ],
+      ['RLP TRANSFERED TO YOUR WALLET', _rlp, 'RLP'],
+      ['CLAIM ETHEREUM REWARDS', claimEth, 'WETH'],
       // [ 'CLAIM DELTA REWARDS', claimDelta, 'DELTA' ],
     ];
-    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown );
+    const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown);
 
     if (!confirm) {
       return;
@@ -665,11 +641,11 @@ const RlpWithdrawal = () => {
     <ul className="list-disc list-inside py-2">
       <li>Staked rLP: {formatting.getTokenAmount(globalHooks.staking.info.rlp, 18, 4)} rLP</li>
     </ul>
-    <TransactionButton style={{minWidth: '150px'}}
-                       disabled={!hasStakedRlp}
-                       text={hasStakedRlp ? 'Unstake rLP' : 'Nothing to unstake'}
-                       textLoading="Unstaking..."
-                       onClick={() => onUnstakerLPDialog()} />
+    <TransactionButton style={{ minWidth: '150px' }}
+      disabled={!hasStakedRlp}
+      text={hasStakedRlp ? 'Unstake rLP' : 'Nothing to unstake'}
+      textLoading="Unstaking..."
+      onClick={() => onUnstakerLPDialog()} />
   </div>
 };
 
@@ -681,7 +657,7 @@ const VaultWithdraw = ({ token }) => {
       case 'eth':
         return <EthereumWithdrawal />
       case 'delta':
-        return <DeltaWithdrawal token={token || 'delta'} />
+        return <DeltaWithdrawal token={token || 'delta'} />
       case 'rlp':
         return <RlpWithdrawal />
       default:
@@ -695,20 +671,20 @@ const VaultWithdraw = ({ token }) => {
     if (token === 'delta') {
       return <>
         <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
-                     onClick={() => setTokenToWithdraw('eth')}
-                     grayLook={tokenToWithdraw !== 'eth'}>
+          onClick={() => setTokenToWithdraw('eth')}
+          grayLook={tokenToWithdraw !== 'eth'}>
           Ethereum
         </DeltaButton>
         <DeltaButton className="flex-1 md:flex-grow-0"
-                     onClick={() => setTokenToWithdraw('delta')}
-                     grayLook={tokenToWithdraw !== 'delta'}>
-          Delta
+          onClick={() => setTokenToWithdraw('delta')}
+          grayLook={tokenToWithdraw !== 'delta'}>
+          DELTA
         </DeltaButton>
       </>;
     }
 
     return <>
-      <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setTokenToWithdraw('delta')} grayLook={tokenToWithdraw !== 'delta'}>Delta</DeltaButton>
+      <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setTokenToWithdraw('delta')} grayLook={tokenToWithdraw !== 'delta'}>DELTA</DeltaButton>
       <DeltaButton className="flex-1 mr-2 md:flex-grow-0" onClick={() => setTokenToWithdraw('eth')} grayLook={tokenToWithdraw !== 'eth'}>Ethereum</DeltaButton>
       <DeltaButton className="flex-1 md:flex-grow-0" onClick={() => setTokenToWithdraw('rlp')} grayLook={tokenToWithdraw !== 'rlp'}>rLP</DeltaButton>
     </>;
@@ -741,7 +717,7 @@ const VaultStaking = ({ token, className = '', dashedBorder }) => {
       <div className="mt-4 md:mt-1">
         {depositAction ? <VaultDeposit token={token} /> : <VaultWithdraw token={token} />}
       </div>
-    </DeltaPanel> );
+    </DeltaPanel>);
 };
 
 export default VaultStaking;

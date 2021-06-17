@@ -14,7 +14,7 @@ const useStaking = () => {
 
   const [info, setInfo] = useState({
     booster: DATA_UNAVAILABLE, // Current staking booster 1x-10x
-    farmedDelta: DATA_UNAVAILABLE, // Amount of farmed Delta
+    farmedDelta: DATA_UNAVAILABLE, // Amount of farmed DELTA
     farmedETH: DATA_UNAVAILABLE, // Amount of farmed Eth
     recycledDelta: DATA_UNAVAILABLE,
     recycledETH: DATA_UNAVAILABLE,

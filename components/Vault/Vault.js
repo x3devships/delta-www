@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { useWallet } from 'use-wallet';
+import BigNumber from 'bignumber.js';
 import { DeltaPanel, DeltaSection } from '../Section';
 import { DeltaTitleH2, DeltaTitleH4 } from '../Title';
 import { ProgressBarDiamonds } from '../ProgressBar';
@@ -12,14 +13,13 @@ import { useApy, useDistributor, useYam } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 import { Tooltip, Tips } from '../Tooltip';
-import BigNumber from 'bignumber.js';
- 
+
 const RlpBalances = () => {
   const globalHooks = useContext(GlobalHooksContext);
   return (
     <div className="mt-4 md:mt-0">
       <DeltaTitleH4 className="flex" tip={Tips.rLPToken}>rLP Token</DeltaTitleH4>
-      <ul className="list-disc list-inside py-1" style={{height: '90px'}} >
+      <ul className="list-disc list-inside py-1" style={{ height: '90px' }} >
         <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + (globalHooks.staking.info.rlp.toString() / 1e18), 0, 4)} rLP</li>
       </ul>
     </div>
@@ -32,9 +32,9 @@ const DeltaStats = () => {
 
   return <div className="mt-4 md:mt-0">
     <DeltaTitleH4 className='flex' tip={Tips.deltaToken}>DELTA Token</DeltaTitleH4>
-    <ul className="list-disc list-inside py-1" style={{height: '90px'}}> 
-      <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA<Tooltip inline tip={Tips.immature}/></li>
-      <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} DELTA<Tooltip inline tip={Tips.mature}/></li>
+    <ul className="list-disc list-inside py-1" style={{ height: '90px' }}>
+      <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA<Tooltip inline tip={Tips.immature} /></li>
+      <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} DELTA<Tooltip inline tip={Tips.mature} /></li>
       <li>Total DELTA: {formatting.getTokenAmount(globalHooks.delta.data.total, 0, 4)} DELTA</li>
     </ul>
   </div >
@@ -51,14 +51,14 @@ const DeltaStakingStats = () => {
 
   const normalDeltaStaked = BigNumber.isBigNumber(totalDelta) ?
     totalDelta.minus(BigNumber.isBigNumber(deltaVesting) ? deltaVesting : 0)
-              .minus(BigNumber.isBigNumber(deltaPermanent) ? deltaPermanent : 0) : '--';
+      .minus(BigNumber.isBigNumber(deltaPermanent) ? deltaPermanent : 0) : '--';
 
   return <div className="mt-4 md:mt-0">
     <DeltaTitleH4 className='flex' tip={Tips.deltaToken}>DELTA Staking</DeltaTitleH4>
-    <ul className="list-disc list-inside py-1" style={{height: '114px'}}> 
+    <ul className="list-disc list-inside py-1" style={{ height: '114px' }}>
       <li>Staked Mature DELTA: {formatting.getTokenAmount(normalDeltaStaked, 18, 4)} DELTA</li>
       <li>Compounded DELTA: {formatting.getTokenAmount(deltaVesting, 18, 4)} DELTA</li>
-      <li>Permanently Locked DELTA: {formatting.getTokenAmount(deltaPermanent, 18, 4)} DELTA <Tooltip inline tip={Tips.permaLock}/></li>
+      <li>Permanently Locked DELTA: {formatting.getTokenAmount(deltaPermanent, 18, 4)} DELTA <Tooltip inline tip={Tips.permaLock} /></li>
       <li>Total Staked DELTA: {formatting.getTokenAmount(totalDelta, 18, 4)} DELTA</li>
     </ul>
   </div>
@@ -92,7 +92,7 @@ const RlpStakingStats = () => {
   } = globalHooks.rlpInfo;
   return <div className="mt-4 md:mt-0">
     <DeltaTitleH4 className='flex' tip={Tips.deltaToken}>rLP Staking</DeltaTitleH4>
-    <ul className="list-disc list-inside py-1" style={{height: '114px'}}>
+    <ul className="list-disc list-inside py-1" style={{ height: '114px' }}>
       <li>Unstaked rLP: {formatting.getTokenAmount(balance, 0, 4)} rLP</li>
       <li>Staked rLP: {formatting.getTokenAmount(rlp, 18, 4)} rLP</li>
     </ul>
@@ -106,7 +106,7 @@ const DeltaStaking = () => {
   return (
     <div className="mt-4 md:mt-0">
       <DeltaTitleH2 className='mt-4 flex' tip={Tips.deltaRewards}>DELTA Rewards</DeltaTitleH2>
-      <ul className="list-disc list-inside py-4" style={{height: '90px'}}> 
+      <ul className="list-disc list-inside py-4" style={{ height: '90px' }}>
         <li>Ready to compound DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
         <li>Compounded DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaVesting, 18, 4)} DELTA</li>
         <li>Permanently Locked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaPermanent, 18, 4)} DELTA</li>
@@ -121,7 +121,7 @@ const DeltaMultiplier = () => {
   const deltaRewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
   return (
     <div className="flex w-full flex-col flex-grow mt-0">
-      <DeltaTitleH4 className="mt-0">DELTA Reward Multiplier<Tooltip inline tip={Tips.deltaRewardMultiplier}/></DeltaTitleH4>
+      <DeltaTitleH4 className="mt-0">DELTA Reward Multiplier<Tooltip inline tip={Tips.deltaRewardMultiplier} /></DeltaTitleH4>
       <ProgressBarDiamonds value={globalHooks.staking.info.booster} maxValue={10} className="flex w-full flex-grow mt-2" />
       <div className="text-xs text-gray-400 flex mt-1">{deltaRewardMultiplierDescription}</div>
     </div>
@@ -132,14 +132,14 @@ const RlpMultiplier = () => {
   const rLPRewardMultiplierDescription = 'rLP has a estimated 200x multiplier that doesn\'t require any upkeep';
   return (
     <div className="w-full flex-grow flex-col md:flex mt-0 self-start">
-      <DeltaTitleH4 className="mt-0">rLP Reward Multiplier<Tooltip inline tip={Tips.rLPRewardMultiplier}/></DeltaTitleH4>
-      <ProgressBarDiamonds noUpkeepNeeded={true} className="flex flex-grow w-full mt-2" />
+      <DeltaTitleH4 className="mt-0">rLP Reward Multiplier<Tooltip inline tip={Tips.rLPRewardMultiplier} /></DeltaTitleH4>
+      <ProgressBarDiamonds noUpkeepNeeded className="flex flex-grow w-full mt-2" />
       <div className="text-xs text-gray-400 flex mt-1">{rLPRewardMultiplierDescription}</div>
     </div>
   );
 };
 
-const VerticalLayout = ({children}) => (
+const VerticalLayout = ({ children }) => (
   <div className="w-full flex-grow flex-col md:flex self-start">
     {children}
   </div>
@@ -149,7 +149,7 @@ const VaultPanel = ({ className = '' }) => {
   const globalHooks = useContext(GlobalHooksContext);
   return <div className={`mt-4 md:mt-2 ${className}`}>
     <DeltaTitleH2 lineunder>Balances</DeltaTitleH2>
-    <DeltaPanel className="mt-4 flex flex-col md:flex-row">  
+    <DeltaPanel className="mt-4 flex flex-col md:flex-row">
       <VerticalLayout>
         <div>
           <DeltaStats />
@@ -182,12 +182,12 @@ const VaultPanel = ({ className = '' }) => {
 
     <DeltaPanel className='mt-4'>
       <DeltaTitleH2 lineunder>Rewards</DeltaTitleH2>
-      <RewardsPanel /> 
+      <RewardsPanel />
     </DeltaPanel>
 
     <DeltaPanel className='mt-4'>
       <DeltaTitleH2 lineunder>Vault actions</DeltaTitleH2>
-      <VaultStaking /> 
+      <VaultStaking />
     </DeltaPanel>
 
 
@@ -247,7 +247,7 @@ const Vault = () => {
   };
 
   return <>
-    <DeltaSection requiresConnectedWallet showConnectWalletButton title="Delta Farming Vault">
+    <DeltaSection requiresConnectedWallet showConnectWalletButton title="DELTA Farming Vault">
       <DeltaPanel className="md:mt-0">
         <div className="md:mt-0">
           <div className="flex flex-col md:flex-row-reverse">
@@ -257,7 +257,7 @@ const Vault = () => {
             </DeltaPanel>
             <DeltaPanel className="my-4 text-lg">
               The Deep Farming Vault distributes<br />
-              yield to staked rLP and Delta.
+              yield to staked rLP and DELTA.
             </DeltaPanel>
           </div>
 
@@ -265,7 +265,7 @@ const Vault = () => {
             More information about how to use the Deep Farming Vault <br />is available at the Document Portal.
             <div className="block md:flex">
               <a target="_blank" href={gitbookUrl} rel="noopener noreferrer">
-                <DeltaButton className="mt-4 block md:flex">Delta Document Portal</DeltaButton>
+                <DeltaButton className="mt-4 block md:flex">DELTA Document Portal</DeltaButton>
               </a>
             </div>
           </DeltaPanel>
