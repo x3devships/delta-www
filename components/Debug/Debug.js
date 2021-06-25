@@ -1,11 +1,11 @@
-import { useContext } from 'react';
+/* import { useContext } from 'react';
 import { DATA_UNAVAILABLE } from '../../config';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
-import { useYam } from '../../hooks';
+import { useYam } from '../../hooks'; */
 
 const Debug = () => {
   return null;
-  const globalHooks = useContext(GlobalHooksContext);
+  /* const globalHooks = useContext(GlobalHooksContext);
   const yam = useYam();
 
   const renderDate = () => {
@@ -25,7 +25,7 @@ const Debug = () => {
       <li> <span className="font-bold">Date </span>{renderDate()}</li>
       {yam && yam.contracts.usingMocks && <li> <span className="font-bold text-red-500">Using Mocks </span></li>}
     </ul>
-  </div>
+  </div> */
 };
 
 export default Debug;

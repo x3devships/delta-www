@@ -19,7 +19,7 @@ const RlpBalances = () => {
   return (
     <div className="mt-4 md:mt-0">
       <DeltaTitleH4 className="flex" tip={Tips.rLPToken}>rLP Token</DeltaTitleH4>
-      <ul className="list-disc list-inside py-1" style={{ height: '90px' }} >
+      <ul className="list-disc list-inside py-1 md-height-90px" >
         <li>Total rLP: {formatting.getTokenAmount(globalHooks.rlpInfo.balance + (globalHooks.staking.info.rlp.toString() / 1e18), 0, 4)} rLP</li>
       </ul>
     </div>
@@ -28,13 +28,13 @@ const RlpBalances = () => {
 
 const DeltaStats = () => {
   const globalHooks = useContext(GlobalHooksContext);
-  const isCmpBurn = globalHooks.staking.info.compoundBurn;
+  // const isCmpBurn = globalHooks.staking.info.compoundBurn;
 
   return <div className="mt-4 md:mt-0">
     <DeltaTitleH4 className='flex' tip={Tips.deltaToken}>DELTA Token</DeltaTitleH4>
-    <ul className="list-disc list-inside py-1" style={{ height: '90px' }}>
-      <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA<Tooltip inline tip={Tips.immature} /></li>
-      <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} DELTA<Tooltip inline tip={Tips.mature} /></li>
+    <ul className="list-disc list-inside py-1 md-height-90px" > 
+      <li>Immature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.immature, 0, 4)} DELTA<Tooltip inline tip={Tips.immature}/></li>
+      <li>Mature DELTA: {formatting.getTokenAmount(globalHooks.delta.data.mature, 0, 4)} DELTA<Tooltip inline tip={Tips.mature}/></li>
       <li>Total DELTA: {formatting.getTokenAmount(globalHooks.delta.data.total, 0, 4)} DELTA</li>
     </ul>
   </div >
@@ -45,7 +45,7 @@ const DeltaStakingStats = () => {
   const {
     deltaPermanent,
     deltaVesting,
-    compoundBurn: isCmpBurn,
+    // compoundBurn: isCmpBurn,
     totalDelta
   } = globalHooks.staking.info;
 
@@ -55,7 +55,7 @@ const DeltaStakingStats = () => {
 
   return <div className="mt-4 md:mt-0">
     <DeltaTitleH4 className='flex' tip={Tips.deltaToken}>DELTA Staking</DeltaTitleH4>
-    <ul className="list-disc list-inside py-1" style={{ height: '114px' }}>
+    <ul className="list-disc list-inside py-1 md-height-114px"> 
       <li>Staked Mature DELTA: {formatting.getTokenAmount(normalDeltaStaked, 18, 4)} DELTA</li>
       <li>Compounded DELTA: {formatting.getTokenAmount(deltaVesting, 18, 4)} DELTA</li>
       <li>Permanently Locked DELTA: {formatting.getTokenAmount(deltaPermanent, 18, 4)} DELTA <Tooltip inline tip={Tips.permaLock} /></li>
@@ -66,9 +66,9 @@ const DeltaStakingStats = () => {
 
 const RewardsPanel = () => {
   const globalHooks = useContext(GlobalHooksContext);
-  const {
+  /* const {
     compoundBurn: isCmpBurn
-  } = globalHooks.staking.info;
+  } = globalHooks.staking.info; */
   const {
     farmedDelta,
     farmedETH
@@ -92,21 +92,21 @@ const RlpStakingStats = () => {
   } = globalHooks.rlpInfo;
   return <div className="mt-4 md:mt-0">
     <DeltaTitleH4 className='flex' tip={Tips.deltaToken}>rLP Staking</DeltaTitleH4>
-    <ul className="list-disc list-inside py-1" style={{ height: '114px' }}>
+    <ul className="list-disc list-inside py-1 md-height-114px">
       <li>Unstaked rLP: {formatting.getTokenAmount(balance, 0, 4)} rLP</li>
       <li>Staked rLP: {formatting.getTokenAmount(rlp, 18, 4)} rLP</li>
     </ul>
   </div>
 };
 
-const DeltaStaking = () => {
+/* const DeltaStaking = () => {
   const globalHooks = useContext(GlobalHooksContext);
-  const isCmpBurn = globalHooks.staking.info.compoundBurn;
+  // const isCmpBurn = globalHooks.staking.info.compoundBurn;
 
   return (
     <div className="mt-4 md:mt-0">
       <DeltaTitleH2 className='mt-4 flex' tip={Tips.deltaRewards}>DELTA Rewards</DeltaTitleH2>
-      <ul className="list-disc list-inside py-4" style={{ height: '90px' }}>
+      <ul className="list-disc list-inside py-4 md-height-90px"> 
         <li>Ready to compound DELTA: {formatting.getTokenAmount(globalHooks.staking.info.farmedDelta, 18, 4)} DELTA</li>
         <li>Compounded DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaVesting, 18, 4)} DELTA</li>
         <li>Permanently Locked DELTA: {formatting.getTokenAmount(globalHooks.staking.info.deltaPermanent, 18, 4)} DELTA</li>
@@ -114,14 +114,14 @@ const DeltaStaking = () => {
       </ul>
     </div>
   );
-};
+}; */
 
 const DeltaMultiplier = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const deltaRewardMultiplierDescription = 'Every week 10% of the principle needs to be deposited in the DFV to keep the Multiplier stable';
   return (
-    <div className="flex w-full flex-col flex-grow mt-0">
-      <DeltaTitleH4 className="mt-0">DELTA Reward Multiplier<Tooltip inline tip={Tips.deltaRewardMultiplier} /></DeltaTitleH4>
+    <div className="flex w-full flex-col flex-grow mt-4 md:mt-0">
+      <DeltaTitleH4 className="mt-0">DELTA Reward Multiplier<Tooltip inline tip={Tips.deltaRewardMultiplier}/></DeltaTitleH4>
       <ProgressBarDiamonds value={globalHooks.staking.info.booster} maxValue={10} className="flex w-full flex-grow mt-2" />
       <div className="text-xs text-gray-400 flex mt-1">{deltaRewardMultiplierDescription}</div>
     </div>
@@ -131,8 +131,8 @@ const DeltaMultiplier = () => {
 const RlpMultiplier = () => {
   const rLPRewardMultiplierDescription = 'rLP has a estimated 200x multiplier that doesn\'t require any upkeep';
   return (
-    <div className="w-full flex-grow flex-col md:flex mt-0 self-start">
-      <DeltaTitleH4 className="mt-0">rLP Reward Multiplier<Tooltip inline tip={Tips.rLPRewardMultiplier} /></DeltaTitleH4>
+    <div className="w-full flex-grow flex-col md:flex mt-4 md:mt-0 self-start">
+      <DeltaTitleH4 className="mt-0">rLP Reward Multiplier<Tooltip inline tip={Tips.rLPRewardMultiplier}/></DeltaTitleH4>
       <ProgressBarDiamonds noUpkeepNeeded className="flex flex-grow w-full mt-2" />
       <div className="text-xs text-gray-400 flex mt-1">{rLPRewardMultiplierDescription}</div>
     </div>
@@ -146,7 +146,7 @@ const VerticalLayout = ({ children }) => (
 );
 
 const VaultPanel = ({ className = '' }) => {
-  const globalHooks = useContext(GlobalHooksContext);
+  // const globalHooks = useContext(GlobalHooksContext);
   return <div className={`mt-4 md:mt-2 ${className}`}>
     <DeltaTitleH2 lineunder>Balances</DeltaTitleH2>
     <DeltaPanel className="mt-4 flex flex-col md:flex-row">
@@ -201,7 +201,7 @@ const Vault = () => {
   const modalContext = useContext(ModalContext);
   const distributor = useDistributor();
 
-  const onDistribute = async () => {
+  /* const onDistribute = async () => {
     const transaction = yam.contracts.distributor.methods.distribute();
 
     await transactions.executeTransaction(
@@ -229,7 +229,7 @@ const Vault = () => {
     );
 
     distributor.update();
-  };
+  }; */
 
   const onClaim = async () => {
     const transaction = yam.contracts.distributor.methods.claimCredit();

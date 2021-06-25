@@ -3,16 +3,16 @@ import { MainLayout } from '../components/Layout';
 import { MyWallet } from '../components/MyWallet';
 import { LSWStaking } from '../components/LSWStaking';
 import { HeroIntro } from '../components/HeroIntro';
-import { APP_VERSION } from '../config';
+import { APP_VERSION, deltaSushiswapUrl, oneInchUrl } from '../config';
 
 const Hero = () => {
   return (
     <div className="pt-10 pb-10 mt-3 md:mt-20 text-gray-900 leading-none">
       <div className="text-6xl font-wulkan">
-        DELTA Has Launched!
+        Delta is live!
       </div>
       <div className="mt-8 text-lg text-left w-full md:w-6/12">
-        The Limited Staking Window has successfully come to an end. DELTA is now tradable on SushiSwap, the rLP tokens are claimable and the Deep Farming Vault is producing yield! Make sure to claim and stake your rLP to earn yield from the Deep Farming Vault.
+        Delta is live and tradable on <a style={{ color: "purple" }} target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">SushiSwap</a> and <a style={{ color: "purple" }} target="_blank" href={oneInchUrl} rel="noopener noreferrer">1Inch</a>. The Deep Farming Vault is producing yield! Make sure to claim rewards and stake your rLP and stake or boost Delta to earn yield from the Deep Farming Vault.
       </div>
     </div>
   );
@@ -35,9 +35,9 @@ export default function Main() {
     <MainLayout>
       <Hero />
       <HeroIntro />
+      <MyWallet />
       <LSWStaking />
       <ReferralProgram />
-      <MyWallet />
     </MainLayout>
     <DisclaimerFooter />
   </>;

@@ -1,9 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useContext, useState, useEffect } from 'react';
-import { useRouter } from 'next/router'
 import { useWallet } from 'use-wallet';
-import BigNumber from 'bignumber.js';
 import { ModalContext } from '../../contexts';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import { formatting, transactions } from '../../helpers';
@@ -11,7 +9,7 @@ import DeltaButton from '../Button/DeltaButton';
 import TransactionButton from '../Button/TransactionButton';
 import { CompoundBurnCheckbox } from '../CheckBox';
 import { DeltaPanel } from '../Section'
-import { DATA_UNAVAILABLE, deltaSushiswapUrl } from '../../config';
+import { DATA_UNAVAILABLE, deltaSushiswapUrl, oneInchUrlDelta, oneInchUrlRlp } from '../../config';
 import { useRlpRouter, useYam } from '../../hooks';
 import { TokenInput } from '../Input';
 import { DeltaTitleH4 } from '../Title';
@@ -21,21 +19,17 @@ const DeltaAndRlpDeposit = ({ depositAction }) => {
   switch (depositAction) {
     case true: case false: case 0:
       return <DeltaDeposit />;
-      break;
-
     case 1:
       return <DeltaBuy />;
-      break;
-
     case 2:
       return <RlpDeposit />;
-      break;
-
+    /* case 3:
+      return <RlpMinting />; */
     case 3:
-      return <RlpMinting />;
-      break;
+      return <RlpBuy />;
+    default:
+      return null;
   }
-  return null;
 }
 
 const RlpDeposit = () => {
@@ -241,18 +235,26 @@ const DeltaDeposit = () => {
   </div>;
 };
 
-const DeltaBuy = () => {
-  return (
-    <div>
-      <div className="mt-4">
-        <DeltaTitleH4>Buy DELTA on Sushi.com</DeltaTitleH4>
-        <a className="flex-1 md:flex-grow-0" target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">
-          <DeltaButton grayLook={!1}>Open exchange</DeltaButton>
-        </a>
-      </div>
+const DeltaBuy = () =>
+  <div>
+    <div className="mt-4">
+      <DeltaTitleH4>Buy DELTA on 1Inch</DeltaTitleH4>
+      <a className="flex-1 md:flex-grow-0" target="_blank" href={oneInchUrlDelta} rel="noopener noreferrer">
+        <DeltaButton grayLook={!1}>Open exchange</DeltaButton>
+      </a>
     </div>
-  ); // -
-};
+  </div>;
+
+const RlpBuy = () =>
+  <div>
+    <div className="mt-4">
+      <DeltaTitleH4>Buy rLP</DeltaTitleH4>
+      <div className="text-sm my-4 p-2 bg-red-100 border-l-4 border-green-600">Minting rLP tokens has been disabled as minting price is currently too high instead you can buy rLP on exchanges.</div>
+      <a className="flex-1 md:flex-grow-0" target="_blank" href={oneInchUrlRlp} rel="noopener noreferrer">
+        <DeltaButton grayLook={!1}>Open exchange</DeltaButton>
+      </a>
+    </div>
+  </div>;
 
 const RlpMinting = () => {
   const router = useRlpRouter();
@@ -313,29 +315,34 @@ const VaultDeposit = ({ token }) => {
       <DeltaPanel className="flex items-center text-center flex-wrap">
         <div className="flex border border-black p-1 flex-grow md:flex-none">
           <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
-            onClick={() => setDepositAction(t => 0)}
-            grayLook={!depositAction || typeof depositAction === 'boolean'}>
-            Stake DELTA
+                       onClick={() => setDepositAction(() => 0)}
+                       grayLook={!depositAction || typeof depositAction === 'boolean'}>
+            Stake Delta
           </DeltaButton>
 
           <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
-            onClick={() => setDepositAction(t => 1)}
-            grayLook={depositAction === 1}>
+                       onClick={() => setDepositAction(() => 1)}
+                       grayLook={depositAction === 1}>
             Buy DELTA
           </DeltaButton>
 
           <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
-            onClick={() => setDepositAction(t => 2)}
-            grayLook={depositAction === 2}>
+                       onClick={() => setDepositAction(() => 2)}
+                       grayLook={depositAction === 2}>
             Stake rLP
           </DeltaButton>
 
-          <DeltaButton className="flex-1 md:flex-grow-0"
-            onClick={() => setDepositAction(t => 3)}
-            grayLook={depositAction === 3}>
+          {/* <DeltaButton className="flex-1 md:flex-grow-0"
+                       onClick={() => setDepositAction(() => 3)}
+                       grayLook={depositAction === 3}>
             MINT rLP
-          </DeltaButton>
+          </DeltaButton> */}
 
+          <DeltaButton className="flex-1 md:flex-grow-0"
+                       onClick={() => setDepositAction(() => 3)}
+                       grayLook={depositAction === 3}>
+            Buy rLP
+          </DeltaButton>
         </div>
       </DeltaPanel>
       <DeltaAndRlpDeposit {...{ depositAction }} />
@@ -387,9 +394,30 @@ const VaultDeposit = ({ token }) => {
   </div>;
 };
 
+/* const CreateWithdrawalContractContent = ({ token }) => {
+  let message = 'This will automatically claim 3.543 ETH and start a Withdrawal contract for 3245 Delta.'
+  if (token === 'delta') {
+    message = `${message} And reduce your Reward Multiplier to 1x.`
+  }
+
+  // TODO: Read from web3
+  const claimDelta = 123;
+  const claimEth = 432;
+
+  return <DeltaPanel>
+    <div className="my-4 text-base">{message}</div>
+    <div className="my-4 text-base">Current Reward Multiplier:</div>
+    <div>Reward Multiplier</div>
+    <div><ProgressBarDiamonds small value={10} maxValue={10} /></div>
+    <div>Time until downgrade: 6 days 13 hours</div>
+  </DeltaPanel>;
+}
+*/
+
 const DeltaWithdrawal = () => {
   const globalHooks = useContext(GlobalHooksContext);
   const modalContext = useContext(ModalContext);
+  // const router = useRouter();
   const yam = useYam();
   const wallet = useWallet();
 
@@ -598,19 +626,19 @@ const RlpWithdrawal = () => {
     // ND: New message:
     const {
       rlp,
-      farmedDelta,
+      // farmedDelta,
       farmedETH,
     } = globalHooks.staking.info;
 
-    const claimDelta = formatting.getTokenAmount(farmedDelta, 18, 4);
+    // const claimDelta = formatting.getTokenAmount(farmedDelta, 18, 4);
     const claimEth = formatting.getTokenAmountAsStrWithMinPrecision(farmedETH, 18, 4);
     const _rlp = formatting.getTokenAmount(rlp, 18, 4);
 
     const title = `You are about to unstake your rLP`;
     const message = `NOTE: Besides unstaking rLP this operation will also automatically claim your WETH rewards and compound DELTA. Please consider if you want to enable compound burn on the compounded DELTA rewards. We do this to save you additional gas fees.`;
     const breakdown = [
-      ['RLP TRANSFERED TO YOUR WALLET', _rlp, 'RLP'],
-      ['CLAIM ETHEREUM REWARDS', claimEth, 'WETH'],
+      [ 'RLP TRANSFERED TO YOUR WALLET', _rlp, 'RLP' ],
+      [ 'CLAIM ETHEREUM REWARDS', claimEth, 'WETH' ]
       // [ 'CLAIM DELTA REWARDS', claimDelta, 'DELTA' ],
     ];
     const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown);

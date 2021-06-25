@@ -23,6 +23,14 @@ const ReferralProgram = () => {
   const modalContext = useContext(ModalContext);
   const chartData = useReferralRewardsChartData();
 
+  const {
+    referralBonusWETH
+  } = globalHooks.lswStats.data;
+
+  if ( referralBonusWETH !== DATA_UNAVAILABLE && referralBonusWETH <= 0 ) {
+    return null;
+  }
+
   const onClaim = async () => {
     const transaction = await yam.contracts.LSW.methods.getWETHBonusForReferrals();
 
@@ -62,7 +70,7 @@ const ReferralProgram = () => {
         <div className="flex flex-col md:flex-row-reverse">
           <div className="w-full">
             <DeltaTitleH3 className="mt-8 md:mt-0">Your Referral Rewards</DeltaTitleH3>
-            {globalHooks.lswStats.data.referralBonusWETH !== DATA_UNAVAILABLE && globalHooks.lswStats.data.referralBonusWETH > 0 ?
+            {referralBonusWETH !== DATA_UNAVAILABLE && referralBonusWETH > 0 ?
               <div className="w-full">
                 <svg style={{ height: 0 }}>
                   <defs>
@@ -100,7 +108,7 @@ const ReferralProgram = () => {
               <DeltaTitleH3>Your Referral Bonus</DeltaTitleH3>
 
               <ul className="list-disc list-inside py-4">
-                <li>ETH to be claimed: {formatting.getTokenAmount(globalHooks.lswStats.data.referralBonusWETH, 0, 8)}</li>
+                <li>ETH to be claimed: {formatting.getTokenAmount(referralBonusWETH, 0, 8)}</li>
               </ul>
               <DeltaPanel>
                 <TransactionButton disabled={globalHooks.lswStats.data.referralBonusWETH <= 0} text={globalHooks.lswStats.data.referralBonusWETH > 0 ? 'Claim Bonus' : 'Nothing to claim'} textLoading="Claiming..." onClick={() => onClaim()} />
