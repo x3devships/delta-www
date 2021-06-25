@@ -30,7 +30,7 @@ const ConfirmWithBreakdownModal = () => {
       
       <dl className="receipt__list">
         {
-         (breakdown || []).map( (x, i) => {
+         (breakdown || []).map( (x, i) => {
             if ( typeof x === 'function' ) {
               return x(i);
             }

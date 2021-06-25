@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
+/* import {
+  useEffect,
+  useState
+} from 'react'; */
 
 const AuthenticationLayer = ({ children }) => {
-  const [authenticated, setAuthenticated] = useState();
+ // const [authenticated, setAuthenticated] = useState();
 
   // useEffect(() => {
   //   const authenticate = async password => {

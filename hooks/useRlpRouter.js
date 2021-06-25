@@ -6,7 +6,7 @@ import { DATA_UNAVAILABLE } from '../config';
 import { formatting, parsing, transactions } from '../helpers';
 import { ModalContext } from '../contexts';
 
-const VALUE_REFRESH_INTERVAL = 30 * 1000;
+// const VALUE_REFRESH_INTERVAL = 30 * 1000;
 const SLIPPAGE_PER_MILE = 50; // 5% slippage
 
 const MODE = {
@@ -157,6 +157,7 @@ const useRlpRouter = () => {
     if (!yam?.contracts?.deltaRouter) {
       return false;
     }
+    return undefined;
   }, [yam, wallet]);
 
   return {

@@ -2,6 +2,7 @@ import { DeltaPanel, DeltaSection } from '../Section';
 import { DeltaTitleH4 } from '../Title';
 import DeltaButton from '../Button/DeltaButton';
 import { gitbookUrl } from '../../config';
+import { oneInchUrlRlp } from '../../config';
 
 const FAQ = () => {
   const answerStyle = { fontFamily: '"GT America", sans-serif', fontSize: '12pt' };
@@ -67,7 +68,7 @@ const FAQ = () => {
             <DeltaTitleH4>How can I get more rLP?</DeltaTitleH4>
             <div style={answerStyle}>
               You can mint new rLP, however the minting process becomes increasingly expensive as time passes. rLP can likely be
-              swapped cheaper using a DEX aggregator like 1inch (https://1inch.io/).</div>
+              swapped cheaper using a DEX aggregator like <a href={oneInchUrlRlp} target="_blank" rel="noopener noreferrer">1inch</a>).</div>
           </DeltaPanel>
 
           <DeltaPanel className="mt-8 text-lg block">

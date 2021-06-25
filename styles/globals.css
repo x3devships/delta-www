@@ -40,6 +40,95 @@
   }
 }
 
+/* ND84: Fix top bar begin */ 
+
+.menu-link-contracts-small {
+  display: none;
+}
+
+.menu-link-disconnect-small {
+  display: none;
+}
+
+.big-is-flex-row {
+  flex-direction: row;  
+}
+
+@media (max-width: 1151px) {
+  .menu-link-contracts {
+    display: none;
+  }
+  .menu-link-disconnect {
+    display: none;
+  }
+  .menu-link-contracts-small {
+    display: initial;
+  }
+  .menu-link-disconnect-small {
+    display: initial;
+  }
+}
+
+@media (max-width: 945px) {
+  .topbar-dyn-fontsz {
+    font-size:  14px;
+  }
+}
+
+@media (max-width: 910px) {
+  .topbar-dyn-fontsz {
+    font-size:  12px;
+  }
+}
+
+@media (max-width: 880px) {
+  .menu-item {
+    margin-left: 0;
+  }
+  .big-is-flex-row {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 767px) {
+  .menu-link-contracts {
+    display: initial;
+  }
+  .menu-link-disconnect {
+    display: initial;
+  }
+  .menu-link-contracts-small {
+    display: none;
+  }
+  .menu-link-disconnect-small {
+    display: none;
+  }
+  .topbar-dyn-fontsz {
+    font-size:  16px;
+  } 
+}
+/* ND84: Fix top bar end */
+
+
+
+/* ND84: Fixed layout for mobile on vault. */
+.md-height-90px {
+  height: 90px;
+}
+.md-height-114px {
+  height: 114px;
+}
+@media (max-width: 767px) {
+  .md-height-90px {
+    height: auto;
+  }
+  .md-height-114px {
+    height: auto;
+  }
+}
+/* ND84: End fixing lauyout for mobile.  */
+
+
 .toggle__dot {
   top: -.25rem;
   left: -.25rem;

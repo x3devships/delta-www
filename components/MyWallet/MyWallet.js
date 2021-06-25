@@ -1,17 +1,17 @@
 import { VictoryPie, VictoryLabel, VictoryLegend } from 'victory';
 import { useContext, useEffect, useState } from 'react';
-import { Button } from '@windmill/react-ui';
+// import { Button } from '@windmill/react-ui';
 import { useRouter } from 'next/router'
 import { DeltaPanel, DeltaSection, DeltaSectionBox } from '../Section';
-import { DeltaTitleH3, DeltaTitleH4 } from '../Title';
-import { formatting, transactions, time } from '../../helpers';
+import { DeltaTitleH3 } from '../Title';
+import { formatting, time } from '../../helpers';
 import { VestingTransactionProgressBar } from '../ProgressBar';
 import { DATA_UNAVAILABLE, deltaSushiswapUrl } from '../../config';
 import { GlobalHooksContext } from '../../contexts/GlobalHooks';
 import DeltaButton from '../Button/DeltaButton';
-import { TokenInput } from '../Input';
-import TransactionButton from '../Button/TransactionButton';
-import { ModalContext } from '../../contexts';
+// import { TokenInput } from '../Input';
+// import TransactionButton from '../Button/TransactionButton';
+// import { ModalContext } from '../../contexts';
 import { Spinner } from '../Spinner';
 
 const FULLY_VESTING_REFRESH_RATE = 1 * 60 * 1000;
@@ -52,8 +52,8 @@ const VestingTransactions = () => {
 const MyWallet = () => {
   const [fullyVestedAtInfo, setFullyVestedAtInfo] = useState(DATA_UNAVAILABLE);
   const [transactionDetailsVisible, setTransactionDetailsVisible] = useState(false);
-  const modalContext = useContext(ModalContext);
-
+  // const modalContext = useContext(ModalContext);
+ 
   const chartWidth = 400;
   const globalHooks = useContext(GlobalHooksContext);
   const router = useRouter()
