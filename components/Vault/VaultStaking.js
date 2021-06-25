@@ -9,7 +9,7 @@ import DeltaButton from '../Button/DeltaButton';
 import TransactionButton from '../Button/TransactionButton';
 import { CompoundBurnCheckbox } from '../CheckBox';
 import { DeltaPanel } from '../Section'
-import { DATA_UNAVAILABLE, deltaSushiswapUrl, oneInchUrlDelta, oneInchUrlRlp } from '../../config';
+import { DATA_UNAVAILABLE, deltaSushiswapUrl, oneInchUrlRlp } from '../../config';
 import { useRlpRouter, useYam } from '../../hooks';
 import { TokenInput } from '../Input';
 import { DeltaTitleH4 } from '../Title';
@@ -239,7 +239,7 @@ const DeltaBuy = () =>
   <div>
     <div className="mt-4">
       <DeltaTitleH4>Buy DELTA on 1Inch</DeltaTitleH4>
-      <a className="flex-1 md:flex-grow-0" target="_blank" href={oneInchUrlDelta} rel="noopener noreferrer">
+      <a className="flex-1 md:flex-grow-0" target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">
         <DeltaButton grayLook={!1}>Open exchange</DeltaButton>
       </a>
     </div>
