@@ -54,7 +54,7 @@
   flex-direction: row;  
 }
 
-@media (max-width: 1144px) {
+@media (max-width: 1151px) {
   .menu-link-contracts {
     display: none;
   }

@@ -3,7 +3,7 @@ import { MainLayout } from '../components/Layout';
 import { MyWallet } from '../components/MyWallet';
 import { LSWStaking } from '../components/LSWStaking';
 import { HeroIntro } from '../components/HeroIntro';
-import { APP_VERSION, deltaSushiswapUrl, oneInchUrl } from '../config';
+import { APP_VERSION, deltaSushiswapUrl } from '../config';
 
 const Hero = () => {
   return (
@@ -12,7 +12,7 @@ const Hero = () => {
         Delta is live!
       </div>
       <div className="mt-8 text-lg text-left w-full md:w-6/12">
-        Delta is live and tradable on <a style={{ color: "purple" }} target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">SushiSwap</a> and <a style={{ color: "purple" }} target="_blank" href={oneInchUrl} rel="noopener noreferrer">1Inch</a>. The Deep Farming Vault is producing yield! Make sure to claim rewards and stake your rLP and stake or boost Delta to earn yield from the Deep Farming Vault.
+        Delta is live and tradable on <a style={{ color: "purple" }} target="_blank" href={deltaSushiswapUrl} rel="noopener noreferrer">SushiSwap</a>. The Deep Farming Vault is producing yield! Make sure to claim rewards and stake your rLP and stake or boost Delta to earn yield from the Deep Farming Vault.
       </div>
     </div>
   );
