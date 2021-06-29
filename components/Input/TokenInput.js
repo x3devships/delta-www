@@ -152,7 +152,7 @@ const TokenInput = ({
   }, [amount, checkboxChecked]);
 
   const renderInput = () => {
-    let friendlyName = tokenInfo.friendlyName || token.toUpperCase();
+    let friendlyName = tokenInfo.friendlyName || token.toUpperCase();
     if ( friendlyName === 'DELTA-ALL' ) friendlyName = 'DELTA';
     return <>
       <div className="bg-white flex border border-black">
@@ -206,7 +206,7 @@ const TokenInput = ({
           <div className="flex flex">
             {renderInput()}
             {renderMaxButton()}
-            <div className={`ml-1 md:flex`}>
+            <div className="ml-1 md:flex">
               {renderTransactionButton()}
               {/* checkboxButton && <div className="flex md:p-1 ml-1 md:border md:border-black flex-grow">
                 <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} />
@@ -215,7 +215,7 @@ const TokenInput = ({
           </div>
         </div>
         {renderHelpers()}
-        <div className={`mt-0`}>
+        <div className="mt-0">
           {checkboxButton && <div className="block">
             <DeltaCheckboxButton text={checkboxButton} checked={checkboxChecked} onChange={onCheckboxChanged} tip={checkboxButtonTip} />
           </div>}

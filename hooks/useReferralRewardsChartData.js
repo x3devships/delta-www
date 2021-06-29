@@ -4,7 +4,7 @@ import EthDater from 'ethereum-block-by-date';
 import _ from 'lodash';
 import useWeb3 from './useWeb3';
 
-const LSW_STARTDATE_IN_MILLIS = 1614011341 * 1000;
+// const LSW_STARTDATE_IN_MILLIS = 1614011341 * 1000;
 const REFRESH_RATE = 1 * 60 * 60 * 1000; // once per minute
 
 const getLocalStorageKey = address => `chart_refrewards_${address}`;

@@ -12,7 +12,7 @@ import { useWithdrawal } from '../../hooks';
 import { DATA_UNAVAILABLE } from '../../config';
 import { Spinner } from '../Spinner';
 
-const FinalizeContractDialogContent = ({ contract }) => {
+/* const FinalizeContractDialogContent = ({ contract }) => {
   return <DeltaPanel>
     <div className="my-4 border border-black p-2 bg-gray-200">
       <div className="flex">
@@ -30,7 +30,7 @@ const FinalizeContractDialogContent = ({ contract }) => {
     </div>
     <div className="mt-2">This process cannot be undone.</div>
   </DeltaPanel>;
-};
+}; */
 
 const WithdrawalContractItem = ({ index, opened, contract, className, onOpen }) => {
   const globalHooks = useContext(GlobalHooksContext);
