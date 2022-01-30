@@ -65,8 +65,6 @@ export class Contracts {
   }
 
   getWithdrawalContract(address) {
-    this._withdrawalContract.address = address;
-    this._withdrawalContract._address = address;
-    return this._withdrawalContract;
+    return new this.web3.eth.Contract(Withdrawal.abi, address);
   }
 }
