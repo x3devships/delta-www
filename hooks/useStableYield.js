@@ -22,7 +22,7 @@ const useStableYield = () => {
   const update = async () => {
     if (!yam || !wallet?.account) return;
 
-    const timestamp = new BigNumber(globalHooks.blockInfo.block.timestamp.toString());
+    const timestamp = new BigNumber((await yam.web3.eth.getBlock("latest")).timestamp);
     const weeklyDELTAToSend = new BigNumber(yam.web3.eth.abi.decodeParameter('uint256', await yam.web3.eth.getStorageAt(yam.contracts.stableYield._address, 1)));
     const lastDistributionTime = new BigNumber(yam.web3.eth.abi.decodeParameter('uint256', await yam.web3.eth.getStorageAt(yam.contracts.stableYield._address, 2)));
     const enabled = yam.web3.eth.abi.decodeParameter('bool', await yam.web3.eth.getStorageAt(yam.contracts.stableYield._address, 3));
@@ -31,8 +31,6 @@ const useStableYield = () => {
     if (timestamp.isNaN()) {
       return;
     }
-
-    console.log(timestamp.toString(), lastDistributionTime.toString());
 
     if (timestamp <= lastDistributionTime.plus(120) || !enabled) {
       setInfo({
@@ -49,7 +47,7 @@ const useStableYield = () => {
       timeDelta = SECONDS_PER_WEEK;
     }
     
-    const scale = new BigNumber(10).pow(4);
+    const scale = new BigNumber("1e4");
     const percentageOfAWeekPassede4 = timeDelta.times(scale).dividedBy(SECONDS_PER_WEEK);
     const distribution = weeklyDELTAToSend.times(percentageOfAWeekPassede4).div(scale);
     const tip = weeklyTip.times(percentageOfAWeekPassede4).div(scale);
