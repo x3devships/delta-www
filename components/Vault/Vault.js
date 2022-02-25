@@ -13,6 +13,7 @@ import { useApy, useDistributor, useYam } from '../../hooks';
 import TransactionButton from '../Button/TransactionButton';
 import { ModalContext } from '../../contexts';
 import { Tooltip, Tips } from '../Tooltip';
+import useStableYield from '../../hooks/useStableYield';
 
 const RlpBalances = () => {
   const globalHooks = useContext(GlobalHooksContext);
@@ -200,36 +201,7 @@ const Vault = () => {
   const wallet = useWallet();
   const modalContext = useContext(ModalContext);
   const distributor = useDistributor();
-
-  /* const onDistribute = async () => {
-    const transaction = yam.contracts.distributor.methods.distribute();
-
-    await transactions.executeTransaction(
-      modalContext,
-      transaction,
-      { from: wallet.account },
-      "Successfully distributed",
-      "Distributing...",
-      "Error while distributing"
-    );
-
-    distributor.update();
-  };
-
-  const onBurn = async () => {
-    const transaction = yam.contracts.distributor.methods.distributeAndBurn();
-
-    await transactions.executeTransaction(
-      modalContext,
-      transaction,
-      { from: wallet.account },
-      "Successfully burned",
-      "Burning...",
-      "Error while burning"
-    );
-
-    distributor.update();
-  }; */
+  const stableYield = useStableYield();
 
   const onClaim = async () => {
     const transaction = yam.contracts.distributor.methods.claimCredit();
@@ -244,6 +216,21 @@ const Vault = () => {
     );
 
     distributor.update();
+  };
+
+  const onDistribute = async () => {
+    const transaction = yam.contracts.stableYield.methods.distribute();
+
+    await transactions.executeTransaction(
+      modalContext,
+      transaction,
+      { from: wallet.account },
+      "Successfully distributed",
+      "Distributing...",
+      "Error while distributing"
+    );
+
+    stableYield.update();
   };
 
   return <>
@@ -284,6 +271,19 @@ const Vault = () => {
         </div>
       </DeltaPanel>
     </DeltaSection>
+
+    <DeltaSection requiresConnectedWallet showConnectWalletButton title="Stable Yields">
+      <DeltaPanel className="md:mt-0">
+        <div className="py-2">
+          <DeltaTitleH4 className="flex">DELTA ready to distribute</DeltaTitleH4>
+          <div className="my-4">{formatting.getTokenAmount(stableYield.info.distribution, 18, 4)} DELTA</div>
+          <DeltaTitleH4 className="flex">DELTA tip to receive</DeltaTitleH4>
+          <div className="my-4">{formatting.getTokenAmount(stableYield.info.tip, 18, 4)} DELTA</div>
+          <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={!stableYield.info.hasDistribution} text={stableYield.info.hasDistribution ? 'Distribute' : 'Nothing to distribute'} onClick={onDistribute} />
+        </div>
+      </DeltaPanel>
+    </DeltaSection>
+
     {/* <DeltaSection requiresConnectedWallet showConnectWalletButton title="Distribute Rewards">
       <DeltaPanel className="md:mt-0">
         <div className="py-2">

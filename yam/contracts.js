@@ -16,6 +16,7 @@ import DFV from '../contracts/DFV.json';
 import DeltaRouter from '../contracts/DeltaRouter.json';
 import Withdrawal from '../contracts/Withdrawal.json';
 import Distributor from '../contracts/Distributor.json';
+import StableYield from '../contracts/StableYield.json';
 
 export class Contracts {
   constructor(web3) {
@@ -37,6 +38,7 @@ export class Contracts {
     this.rLP = new this.web3.eth.Contract(RLP.abi, addressMap.rLP);
     this.dfv = new this.web3.eth.Contract(DFV.abi, addressMap.dfv);
     this.distributor = new this.web3.eth.Contract(Distributor.abi, addressMap.distributor);
+    this.stableYield = new this.web3.eth.Contract(StableYield.abi, addressMap.stableYield);
 
     // This contract doesn't have a fixed address and
     // getWithdrawalContract() must be used to dynamically get an instance

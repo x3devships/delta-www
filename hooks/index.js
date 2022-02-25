@@ -14,3 +14,4 @@ export { default as useBlock } from './useBlock';
 export { default as useWithdrawal } from './useWithdrawal';
 export { default as useApy } from './useApy';
 export { default as useDistributor } from './useDistributor';
+export { default as useStableYield } from './useStableYield';

@@ -1,0 +1,26 @@
+{
+  "abi": [
+    { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+    { "inputs": [], "name": "approveDFV", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    { "inputs": [], "name": "dao_address", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
+    { "inputs": [{ "internalType": "uint256", "name": "nofuckery", "type": "uint256" }], "name": "die", "outputs": [], "stateMutability": "payable", "type": "function" },
+    { "inputs": [], "name": "disable", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    { "inputs": [], "name": "distribute", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "weeklyAmount", "type": "uint256" }, { "internalType": "uint256", "name": "weeklyIncentiveAmount", "type": "uint256" }],
+      "name": "enable",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    { "inputs": [], "name": "enableWithDefaults", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    {
+      "inputs": [{ "internalType": "address", "name": "tokenAddress", "type": "address" }, { "internalType": "uint256", "name": "tokenAmount", "type": "uint256" }],
+      "name": "recoverERC20",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    { "inputs": [{ "internalType": "address", "name": "_dao_address", "type": "address" }], "name": "setDAO", "outputs": [], "stateMutability": "nonpayable", "type": "function" }
+  ]
+}
