@@ -272,10 +272,10 @@ const Vault = () => {
       </DeltaPanel>
     </DeltaSection>
 
-    <DeltaSection requiresConnectedWallet showConnectWalletButton title="Stable Yields">
+    <DeltaSection requiresConnectedWallet showConnectWalletButton title="Stable Yield">
       <DeltaPanel className="md:mt-0">
         <div className="py-2">
-          <DeltaTitleH4 className="flex">DELTA ready to distribute</DeltaTitleH4>
+          <DeltaTitleH4 className="flex">Total Pending Stable Yield for&nbsp;<strong>all farmers</strong></DeltaTitleH4>
           <div className="my-4">{formatting.getTokenAmount(stableYield.info.distribution, 0, 4)} DELTA</div>
           <DeltaTitleH4 className="flex">DELTA tip to receive</DeltaTitleH4>
           <div className="my-4">{formatting.getTokenAmount(stableYield.info.tip, 0, 4)} DELTA</div>
