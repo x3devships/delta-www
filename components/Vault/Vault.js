@@ -276,9 +276,9 @@ const Vault = () => {
       <DeltaPanel className="md:mt-0">
         <div className="py-2">
           <DeltaTitleH4 className="flex">DELTA ready to distribute</DeltaTitleH4>
-          <div className="my-4">{formatting.getTokenAmount(stableYield.info.distribution, 18, 4)} DELTA</div>
+          <div className="my-4">{formatting.getTokenAmount(stableYield.info.distribution, 0, 4)} DELTA</div>
           <DeltaTitleH4 className="flex">DELTA tip to receive</DeltaTitleH4>
-          <div className="my-4">{formatting.getTokenAmount(stableYield.info.tip, 18, 4)} DELTA</div>
+          <div className="my-4">{formatting.getTokenAmount(stableYield.info.tip, 0, 4)} DELTA</div>
           <TransactionButton className="flex-1 mr-2 md:flex-grow-0" disabled={!stableYield.info.hasDistribution} text={stableYield.info.hasDistribution ? 'Distribute' : 'Nothing to distribute'} onClick={onDistribute} />
         </div>
       </DeltaPanel>

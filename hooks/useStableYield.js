@@ -52,9 +52,10 @@ const useStableYield = () => {
     const distribution = weeklyDELTAToSend.times(percentageOfAWeekPassede4).div(scale);
     const tip = weeklyTip.times(percentageOfAWeekPassede4).div(scale);
 
+    console.log(distribution.toString() / 1e18, tip.toString() / 1e18, percentageOfAWeekPassede4.toString() / 1e22)
     setInfo({
-      distribution,
-      tip,
+      distribution: distribution.toString() / 1e18,
+      tip: tip.toString() / 1e18,
       hasDistribution: distribution.gt(0)
     });
   };
