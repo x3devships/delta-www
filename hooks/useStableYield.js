@@ -43,12 +43,17 @@ const useStableYield = () => {
     }
 
     let timeDelta = timestamp.minus(lastDistributionTime);
-    if(timeDelta >= SECONDS_PER_WEEK) {
+    console.log(`timestamp: ${timestamp}`)
+    console.log(`lastDistributionTime: ${lastDistributionTime}`)
+    console.log(`timeDelta: ${timeDelta}`)
+    if(timeDelta.gte(SECONDS_PER_WEEK)) {
       timeDelta = SECONDS_PER_WEEK;
     }
     
     const scale = new BigNumber("1e4");
+    console.log(`timeDelta: ${timeDelta}`)
     const percentageOfAWeekPassede4 = timeDelta.times(scale).dividedBy(SECONDS_PER_WEEK);
+    console.log(`percentageOfAWeekPassede4: ${percentageOfAWeekPassede4}`);
     const distribution = weeklyDELTAToSend.times(percentageOfAWeekPassede4).div(scale);
     const tip = weeklyTip.times(percentageOfAWeekPassede4).div(scale);
 
