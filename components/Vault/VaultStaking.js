@@ -93,7 +93,7 @@ const DeltaDeposit = () => {
     } else {
 
       // const message = burning ?
-      //  `You are about to stake ${amount} DELTA in the Deep Farming Vault. ${(amount / 2).toLocaleString()} DELTA will be locked permanently in the DFV.` :
+      //  `You are about to stake ${amount} DELTA in the Deep Farming Vault. ${(amount / 2).toLocaleString("en")} DELTA will be locked permanently in the DFV.` :
       //  `You are about to stake ${amount} DELTA in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${globalHooks.staking.info.booster}x to 1x. To prevent this please check the box Burn Deposit.`;
       // const confirmed = await modalContext.showConfirm('Staking', message);
 
@@ -102,7 +102,7 @@ const DeltaDeposit = () => {
       // const _rlp = formatting.getTokenAmount(rlp, 18, 4);
       const { booster } = globalHooks.staking.info;
       const title = `Staking`; // , you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
-      const amountLock = (amount / 2).toLocaleString();
+      const amountLock = (amount / 2).toLocaleString("en");
       const message = burning ?
         `You are about to stake ${amount} DELTA in the Deep Farming Vault. ${amountLock} DELTA will be locked permanently in the Deep Farming Vault.` :
         `You are about to stake ${amount} DELTA in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${booster}x to 1x. To prevent this please check the box Burn Deposit.`;
