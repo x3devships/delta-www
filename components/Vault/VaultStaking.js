@@ -93,7 +93,7 @@ const DeltaDeposit = () => {
     } else {
 
       // const message = burning ?
-      //  `You are about to stake ${amount} DELTA in the Deep Farming Vault. ${(amount / 2).toLocaleString()} DELTA will be locked permanently in the DFV.` :
+      //  `You are about to stake ${amount} DELTA in the Deep Farming Vault. ${(amount / 2).toLocaleString("en")} DELTA will be locked permanently in the DFV.` :
       //  `You are about to stake ${amount} DELTA in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${globalHooks.staking.info.booster}x to 1x. To prevent this please check the box Burn Deposit.`;
       // const confirmed = await modalContext.showConfirm('Staking', message);
 
@@ -102,12 +102,12 @@ const DeltaDeposit = () => {
       // const _rlp = formatting.getTokenAmount(rlp, 18, 4);
       const { booster } = globalHooks.staking.info;
       const title = `Staking`; // , you will get ${claimEth} ETH, ${claimDelta} DELTA, ${rlp} rLP in your wallet`;
-      const amountLock = (amount / 2).toLocaleString();
+      const amountLock = (amount / 2).toLocaleString("en");
       const message = burning ?
         `You are about to stake ${amount} DELTA in the Deep Farming Vault. ${amountLock} DELTA will be locked permanently in the Deep Farming Vault.` :
         `You are about to stake ${amount} DELTA in the Deep Farming Vault without a "Burn Deposit". This will reduce your Multiplier from ${booster}x to 1x. To prevent this please check the box Burn Deposit.`;
       const breakdown = [
-        ['DELTA TO DEPOSIT', amount, 'DELTA'],
+        ['DELTA TO DEPOSIT', formatting.getTokenAmount(amount), 'DELTA'],
         // [ 'BURN/LOCKED IN VAULT', amountLock, 'DELTA' ],
       ];
       if (burning) {
@@ -315,20 +315,20 @@ const VaultDeposit = ({ token }) => {
       <DeltaPanel className="flex items-center text-center flex-wrap">
         <div className="flex border border-black p-1 flex-grow md:flex-none">
           <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
-                       onClick={() => setDepositAction(() => 0)}
-                       grayLook={!depositAction || typeof depositAction === 'boolean'}>
+            onClick={() => setDepositAction(() => 0)}
+            grayLook={!depositAction || typeof depositAction === 'boolean'}>
             Stake Delta
           </DeltaButton>
 
           <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
-                       onClick={() => setDepositAction(() => 1)}
-                       grayLook={depositAction === 1}>
+            onClick={() => setDepositAction(() => 1)}
+            grayLook={depositAction === 1}>
             Buy DELTA
           </DeltaButton>
 
           <DeltaButton className="flex-1 mr-2 md:flex-grow-0"
-                       onClick={() => setDepositAction(() => 2)}
-                       grayLook={depositAction === 2}>
+            onClick={() => setDepositAction(() => 2)}
+            grayLook={depositAction === 2}>
             Stake rLP
           </DeltaButton>
 
@@ -339,8 +339,8 @@ const VaultDeposit = ({ token }) => {
           </DeltaButton> */}
 
           <DeltaButton className="flex-1 md:flex-grow-0"
-                       onClick={() => setDepositAction(() => 3)}
-                       grayLook={depositAction === 3}>
+            onClick={() => setDepositAction(() => 3)}
+            grayLook={depositAction === 3}>
             Buy rLP
           </DeltaButton>
         </div>
@@ -637,8 +637,8 @@ const RlpWithdrawal = () => {
     const title = `You are about to unstake your rLP`;
     const message = `NOTE: Besides unstaking rLP this operation will also automatically claim your WETH rewards and compound DELTA. Please consider if you want to enable compound burn on the compounded DELTA rewards. We do this to save you additional gas fees.`;
     const breakdown = [
-      [ 'RLP TRANSFERED TO YOUR WALLET', _rlp, 'RLP' ],
-      [ 'CLAIM ETHEREUM REWARDS', claimEth, 'WETH' ]
+      ['RLP TRANSFERED TO YOUR WALLET', _rlp, 'RLP'],
+      ['CLAIM ETHEREUM REWARDS', claimEth, 'WETH']
       // [ 'CLAIM DELTA REWARDS', claimDelta, 'DELTA' ],
     ];
     const confirm = await modalContext.showConfirmWithBreakdown(title, message, breakdown);
